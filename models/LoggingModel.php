@@ -2,7 +2,7 @@
 
 Yii::import('application.vendors.toxus.models._base.BaseLogging');
 
-class Logging extends BaseLogging
+class LoggingModel extends BaseLogging
 {
 	private $_write = true;  // if false the record is not written
 	
