@@ -7,13 +7,24 @@ class UserProfileModel extends BaseUserProfile
 	const GUEST = 1;
 	const REGISTERED_USER = 10;
 	const PAYING_CUSTOMER = 100;
-	const MODERATOR = 1000;
-	const ADMINISTRATOR = 2000;
+	const MODERATOR = 500;
+	const ADMINISTRATOR = 1000;
 	const GOD = 10000;
 	
 	public static function model($className=__CLASS__) {
 		return parent::model($className);
 	}
+	
+	public function rules() {
+		return array_merge(
+			parent::rules(),			
+			array(
+				array('username, password, email', 'required', 'on' => 'admin'),
+				array('is_confirmed,is_suspended,rights_id, has_newsletter', 'numerical', 'integerOnly'=>true, 'on' => 'admin'),
+			)
+		);
+	}
+
 
 	public function beforeSave() {
 		if ($this->isNewRecord) {
