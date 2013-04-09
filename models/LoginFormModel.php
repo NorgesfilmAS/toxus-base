@@ -128,8 +128,18 @@ class LoginFormModel extends CFormModel
 	{
 		if(!$this->hasErrors())	{
 			$this->_identity = new UserIdentity($this->username, $this->password);
-			if(!$this->_identity->authenticate())
-				$this->addError('password',  Yii::t('app', 'Incorrect username or password.'));
+			if(! $this->_identity->authenticate()) {
+				switch ($this->_identity->errorCode) {
+					case UserIdentity::ERROR_NOT_ACTIVATED :
+						$this->addError('username',  Yii::t('app', 'The account is not activated yet. Please confirm your email address by clicking on the link in the email send, or reregister.'));
+						break;;
+					case UserIdentity::ERROR_SUSPENDED :	
+						$this->addError('username',  Yii::t('app', 'Your account has been suspended.'));
+						break;
+					default: 
+						$this->addError('password',  Yii::t('app', 'Incorrect username or password.'));
+				}				
+			}	
 		}
 	}
 

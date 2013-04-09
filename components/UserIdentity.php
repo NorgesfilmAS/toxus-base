@@ -7,6 +7,9 @@
  */
 class UserIdentity extends CUserIdentity
 {
+	const ERROR_SUSPENDED = 3;
+	const ERROR_NOT_ACTIVATED = 4;
+	
 	private $_id = null;
 	/**
 	 * Authenticates a user.
@@ -35,9 +38,15 @@ class UserIdentity extends CUserIdentity
 				if ($model == null) {
 					$this->errorCode = self::ERROR_UNKNOWN_IDENTITY;
 				} else {	
-					$this->_id = $model->id;
-					$this->username = $model->id;
-					$this->errorCode = self::ERROR_NONE;
+					if ($model->is_suspended) {
+						$this->errorCode = self::ERROR_SUSPENDED;
+					} elseif ($model->is_confirmed == 0) {
+						$this->errorCode = self::ERROR_NOT_ACTIVATED;
+					} else {
+						$this->_id = $model->id;
+						$this->username = $model->id;
+						$this->errorCode = self::ERROR_NONE;
+					}	
 				}
 			}	
 		}	
