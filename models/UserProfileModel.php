@@ -25,7 +25,6 @@ class UserProfileModel extends BaseUserProfile
 		);
 	}
 
-
 	public function beforeSave() {
 		if ($this->isNewRecord) {
 			$this->creation_date = new CDbExpression('NOW()');
