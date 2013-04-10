@@ -70,7 +70,7 @@ class MailMessage extends CBaseController
 
 		if (Yii::app()->params['mail-domains']) {
 			$to = $msg['to'];
-			$mailDomains = split(',', Yii::app()->params['mail-domains']);
+			$mailDomains = explode(',', Yii::app()->params['mail-domains']);
 			if (count($mailDomains) > 0) {
 				$toServer = self::serverFromEmail($to);
 				$isAllowed = false;
@@ -99,9 +99,9 @@ class MailMessage extends CBaseController
 	
 	static function serverFromEmail($email)
 	{
-		$server = split('@', $email);
+		$server = explode('@', $email);
 		if (isset($server[1])) {
-		  $s = split('>', $server[1]);
+		  $s = explode('>', $server[1]);
 			if (isset($s[0]))
 				return $s[0];
 		}

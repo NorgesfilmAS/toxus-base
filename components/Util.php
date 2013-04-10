@@ -112,9 +112,9 @@ class Util {
 	 */
 	static function serverFromEmail($email)
 	{
-		$server = split('@', $email);
+		$server = explode('@', $email);
 		if (isset($server[1])) {
-		  $s = split('>', $server[1]);
+		  $s = explode('>', $server[1]);
 			if (isset($s[0]))
 				return $s[0];
 		}
