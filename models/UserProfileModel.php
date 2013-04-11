@@ -5,6 +5,7 @@ Yii::import('application.vendors.toxus.models._base.BaseUserProfile');
 class UserProfileModel extends BaseUserProfile
 {
 	const GUEST = 1;
+	const NEWSLETTER_ONLY = 2;
 	const REGISTERED_USER = 10;
 	const PAYING_CUSTOMER = 100;
 	const MODERATOR = 500;
@@ -21,6 +22,7 @@ class UserProfileModel extends BaseUserProfile
 			array(
 				array('username, password, email', 'required', 'on' => 'admin'),
 				array('is_confirmed,is_suspended,rights_id, has_newsletter', 'numerical', 'integerOnly'=>true, 'on' => 'admin'),
+				array('email', 'required', 'on' => 'newsletter'),	
 			)
 		);
 	}
@@ -28,6 +30,7 @@ class UserProfileModel extends BaseUserProfile
 	public function beforeSave() {
 		if ($this->isNewRecord) {
 			$this->creation_date = new CDbExpression('NOW()');
+			$this->newsletter_key = Util::generateRandomString(30);
 		}
 		$md5 = md5($this->password);
 		if ($this->password != $md5 || $this->login_key == '') {

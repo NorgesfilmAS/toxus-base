@@ -22,6 +22,8 @@
  * @property string $modified_date
  * @property string $last_login
  * @property integer $has_newsletter
+ * @property integer $is_suspended
+ * @property string $newsletter_key
  *
  */
 abstract class BaseUserProfile extends GxActiveRecord {
@@ -45,11 +47,11 @@ abstract class BaseUserProfile extends GxActiveRecord {
 	public function rules() {
 		return array(
 			array('username, password, email', 'required'),
-			array('is_confirmed, rights_id, has_newsletter', 'numerical', 'integerOnly'=>true),
-			array('username, password, password_md5, login_key, email, email_to_confirm', 'length', 'max'=>255),
+			array('is_confirmed, rights_id, has_newsletter, is_suspended', 'numerical', 'integerOnly'=>true),
+			array('username, password, password_md5, login_key, email, email_to_confirm, newsletter_key', 'length', 'max'=>255),
 			array('creation_date, modified_date, last_login', 'safe'),
-			array('password_md5, login_key, email_to_confirm, is_confirmed, rights_id, creation_date, modified_date, last_login, has_newsletter', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, username, password, password_md5, login_key, email, email_to_confirm, is_confirmed, rights_id, creation_date, modified_date, last_login, has_newsletter', 'safe', 'on'=>'search'),
+			array('password_md5, login_key, email_to_confirm, is_confirmed, rights_id, creation_date, modified_date, last_login, has_newsletter, is_suspended, newsletter_key', 'default', 'setOnEmpty' => true, 'value' => null),
+			array('id, username, password, password_md5, login_key, email, email_to_confirm, is_confirmed, rights_id, creation_date, modified_date, last_login, has_newsletter, is_suspended, newsletter_key', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -78,6 +80,8 @@ abstract class BaseUserProfile extends GxActiveRecord {
 			'modified_date' => Yii::t('app', 'Modified Date'),
 			'last_login' => Yii::t('app', 'Last Login'),
 			'has_newsletter' => Yii::t('app', 'Has Newsletter'),
+			'is_suspended' => Yii::t('app', 'Is Suspended'),
+			'newsletter_key' => Yii::t('app', 'Newsletter Key'),
 		);
 	}
 
@@ -97,6 +101,8 @@ abstract class BaseUserProfile extends GxActiveRecord {
 		$criteria->compare('modified_date', $this->modified_date, true);
 		$criteria->compare('last_login', $this->last_login, true);
 		$criteria->compare('has_newsletter', $this->has_newsletter);
+		$criteria->compare('is_suspended', $this->is_suspended);
+		$criteria->compare('newsletter_key', $this->newsletter_key, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
