@@ -39,5 +39,17 @@ class WebUser extends CWebUser
 	{
 		return $this->profile->rights_id >= UserProfile::ADMINISTRATOR;
 	}
+	public function getIsModerator()
+	{
+		return $this->profile->rights_id >= UserProfile::MODERATOR;
+	}
+	public function getIsCustomer()
+	{
+		return $this->profile->rights_id >= UserProfile::PAYING_CUSTOMER;
+	}
+	public function getIsRegisterd()
+	{
+		return $this->profile->rights_id >= UserProfile::REGISTERED_USER;
+	}
 }
 ?>
