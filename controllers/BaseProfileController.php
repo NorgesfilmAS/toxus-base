@@ -110,13 +110,15 @@ class BaseProfileController extends Controller
 		// we should login with this profile....
 		$ident = new UserIdentity($model->username, $model->password);
 	  $ident->authenticate();
-		if ($ident->errorCode !== UserIdentity::ERROR_NONE) {
+		if (!($ident->errorCode == UserIdentity::ERROR_NONE || $ident->errorCode == UserIdentity::ERROR_NOT_ACTIVATED)) {
 			throw new CHttpException(500, 'Profile not valid');
 		}
 		$model->confirmed();
 		if (!$model->save()) {
 			throw new CHttpException(500,'The information could not be saved. Please try later again: '. Yii::app()->params['debug'] ? var_export($model->errors, true) :'');
 		}	
+		if ($ident->errorCode == UserIdentity::ERROR_NOT_ACTIVATED)
+			$ident->authenticate();
 		Yii::app()->user->login($ident);
 		$this->redirect($this->createUrl('profile/index'));
 	}
