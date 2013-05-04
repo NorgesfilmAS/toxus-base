@@ -3,6 +3,8 @@
 Yii::import('zii.widgets.grid.CGridView');
 class BootstrapGridView extends CGridView
 {
+	public $updateLink = null;
+	
 	public function init() {
 		parent::init();
 		$this->htmlOptions = array_merge(
@@ -10,7 +12,13 @@ class BootstrapGridView extends CGridView
 				array(
 					'class' => 'table table-striped table-hover',
 				)		
-		);				
+		);		
+		if ($this->updateLink !== null) {
+			$this->selectionChanged = "function(id){window.location='" . Yii::app()->urlManager->createUrl($this->updateLink, array('id'=>'')) . "' + $.fn.yiiGridView.getSelection(id);}";
+			$this->htmlOptions['style'] = 'cursor: pointer;';
+		}	
+		
+//		$this->selectableRows = 1;	
 		$this->pagerCssClass = 'pagination pagination-left';
 		$this->template = '{items} {pager} {summary}';
 		$this->pager = array_merge(
