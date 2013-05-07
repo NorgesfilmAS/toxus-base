@@ -42,7 +42,7 @@ class UserProfileModel extends BaseUserProfile
 	}
 	
 	
-	public function getRightsOptions()
+	static public function getRightsOptions()
 	{
 		return array(
 			self::GUEST => Yii::t('app', 'Guest'),

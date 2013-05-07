@@ -51,5 +51,9 @@ class WebUser extends CWebUser
 	{
 		return $this->profile->rights_id >= UserProfile::REGISTERED_USER;
 	}
+	public function getRights()
+	{
+		return $this->profile->rights_id;
+	}
 }
 ?>
