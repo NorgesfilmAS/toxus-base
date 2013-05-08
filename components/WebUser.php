@@ -55,5 +55,9 @@ class WebUser extends CWebUser
 	{
 		return $this->profile->rights_id;
 	}
+	public function getCanEdit()
+	{
+		return $this->profile->canEdit;
+	}
 }
 ?>

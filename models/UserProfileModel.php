@@ -68,4 +68,9 @@ class UserProfileModel extends BaseUserProfile
 		}
 		$this->email = $this->email_to_confirm;
 	}
+	
+	public function getCanEdit()
+	{
+		return $this->rights_id >- self::MODERATOR;
+	}
 }
