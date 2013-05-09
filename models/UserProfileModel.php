@@ -71,6 +71,6 @@ class UserProfileModel extends BaseUserProfile
 	
 	public function getCanEdit()
 	{
-		return $this->rights_id >- self::MODERATOR;
+		return $this->rights_id >= self::MODERATOR;
 	}
 }
