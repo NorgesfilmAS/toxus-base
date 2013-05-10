@@ -1,0 +1,3 @@
+from: {{ model.name }} ({{ model.email }}){% if model.subject %} subject: {{ model.subject }}{%endif%}<br/>
+date: {{ model.creation_date }} {% if model.is_handled %} has been handled{%endif%}<br/>
+{{ model.message | nl2br }}

@@ -1,0 +1,38 @@
+{% extends this.viewPath('main') %}
+
+{% block content %}
+	<div class="container clearfix" id="main-content"> 
+		<h5 class="short_headline"><span>List of Profiles</span></h5>
+		<div class="offset1">
+		{{ this.widget( 'BootstrapGridView', {
+			'id' :  'profile-grid',
+			'updateLink' : 'profile/admin',
+			'dataProvider' : model.search(),			
+
+			'columns' : {
+					0 : {
+						'name' : 'created',
+						'value' : 'Yii::app()->dateFormatter->format("d MMM y", strtotime($data->creation_date))',
+					},
+					1 : 'username',	
+					2 : 'email',
+					3 : 'password',
+          4 : {
+						'name' : 'State',
+						'type' : 'raw',	
+						'value' : '$data->is_suspended ? "<span class=\'badge badge-important\'>Suspended</span>" : ($data->is_confirmed == 0 ? "<span class=\'badge badge-warning\'>Not confirmed</span>" : "<span class=\'badge badge-success\'>Active</span>")',
+					},
+				}
+      }, true) | raw }}		
+			
+{#			
+          1 : 'data.is_suspended ? "Suspended" : (data.is_confirmed == ? "Not confirmed" :"Active")',
+		{{ this.widget( 'BootstrapListView', {
+			'id' :  'profile-grid',
+			'dataProvider' : model.search(),					
+			'itemView' : '_profileRow'
+      }, true) | raw }}		
+#}
+		</div>		
+	</div>			
+{% endblock %}

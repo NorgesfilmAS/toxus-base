@@ -1,0 +1,86 @@
+{% extends this.viewPath('main') %}
+
+{% block content %}
+	<div class="hero-unit">
+		<div class="container">
+			<h1>Contact</h1>
+		</div>
+		<!--close container--> 
+	</div>
+	<!--close hero-unit-->
+	
+	<div class="container clearfix" id="main-content">
+		<div class="row-fluid reverse-order contact-page">
+			<p class="clearfix">
+				Percussive Guitar has permanently altered the concept of platforms. 
+				We apply the proverb "The early bird catches the worm" not only to our solutions but our power to streamline. 
+				If you synergize robustly, you may have to e-enable virally.</p>
+			<hr />
+			<div class="span5">
+				<p class="right"> <a class="icon-map-marker various fancybox.iframe" title="Map and Directions" 
+														 href="https://maps.google.com/maps?f=d&source=s_d&saddr=&daddr=Pegasusstraat+85,2024VP+Haarlem,The+Netherlands&output=embed">&nbsp;</a> </p>
+				<p><strong>{{ App.params.company|raw }}</strong><br />
+					{{ App.params.companyAddress | raw }}<br/>
+					<strong>email:</strong> <a href="mailto:{{ App.params.companyEmail }}">{{ App.params.companyEmail }}</a> </p>
+				<h3 class="short_headline margin-top"><span>Get Percussive</span></h3>
+				<p>Sign up for our percussive newsletter. We won't share your email address.</p>
+				<div class="input-append">
+					<form method="post" action="{{ App.createUrl('contact/newsletter') }}">	
+					<input type="email" placeholder="Email Address" class="span6" name="Newsletter[email]" />
+					<button class="btn btn-primary">Sign Up</button>
+					</form>
+				</div>
+				<!--close input-append-->
+				<h3 class="short_headline margin-top"><span>Follow Us</span></h3>
+				<ul class="social">
+					<li><a class="socicon facebook" href="#" title="Facebook"></a></li>
+					<li><a class="socicon twitterbird" href="#" title="Twitter"></a></li>
+					<li><a class="socicon linkedin" href="#" title="LinkedIn"></a></li>
+					<li><a class="socicon dribbble" href="#" title="dribble"></a></li>
+				</ul>
+			</div>
+			<!--close span5 -->
+
+			{% if App.user.hasFlash('error') or App.user.hasFlash('success') or App.user.hasFlash('info') %}
+			<div class="span7">
+				{% for key, flash in App.user.getFlashes %}
+				<div class="alert alert-{{ key }}">
+					{{ flash |nl2br }}
+				</div>	
+				{% endfor %}	
+			</div>
+			{% endif %}	
+			
+			<div class="span7">
+				
+				<form  method="post" id="contact-form" class="form-horizontal">
+					<fieldset>
+						<div class="control-group{% if model.getErrors('name') %} error{% endif %}">
+							<label for="Message[name]">Your Name</label>
+							<input type="text" class="span10" name="Message[name]" id="name" />
+						</div>
+						<div class="control-group{% if model.getErrors('email') %} error{% endif %}">
+							<label for="Message[email]">Email Address</label>
+							<input type="email" class="span10" name="Message[email]" id="email" />
+						</div>
+						<div class="control-group{% if model.getErrors('subject') %} error{% endif %}">
+							<label for="Message[subject]">Subject</label>
+							<input type="text" class="span10" name="Message[subject]" id="email" />
+						</div>
+							
+						<div class="control-group{% if model.getErrors(key) %} error{% endif %}">
+							<label for="Message[message]">Your Message</label>
+							<textarea class="span10" name="Message[message]" id="message" rows="3"></textarea>
+						</div>
+						<button type="submit" class="btn btn-primary btn-large">Send</button>
+					</fieldset>
+				</form>
+			</div>
+			<!--close span7 --> 
+		</div>
+		<!--close row-fluid--> 
+	</div>
+	<!--close .container role="main-content" --> 
+ 
+{% endblock %}
+	

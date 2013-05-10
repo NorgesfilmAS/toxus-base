@@ -1,0 +1,19 @@
+{% extends this.viewPath('twoColumnRightMenu') %}
+
+{% block title %}Profile - {{ model.username }}{% endblock %}
+
+{% block sideMenu %}
+<aside class="widget">
+<h3 class="short_headline">
+	<span>Profile menu</span>
+</h3>
+{{ this.menuHtml('main') }}
+	</aside>		
+{% endblock %}
+
+	
+{% block context %}
+<div class="offset1">
+	{% include 'views/layouts/_form.twig' %}
+</div>		
+{% endblock %}

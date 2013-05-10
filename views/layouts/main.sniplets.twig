@@ -1,0 +1,79 @@
+
+<!-- CSS ================ -->
+{#<link rel="stylesheet" href="{{ App.baseUrl }}/css/bootstrap.min.css" type="text/css"/> #} 
+{{ this.registerCss('bootstrap.min.css') }}
+{# <link rel="stylesheet" href="{{ App.baseUrl }}/css/font-awesome.min.css"> #}
+{{ this.registerCss('font-awesome.min.css') }}
+<!--[if IE 7]>
+{# <link rel="stylesheet" href="{{ App.baseUrl }}/css/font-awesome-ie7.min.css"> #}
+<![endif]-->
+{# this.registerCss('font-awesome-ie7.min.css') #}
+{# <link rel="stylesheet" href='{{ App.baseUrl }}/css/socialicoregular.css' /> #}
+{# <link rel="stylesheet" href='{{ App.baseUrl }}/css/font-awesome.css' />  #}
+{# this.registerCss('font-awesome.css') #}
+{# <link rel="stylesheet" href='{{ App.baseUrl }}/css/hero-equal-thumb-gallery.css' /> #}
+{# <link rel="stylesheet" href='{{ App.baseUrl }}/css/tabs-toggle.css' /> #}
+{# <link rel="stylesheet" href='{{ App.baseUrl }}/css/responsive-tables.css' /> #}
+{# <link rel="stylesheet" href='{{ App.baseUrl }}/css/portfolio.css' /> #}
+{# <link rel="stylesheet" href='{{ App.baseUrl }}/css/blog.css' /> #}
+{# <link rel="stylesheet" href='{{ App.baseUrl }}/css/gallery-folio-masonry.css' /> #}
+{# <link rel="stylesheet" href='{{ App.baseUrl }}/js/fancybox/source/jquery.fancybox.css' /> #}
+{# <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Ubuntu:400,700,700italic,400italic' /> #}
+{{ this.registerCss('http://fonts.googleapis.com/css?family=Ubuntu:400,700,700italic,400italic') }}
+{#<link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Raleway:300,500,600,700' /> #}
+{{ this.registerCss('http://fonts.googleapis.com/css?family=Raleway:300,500,600,700') }}
+{# <link rel="stylesheet" href="{{ App.baseUrl }}//css/style.css" type="text/css"/> #}
+{{ this.registerCss('style.css')}}
+{# <link rel="stylesheet" href="{{ App.baseUrl }}/css/header-1.css" type="text/css"/> #}
+{{ this.registerCss('header-1.css') }}
+{# <link rel="stylesheet" href="{{ App.baseUrl }}/css/lemmon-slider.css" type="text/css" media="screen" /> #}
+{# <link rel="stylesheet" href="{{ App.baseUrl }}/css/toxus.css" type="text/css"/> #}
+{{ this.registerCss('toxus.css') }}
+
+
+//////////////////////////////////////////////////////////////////////////
+
+
+<!-- close #page--> 
+{% for css  in this.styleArray('css') %}
+  {{ this.registerCss(css) }}
+{% endfor %}
+
+<!-- JS JQuery ================ --> 
+{# <script src="{{ App.baseUrl }}/js/bootstrap.min.js"></script><!--transitions, tooltips, popover, buttons, modals, alert messages-->  #}
+{{ this.registerScript('bootstrap.min.js') }}
+{# <script src="{{ App.baseUrl }}/js/modernizr.custom.87724.js"></script><!-- js multiple backgrounds svg background size --> #}
+{{ this.registerScript('modernizr.custom.87724.js') }}
+{# <script src="{{ App.baseUrl }}/js/ddsmoothmenu-min.js"></script><!-- desktop edge detect menu -->  #}
+{{ this.registerScript('ddsmoothmenu-min.js') }}
+{# <script src="{{ App.baseUrl }}/js/jquery.dcjqaccordion.2.7.min.js"></script><!-- mobile multi-level accordion menu -->  #}
+{# <script src="{{ App.baseUrl }}/js/jquery.easytabs.min.js"></script><!-- tabs/testimonials -->  #}
+{# <script src="{{ App.baseUrl }}/js/slide-to-top-accordion-min.js"></script><!-- slide to top accordion toggle -->  #}
+{# <script src="{{ App.baseUrl }}/js/jquery.easing-1.3.min.js"></script><!--easing-->  #}
+{# <script src="{{ App.baseUrl }}/js/jquery.flexslider-min.js"></script><!--flexslider content slider twitter slider and initializations--> #}
+{# <script src="{{ App.baseUrl }}/js/responsive-tables.js"></script><!--responsive table--> #}
+{# <script src="{{ App.baseUrl }}/js/jquery.fitvid.js"></script><!-- responsive videos --> #}
+<!-- Audio JS for mp3 --> 
+{# <script src="{{ App.baseUrl }}/js/audiojs/audio.min.js"></script>  #}
+{#
+<!--initialize AudioJs--> 
+<script>
+      audiojs.events.ready(function() {
+        audiojs.createAll();
+      });
+</script> 
+#}
+{# <script src="{{ App.baseUrl }}/js/lemmon-slider-min.js"></script><!-- lemmon slider js -->  #}
+
+<!--initialize scripts / custom scripts all pages--> 
+{# <script src="{{ App.baseUrl }}/js/scripts.js"></script> #}
+{{ this.registerScript('scripts.js') }}
+{# <script type="text/javascript" src="{{ App.baseUrl }}/js/respond.min.js"></script>#}
+{{ this.registerScript('respond.min.js') }}
+
+<!-- Add to Head after Style sheet http://modernizr.com/docs/#installing  ================ -->
+
+{# the page scripts #}
+{% for script in this.styleArray('scripts')  %}
+	{{ this.registerScript(script, true) }}
+{% endfor %}

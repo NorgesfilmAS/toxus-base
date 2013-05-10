@@ -1,0 +1,16 @@
+{% extends this.viewPath('main') %}
+
+{% block content %}
+	<div class="container visible-phone hidden-tablet hidden-desktop">
+		<p class="right"><a class="btn btn-primary" href="#secondary-nav">Page Menu &nbsp;<i class="icon-align-justify"></i></a></p>
+	</div>
+	<div class="container clearfix" id="main-content"> 
+		<h5>List of Messages (newest first)</h5>
+		{{ this.widget( 'BootstrapListView', {
+			'id' :  'message-grid',
+			'dataProvider' : model.search(),					
+			'itemView' : '_messageRow'
+      }, true) | raw }}		
+	</div>		
+	
+{% endblock %}

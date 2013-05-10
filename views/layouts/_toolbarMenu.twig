@@ -1,0 +1,8 @@
+{# render the user menu #}
+
+{% for key, item in menu %}
+  <a href="{{ item.url | raw }}" data-placement="bottom" {% if item.tooltip %}title="{{ item.tooltip }}"{% endif %}>
+  {% if item.icon is defined %}<i class="{{ item.icon }}"></i>{% endif %}
+	{% if item.label %}{{ item.label }}{% endif %}
+	</a>		 
+{% endfor %}

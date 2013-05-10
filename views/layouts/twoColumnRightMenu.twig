@@ -1,0 +1,15 @@
+{% extends this.viewPath('main') %}
+
+{% block content %}
+
+<div class="container clearfix" id="main-content"> 
+	<div class="row-fluid sidebar-right"> 
+		<div class="span9 primary-column"> 
+			{% block context %}context{% endblock %}
+		</div>
+		<section class="span3 sidebar secondary-column" id="secondary-nav">
+			{% block sideMenu %}{% endblock %}
+		</section>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,4 @@
+{#
+  generate an article
+#}
+{% include template_from_string('{% autoescape false %}'~model.content~'{% endautoescape %}') with {'model': model} %}

@@ -1,0 +1,33 @@
+{% extends this.viewPath('main') %}
+
+{% block content %}
+<div id="main-content" class="container clearfix">
+	{% if model.hasErrors() %}
+	<div class="row-fluid">
+		<div class="span10 offset1">
+			<div class="alert alert-block">
+				{{ html.errorSummary(model)|raw }}
+			</div>
+		</div>
+	</div>
+	{% endif %}	
+	<div class="row-fluid">
+		{% if App.user.hasFlash('error') or App.user.hasFlash('success') or App.user.hasFlash('info') %}
+		<div class="span10 offset1">
+			{% for key, flash in App.user.getFlashes %}
+			<div class="alert alert-{{ key }}">
+				{{ flash }}
+			</div>	
+			{% endfor %}	
+		</div>
+		{% elseif App.user.hasFlash('success') %}	
+			
+		{% endif %}	
+		{% block formStart %}<div class="span10 offset1">{% endblock %}
+			{% include this.viewPath('_form') %}
+		{% block formEnd %}</div>{% endblock %}
+	</div>		
+</div>	
+  
+{% endblock %}
+	

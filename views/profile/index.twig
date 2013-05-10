@@ -1,0 +1,24 @@
+{% extends this.viewPath('twoColumnRightMenu') %}
+
+{% block title %}Profile - {{ model.username }}{% endblock %}
+
+{% block sideMenu %}
+<aside class="widget">
+<h5 class="short_headline">
+	<span>Profile menu</span>
+</h5>
+{{ this.menuHtml('main') }}
+	</aside>		
+{% endblock %}
+
+	
+{%block context %}
+<div class="span offset1">
+<p>
+	<strong>{{ model.username }}</strong> has got email address <strong>{{ model.email }}</strong>.<br />
+	You are a member since {{ model.creation_date |date('j F Y') }}. 
+	You will {%if model.has_newsletter == 0 %}not {% endif %}recieve our newsletter.<br/>
+	Your rights are a {{ model.rightsText }}.	
+</p>
+</div>
+{%endblock%}
