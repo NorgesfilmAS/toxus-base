@@ -155,4 +155,32 @@ class BaseProfileController extends Controller
 		$this->model->email_to_confirm = $this->model->email;
 		$this->render('update', array('model' => $this->model, 'form' => $form));
 	}
+	
+	/**
+	 * 
+	 * @param string $id
+	 */
+	public function actionDelete($id)
+	{
+		if (Yii::app()->user->isAdmin === false)
+			$this->redirect($this->createUrl('profile/login'));
+		$this->model = UserProfileModel::model()->find('id=:id', array(':id' => $id));
+		if ($this->model == null) throw new CDbException('profile not found');
+		if ($this->model->delete() == false)
+			if ($this->model == null) throw new CDbException('Profile can not be deleted.');
+		$this->redirect($this->createUrl('profile/list'));	
+	}
+		  
+	public function actionList()
+	{
+		if (! Yii::app()->user->isAdmin) $this->redirect(Yii::app()->homeUrl);
+		
+		$model = new UserProfileModel();
+		$model->unsetAttributes();
+		if ($_REQUEST['UserProfile']) {
+			$model->attributes = $_REQUEST['UserProfile'];
+		}
+		$this->render('list', array('model' => $model));
+	}
+
 }
