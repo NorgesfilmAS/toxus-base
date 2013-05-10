@@ -28,7 +28,7 @@ class BootstrapGridView extends CGridView
 							'header'         => '', //<div class="pagination pagination-left">',
 							'footer'				 => '', // </div>',	
 							'selectedPageCssClass' => 'active',	
-							'htmlOptions'		 =>	array('class' => 'pager'),
+							'htmlOptions'		 =>	array('class' => 'tox-pager-grid'),
 							'hiddenPageCssClass' => 'hide-it',	
 							'prevPageLabel'  => '&larr; ',
 							'nextPageLabel'  => '&rarr;',	
