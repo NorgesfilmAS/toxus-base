@@ -1,10 +1,14 @@
-{% extends this.viewPath('message') %}
+{# 
+	Showing a message to the user in the middle of the screen
+#}
+{% extends this.viewPath('main') %}
 
-{% block title %}
-	{{ title }} 
+{% block content %}
+<div class="container clearfix" id="main-content">
+	<div class="span12">
+		<div class="message-box">
+			{% include template_from_string('{% autoescape false %}'~model.content~'{% endautoescape %}') with {'model': model} %}
+		</div>
+	</div>
+</div>
 {% endblock %}
-
-{% block message %}
-  {{ message | raw }}
-{% endblock %}
-	

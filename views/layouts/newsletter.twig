@@ -2,7 +2,7 @@
 	a small form with only one field and a button
 #}
 
-<form method="post" action="{this.createUrl('profile/newsletter') }}" method="post">
+<form method="post" action="{{ this.createUrl('profile/newsletter') }}" method="post">
 <div class="input-append">
 	<input class="span6" type="email" name="Newsletter[email]" placeholder="{{ this.t('email address') }}">
 	<button class="btn btn-info">{{ this.t('btn-sign-up') }}</button>

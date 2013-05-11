@@ -1,0 +1,10 @@
+{% extends this.viewPath('message') %}
+
+{% block title %}
+	{{ title }} 
+{% endblock %}
+
+{% block message %}
+  {{ message | raw }}
+{% endblock %}
+	

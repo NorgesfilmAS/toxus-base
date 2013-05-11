@@ -137,6 +137,9 @@ class BaseProfileController extends Controller
 	 */
 	public function actionUpdate()
 	{
+		Yii::import('application.controllers.ArticleController');
+		
+		$article = new ArticleController('Article');		
 		$this->model = Yii::app()->user->profile;
 		$form = $this->loadForm('updateForm');
 		if (isset($_POST['UserProfile'])) {
@@ -154,7 +157,7 @@ class BaseProfileController extends Controller
 					if ($mustConfirm) {
 						$mail = new MailMessage();
 						$mail->render('emailAddressChanged', array('model' => $this->model));						
-						$this->render('emailAddressChanged', array('model', $this->model));
+						$article->actionIndex('email-confirm');
 						return;
 					}	
 				  $this->redirect($this->createUrl('profile/index'));
