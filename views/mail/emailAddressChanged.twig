@@ -1,0 +1,14 @@
+#to: {{ model.email }}  
+#subject: Changed email address confirmation from {{ App.params.company }}
+#body: 
+
+Dear {{ model.username }}
+
+Your email address is changed. Please confirm.
+
+Please click on the link: http://{{ attribute(App.params, 'company-server')}}{{ App.baseUrl }}/profile/confirm/key/{{ model.login_key }}
+
+Best regards
+
+{{ App.params.editor }}
+{{ App.params.company }}

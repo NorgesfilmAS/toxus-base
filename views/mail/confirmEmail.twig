@@ -1,0 +1,14 @@
+#to: {{ model.email }}  
+#subject: New account for {{ App.params.company }}
+#body: 
+
+Dear {{ model.username }}
+
+You are now part of the community.
+
+Please click on the link: http://{{ attribute(App.params, 'company-server')}}{{ App.baseUrl }}/profile/confirm/key/{{ model.login_key }}
+
+Best regards
+
+{{ App.params.editor }}
+{{ App.params.company }}
