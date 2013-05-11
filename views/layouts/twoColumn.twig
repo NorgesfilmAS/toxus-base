@@ -1,0 +1,22 @@
+{% extends this.viewPath('main') %}
+
+{% block content %}
+<div class="container clearfix" id="main-content">
+	<div class="row-fluid reverse-order contact-page">
+{#		
+		<p class="clearfix"> Crisp has permanently altered the concept of platforms. We apply the proverb "The early bird catches the worm" not only to our solutions but our power to streamline. If you synergize robustly, you may have to e-enable virally. We always morph 60/24/7/365 1000/60/60/24/7/365 bloatware. </p>
+		<hr />
+#}
+		<div class="span5">
+			{% include template_from_string('{% autoescape false %}'~model.content_extra~'{% endautoescape %}') with {'model': model} %}
+		</div>
+		<!--close span5 -->
+
+		<div class="span7">
+			{% include template_from_string('{% autoescape false %}'~model.content~'{% endautoescape %}') with {'model': model} %}
+		</div>
+		<!--close span7 --> 
+	</div>
+	<!--close row-fluid--> 
+</div>
+{% endblock %}

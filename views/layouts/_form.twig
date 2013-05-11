@@ -1,13 +1,14 @@
 
 
-<form class="form-horizontal" method="post">
+<form class="form-horizontal" method="post" {% if form.action %}action="{{form.action}}"{% endif %}>
 	<fieldset>
-		<h3 class="short_headline"><span>{{ form.title |raw}}</span></h3>
+		<h5 class="short_headline"><span>{{ form.title |raw}}</span></h5>
+		{% if form.controlWidth %}{% set width=form.controlWidth %}{% else %}{% set width='input-xlarge' %}{% endif %}
 		{% for groupKey, groupElement in form.elements %}			
 		{% if groupElement.hidden != true %}
-		<div class="control-group{% if model.getErrors(groupKey) %} error {% endif %}">
+		<div class="control-group{% if this.model.getErrors(groupKey) %} error {% endif %}">
 			{% if groupElement.type != 'checkbox' %}
-			<label class="control-label" for="id-{{ key }}">{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}</label> 
+			<label class="control-label" for="id-{{ key }}">{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ this.model.attributeLabel(groupKey) }}{% endif %}</label> 
 			{% endif %}
 			
 			<div class="controls">
@@ -23,32 +24,32 @@
 				{% for key, element in fields %}	
 
 				{% if element.type == 'dropdown' %}							
-				<select id="id-{{ key }}" name="{{ form.model }}[{{key}}]" class="input-xlarge">
+				<select id="id-{{ key }}" name="{{ form.model }}[{{key}}]" class="{{ width }}">
 					{% for itemKey, itemCaption in element.items %}
-					<option value="{{ itemKey }}" {% if itemKey == model.__get(key) %}selected="1"{% endif %} >{{ itemCaption }}</option>
+					<option value="{{ itemKey }}" {% if itemKey == this.model.__get(key) %}selected="1"{% endif %} >{{ itemCaption }}</option>
 					{% endfor %}
 				</select>
 				{% elseif element.type == 'radiobuttonlist' %}	
-					{{ html.activeRadioButtonList((model), 'article_type_id', element.items , {'labelOptions': {'style':'display:inline-block;padding-right:8px;margin-top:3px;'}, 'separator' : ' ' }) |raw }} 
+					{{ html.activeRadioButtonList((this.model), 'article_type_id', element.items , {'labelOptions': {'style':'display:inline-block;padding-right:8px;margin-top:3px;'}, 'separator' : ' ' }) |raw }} 
 				{% elseif element.type == 'textarea' %}
-					<textarea id="id-{{ key }}" name="{{ form.model }}[{{key}}]" class="{% if element.class %}{{ element.class }} {%else%}input-xlarge{%endif%}" rows="{% if element.rows %}{{ element.rows }}{% else %}5{% endif %}">{{ model.__get(key) }}</textarea>
+					<textarea id="id-{{ key }}" name="{{ form.model }}[{{key}}]" class="{% if element.class %}{{ element.class }} {%else%}{{ width }}{%endif%}" rows="{% if element.rows %}{{ element.rows }}{% else %}5{% endif %}">{{ this.model.__get(key) }}</textarea>
 				{% elseif element.type == 'checkbox' %}	
 					{# http://stackoverflow.com/questions/1809494/post-the-checkboxes-that-are-unchecked #}
-					<label class="checkbox"><input type="hidden" name="{{ form.model }}[{{key}}]" value="0" /><input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="checkbox" {% if model.__get(key) %}checked="1"{% endif %} value="1"/>{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}</label>
+					<label class="checkbox"><input type="hidden" name="{{ form.model }}[{{key}}]" value="0" /><input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="checkbox" {% if this.model.__get(key) %}checked="1"{% endif %} value="1"/>{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ this.model.attributeLabel(groupKey) }}{% endif %}</label>
 				{% elseif element.type== 'image' %}
-					{{ this.form.image(model, key) | raw }}								
+					{{ this.form.image(this.model, key) | raw }}								
 				{% elseif element.type== 'finder' %}
-					{{ this.form.finder(model, key) | raw }}
+					{{ this.form.finder(this.model, key) | raw }}
 				{% elseif element.type== 'html' %}
-					{{ this.form.htmlEditor(model, key) | raw}}						
+					{{ this.form.htmlEditor(this.model, key) | raw}}						
 				{% elseif element.type=='chosen' %}
-					{{ this.form.chosen(model, key, element) }}							
+					{{ this.form.chosen(this.model, key, element) }}							
 				{% elseif element.type== 'view' %}
-					{{ this.renderPartial(element.view, {'model': model.__get(key)}) |raw }}
+					{{ this.renderPartial(element.view, {'model': this.model.__get(key)}) |raw }}
 				{% elseif element.type== 'password' %}
-					<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="password" class="input-xlarge" value="{{ model.__get(key) }}"/> 
+					<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="password" class="{{ width }}" value="{{ this.model.__get(key) }}"/> 
 				{% else %}	
-					<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="input-xlarge" value="{{ model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ model.attributeLabel(key) }}{% endif %}"{% endif %}"/> 
+					<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }}" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %}/> 
 				{% endif %}
 			  {% endfor %}	
 			</div>	
@@ -60,11 +61,11 @@
 		<div class="form-actions">					
 			{% for key, element in form.buttons %}					
 			{% if element.type == 'submit' %}	
-				<button class="btn {{ element.style }}" type="submit">{% if element.label %}{{element.label}}{%else%}{% if model.isNewRecord %}{{ this.t('btn-create') }} {% else %}{{ this.t('btn-save') }} {% endif %}{% endif %}</button>
+				<button class="btn {{ element.style }}" type="submit">{% if element.label %}{{element.label}}{%else%}{% if this.model.isNewRecord %}{{ this.t('btn-create') }} {% else %}{{ this.t('btn-save') }} {% endif %}{% endif %}</button>
 			{% elseif element.type == 'cancel' %}	
 				<input class="btn {{ element.style }}" type="button" value="{{ this.t('btn-cancel') }}"  onClick="history.go(-1);return true;">							
 			{% elseif element.type == 'delete' %}	
-				<input class="btn {{ element.style }}" type="button" value="{{ this.t('btn-delete') }}"  onClick="if (confirm('{{ (element.ask) | default('Delete this information?') }}')) { window.location='{{ this.createUrl( element.action|default('delete'), {'id' : model.attribute(element.id | default('id'))} ) }}'; };">							
+				<input class="btn {{ element.style }}" type="button" value="{{ this.t('btn-delete') }}"  onClick="if (confirm('{{ (element.ask) | default('Delete this information?') }}')) { window.location='{{ this.createUrl( element.action|default('delete'), {'id' : this.model.attribute(element.id | default('id'))} ) }}'; };">							
 			{% elseif element.type == 'link' %}
 				<br/><br /><a href="{{element.url}}">{{element.label}}</a>
 			{% else %}	

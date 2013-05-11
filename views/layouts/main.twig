@@ -203,11 +203,7 @@ with yours and get your fb:admis content information where the XXXX goes.
 					<section>
 						<h4>{{ this.t('stay updated') }}</h4>
 						<p>{{ this.t('sign up for our newsletter. We won\'t share your email address.') }}</p>
-						<form action="{{ App.createUrl('profile/newsletter') }}" method="post">
-							<div class="input-append">
-								<input type="email" placeholder="{{ this.t('email address') }}" class="span6" name="Newsletter[email]" />
-								<button class="btn btn-primary">{{ this.t('sign up') }}</button>
-							</div>
+						{% include this.viewPath('newsletter') %}
 							<!--close input-append-->
 						</form>
 					</section>
