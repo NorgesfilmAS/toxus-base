@@ -3,6 +3,7 @@
 return array(
 	'title' => $this->te('create a new profile'),	
 	'model' => 'LoginForm',	
+	'action' => 'profile/new',	
 	'elements' => array(	
 		'email' => array(
 			'type' => 'email'	
@@ -28,8 +29,8 @@ return array(
 		),
 		'login' => array(
 			'type' => 'link',
-			'url'	 => $this->createUrl('profile/index'),
-			'label' => $this->te('Sign in with an existing profile'),	
+			'url'	 => $this->createUrl('/login'),
+			'label' => $this->te('sign in with an existing profile.'),	
 		),
 			
 	),		

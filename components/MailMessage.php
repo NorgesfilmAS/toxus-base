@@ -1,8 +1,12 @@
 <?php
 
-class MailMessage extends CBaseController
+class MailMessage extends Controller
 {
 	
+	public function __construct()
+	{
+		parent::__construct(__CLASS__);
+	}
 	/**
 	 * 
 	 * @param render a MailMessage $viewFile
@@ -38,6 +42,10 @@ class MailMessage extends CBaseController
 		$filename = Yii::getPathOfAlias('application.views.mail.'.$viewName).$extension;
 		if (is_file($filename))
 			return $filename;
+		$filename = Yii::getPathOfAlias('application.'.$this->vendorViewRoot.'.mail.'.$viewName).$extension;
+		if (is_file($filename))
+			return $filename;
+
 		throw new CException('The message '.$filename.' does not exists');
 	}
 	

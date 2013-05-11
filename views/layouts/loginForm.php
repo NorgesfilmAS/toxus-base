@@ -1,8 +1,9 @@
 <?php
 
 return array(
-	'title' => 'login to your account',	
-	'model' => 'LoginForm',	
+	'title' => $this->te('login to your account'),	
+	'model' => 'LoginForm',
+	'action' => 'profile/login',	
 	'elements' => array(	
 		'username' => array(
 			'type' => 'text',			
@@ -18,11 +19,11 @@ return array(
 		'submit' => array(
 			'type' => 'submit',			
 			'style' => 'btn-primary',	
-			'label' => 'Login'	
+			'label' => $this->te('btn-login'),	
 		),
 		'forgot_password' => array(
 			'type' => 'link',
-			'url'	 => $this->createUrl('profile/password'),
+			'url'	 => $this->createUrl('forgot-password'),
 			'label' => $this->t('forgot password', 1),	
 		),
 			

@@ -69,8 +69,11 @@ class BaseProfileController extends Controller
 	 */
 	public function actionNew()
 	{
+		Yii::import('application.controllers.ArticleController');
+		
 		$this->model = new LoginForm('new');
-		$form = $this->loadForm('newRegistration');
+//		$form = $this->loadForm('newRegistration');
+		$article = new ArticleController('Article');		
 		if (isset($_POST['LoginForm'])) {
 			$this->model->attributes = $_POST['LoginForm'];
 			if ($this->model->validate()) {
@@ -86,13 +89,19 @@ class BaseProfileController extends Controller
 					if ($model->save()) {
 						$mail = new MailMessage();
 						$mail->render('confirmEmail', array('model' => $model));
-						$this->render('confirmationSend', array('model' => $this->model, 'profile' => $model));
+						$article->actionIndex('registration-started');
+						//$this->render('confirmationSend', array('model' => $this->model, 'profile' => $model));
 						return;
 					}	
 				}	
 			}
 		}
-		$this->render('newRegistration', array('model' => $this->model, 'form'=> $form));
+		// ----
+		// this should render: article/registration: which is article/index?id=[n]
+		// so how to move the $model to that controller?
+		//
+		//$this->render('newRegistration', array('model' => $this->model, 'form'=> $form));
+		$article->actionIndex('register');
 	}
 	
 	/**
