@@ -14,27 +14,27 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 {{ this.registerCore('jquery') }}
 
-{{ this.registerCss('bootstrap.min.css') }}
-{{ this.registerCss('font-awesome.min.css') }}
-{{ this.registerCss('responsive-tables.css') }}
-{{ this.registerCss('style.css') }}
-{{ this.registerCss('header-1.css') }}
-{{ this.registerCss('lemmon-slider.css') }}
-{{ this.registerCss('toxus.css') }}
+{{ this.registerCssFile('bootstrap.min.css') }}
+{{ this.registerCssFile('font-awesome.min.css') }}
+{{ this.registerCssFile('responsive-tables.css') }}
+{{ this.registerCssFile('style.css') }}
+{{ this.registerCssFile('header-1.css') }}
+{{ this.registerCssFile('lemmon-slider.css') }}
+{{ this.registerCssFile('toxus.css') }}
 <!--[if IE 7]>
 <link rel="stylesheet" href="{{ App.baseUrl }}/css/font-awesome-ie7.min.css">
 <![endif]-->
 <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Ubuntu:400,700,700italic,400italic' />
 <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Raleway:300,500,600,700' />
 {% for css  in this.styleArray('css') %}
-  {{ this.registerCss(css) }}
+  {{ this.registerCssFile(css) }}
 {% endfor %}
-{{ this.registerScript('modernizr.custom.87724.js', false) }} 
-{{ this.registerScript('bootstrap.min.js') }}
+{{ this.registerScriptFile('modernizr.custom.87724.js', false) }} 
+{{ this.registerScriptFile('bootstrap.min.js') }}
 {# this.registerScript('ddsmoothmenu-min.js') #}
 {# this.registerScript('jquery.dcjqaccordion.2.7.min.js') #}
 {# this.registerScript('scripts.js') #}
-{{ this.registerScript('respond.min.js') }}
+{{ this.registerScriptFile('respond.min.js') }}
 <!-- JS JQuery in the head you can use ajax if you want ================ -->
 
 <script src="http://www.youtube.com/apiplayer?enablejsapi=1&version=3"></script>
@@ -44,7 +44,7 @@
 	{%block content%}The content {%endblock %}
 	
 {% for script in this.styleArray('scripts')  %}
-	{{ this.registerScript(script, true) }}
+	{{ this.registerScriptFile(script, true) }}
 {% endfor %}
 </body>
 </html>

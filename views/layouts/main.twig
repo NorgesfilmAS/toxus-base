@@ -16,49 +16,49 @@
 	<!-- begin of cssimport -->
 <!-- CSS ================ -->
 {# <link rel="stylesheet" href="{{ App.baseUrl }}/css/bootstrap.min.css" type="text/css"/> #}
-{{ this.registerCss('bootstrap.css') }}
-{{ this.registerCss('bootstrap-responsive.css') }}
+{{ this.registerCssFile('bootstrap.css') }}
+{{ this.registerCssFile('bootstrap-responsive.css') }}
 {#<link rel="stylesheet" href="{{ App.baseUrl }}/css/font-awesome.min.css"> #}
-{{ this.registerCss('font-awesome.min.css') }}
+{{ this.registerCssFile('font-awesome.min.css') }}
 {# <link rel="stylesheet" href='{{ App.baseUrl }}/css.socialicoregular.css' />  #}
 {# <link rel="stylesheet" href='{{ App.baseUrl }}/css/font-awesome.css' /> #}
 {# <link rel="stylesheet" href='{{ App.baseUrl }}/css/hero-equal-thumb-gallery.css' /> #}
 {# <link rel="stylesheet" href='{{ App.baseUrl }}/css/tabs-toggle.css' /> #}
 {# <link rel="stylesheet" href='{{ App.baseUrl }}/css/responsive-tables.css' /> #}
-{{ this.registerCss('responsive-tables.css') }}
+{{ this.registerCssFile('responsive-tables.css') }}
 {# <link rel="stylesheet" href='{{ App.baseUrl }}/css/portfolio.css' /> #}
 {# <link rel="stylesheet" href='{{ App.baseUrl }}/css/blog.css' /> #}
 {# <link rel="stylesheet" href='{{ App.baseUrl }}/css/gallery-folio-masonry.css' /> #}
 {# <link rel="stylesheet" href='{{ App.baseUrl }}/js/fancybox/source/jquery.fancybox.css' /> #}
 {# <link rel="stylesheet" href="{{ App.baseUrl }}//css/style.css" type="text/css"/> #}
-{{ this.registerCss('style.css') }}
+{{ this.registerCssFile('style.css') }}
 {# <link rel="stylesheet" href="{{ App.baseUrl }}/css/header-1.css" type="text/css"/> #}
-{{ this.registerCss('header-1.css') }}
+{{ this.registerCssFile('header-1.css') }}
 {# <link rel="stylesheet" href="{{ App.baseUrl }}/css/lemmon-slider.css" type="text/css" media="screen" /> #}
-{{ this.registerCss('lemmon-slider.css') }}
+{{ this.registerCssFile('lemmon-slider.css') }}
 {# <link rel="stylesheet" href="{{ App.baseUrl }}/css/toxus.css" type="text/css"/> #}
-{{ this.registerCss('toxus.css') }}
+{{ this.registerCssFile('toxus.css') }}
 <!--[if IE 7]>
 <link rel="stylesheet" href="{{ App.baseUrl }}/css/font-awesome-ie7.min.css">
 <![endif]-->
 <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Ubuntu:400,700,700italic,400italic' />
 <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Raleway:300,500,600,700' />
 {% for css  in this.styleArray('css') %}
-  {{ this.registerCss(css) }}
+  {{ this.registerCssFile(css) }}
 {% endfor %}
 
 {# MUST BE IN HEADER BECAUSE OF IE7 #}
-{{ this.registerScript('modernizr.custom.87724.js', false) }} 
+{{ this.registerScriptFile('modernizr.custom.87724.js', false) }} 
 <!-- Add to Head after Style sheet http://modernizr.com/docs/#installing  ================ -->
 {# <script src="{{ App.baseUrl }}/js/modernizr.custom.87724.js"></script><!-- js multiple backgrounds svg background size --> #}
 
 <!-- JS JQuery ================ --> 
 {#<script src="{{ App.baseUrl }}/js/bootstrap.min.js"></script><!--transitions, tooltips, popover, buttons, modals, alert messages-->  #}
-{{ this.registerScript('bootstrap.min.js') }}
+{{ this.registerScriptFile('bootstrap.min.js') }}
 {# <script src="{{ App.baseUrl }}/js/ddsmoothmenu-min.js"></script><!-- desktop edge detect menu -->  #}
-{{ this.registerScript('ddsmoothmenu-min.js') }}
+{{ this.registerScriptFile('ddsmoothmenu-min.js') }}
 {# <script src="{{ App.baseUrl }}/js/jquery.dcjqaccordion.2.7.min.js"></script><!-- mobile multi-level accordion menu -->  #}
-{{ this.registerScript('jquery.dcjqaccordion.2.7.min.js') }}
+{{ this.registerScriptFile('jquery.dcjqaccordion.2.7.min.js') }}
 {# <script src="{{ App.baseUrl }}/js/jquery.easytabs.min.js"></script><!-- tabs/testimonials -->  #}
 {# <script src="{{ App.baseUrl }}/js/slide-to-top-accordion-min.js"></script><!-- slide to top accordion toggle -->  #}
 
@@ -80,9 +80,9 @@
 
 <!--initialize scripts / custom scripts all pages--> 
 {# <script src="{{ App.baseUrl }}/js/scripts.js"></script> #}
-{{ this.registerScript('scripts.js') }}
+{{ this.registerScriptFile('scripts.js') }}
 {# <script type="text/javascript" src="{{ App.baseUrl }}/js/respond.min.js"></script> #}
-{{ this.registerScript('respond.min.js') }}
+{{ this.registerScriptFile('respond.min.js') }}
 
 <!-- Icons ================ -->
 <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
@@ -271,7 +271,7 @@ with yours and get your fb:admis content information where the XXXX goes.
 </div>
 {# the page scripts #}
 {% for script in this.styleArray('scripts')  %}
-	{{ this.registerScript(script, true) }}
+	{{ this.registerScriptFile(script, true) }}
 {% endfor %}
 
 </body>
