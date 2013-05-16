@@ -8,17 +8,19 @@
 			'id' :  'profile-grid',
 			'updateLink' : 'profile/admin',
 			'dataProvider' : model.search(),			
-
+			
 			'columns' : {
 					0 : {
-						'name' : 'created',
+						'name' : 'creation_date',
 						'value' : 'Yii::app()->dateFormatter->format("d MMM y", strtotime($data->creation_date))',
+						'filter' : '',
+
 					},
 					1 : 'username',	
 					2 : 'email',
 					3 : 'password',
           4 : {
-						'name' : 'State',
+						'name' : 'is_confirmed',
 						'type' : 'raw',	
 						'value' : '$data->is_suspended ? "<span class=\'badge badge-important\'>Suspended</span>" : ($data->is_confirmed == 0 ? "<span class=\'badge badge-warning\'>Not confirmed</span>" : "<span class=\'badge badge-success\'>Active</span>")',
 					},
