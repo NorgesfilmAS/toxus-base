@@ -17,8 +17,6 @@ return array(
 			// 'connectionString' => 'mysql:host=www.chord-tricks.com;dbname=chordtrick_site',		
 			'connectionString' => 'mysql:host=127.0.0.1;dbname=chordtrick_site',				
 			'username' => 'chordtrick_site',	
-				
-			'username' => 'percussive_db',	
 			'emulatePrepare' => true,
 			'password' => '!z11doen',
 			'charset' => 'utf8',
