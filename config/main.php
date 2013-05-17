@@ -27,7 +27,7 @@ return array(
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			'ipFilters'=>array('127.0.0.1','::1'),
 			'generatorPaths' => array(
-				'toxus.extension.giix-core', // giix generators
+				'toxus.extensions.giix-core', // giix generators
 			),								
 		),		
 	),
