@@ -8,7 +8,7 @@
 
 YiiBase::setPathOfAlias('toxus', dirname(dirname(__FILE__)).'/vendors/toxus');
 return array(
-	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
+	'basePath' => dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Toxus Application',
 	'language' => 'en',		
 
@@ -109,6 +109,10 @@ return array(
 			'filters' => array(
 					'jencode' => 'CJSON::encode',
 			),
+		),
+			
+		'style' => array(
+			'class' => 'TxStyle'		
 		),
 			
 		'config' => array(
