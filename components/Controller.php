@@ -411,23 +411,28 @@ class Controller extends CController
 	
 	public function getPageStyles()
 	{
+		/*
 		if ($this->_pageStyles === null) {
 			$this->_pageStyles = new ArticleStyles($this);
 		}			
 		return $this->_pageStyles;
+		 * 
+		 */
 	}
 	public function setPageStyle($style)
 	{
-		$this->pageStyles->pageStyle = $style;
+		Yii::app()->style->current = $style;
+		//$this->pageStyles->pageStyle = $style;
 	}
 	public function getPageStyle()
 	{
-		return $this->pageStyle->pageStyle;
+		return Yii::app()->style;
+		// return $this->pageStyle->pageStyle;
 	}
 	
 	public function style($element, $text = '')
 	{
-		return $this->pageStyle->elements[$element];
+		//return $this->pageStyle->elements[$element];
 	}
 	
 	/*
