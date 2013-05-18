@@ -16,28 +16,28 @@
 	<!-- begin of cssimport -->
 <!-- CSS ================ -->
 {# <link rel="stylesheet" href="{{ App.baseUrl }}/css/bootstrap.min.css" type="text/css"/> #}
-{{ this.registerCssFile('bootstrap.css') }}
-{{ this.registerCssFile('bootstrap-responsive.css') }}
+{{ this.registerCoreCssFile('bootstrap.css') }}
+{{ this.registerCoreCssFile('bootstrap-responsive.css') }}
 {#<link rel="stylesheet" href="{{ App.baseUrl }}/css/font-awesome.min.css"> #}
-{{ this.registerCssFile('font-awesome.min.css') }}
+{{ this.registerCoreCssFile('font-awesome.min.css') }}
 {# <link rel="stylesheet" href='{{ App.baseUrl }}/css.socialicoregular.css' />  #}
 {# <link rel="stylesheet" href='{{ App.baseUrl }}/css/font-awesome.css' /> #}
 {# <link rel="stylesheet" href='{{ App.baseUrl }}/css/hero-equal-thumb-gallery.css' /> #}
 {# <link rel="stylesheet" href='{{ App.baseUrl }}/css/tabs-toggle.css' /> #}
 {# <link rel="stylesheet" href='{{ App.baseUrl }}/css/responsive-tables.css' /> #}
-{{ this.registerCssFile('responsive-tables.css') }}
+{{ this.registerCoreCssFile('responsive-tables.css') }}
 {# <link rel="stylesheet" href='{{ App.baseUrl }}/css/portfolio.css' /> #}
 {# <link rel="stylesheet" href='{{ App.baseUrl }}/css/blog.css' /> #}
 {# <link rel="stylesheet" href='{{ App.baseUrl }}/css/gallery-folio-masonry.css' /> #}
 {# <link rel="stylesheet" href='{{ App.baseUrl }}/js/fancybox/source/jquery.fancybox.css' /> #}
 {# <link rel="stylesheet" href="{{ App.baseUrl }}//css/style.css" type="text/css"/> #}
-{{ this.registerCssFile('style.css') }}
+{{ this.registerCoreCssFile('style.css') }}
 {# <link rel="stylesheet" href="{{ App.baseUrl }}/css/header-1.css" type="text/css"/> #}
-{{ this.registerCssFile('header-1.css') }}
+{{ this.registerCoreCssFile('header-1.css') }}
 {# <link rel="stylesheet" href="{{ App.baseUrl }}/css/lemmon-slider.css" type="text/css" media="screen" /> #}
-{{ this.registerCssFile('lemmon-slider.css') }}
+{# {{ this.registerCoreCssFile('lemmon-slider.css') }} #}
 {# <link rel="stylesheet" href="{{ App.baseUrl }}/css/toxus.css" type="text/css"/> #}
-{{ this.registerCssFile('toxus.css') }}
+{{ this.registerCoreCssFile('toxus.css') }}
 <!--[if IE 7]>
 <link rel="stylesheet" href="{{ App.baseUrl }}/css/font-awesome-ie7.min.css">
 <![endif]-->
@@ -48,17 +48,17 @@
 {% endfor %}
 
 {# MUST BE IN HEADER BECAUSE OF IE7 #}
-{{ this.registerScriptFile('modernizr.custom.87724.js', false) }} 
+{{ this.registerCoreScriptFile('modernizr.custom.87724.js', false) }} 
 <!-- Add to Head after Style sheet http://modernizr.com/docs/#installing  ================ -->
 {# <script src="{{ App.baseUrl }}/js/modernizr.custom.87724.js"></script><!-- js multiple backgrounds svg background size --> #}
 
 <!-- JS JQuery ================ --> 
 {#<script src="{{ App.baseUrl }}/js/bootstrap.min.js"></script><!--transitions, tooltips, popover, buttons, modals, alert messages-->  #}
-{{ this.registerScriptFile('bootstrap.min.js') }}
+{{ this.registerCoreScriptFile('bootstrap.min.js') }}
 {# <script src="{{ App.baseUrl }}/js/ddsmoothmenu-min.js"></script><!-- desktop edge detect menu -->  #}
-{{ this.registerScriptFile('ddsmoothmenu-min.js') }}
+{{ this.registerCoreScriptFile('ddsmoothmenu-min.js') }}
 {# <script src="{{ App.baseUrl }}/js/jquery.dcjqaccordion.2.7.min.js"></script><!-- mobile multi-level accordion menu -->  #}
-{{ this.registerScriptFile('jquery.dcjqaccordion.2.7.min.js') }}
+{# {{ this.registerCoreScriptFile('jquery.dcjqaccordion.2.7.min.js') }} #}
 {# <script src="{{ App.baseUrl }}/js/jquery.easytabs.min.js"></script><!-- tabs/testimonials -->  #}
 {# <script src="{{ App.baseUrl }}/js/slide-to-top-accordion-min.js"></script><!-- slide to top accordion toggle -->  #}
 
@@ -80,9 +80,9 @@
 
 <!--initialize scripts / custom scripts all pages--> 
 {# <script src="{{ App.baseUrl }}/js/scripts.js"></script> #}
-{{ this.registerScriptFile('scripts.js') }}
+{{ this.registerCoreScriptFile('scripts.js') }}
 {# <script type="text/javascript" src="{{ App.baseUrl }}/js/respond.min.js"></script> #}
-{{ this.registerScriptFile('respond.min.js') }}
+{{ this.registerCoreScriptFile('respond.min.js') }}
 
 <!-- Icons ================ -->
 <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->

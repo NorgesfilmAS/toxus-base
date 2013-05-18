@@ -22,7 +22,10 @@ class Controller extends CController
 	public $logPageSpeed = true;    // if true the page generation speed is stored 
 	
 	private $_formElements;
+	protected $_assetBaseUrl;
 	
+	
+
 	public function getForm()
 	{
 		if ($this->_formElements == null) {
@@ -246,7 +249,27 @@ class Controller extends CController
 	{
 		Yii::app()->clientScript->registerCoreScript($part);
 	}
+
+	public function getAssetsBase()
+	{				
+		if ($this->_assetBaseUrl === null) {
+			$this->_assetBaseUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('toxus.assets'));
+		}
+		return $this->_assetBaseUrl;
+	}	
 	
+	public function registerCoreScriptFile($filename, $atEnd = true)
+	{
+		Yii::app()->getClientScript()->registerScriptFile($this->assetsBase.'/js/'.$filename, $atEnd ? CClientScript::POS_END : CClientScript::POS_HEAD);		
+	}
+	public function registerCoreCssFile($filename, $media = 'screen')
+	{
+		if (substr($filename, 0, 7) == 'http://') {
+			Yii::app()->getClientScript()->registerCssFile($filename, $media);
+		} else {
+			Yii::app()->getClientScript()->registerCssFile($this->assetsBase.'/css/'.$filename, $media);		
+		}	
+	}
 	
 	public function addHeader($header='X-UA-Compatible: IE=edge,chrome=1')
 	{				
