@@ -6,9 +6,15 @@
 class BaseTemplate extends CComponent
 {
 
+	protected $_templateNames = array('base' => 'General');
+	
+	public function getTemplateNames()
+	{
+		return $this->_templateNames;
+	}
+	
 	public function init()
 	{
-		$b = 1;
 	}
 	
 	public function setCurrent($stylename)

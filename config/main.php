@@ -85,7 +85,7 @@ return array(
 			),
 		),
 		'template' => array(
-			'class' => 'ChordTrickBaseTemplate',	
+			'class' => 'BaseTemplate',	
 		),	
 		'pageLog' => array(
 			'class' => 'PageLog',	
