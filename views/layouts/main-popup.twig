@@ -26,7 +26,7 @@
 <![endif]-->
 <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Ubuntu:400,700,700italic,400italic' />
 <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Raleway:300,500,600,700' />
-{% for css  in this.styleArray('css') %}
+{% for css  in App.template.css %}
   {{ this.registerCssFile(css) }}
 {% endfor %}
 {{ this.registerScriptFile('modernizr.custom.87724.js', false) }} 
@@ -43,7 +43,7 @@
 <body class="index">
 	{%block content%}The content {%endblock %}
 	
-{% for script in this.styleArray('scripts')  %}
+{% for script in App.template.scripts  %}
 	{{ this.registerScriptFile(script, true) }}
 {% endfor %}
 </body>
