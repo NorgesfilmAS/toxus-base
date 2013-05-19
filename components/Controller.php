@@ -243,7 +243,7 @@ class Controller extends CController
 				),
 			),	
 			'new' => array(
-				'basePath' => '',
+				'basePath' => 'alias',
 				'css' => array(),
 				'js' => array(
 					CClientScript::POS_BEGIN => array(),
