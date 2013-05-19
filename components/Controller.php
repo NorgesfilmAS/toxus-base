@@ -10,7 +10,7 @@ class Controller extends CController
 {
 	public $vendorViewRoot = 'vendors.toxus.views';
 	public $layout='//layouts/column1';
-	public $breadcrumbs=array();
+	//public $breadcrumbs=array();
 	public $brand = 'Percussive Guitar';
 	public $model = null;
 	protected $_logPageView = true;
@@ -23,8 +23,10 @@ class Controller extends CController
 	
 	private $_formElements;
 	protected $_assetBaseUrl;
-	
-	
+
+	protected $_packages = array()	; // css and js to load
+
+
 
 	public function getForm()
 	{
@@ -220,13 +222,79 @@ class Controller extends CController
 	
 	/**
 	 * interfaces between the twig and yii 
-	 *
-	 */
-	
-	public function x()
+	 *bootstrap.css
+	 */	
+	public function findPackage($name)
 	{
-		return 'im x';
+		$packages = array(
+			'bootstrap' => array(
+				'basePath' => 'toxus.assets',
+				'css' => array('css/bootstrap.css', 'css/bootstrap-responsive.css','css/font-awesome.min.css','css/responsive-tables.css'),
+				'js' => array(
+					CClientScript::POS_HEAD => array('js/modernizr.custom.87724.js'),											
+					CClientScript::POS_END => array('js/bootstrap.min.js'),
+				),
+			),	
+			'crisp' => array(
+				'basePath' => 'toxus.assets',
+				'css' => array('css/style.css', 'css/header-1.css', 'css/toxus.css'),
+				'js' => array(
+					CClientScript::POS_END => array('js/ddsmoothmenu-min.js','js/scripts.js', 'js/respond.min.js'),
+				),
+			),	
+			'new' => array(
+				'basePath' => '',
+				'css' => array(),
+				'js' => array(
+					CClientScript::POS_BEGIN => array(),
+					CClientScript::POS_HEAD => array(),
+					CClientScript::POS_END => array(),
+					CClientScript::POS_LOAD => array(),
+					CClientScript::POS_READY => array(),	
+				),
+			),
+		);
+		if (isset($packages[$name]))
+			return $packages[$name];
+		return null;
 	}
+	
+	/**
+	 * register a package and returns the url to the assets dir
+	 * 
+	 * @param string $name
+	 */
+	public function registerPackage($name)
+	{
+		if (!isset($this->_packages[$name])) {// test if it already registered
+			$package = $this->findPackage($name);
+			if (isset($package)) {
+				$assetUrl = Yii::app()->assetManager->publish(YiiBase::getPathOfAlias($package['basePath']));
+				foreach ($package['css'] as $css) {
+					Yii::app()->clientScript->registerCSSFile( $assetUrl.'/'.$css);					
+				}
+				foreach ($package['js'] as $position => $scripts) {
+					foreach ($scripts as $script) {
+						Yii::app()->clientScript->registerScriptFile( $assetUrl.'/'.$script, $position);
+					}
+				}
+				$this->_packages[$name] = $assetUrl;	// has been registered
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param string $name the name of the package
+	 * @return string ore null if not found
+	 */
+	public function getPackageBaseUrl($name)
+	{
+		if (isset($this->_packages[$name]))
+			return $this->_packages[$name];
+		return null;
+	}
+	
 	public function registerCssFile($filename, $media = 'screen')
 	{
 		if (substr($filename, 0, 7) == 'http://') {
