@@ -6,7 +6,7 @@
  * if logPage = false no logging is done for the request, otherwise info is written
  * 
  */
-class Controller extends CController
+class BaseController extends CController
 {
 	public $vendorViewRoot = 'vendors.toxus.views';
 	public $layout='//layouts/column1';
