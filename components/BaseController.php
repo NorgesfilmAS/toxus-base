@@ -239,7 +239,7 @@ class BaseController extends CController
 				'basePath' => 'toxus.assets',
 				'css' => array('css/style.css', 'css/header-1.css', 'css/toxus.css'),
 				'js' => array(
-					CClientScript::POS_END => array('js/ddsmoothmenu-min.js','js/scripts.js', 'js/respond.min.js'),
+					CClientScript::POS_END => array('js/jquery.dcjqaccordion.2.7.min', 'js/ddsmoothmenu-min.js','js/scripts.js', 'js/respond.min.js'),
 				),
 			),	
 			'new' => array(

@@ -13,14 +13,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 {{ this.registerCore('jquery') }}
+{{ this.registerPackage('bootstrap') }}
+{{ this.registerPackage('crisp') }}
 
-{{ this.registerCssFile('bootstrap.min.css') }}
-{{ this.registerCssFile('font-awesome.min.css') }}
-{{ this.registerCssFile('responsive-tables.css') }}
-{{ this.registerCssFile('style.css') }}
-{{ this.registerCssFile('header-1.css') }}
-{{ this.registerCssFile('lemmon-slider.css') }}
-{{ this.registerCssFile('toxus.css') }}
 <!--[if IE 7]>
 <link rel="stylesheet" href="{{ App.baseUrl }}/css/font-awesome-ie7.min.css">
 <![endif]-->
@@ -29,15 +24,8 @@
 {% for css  in App.template.css %}
   {{ this.registerCssFile(css) }}
 {% endfor %}
-{{ this.registerScriptFile('modernizr.custom.87724.js', false) }} 
-{{ this.registerScriptFile('bootstrap.min.js') }}
-{# this.registerScript('ddsmoothmenu-min.js') #}
-{# this.registerScript('jquery.dcjqaccordion.2.7.min.js') #}
-{# this.registerScript('scripts.js') #}
-{{ this.registerScriptFile('respond.min.js') }}
-<!-- JS JQuery in the head you can use ajax if you want ================ -->
 
-<script src="http://www.youtube.com/apiplayer?enablejsapi=1&version=3"></script>
+{# <script src="http://www.youtube.com/apiplayer?enablejsapi=1&version=3"></script> #}
 
 </head>
 <body class="index">
