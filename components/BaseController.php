@@ -229,17 +229,34 @@ class BaseController extends CController
 		$packages = array(
 			'bootstrap' => array(
 				'basePath' => 'toxus.assets',
-				'css' => array('css/bootstrap.css', 'css/bootstrap-responsive.css','css/font-awesome.min.css','css/responsive-tables.css'),
+				'css' => array(
+						'css/bootstrap.css', 
+						'css/bootstrap-responsive.css',
+						'css/font-awesome.min.css',
+						'css/responsive-tables.css'),
 				'js' => array(
-					CClientScript::POS_HEAD => array('js/modernizr.custom.87724.js'),											
-					CClientScript::POS_END => array('js/bootstrap.min.js'),
+					CClientScript::POS_HEAD => array(
+										'js/modernizr.custom.87724.js'
+					),											
+					CClientScript::POS_END => array(
+										'js/bootstrap.min.js'
+					),
 				),
 			),	
 			'crisp' => array(
 				'basePath' => 'toxus.assets',
-				'css' => array('css/style.css', 'css/header-1.css', 'css/toxus.css'),
+				'css' => array(
+						'css/style.css', 
+						'css/header-1.css', 
+						'css/toxus.css'
+				),
 				'js' => array(
-					CClientScript::POS_END => array('js/jquery.dcjqaccordion.2.7.min', 'js/ddsmoothmenu-min.js','js/scripts.js', 'js/respond.min.js'),
+					CClientScript::POS_END => array(
+								'js/jquery.dcjqaccordion.2.7.min.js', 
+								'js/ddsmoothmenu-min.js',
+								'js/scripts.js', 
+								'js/respond.min.js'
+					),
 				),
 			),	
 			'new' => array(
