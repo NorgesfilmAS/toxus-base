@@ -19,7 +19,7 @@ class BaseTemplate extends CComponent
 	
 	public function setCurrent($stylename)
 	{
-		if ($stylename != __CLASS__) {
+		if ($stylename !== null && $stylename != __CLASS__) {
 			Yii::import('application.templates.*');
 			$name = ucfirst($stylename.'Template');
 			Yii::app()->setComponent('template', array('class' => $name));
