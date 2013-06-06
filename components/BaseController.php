@@ -253,11 +253,21 @@ class BaseController extends CController
 				'js' => array(
 					CClientScript::POS_END => array(
 								'js/jquery.dcjqaccordion.2.7.min.js', 
-								'js/ddsmoothmenu-min.js',
+						//		'js/ddsmoothmenu-min.js',
 								'js/scripts.js', 
 								'js/respond.min.js'
 					),
 				),
+			),
+				
+			'smooth' => array(
+				'basePath' => 'toxus.assets',				
+				'js' => array(
+					CClientScript::POS_END => array(
+								'js/ddsmoothmenu-min.js',
+								'js/ddsmooth-init.js',
+					),
+				),					
 			),	
 			'new' => array(
 				'basePath' => 'alias',
