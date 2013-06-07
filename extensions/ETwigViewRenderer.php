@@ -259,7 +259,7 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
  */
 class ETwigViewRendererStaticClassProxy
 {
-    private $_staticClassName;
+    public $_staticClassName;
 
     public function __construct($staticClassName) {
         $this->_staticClassName = $staticClassName;
@@ -269,11 +269,12 @@ class ETwigViewRendererStaticClassProxy
     {
       //tx return ${$this->_staticClassName}::$property;
 			$className = $this->_staticClassName; 
-			return null; //$className::$property;
+			return $this->_staticClassName;  //null; //$className::$property;
     }
 
     public function __set($property, $value)
     {
+			$this->$property = $value;
 			//tx   return (${$this->_staticClassName}::$property = $value);
 			//return (${$this->_staticClassName}::$property = $value);
 			return null;

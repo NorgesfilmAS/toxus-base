@@ -1,0 +1,19 @@
+{% extends this.viewPath('main') %}
+
+{% block content %}
+	<div class="hero-unit">
+		<div class="container">
+			<h1>{% block title %}{% endblock %}</h1>
+		</div>
+		<!--close container--> 
+	</div>
+	<!--close hero-unit-->
+	
+	<div id="main-content" class="container clearfix" >
+		<div class="row-fluid">
+			<div class="span6">{% block leftblock}{%endblock%}</div>
+			<div class="span6">{% block rightblock}{%endblock%}</div>
+		</div>
+	</div>
+
+{%endblock %}
