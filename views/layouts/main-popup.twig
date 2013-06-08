@@ -29,8 +29,9 @@
 
 </head>
 <body class="index">
+	<div id="page">
 	{%block content%}The content {%endblock %}
-	
+	</div>
 {% for script in App.template.scripts  %}
 	{{ this.registerScriptFile(script, true) }}
 {% endfor %}
