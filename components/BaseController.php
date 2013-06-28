@@ -800,6 +800,9 @@ class BaseController extends CController
 		}		
 	}
 
+	/**
+	 * Overloaded Yii version	 
+	 */
 	public function resolveViewFile($viewName,$viewPath,$basePath,$moduleViewPath=null)
 	{
 	  $path = YiiBase::getPathOfAlias('webroot.protected.'.$this->vendorViewRoot.'.'.$this->getId());
@@ -809,10 +812,10 @@ class BaseController extends CController
 			if ($s === false) {
 				$s = parent::resolveViewFile('//'.$viewName, $viewPath, $basePath, $path);
 				if ($s == false) {
-					$path = YiiBase::getPathOfAlias('webroot.protected.'.$this->vendorViewRoot.'.layouts');					
+					$path = YiiBase::getPathOfAlias('webroot.protected.'.$this->vendorViewRoot.'.layouts');				
 					$s = parent::resolveViewFile('/'.$viewName, $viewPath, $basePath, $path);					
 					if ($s == false) {
-						$path = YiiBase::getPathOfAlias('webroot.protected.'.$this->vendorViewRoot.'.layouts');					
+						$path = YiiBase::getPathOfAlias('webroot.protected.'.$this->vendorViewRoot.'.layouts');			// has double //		
 						$s = parent::resolveViewFile('//'.$viewName, $viewPath, $basePath, $path);											
 					}
 				} 
