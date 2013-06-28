@@ -7,7 +7,7 @@
 		{% for groupKey, groupElement in form.elements %}			
 		{% if groupElement.hidden != true %}
 		<div class="control-group{% if this.model.getErrors(groupKey) %} error {% endif %}">
-			{% if groupElement.type != 'checkbox' %}
+			{% if groupElement.type != 'checkbox' and groupElement.type != 'hidden' %}
 			<label class="control-label" for="id-{{ key }}">{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ this.model.attributeLabel(groupKey) }}{% endif %}</label> 
 			{% endif %}
 			
@@ -43,7 +43,9 @@
 				{% elseif element.type== 'html' %}
 					{{ this.form.htmlEditor(this.model, key) | raw}}						
 				{% elseif element.type=='chosen' %}
-					{{ this.form.chosen(this.model, key, element) }}							
+					{{ this.form.chosen(this.model, key, element) }}	
+				{% elseif element.type=='hidden' %}
+					<input type="hidden" id="id-{{ key }}" name="{{ form.model }}[{{key}}]" value="{{ this.model.__get(key) }}" />	
 				{% elseif element.type== 'view' %}
 					{{ this.renderPartial(element.view, {'model': this.model.__get(key)}) |raw }}
 				{% elseif element.type== 'password' %}

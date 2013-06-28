@@ -735,7 +735,7 @@ class BaseController extends CController
 	 * @param string $formName
 	 * @return array
 	 */
-	public function loadForm($formName)
+	public function loadForm($formName = 'formFields')
 	{
 		$filename = $this->viewPath($formName, array('extension' => '.php') );
 		if ($filename) {
