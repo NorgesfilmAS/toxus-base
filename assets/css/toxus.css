@@ -182,3 +182,17 @@ http://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
 	width: 100%;
 	height: 100%;
 }
+
+/******  contemporary 3 columns layout with colums on the LEFT side ******/
+.left-three-cols {
+	background-image: url(../images/rule.png), url(../images/rule.png);
+	background-position: 24% 0, 50.5% 0;
+	background-repeat: repeat-y;
+}
+.left-three-cols .secondary-column .widget {padding:0 20px;}
+.left-three-cols .tertiary-column .widget {padding-left:20px;}
+
+.sub-active {
+  background-color: #BFCFFF !important;
+}
+

@@ -1,7 +1,7 @@
 {% extends this.viewPath('main') %}
 
 {% block content %}
-<div id="main-content" class="container clearfix">
+	<div id="main-content" class="container clearfix">
 	{% if model.hasErrors() %}
 	<div class="row-fluid">
 		<div class="span10 offset1">
@@ -21,12 +21,13 @@
 			{% endfor %}	
 		</div>
 		{% elseif App.user.hasFlash('success') %}	
-			
+
 		{% endif %}	
 		{% block formStart %}<div class="span10 offset1">{% endblock %}
 			{% include this.viewPath('_form') %}
 		{% block formEnd %}</div>{% endblock %}
 	</div>		
+	
 </div>	
   
 {% endblock %}

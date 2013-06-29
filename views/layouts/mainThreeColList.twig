@@ -1,0 +1,43 @@
+{# 
+  variables needed:
+		* sub is the subController defining the list to show
+#}
+{% extends this.viewPath('mainThreeCol') %}
+
+{%block subMenu %}
+	<aside class="widget">
+		<form class="form-search">
+			<table class="responsive point-grid">				
+				<tr>
+					<td >
+						<span class="input-append" >
+						<input type="text">
+						<span class="add-on"><i class="icon-search"></i></span>
+						</span>
+					</td>
+				</tr>				
+			{% for id, value in sub.items %}			
+				<tr>
+					<td class="sub-link" id="link-{{id}}" data-id="{{id}}">{{ value }}</td>
+				</tr>
+			{% endfor %}	
+			</table>		
+		</form>										
+	</aside>
+{% endblock %}
+
+{% block viewContent %}
+	{%block itemInfo %}ItemInfo {% endblock %}
+
+<script type="text/javascript">
+	$().ready(function() {
+		$('.sub-link').click(function() {
+			$('.sub-link').removeClass('sub-active');
+			$this = $(this);			
+			$this.addClass('sub-active');
+			//alert($this.data('id'));
+		});
+	});
+</script>		
+{% endblock %}
+

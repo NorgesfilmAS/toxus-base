@@ -1,0 +1,29 @@
+{% extends this.viewPath('main') %}
+
+{% block content %}
+<div id="main-content" class="container clearfix">
+	<div class="row-fluid sidebar-left"> 
+		<!--begin row-fluid-->
+		<div class="span9 primary-column"> 
+			{% block viewContent %}viewContent {% endblock %}
+		</div>
+		<section class="span3 sidebar secondary-column" id="secondary-nav">
+			<aside class="widget">
+				<h5 class="short_headline right"><span>{% block viewType %}viewType{% endblock %}</span></h5>
+				<h5 class="short_headline"><span>{% block menuTitle %}menuTitle{% endblock %}</span></h5>
+				{{ this.menuHtml('item') }}
+			</aside>
+			{% block menuExtra %}
+			{#	
+			<aside class="widget clearfix">
+				<h5 class="short_headline"><span>Say Something</span></h5>
+				<p><a href="contact.html"><img class="aligncenter" src="../demo/fotogrph-running-water.jpg" alt="" /></a>
+				<p>Image by <a title="CC BY 3.0 | Fotogrph.com" href="http://fotogrph.com/" target="blank">Fotogrph</a>. Think clicks-and-mortar. But don’t think all three at the same time. It seems unclear, but it’s entirely completely realistic! The infomediaries factor can be summed up in one word: killer. What do we integrate? Anything and everything, regardless of humbleness!</p>
+				<p class="right"><a href="#" class="btn btn-small btn-very-subtle">Learn More &rarr;</a></p>
+			</aside>				
+			#}
+			{% endblock %}
+		</section>
+	</div>	
+</div>
+{% endblock %}

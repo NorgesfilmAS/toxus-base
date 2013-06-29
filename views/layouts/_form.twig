@@ -2,7 +2,9 @@
 
 <form class="form-horizontal" method="post" {% if form.action %}action="{{form.action}}"{% endif %}>
 	<fieldset>
+		{% if form.title != '' %}
 		<h5 class="short_headline"><span>{{ form.title |raw}}</span></h5>
+		{% endif %}
 		{% if form.controlWidth %}{% set width=form.controlWidth %}{% else %}{% set width='input-xlarge' %}{% endif %}
 		{% for groupKey, groupElement in form.elements %}			
 		{% if groupElement.hidden != true %}
