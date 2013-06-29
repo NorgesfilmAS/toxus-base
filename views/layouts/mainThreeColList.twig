@@ -11,8 +11,9 @@
 				<tr>
 					<td >
 						<span class="input-append" >
-						<input type="text">
+						<input type="text" class="span8">
 						<span class="add-on"><i class="icon-search"></i></span>
+						<a href="#" id="sub-add"><span class="add-on"><i class="icon-plus"></i></span></a>
 						</span>
 					</td>
 				</tr>				
@@ -27,7 +28,11 @@
 {% endblock %}
 
 {% block viewContent %}
-	{%block itemInfo %}ItemInfo {% endblock %}
+	{%block itemInfo %}
+		<div id="sub-info">
+			Will be replace by the Ajax call
+		</div>
+	{% endblock %}
 
 <script type="text/javascript">
 	$().ready(function() {
@@ -35,6 +40,12 @@
 			$('.sub-link').removeClass('sub-active');
 			$this = $(this);			
 			$this.addClass('sub-active');
+{#
+		now open the page as an ajax call in the viewContent
+#}	
+			var url = "{{ sub.viewUrl | raw }}";
+			url = url.replace('-key-', $this.data('id'));
+			$('#sub-info').load(url);	
 			//alert($this.data('id'));
 		});
 	});
