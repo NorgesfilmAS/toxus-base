@@ -269,6 +269,16 @@ class BaseController extends CController
 					),
 				),					
 			),	
+				
+			'typeahead' => array(
+				'basePath' => 'toxus.assets',
+				'js' => array(
+					CClientScript::POS_END => array(
+						'js/typeahead.js',
+						'js/typeahead.init.js',	
+					),						
+				),	
+			),	
 			'new' => array(
 				'basePath' => 'alias',
 				'css' => array(),
@@ -297,14 +307,16 @@ class BaseController extends CController
 			$package = $this->findPackage($name);
 			if (isset($package)) {
 				$assetUrl = Yii::app()->assetManager->publish(YiiBase::getPathOfAlias($package['basePath']));
-				foreach ($package['css'] as $css) {
-					Yii::app()->clientScript->registerCSSFile( $assetUrl.'/'.$css);					
-				}
-				foreach ($package['js'] as $position => $scripts) {
-					foreach ($scripts as $script) {
-						Yii::app()->clientScript->registerScriptFile( $assetUrl.'/'.$script, $position);
+				if (isset($package['css']))
+					foreach ($package['css'] as $css) {
+						Yii::app()->clientScript->registerCSSFile( $assetUrl.'/'.$css);					
 					}
-				}
+				if (isset($package['js']))	
+					foreach ($package['js'] as $position => $scripts) {
+						foreach ($scripts as $script) {
+							Yii::app()->clientScript->registerScriptFile( $assetUrl.'/'.$script, $position);
+						}
+					}
 				$this->_packages[$name] = $assetUrl;	// has been registered
 			}
 		}

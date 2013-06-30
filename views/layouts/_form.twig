@@ -10,7 +10,7 @@
 		{% if groupElement.hidden != true %}
 		<div class="control-group{% if this.model.getErrors(groupKey) %} error {% endif %}">
 			{% if groupElement.type != 'checkbox' and groupElement.type != 'hidden' %}
-			<label class="control-label" for="id-{{ key }}">{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ this.model.attributeLabel(groupKey) }}{% endif %}</label> 
+			<label class="control-label" for="id-{{ groupKey }}">{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ this.model.attributeLabel(groupKey) }}{% endif %}</label> 
 			{% endif %}
 			
 			<div class="controls">
@@ -52,6 +52,20 @@
 					{{ this.renderPartial(element.view, {'model': this.model.__get(key)}) |raw }}
 				{% elseif element.type== 'password' %}
 					<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="password" class="{{ width }}" value="{{ this.model.__get(key) }}"/> 
+				{% elseif element.type=='typeahead' %}
+					{{ this.registerPackage('typeahead') }}
+					<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="password" class="{{ width }} typeahead" data-provide="typeahead" autocomplete="off"/>
+					{{ this.registerScript(
+							"form.model" ~ key,"
+$().ready(function() {
+	$('#id-"~ key ~"').typeahead({
+		name:'search-',
+		local: ['test'],
+    remote:'" ~ element.url ~ "%QUERY'
+	});
+})
+") }}
+					
 				{% else %}	
 					<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }}" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %}/> 
 				{% endif %}

@@ -13,7 +13,7 @@
 						<span class="input-append" >
 						<input type="text" class="span8">
 						<span class="add-on"><i class="icon-search"></i></span>
-						<a href="#" id="sub-add"><span class="add-on"><i class="icon-plus"></i></span></a>
+						{% if sub.addUrl %}<a href="#" id="sub-add"><span class="add-on"><i class="icon-plus"></i></span></a>{% endif %}
 						</span>
 					</td>
 				</tr>				
@@ -48,6 +48,12 @@
 			$('#sub-info').load(url);	
 			//alert($this.data('id'));
 		});
+		{% if sub.addUrl  %}
+		$('#sub-add').click(function() {
+			//alert('{{sub.addUrl}}');
+			$('#sub-info').load("{{ sub.addUrl }}");
+		});
+		{% endif %}
 	});
 </script>		
 {% endblock %}
