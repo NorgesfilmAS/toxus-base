@@ -1,25 +1,11 @@
-{#
-  In a 3 frame enviroment (itemMenu, selectors, frame)
+<div class="row-fluid">
+	<section id="tertiary-nav" class="span4">
+		<aside class="widget" >
+			{% block subMenuFrame %}{% endblock %}
+		</aside>
+	</section>
 
-  the 2 frame showing all the items (selectors) possible
-#}
-<aside class="widget">
-	<form class="form-search">
-		<table class="responsive point-grid">				
-			<tr>
-				<td >
-					<span class="input-append" >
-					<input type="text" class="span8">
-					<span class="add-on"><i class="icon-search"></i></span>
-					{% if sub.onAddUrl %}<a href="#" id="sub-add"><span class="add-on"><i class="icon-plus"></i></span></a>{% endif %}
-					</span>
-				</td>
-			</tr>				
-		{% for id, value in sub.items %}			
-			<tr>
-				<td class="sub-link" id="link-{{id}}" data-id="{{id}}">{{ value }}</td>
-			</tr>
-		{% endfor %}	
-		</table>		
-	</form>										
-</aside>
+	<div id="id-slave" class="span8 primary-column"> 
+		{% block viewContent %}viewContent {% endblock %}
+	</div>
+</div>		

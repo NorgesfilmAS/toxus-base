@@ -4,39 +4,17 @@
 #}
 {% extends this.viewPath('mainThreeCol') %}
 
-{%block subMenu %}
-	{% include this.viewPath(sub.masterFramePage | default('_subMasterFrame') ) %}
+{%block subMenuFrame %}
+	{% include this.viewPath(sub.masterFramePage | default('_subMenuFrame') ) %}
 {% endblock %}
 
 {% block viewContent %}
-	{%block itemInfo %}
-		<div id="sub-info">
-			Will be replace by the Ajax call
-		</div>
-	{% endblock %}
 
-<script type="text/javascript">
-	$().ready(function() {
-		{% if sub.onViewUrl %}
-				
-		$('.sub-link').click(function() {
-			$('.sub-link').removeClass('sub-active');
-			$this = $(this);			
-			$this.addClass('sub-active');
-			var url = "{{ sub.onViewUrl | raw }}";
-			url = url.replace('-key-', $this.data('id'));
-			$('#sub-info').load(url);	
-			//alert($this.data('id'));
-		});
-		{% endif %}
-		{% if sub.onAddUrl  %}
-			
-		$('#sub-add').click(function() {
-		//	alert('{{sub.onAddUrl}}');
-			$('#sub-info').load("{{ sub.onAddUrl }}");
-		});
-		{% endif %}
-	});
-</script>		
+{% endblock %}
+
+ 
+{% block scripts %}
+ {{ this.registerPackage('typeahead') }}
+ {{ this.registerPackage('ajaxForm') }} 
 {% endblock %}
 

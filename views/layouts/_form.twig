@@ -1,6 +1,6 @@
 
 
-<form class="form-horizontal" method="post" {% if form.action %}action="{{form.action}}"{% endif %} id="{{ form.id |default('id-form')}}">
+<form class="form-horizontal" method="post" {% if form.action %}action="{{form.action}}"{% endif %} {% if this.model.isNewRecord %}{% if sub.onCreateUrl %}action="{{sub.onCreateUrl}}"{% elseif sub.onEditUrl %}action="{{sub.onEditUrl}}"{% endif %}{% endif %}  id="{{ form.id |default('id-form')}}">
 	<fieldset>
 		{% if form.title != '' %}
 		<h5 class="short_headline"><span>{{ form.title |raw}}</span></h5>
@@ -101,7 +101,6 @@ $().ready(function() {
 </form>
 
 {% if sub.isAjax %}
-
 
 <script type="text/javascript">
 	$().ready(function() {

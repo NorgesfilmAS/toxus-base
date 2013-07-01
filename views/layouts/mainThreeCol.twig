@@ -8,8 +8,8 @@
 	<div class="row-fluid left-three-cols">
 		<section class="span3 " id="secondary-nav">
 			<aside class="widget">
-				<h5 class="short_headline right"><span>{% block viewType %}viewType{% endblock %}</span></h5>
-				<h5 class="short_headline"><span>{% block menuTitle %}menuTitle{% endblock %}</span></h5>
+				<h5 class="short_headline right"><span>{{ sub.mainTypeText }}</span></h5>
+				<h5 class="short_headline"><span>{{ sub.mainCaption }}</span></h5>
 				{{ this.menuHtml('item', itemMenu | default(null)) }}
 			</aside>
 			{% block menuExtra %}
@@ -23,16 +23,19 @@
 			#}
 			{% endblock %}
 		</section>
-			
-		<section id="tertiary-nav" class="span3">
-			<aside id="id-master" class="widget" >
-				{% block subMenu %}{% endblock %}
-			</aside>
-		</section>
-			
-		<div id="id-slave" class="span6 primary-column"> 
-			{% block viewContent %}viewContent {% endblock %}
-		</div>
+		<div class="span9">	{# the content of the div will be replace by the ajax call #}
+			<div class="row-fluid">
+				<section id="tertiary-nav" class="span4">
+					<aside class="widget" id="id-master">
+						{% block subMenuFrame %}{% endblock %}
+					</aside>
+				</section>
+
+				<div id="id-slave" class="span8 primary-column"> 
+					{% block viewContent %}viewContent{% endblock %}
+				</div>
+			</div>		
+		</div>		 
 	</div>	
 </div>
 
