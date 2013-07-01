@@ -275,8 +275,16 @@ class BaseController extends CController
 				'js' => array(
 					CClientScript::POS_END => array(
 						'js/typeahead.js',
-						'js/typeahead.init.js',	
 					),						
+				),	
+			),	
+				
+			'ajaxForm' => array(
+				'basePath' => 'toxus.assets',
+				'js' => array(
+					CClientScript::POS_END => array(
+						'js/jquery.form.js',
+					),	
 				),	
 			),	
 			'new' => array(

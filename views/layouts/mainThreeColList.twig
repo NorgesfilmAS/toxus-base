@@ -50,7 +50,7 @@
 		});
 		{% if sub.addUrl  %}
 		$('#sub-add').click(function() {
-			//alert('{{sub.addUrl}}');
+			alert('{{sub.addUrl}}');
 			$('#sub-info').load("{{ sub.addUrl }}");
 		});
 		{% endif %}
