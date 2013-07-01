@@ -14,7 +14,7 @@ class BaseController extends CController
 	public $brand = 'Percussive Guitar';
 	public $model = null;
 	protected $_logPageView = true;
-	private $_menu = null;
+	public $_menu = null;
 	
 	public $_pageStyles = null;	
 	public $_defaultStyle = '';
@@ -37,13 +37,61 @@ class BaseController extends CController
 	}
 	
 	/**
-	 * load all menu's of the system and connects external menu's
-	 * @return array
+	 * 
+	 * @param string $type controller
 	 */
-	
-	protected function getMenu()
+	protected function loadMenu($controllerName)
 	{
-		if (empty($this->_menu)) {
+		$menuDef =  array(
+			'system' => array(), 
+			'user'=> array(),
+			'main'=> array(),
+			'item'=> array(),
+			'toolbar'=> array(),
+			'explain'=> array(),
+			'footer'=> array(),
+			'popup'=> array(),
+			'help'=> array(),
+		);
+
+		/**
+		 * load the system wide menu's
+		 */
+		foreach ($menuDef as $name => $menu) {
+			$eventName = 'on'.ucfirst($name).'Menu';
+			Yii::app()->config->connectEvents($this, $eventName);
+
+			$menuFilename = Yii::getPathOfAlias('application.views.'.$controllerName.'.'.$name.'Menu').'.php';
+			if (!file_exists($menuFilename)) {
+				$menuFilename = Yii::getPathOfAlias('application.views.layouts.'.$name.'Menu').'.php';
+				if (!file_exists($menuFilename)) {
+					$menuFilename = null;
+				}
+			}
+			if (!empty($menuFilename))
+				$menu = require($menuFilename);
+
+			$event = new CMenuEvent($this);
+			$event->menu = $menu;
+			$this->$eventName($event);
+			$menuDef[$name] = $event->menu;
+		}	
+		return $menuDef;
+	}
+	
+	/**
+	 * load all menu's of the system and connects external menu's
+	 * 
+	 * $type = the $this->id if null otherwise the name of the controller
+	 * 
+	 * @return array
+	 */	
+	protected function getMenu($type=null)
+	{
+		if ($type !== null) 
+			return $this->loadMenu ($type);
+		if ( empty($this->_menu)) {
+			/*
 			$this->_menu =  array(
 				'system' => array(), 
 				'user'=> array(),
@@ -56,14 +104,11 @@ class BaseController extends CController
 				'help'=> array(),
 			);
 			
-			/**
-			 * load the system wide menu's
-			 */
 			foreach ($this->_menu as $name => $menu) {
 				$eventName = 'on'.ucfirst($name).'Menu';
 				Yii::app()->config->connectEvents($this, $eventName);
 
-				$menuFilename = Yii::getPathOfAlias('application.views.'.$this->id.'.'.$name.'Menu').'.php';
+				$menuFilename = Yii::getPathOfAlias('application.views.'.$type.'.'.$name.'Menu').'.php';
 				if (!file_exists($menuFilename)) {
 					$menuFilename = Yii::getPathOfAlias('application.views.layouts.'.$name.'Menu').'.php';
 					if (!file_exists($menuFilename)) {
@@ -77,7 +122,8 @@ class BaseController extends CController
 				$event->menu = $menu;
 				$this->$eventName($event);
 				$this->_menu[$name] = $event->menu;
-			}			
+				*/			
+			$this->_menu = $this->loadMenu($this->id);						
 		}
 		return $this->_menu;
 	}
@@ -131,14 +177,14 @@ class BaseController extends CController
  * @param variant $menuDef the name of the system menu or an array['name'], array['menu'] with the definition
  * @return string echo the awnser
  */
-	public function menuHtml($menuDef)
+	public function menuHtml($menuDef, $controller = null)
 	{	
 		if (is_array($menuDef)) {
 			$menuName = isset($menuDef['name']) ? $menuDef['name'] : 'default';
 			$menu = array($menuName => isset($menuDef['menu']) ? $menuDef['menu'] : array());
 		} else {
 			$menuName = $menuDef;
-			$menu = $this->getMenu();
+			$menu = $this->getMenu($controller);
 		}	
 		if (!isset($menu[$menuName])) return '';
 		$params = array(

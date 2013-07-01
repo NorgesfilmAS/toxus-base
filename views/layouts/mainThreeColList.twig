@@ -5,26 +5,7 @@
 {% extends this.viewPath('mainThreeCol') %}
 
 {%block subMenu %}
-	<aside class="widget">
-		<form class="form-search">
-			<table class="responsive point-grid">				
-				<tr>
-					<td >
-						<span class="input-append" >
-						<input type="text" class="span8">
-						<span class="add-on"><i class="icon-search"></i></span>
-						{% if sub.addUrl %}<a href="#" id="sub-add"><span class="add-on"><i class="icon-plus"></i></span></a>{% endif %}
-						</span>
-					</td>
-				</tr>				
-			{% for id, value in sub.items %}			
-				<tr>
-					<td class="sub-link" id="link-{{id}}" data-id="{{id}}">{{ value }}</td>
-				</tr>
-			{% endfor %}	
-			</table>		
-		</form>										
-	</aside>
+	{% include this.viewPath(sub.masterFramePage | default('_subMasterFrame') ) %}
 {% endblock %}
 
 {% block viewContent %}
@@ -36,22 +17,23 @@
 
 <script type="text/javascript">
 	$().ready(function() {
+		{% if sub.onViewUrl %}
+				
 		$('.sub-link').click(function() {
 			$('.sub-link').removeClass('sub-active');
 			$this = $(this);			
 			$this.addClass('sub-active');
-{#
-		now open the page as an ajax call in the viewContent
-#}	
-			var url = "{{ sub.viewUrl | raw }}";
+			var url = "{{ sub.onViewUrl | raw }}";
 			url = url.replace('-key-', $this.data('id'));
 			$('#sub-info').load(url);	
 			//alert($this.data('id'));
 		});
-		{% if sub.addUrl  %}
+		{% endif %}
+		{% if sub.onAddUrl  %}
+			
 		$('#sub-add').click(function() {
-			alert('{{sub.addUrl}}');
-			$('#sub-info').load("{{ sub.addUrl }}");
+		//	alert('{{sub.onAddUrl}}');
+			$('#sub-info').load("{{ sub.onAddUrl }}");
 		});
 		{% endif %}
 	});

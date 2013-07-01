@@ -102,6 +102,7 @@ with yours and get your fb:admis content information where the XXXX goes.
 </div>
 
 {# the page scripts #}
+{% block scripts %}{% endblock %}
 {% for script in App.template.scripts  %}
 	{{ this.registerScriptFile(script, true) }}
 {% endfor %}

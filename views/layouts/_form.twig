@@ -53,20 +53,20 @@
 				{% elseif element.type== 'password' %}
 					<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="password" class="{{ width }}" value="{{ this.model.__get(key) }}"/> 
 				{% elseif element.type=='typeahead' %}
-					{{ this.registerPackage('typeahead') }}
+					
 					<input id="id-input-{{ key }}" type="text" class="{{ width }}"/>
 					<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="hidden" value="{{ this.model.__get(key) }}">
 					{{ this.registerScript(
 							form.model ~ '-' ~ key,"
 $().ready(function() {
-  alert('bind');
+  alert('bind typeahead');
 	$('#id-input-"~ key ~"').typeahead({
 		name:'search-"~ key ~"',
 		remote:'" ~ element.url ~ "%QUERY'
 	});
 	$('#id-input-"~ key ~"').on('typeahead:selected typeahead:autocompleted', function(e,datum) {
-		console.log(datum);
-		alert('nex:'+datum.id);
+	//	console.log(datum);
+	//		alert('nex:'+datum.id);
 		$('#id-"~ key ~"').val(datum.id);
 	});
 })
@@ -98,16 +98,30 @@ $().ready(function() {
 			{% endfor %}
 		</div>
 	</fieldset>
-		{% if form.returnUrl %}<input type="hidden" name="returnUrl" value="{{ form.returnUrl }}" />{%endif %}
 </form>
 
-{% if form.ajax %}
-  {{ this.registerPackage('ajaxForm') }}
+{% if sub.isAjax %}
+
+
 <script type="text/javascript">
 	$().ready(function() {
-		$('#{{ form.id |default('id-form')}}').ajaxForm(function() {
-			alert('form send');
-		});
+		var options = {
+			target : '#{{ sub.slaveFrame }}',
+			success : processResponse
+		};
+		$('#{{ form.id |default('id-form')}}').ajaxForm(options);		
 	});
+	
+	
+	function processResponse(responseText, statusText, xhr, $form) {
+		alert(responseText);
+		if (responseText == 'ok') {/* everything went ok */
+			$('#{{sub.masterFrame}}').load('{{ sub.onRefreshUrl }}');
+		} else {
+			$('#{{sub.slaveFrame}}').html(responseText);
+		}
+	};
+	
 </script>	
+
 {% endif %}

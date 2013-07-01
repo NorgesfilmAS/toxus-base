@@ -10,7 +10,7 @@
 			<aside class="widget">
 				<h5 class="short_headline right"><span>{% block viewType %}viewType{% endblock %}</span></h5>
 				<h5 class="short_headline"><span>{% block menuTitle %}menuTitle{% endblock %}</span></h5>
-				{{ this.menuHtml('item') }}
+				{{ this.menuHtml('item', itemMenu | default(null)) }}
 			</aside>
 			{% block menuExtra %}
 			{#	
@@ -25,12 +25,12 @@
 		</section>
 			
 		<section id="tertiary-nav" class="span3">
-			<aside class="widget">
+			<aside id="id-master" class="widget" >
 				{% block subMenu %}{% endblock %}
 			</aside>
 		</section>
 			
-		<div class="span6 primary-column"> 
+		<div id="id-slave" class="span6 primary-column"> 
 			{% block viewContent %}viewContent {% endblock %}
 		</div>
 	</div>	
