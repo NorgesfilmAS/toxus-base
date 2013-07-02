@@ -59,14 +59,12 @@
 					{{ this.registerScript(
 							form.model ~ '-' ~ key,"
 $().ready(function() {
-  alert('bind typeahead');
 	$('#id-input-"~ key ~"').typeahead({
 		name:'search-"~ key ~"',
 		remote:'" ~ element.url ~ "%QUERY'
 	});
 	$('#id-input-"~ key ~"').on('typeahead:selected typeahead:autocompleted', function(e,datum) {
 	//	console.log(datum);
-	//		alert('nex:'+datum.id);
 		$('#id-"~ key ~"').val(datum.id);
 	});
 })
@@ -113,7 +111,7 @@ $().ready(function() {
 	
 	
 	function processResponse(responseText, statusText, xhr, $form) {
-		alert(responseText);
+{#		alert(responseText); #}
 		if (responseText == 'ok') {/* everything went ok */
 			$('#{{sub.masterFrame}}').load('{{ sub.onRefreshUrl }}');
 		} else {

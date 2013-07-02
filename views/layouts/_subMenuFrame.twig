@@ -48,13 +48,13 @@
 			var url = "{{ sub.onViewUrl | raw }}";
 			url = url.replace('-key-', $this.data('id'));
 			$('#{{ sub.slaveFrame }}').load(url);	
-			// alert($this.data('id'));
+{#			// alert($this.data('id')); #}
 		});
 		{% endif %}
 		{% if sub.onCreateUrl  %}
 			
 		$('#sub-add').click(function() {
-		  	alert('{{sub.onCreateUrl}}');
+{#		  	alert('{{sub.onCreateUrl}}'); #}
 			$('#{{ sub.slaveFrame }}').load("{{ sub.onCreateUrl }}");
 		});
 		{% endif %}
