@@ -222,6 +222,14 @@ class BaseController extends CController
 	}
 
 
+	public function renderAjax($view, $data = null) {
+		$this->renderPartial($view, $data, false, true);
+	}
+	public function ajaxEnd($result = 'ok')
+	{
+		echo $result;
+		Yii::app()->end(200);
+	}
 
 	/**
 	 * creates the usermenu
@@ -324,7 +332,6 @@ class BaseController extends CController
 					),						
 				),	
 			),	
-				
 			'ajaxForm' => array(
 				'basePath' => 'toxus.assets',
 				'js' => array(
@@ -333,6 +340,18 @@ class BaseController extends CController
 					),	
 				),	
 			),	
+			'datetimepicker' => array(
+				'basePath' => 'toxus.assets',
+				'css' => array(
+					'css/datetimepicker.css',	
+				),	
+				'js' => array(
+					CClientScript::POS_END => array(
+						'js/bootstrap-datetimepicker.js',
+					),	
+						
+				),						
+			),					
 			'new' => array(
 				'basePath' => 'alias',
 				'css' => array(),
@@ -890,4 +909,15 @@ class BaseController extends CController
 		return $s;
 	}
 	
+	
+	/**
+	 * 
+	 * @param string $$baseName the base class of the view = the most left column
+	 * @param integer $id the id of the baseclass record
+	 * @return class of the definition
+	 */
+	public function subFrameDefinition($baseName, $id)
+	{
+		return new SubFrameDefinition();
+	}
 }

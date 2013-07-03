@@ -1,0 +1,7 @@
+{#
+ Add an contact to an list given the list
+#}
+<div>
+	<h5 class="short_headline"><span>{% if model.isNewRecord %}{{ this.t('new') }}{% else %}{{this.t('update')}}{% endif %} {# sub.caption #}</span></h5>
+	{% include this.viewPath('formFrame') %}
+</div>
