@@ -15,7 +15,7 @@ class AjaxListAction extends AjaxAction
 		$view = $this->view;
 		$cd = $this->controller->subFrameDefinition($view, $id);
 		$cd->masterId = Yii::app()->user->lastId;
-		$this->controller->renderAjax('_subMenuFrame', array(
+		$this->controller->renderAjax('ajaxMenu', array(
 			'model' => $this->controller->model, 
 			'sub' => $cd));		
 		

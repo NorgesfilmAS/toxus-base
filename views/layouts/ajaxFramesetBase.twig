@@ -5,7 +5,7 @@
 {% extends this.viewPath('mainThreeCol') %}
 
 {%block subMenuFrame %}
-	{% include this.viewPath(sub.masterFramePage | default('_subMenuFrame') ) %}
+	{% include this.viewPath('ajaxMenu') %}
 {% endblock %}
 
 {% block viewContent %}

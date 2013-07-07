@@ -12,7 +12,10 @@ class AjaxCreateAction extends AjaxAction
 		$form = $this->controller->loadForm(lcfirst($cd->modelClass). 'Fields');
 		$s = $cd->modelClass;
 		$this->controller->model = new $s();
-		$this->controller->renderAjax('_subFormFrame', array('model' => $this->controller->model, 'form' => $form, 'sub' => $cd));		
+		$this->controller->renderAjax('ajaxForm', array(
+				'model' => $this->controller->model, 
+				'form' => $form, 
+				'sub' => $cd));		
 	}
 		
 }

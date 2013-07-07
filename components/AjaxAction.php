@@ -1,4 +1,11 @@
 <?php
+/**
+ * general purpose actions for ajax forms
+ * 
+ * forms are default render by ajaxForm (overloadable)
+ * view are default ajaxView, which show the form as an view
+ * 
+ */
 
 class AjaxAction extends CAction
 {
