@@ -66,6 +66,12 @@ class AjaxFrameDefinition extends CComponent
 	public $slaveFrame		= 'id-slave';
 	
 	/**
+	 * the form for editing and default viewing
+	 */
+	protected $_form = null;
+	public $formName = '';
+	
+	/**
 	 * 
 	 * @param array of CActiveRecord $model to list in the view
 	 */
@@ -159,5 +165,18 @@ class AjaxFrameDefinition extends CComponent
 		return $result;
 	}
 	
-	
+
+	/**
+	 * loads the form, if not already loaded
+	 */
+	public function getForm()
+	{
+		if ($this->_form === null and $this->formName !== false) {
+			if ($this->formName == '') {
+				$this->formName = $this->controller->id.'Fields';				
+			}
+			$this->_form = $this->controller->loadForm($this->formName);
+		}
+		return $this->_form;
+	}
 }

@@ -4,9 +4,9 @@
 		{% if form.controlWidth %}{% set width=form.controlWidth %}{% else %}{% set width='input-xlarge' %}{% endif %}
 		{% for groupKey, groupElement in form.elements %}			
 		{% if groupElement.hidden != true %}
-		<div class="control-group{% if this.model.getErrors(groupKey) %} error {% endif %}">
+		<div class="control-group{% if model.getErrors(groupKey) %} error {% endif %}">
 			{% if groupElement.type != 'checkbox' and groupElement.type != 'hidden' %}
-			<label class="control-label" for="id-{{ groupKey }}">{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ this.model.attributeLabel(groupKey) }}{% endif %}</label> 
+			<label class="control-label" for="id-{{ groupKey }}">{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}</label> 
 			{% endif %}
 			
 			<div class="controls">
@@ -23,28 +23,28 @@
 
 				{% if element.type == 'dropdown' or element.type == 'readiobuttonlist' %}							
 					{% for itemKey, itemCaption in element.items %}
-					 {% if itemKey == this.model.__get(key) %}{{ itemCaption }}{% endif %} >
+					 {% if itemKey == model.__get(key) %}{{ itemCaption }}{% endif %} >
 					{% endfor %}
 				{% elseif element.type == 'textarea' %}
-					 {{ this.model.__get(key) }}
+					 {{ model.__get(key) }}
 				{% elseif element.type == 'checkbox' %}	
 					{# http://stackoverflow.com/questions/1809494/post-the-checkboxes-that-are-unchecked #}
-					<label class="checkbox"><input type="hidden" name="{{ form.model }}[{{key}}]" value="0" /><input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="checkbox" {% if this.model.__get(key) %}checked="1"{% endif %} value="1"/>{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ this.model.attributeLabel(groupKey) }}{% endif %}</label>
+					<label class="checkbox"><input type="hidden" name="{{ form.model }}[{{key}}]" value="0" /><input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="checkbox" {% if model.__get(key) %}checked="1"{% endif %} value="1"/>{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}</label>
 				{% elseif element.type== 'image' %}
-					{{ this.form.image(this.model, key) | raw }}								
+					{{ this.form.image(model, key) | raw }}								
 				{% elseif element.type== 'finder' %}					
 				{% elseif element.type== 'html' %}
-					{{ this.model.__get(key) | raw }}
+					{{ model.__get(key) | raw }}
 				{% elseif element.type=='chosen' %}					
 				{% elseif element.type=='datetime' %}						
-					{{ this.model.__get(key) }}	
+					{{ model.__get(key) }}	
 				{% elseif element.type=='hidden' %}
 				{% elseif element.type== 'view' %}
-					{{ this.model.__get(key) | raw }}	
+					{{ model.__get(key) | raw }}	
 				{% elseif element.type== 'password' %}
 				{% elseif element.type=='typeahead' %}
 				{% else %}	
-					{{ this.model.__get(key) | raw }}	
+					{{ model.__get(key) | raw }}	
 				{% endif %}
 			  {% endfor %}	
 			</div>	

@@ -15,6 +15,7 @@ class AjaxViewAction extends AjaxAction
 		
 		$this->controller->render('ajaxView', array(
 				'model' => $cd->childModel, 
+				'form' => $cd->form,
 				'sub' => $cd)
 		, false, true);				
 
