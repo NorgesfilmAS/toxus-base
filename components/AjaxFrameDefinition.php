@@ -150,6 +150,7 @@ class AjaxFrameDefinition extends CComponent
 	public function getOnCreateUrl()
 	{
 		if ($this->_onCreateUrl === '') {
+			$this->getMasterModel();	// to set the masterId always
 			$this->_onCreateUrl = $this->controller->createUrl($this->controller->id.'/'.lcfirst($this->masterModelClass).'Create', array('id' => $this->masterId));
 		}
 		return $this->_onCreateUrl;
@@ -157,7 +158,8 @@ class AjaxFrameDefinition extends CComponent
 	public function getOnRefreshUrl()
 	{
 		if ($this->_onRefreshUrl === '') {			
-			$this->_onRefreshUrl = $this->controller->createUrl($this->controller->id.'/'.lcfirst($this->masterModelClass).'Refresh', array('id' => $this->childId));
+			$this->getMasterModel();	// to set the masterId always
+			$this->_onRefreshUrl = $this->controller->createUrl($this->controller->id.'/'.lcfirst($this->masterModelClass).'Refresh', array('id' => $this->masterId));
 		}
 		return $this->_onRefreshUrl;
 	}

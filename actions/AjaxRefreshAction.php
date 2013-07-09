@@ -13,7 +13,7 @@ class AjaxRefreshAction extends AjaxAction
 	public function run($id )
 	{
 		$view = $this->view;
-		$cd = $this->controller->definition($view, null, $id);
+		$cd = $this->controller->definition($view, $id);
 		$cd->childRelationId = Yii::app()->user->lastId;
 		
 		$this->controller->model = $cd->masterModel;
