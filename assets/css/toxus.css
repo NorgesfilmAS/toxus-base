@@ -190,7 +190,7 @@ http://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
 	background-repeat: repeat-y;
 }
 .left-three-cols .secondary-column .widget {padding:0 20px;}
-.left-three-cols .tertiary-column .widget {padding-left:20px;}
+.left-three-cols .tertiary-column {padding-left:20px;}
 
 .sub-active {
   background-color: #BFCFFF !important;
@@ -245,4 +245,15 @@ http://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
 
 .tt-suggestion p {
   margin: 0;
+}
+
+/* for working with the views */
+.view-label {
+	color: gray;
+	display: inline-block;
+	text-align: right;
+	width: 90px;
+}
+.view-data {
+	
 }

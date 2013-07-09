@@ -1,6 +1,6 @@
 <?php
 
-class AjaxListAction extends AjaxAction
+class AjaxRefreshAction extends AjaxAction
 {
 	/**
 	 * fills the listbox for an ajax call
@@ -13,10 +13,12 @@ class AjaxListAction extends AjaxAction
 	public function run($id )
 	{
 		$view = $this->view;
-		$cd = $this->controller->subFrameDefinition($view, $id);
-		$cd->masterId = Yii::app()->user->lastId;
+		$cd = $this->controller->definition($view, $id);
+		$cd->childRelationId = Yii::app()->user->lastId;
+		
+		$this->controller->model = $cd->masterModel;
 		$this->controller->renderAjax('ajaxMenu', array(
-			'model' => $this->controller->model, 
+			'model' => $cd->masterModel, // $this->controller->model, 
 			'sub' => $cd));		
 		
 	}

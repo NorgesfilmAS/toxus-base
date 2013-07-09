@@ -484,7 +484,7 @@ class BaseController extends CController
 		}				
 	}
 	
-	protected function formAdjust(&$form, $isNew = true)
+	public function formAdjust(&$form, $isNew = true)
 	{
 		if ($isNew) {
 			$form['title'] = $this->t('new',1).' '.$form['title'];
@@ -919,5 +919,65 @@ class BaseController extends CController
 	public function subFrameDefinition($baseName, $id)
 	{
 		return new SubFrameDefinition();
+	}
+
+	protected function exceptionToError($model, $e)
+	{
+		if (isset($e->errorInfo[1]) && $e->errorInfo[1] == 1062) {	// duplicate
+			$model->addError('id', Yii::t('app', 'This information already exists'));
+		} else {
+			$model->addError('id', Yii::t('app', 'There was an error saving the information. Please try again.'));
+		}	
+	}
+	
+	/**
+	 * update the information in the database.
+	 * $_POST[$this->controller-id] is set
+	 * $this->model is the active model
+	 * 
+	 * @return boolean true: information save, false : redisplay form
+	 */
+	public function executeUpdate()
+	{
+		$controllerId = $this->id;
+		$this->model->attributes = $_POST[ucFirst($controllerId)];
+		if ($this->model->validate()) {
+			try {
+				if ($this->model->save()){
+					Yii::app()->user->lastInsertid = $this->model->id;
+					return true;
+				}	
+			} catch(Exception $e) {
+				$this->exceptionToError($this->model, $e);				
+			}	
+		}		
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @return false 
+	 */
+	public function executeCreate()
+	{
+		$controllerId = get_class($this->model);
+		$this->model->attributes = $_POST[$controllerId];
+		if ($this->model->validate()) {
+			try {
+				if ($this->model->save()) {
+					Yii::app()->user->lastInsertid = $this->model->id;
+					return true;
+				}	
+			} catch (Exception $e) {
+				$this->exceptionToError($this->model, $e);
+			}	
+		}		
+		return false;		
+	}
+	
+	public function executeDelete()
+	{
+		$this->model->delete();
+		return true;
 	}
 }

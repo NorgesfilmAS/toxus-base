@@ -18,7 +18,7 @@
 				</td>
 			</tr>				
 		{% for id, value in sub.items %}
-			{% if loop.first %}{% set viewId = sub.masterId | default(id) %}{% endif %}
+			{% if loop.first %}{% set viewId = sub.childRelationId | default(id) %}{% endif %}
 			<tr>
 				<td class="sub-link" id="link-{{id}}" data-id="{{id}}">{{ value }}</td>
 			</tr>

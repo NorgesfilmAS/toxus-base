@@ -4,17 +4,23 @@ class AjaxCreateAction extends AjaxAction
 {
 	public function run($id)
 	{
-		if ($this->controller->executeCreate($id)) return;	// will end if ok
-		
 		$view = $this->view;
-		$cd = $this->controller->subFrameDefinition($view, $id);
+		$cd = $this->controller->definition($view, $id);
+		$modelClass = $cd->childModelClass;
+		$this->controller->model = new $modelClass();		
+		$relationAttribute = $cd->relationAttribute;
+		$this->controller->model->$relationAttribute = $id;
 		
-		$form = $this->controller->loadForm(lcfirst($cd->modelClass). 'Fields');
-		$s = $cd->modelClass;
-		$this->controller->model = new $s();
+		if ($_POST[$modelClass]) {
+			if ($this->controller->executeCreate($id))  {
+				echo 'ok';
+				return;	
+			}	
+		}	
+
 		$this->controller->renderAjax('ajaxForm', array(
-				'model' => $this->controller->model, 
-				'form' => $form, 
+				'model' => $cd->childModel, 
+				'form' => $cd->form, 
 				'sub' => $cd));		
 	}
 		

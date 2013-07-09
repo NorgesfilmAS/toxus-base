@@ -2,11 +2,11 @@
  Add an contact to an list given the list
 #}
 <div>
-	<h5 class="short_headline"><span>{% if model.isNewRecord %}{{ this.t('new') }}{% else %}{{this.t('update')}}{% endif %} {# sub.caption #}</span></h5>
-	{% if model.hasErrors() %}
+	<h5 class="short_headline"><span>{% if this.model.isNewRecord %}{{ this.t('new') }}{% else %}{{this.t('update')}}{% endif %} {# sub.caption #}</span></h5>
+	{% if this.model.hasErrors() %}
 	<div class="row-fluid">	
 		<div class="alert alert-block">
-			{{ html.errorSummary(model)|raw }}
+			{{ html.errorSummary(this.model)|raw }}
 		</div>	
 	</div>
 	{% endif %}	

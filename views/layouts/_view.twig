@@ -6,10 +6,10 @@
 		{% if groupElement.hidden != true %}
 		<div class="control-group{% if model.getErrors(groupKey) %} error {% endif %}">
 			{% if groupElement.type != 'checkbox' and groupElement.type != 'hidden' %}
-			<label class="control-label" for="id-{{ groupKey }}">{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}</label> 
+			<span class="view-label" for="id-{{ groupKey }}">{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}:</span> 
 			{% endif %}
 			
-			<div class="controls">
+			<span class="view-data">
 				{% if groupElement.elements | length > 0 %}
 					{% set fields = (groupElement.elements) %}
 				{% else %}
@@ -23,7 +23,7 @@
 
 				{% if element.type == 'dropdown' or element.type == 'readiobuttonlist' %}							
 					{% for itemKey, itemCaption in element.items %}
-					 {% if itemKey == model.__get(key) %}{{ itemCaption }}{% endif %} >
+					 {% if itemKey == model.__get(key) %}{{ itemCaption }}{% endif %}
 					{% endfor %}
 				{% elseif element.type == 'textarea' %}
 					 {{ model.__get(key) }}
@@ -47,7 +47,7 @@
 					{{ model.__get(key) | raw }}	
 				{% endif %}
 			  {% endfor %}	
-			</div>	
+			</span>	
 			
 			
 		</div>

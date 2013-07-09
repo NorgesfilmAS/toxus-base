@@ -27,15 +27,16 @@ class AjaxFrameDefinition extends CComponent
 	 *   - masterModel - model for the page with the relation (childRelation) for the listview
 	 *   - childModel -  model for the for the form/view with the relation back  (masterRelation) to the masterModel
 	 */
-	protected $_masterModelClass = '';
+	public $masterModelClass = '';
 	protected $_masterModel = null;		// set this to overload the automated procedure
-	public $masterId = null;
+	public $masterId; // = null;
 	public $childRelation =	'';
 	
-	protected $_childModelClass = '';
+	public $childModelClass = '';
 	protected $_childModel = null;    // set this on construction to overload the automatied process
 	public $childId = null;
 	public $masterRelation = '';
+	public $relationAttribute;				// the field that makes the relation between the master and the child
 	
 	public $childRelationId = null;						// if set masterModel->childRelation->id == $childId is highlighted
 	
@@ -67,9 +68,13 @@ class AjaxFrameDefinition extends CComponent
 	
 	/**
 	 * the form for editing and default viewing
+	 * default name is the master model class Fields: so
+	 *   masterModelClass = 'Course' => filename = courseFields.php
 	 */
 	protected $_form = null;
 	public $formName = '';
+	
+	public $isAjax = true;
 	
 	/**
 	 * 
@@ -89,8 +94,8 @@ class AjaxFrameDefinition extends CComponent
 	{
 		if ($this->_masterModel === null) {
 			if ($this->masterId !== null) {
-				$class = $this->_masterModelClass;
-				$this->_masterModel = $class->model()->findByPk($this->masterId);
+				$class = $this->masterModelClass;
+				$this->_masterModel = $class::model()->findByPk($this->masterId);
 			} else if ($this->childModel !== null) {
 				$relation = $this->masterRelation;
 				$this->_masterModel = $this->childModel->$relation;
@@ -102,8 +107,8 @@ class AjaxFrameDefinition extends CComponent
 	public function getChildModel()
 	{
 		if ($this->_childModel === null) {
-			$class = $this->_childModelClass;
-			if ($class === null) throw new CException('The _childModelClass is not defined');
+			$class = $this->childModelClass;
+			if ($class === null) throw new CException('The childModelClass is not defined');
 			if ($this->childId == null) {			
 				$this->_childModel = new $class;			
 			} else {
@@ -117,7 +122,7 @@ class AjaxFrameDefinition extends CComponent
 	public function getOnEditUrl()
 	{
 		if ($this->_onEditUrl === '') {
-			$this->_onEditUrl = $this->controller->id.'/'.lcfirst($this->_masterModelClass).'Edit';
+			$this->_onEditUrl = $this->controller->createUrl($this->controller->id.'/'.lcfirst($this->masterModelClass).'Edit', array('id' => '-key-'));
 		}
 		return $this->_onEditUrl;
 	}
@@ -125,21 +130,21 @@ class AjaxFrameDefinition extends CComponent
 	public function getOnViewUrl()
 	{
 		if ($this->_onViewUrl === '') {
-			$this->_onViewUrl = $this->controller->id.'/'.lcfirst($this->_masterModelClass).'View';
+			$this->_onViewUrl = $this->controller->createUrl($this->controller->id.'/'.lcfirst($this->masterModelClass).'View', array('id' => '-key-'));
 		}
 		return $this->_onViewUrl;
 	}
 	public function getOnCreateUrl()
 	{
 		if ($this->_onCreateUrl === '') {
-			$this->_onCreateUrl = $this->controller->id.'/'.lcfirst($this->_masterModelClass).'Create';
+			$this->_onCreateUrl = $this->controller->createUrl($this->controller->id.'/'.lcfirst($this->masterModelClass).'Create', array('id' => $this->masterId));
 		}
 		return $this->_onCreateUrl;
 	}
 	public function getOnRefreshUrl()
 	{
 		if ($this->_onRefreshUrl === '') {
-			$this->_onRefreshUrl = $this->controller->id.'/'.lcfirst($this->_masterModelClass).'Refresh';
+			$this->_onRefreshUrl = $this->controller->createUrl($this->controller->id.'/'.lcfirst($this->masterModelClass).'Refresh', array('id' => $this->masterId));
 		}
 		return $this->_onRefreshUrl;
 	}
@@ -153,6 +158,7 @@ class AjaxFrameDefinition extends CComponent
 	{
 		$relation = $this->childRelation;
 		$listItems = $this->masterModel->$relation;
+		if ($listItems == null) return array();
 		
 		$id = $this->listIdField;
 		$value = $this->listValueField;
@@ -173,8 +179,12 @@ class AjaxFrameDefinition extends CComponent
 	{
 		if ($this->_form === null and $this->formName !== false) {
 			if ($this->formName == '') {
-				$this->formName = $this->controller->id.'Fields';				
+				$this->formName = lcfirst($this->masterModelClass).'Fields';				
 			}
+			if ($this->controller->model == null) {
+				$this->controller->model = $this->masterModel;
+			}
+			$masterId = $this->masterId;
 			$this->_form = $this->controller->loadForm($this->formName);
 		}
 		return $this->_form;

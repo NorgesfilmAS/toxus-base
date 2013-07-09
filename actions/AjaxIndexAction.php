@@ -8,11 +8,12 @@ class AjaxIndexAction extends AjaxAction
 		if ($view === null) 
 			$view = $this->view;
 		
-		$cd = $this->controller->subFrameDefinition($view, $id);
-		$cd->masterId = Yii::app()->user->lastId;
+		$cd = $this->controller->definition($view, $id);
+		$cd->childRelationId = Yii::app()->user->lastId;
+		$this->controller->model = $cd->masterModel;
 		
 		$this->controller->render('ajaxFrameset', array(
-				'model' => $this->controller->model, 
+				'model' => $cd->masterModel, // $this->controller->model, 
 				'itemMenu' => strtolower($view),
 				'sub' => $cd));		
 	}

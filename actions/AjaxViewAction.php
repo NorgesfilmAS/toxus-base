@@ -12,6 +12,7 @@ class AjaxViewAction extends AjaxAction
 		$view = $this->view;
 		$cd = $this->controller->definition($view, null, $id);	
 		$cd->childRelationId = Yii::app()->user->lastId;
+		$this->controller->model = $cd->childModel;
 		
 		$this->controller->render('ajaxView', array(
 				'model' => $cd->childModel, 
