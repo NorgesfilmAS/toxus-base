@@ -2,7 +2,18 @@
  Show the information from the view
 #}
 <div>
-	<h5 class="short_headline"><span>{% if model.isNewRecord %}{{ this.t('new') }}{% else %}{{this.t('update')}}{% endif %} {# sub.caption #}</span></h5>
+	<h5 class="short_headline">
+		<span>{{ this.t(sub.caption) }}</span>
+		<div class="short_headline-bar">
+			{% if sub.onEditUrl %}
+				<span class="btn btn-small" id="btn-edit"><i class="icon-pencil"></i> {{ this.t('btn-edit') }}</span>
+			{% endif %}	
+			
+			{% if sub.onDeleteUrl %}
+				<span class="btn btn-small" id="btn-delete">{{ this.t('btn-delete') }}</span>
+			{% endif %}	
+		</div>
+	</h5>
 	
 	<div class="row-fluid">
 		{% if App.user.hasFlash('error') or App.user.hasFlash('success') or App.user.hasFlash('info') %}
@@ -21,3 +32,14 @@
 		{% block formEnd %}</div>{% endblock %}
 	</div>		
 </div>
+
+<script type=text/javascript>	
+	$().ready(function() {
+		$('#btn-edit').click(function() {
+			url = '{{ sub.onEditUrl }}';
+			url = url.replace('-key-','{{ sub.childId }}');
+			$('#{{ sub.slaveFrame }}').load(url);
+		});
+	});	
+		
+</script>	

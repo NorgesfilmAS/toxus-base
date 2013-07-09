@@ -257,3 +257,10 @@ http://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
 .view-data {
 	
 }
+.short_headline-bar {
+	display: inline-block;
+	float: right;
+}
+.short_headline .btn {
+	padding-bottom:  0px;
+}

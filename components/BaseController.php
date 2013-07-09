@@ -939,7 +939,7 @@ class BaseController extends CController
 	 */
 	public function executeUpdate()
 	{
-		$controllerId = $this->id;
+		$controllerId = get_class($this->model);
 		$this->model->attributes = $_POST[ucFirst($controllerId)];
 		if ($this->model->validate()) {
 			try {

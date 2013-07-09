@@ -1,9 +1,9 @@
 
 
-<form class="form-horizontal" method="post" {% if form.action %}action="{{form.action}}"{% endif %} {% if this.model.isNewRecord %}{% if sub.onCreateUrl %}action="{{sub.onCreateUrl}}"{% elseif sub.onEditUrl %}action="{{sub.onEditUrl}}"{% endif %}{% endif %}  id="{{ form.id |default('id-form')}}">
+<form class="form-horizontal" method="post" action="{% if form.action %}{{form.action}}{% else %}{{ App.request.url }}{% endif %}" {% if this.model.isNewRecord %}{% if sub.onCreateUrl %}action="{{sub.onCreateUrl}}"{% elseif sub.onEditUrl %}action="{{sub.onEditUrl}}"{% endif %}{% endif %}  id="{{ form.id |default('id-form')}}">
 	<fieldset>
 		{% if form.title != '' %}
-		<h5 class="short_headline"><span>{{ form.title |raw}}</span></h5>
+			<h5 class="short_headline"><span>{{ form.title |raw}}</span></h5>
 		{% endif %}
 		{% if form.controlWidth %}{% set width=form.controlWidth %}{% else %}{% set width='input-xlarge' %}{% endif %}
 		{% for groupKey, groupElement in form.elements %}			
@@ -94,7 +94,11 @@ $().ready(function() {
 			{% if element.type == 'submit' %}	
 				<button class="btn {{ element.style }}" type="submit">{% if element.label %}{{element.label}}{%else%}{% if this.model.isNewRecord %}{{ this.t('btn-create') }} {% else %}{{ this.t('btn-save') }} {% endif %}{% endif %}</button>
 			{% elseif element.type == 'cancel' %}	
+				{% if sub.isAjax %}
+				<span href="#" id="btn-cancel" class="btn {{ element.style }}" type="button">{{ this.t('btn-cancel') }}</span>											
+				{% else %}
 				<input class="btn {{ element.style }}" type="button" value="{{ this.t('btn-cancel') }}"  onClick="history.go(-1);return true;">							
+				{% endif %}
 			{% elseif element.type == 'delete' %}	
 				<input class="btn {{ element.style }}" type="button" value="{{ this.t('btn-delete') }}"  onClick="if (confirm('{{ (element.ask) | default('Delete this information?') }}')) { window.location='{{ this.createUrl( element.action|default('delete'), {'id' : this.model.attribute(element.id | default('id'))} ) }}'; };">							
 			{% elseif element.type == 'link' %}
@@ -116,6 +120,10 @@ $().ready(function() {
 			success : processResponse
 		};
 		$('#{{ form.id |default('id-form')}}').ajaxForm(options);		
+		
+		$('#btn-cancel').click(function() {
+			$('#{{sub.masterFrame}}').load('{{ sub.onRefreshUrl }}');
+		});
 	});
 	
 	
