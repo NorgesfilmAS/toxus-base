@@ -49,6 +49,7 @@ class AjaxFrameDefinition extends CComponent
 	 */
 	public $listIdField = 'id';
 	public $listValueField = 'caption';
+	public $listValueFunction;	// function to call when to retrieve the data from a list item listItem(ActiveRecord $rec)
 	public $sorted = true;	
 	
 	// default twig files to load working with the subController
@@ -178,10 +179,16 @@ class AjaxFrameDefinition extends CComponent
 		if ($listItems == null) return array();
 		
 		$id = $this->listIdField;
-		$value = $this->listValueField;
+		if ($this->listValueFunction === null) {
+			$valueField = $this->listValueField;
+		}	
 		$result = array();
 		foreach ($listItems as $rec) {
-			$result[$rec->$id] = $rec->$value;
+			if ($this->listValueFunction !== null) {
+				$result[$rec->$id] = call_user_func($this->listValueFunction, $rec);
+			} else {	
+				$result[$rec->$id] = $rec->$valueField;
+			}	
 		}
 		if ($this->sorted)
 			asort($result);

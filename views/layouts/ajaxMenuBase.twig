@@ -20,7 +20,7 @@
 		{% for id, value in sub.items %}
 			{% if loop.first %}{% set viewId = sub.childRelationId | default(id) %}{% endif %}
 			<tr>
-				<td class="sub-link" id="link-{{id}}" data-id="{{id}}">{{ value }}</td>
+				<td class="sub-link" id="link-{{id}}" data-id="{{id}}">{% block menuItem %}{{ value }}{% endblock %}</td>
 			</tr>
 		{% endfor %}	
 		</table>		
