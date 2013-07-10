@@ -63,7 +63,7 @@
 					<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="password" class="{{ width }}" value="{{ this.model.__get(key) }}"/> 
 				{% elseif element.type=='typeahead' %}
 					
-					<input id="id-input-{{ key }}" type="text" class="{{ width }}"/>
+					<input id="id-input-{{ key }}" type="text" class="{{ width }}" value="{{ element.caption }}"/>
 					<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="hidden" value="{{ this.model.__get(key) }}">
 					{{ this.registerScript(
 							form.model ~ '-' ~ key,"

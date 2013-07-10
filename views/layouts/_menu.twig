@@ -1,11 +1,25 @@
 {# render a menu #}
+
+{% for key, item in menu %}
+	{% if item.type=='caption-right' %}
+	<h5 class="short_headline right"><span>{{ item.caption }}</span></h5>
+	{% elseif item.type=='caption' %}
+	<h5 class="short_headline"><span>{{ item.caption }}</span></h5>
+	{% endif %}
+{% endfor %}
+
 <ul class="navigation">
 {% for key, item in menu %}
+	{% if item.type %}
+	{% else %}		
+		{% if item.hidden != true  %}
 	<li>	
   <a href="{{ item.url | raw }}" data-placement="bottom" {% if item.tooltip %}title="{{ item.tooltip }}"{% endif %}>
   {% if item.icon is defined %}<i class="{{ item.icon }}"></i>{% endif %}
 	{% if item.label %}{{ item.label }}{% endif %}
 	</a>
   </li>			
+		{% endif %}
+	{% endif %}
 {% endfor %}
 </ul>		

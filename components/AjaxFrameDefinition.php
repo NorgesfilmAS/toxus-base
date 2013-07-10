@@ -61,9 +61,6 @@ class AjaxFrameDefinition extends CComponent
 	// for sections to overload look in the (type)Base.twig file.
 	// 
 	// 
-	// text used in the Main Menu
-	public $mainCaption = '';
-	public $mainTypeText = '';
 
 	// id of the div's to load. id-master is listview, id-slave it the form/view div
 	public $masterFrame		= 'id-master';

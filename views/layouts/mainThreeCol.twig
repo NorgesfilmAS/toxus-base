@@ -8,8 +8,6 @@
 	<div class="row-fluid left-three-cols">
 		<section class="span3 " id="secondary-nav">
 			<aside class="widget">
-				<h5 class="short_headline right"><span>{{ sub.mainTypeText }}</span></h5>
-				<h5 class="short_headline"><span>{{ sub.mainCaption }}</span></h5>
 				{{ this.menuHtml('item', itemMenu | default(null)) }}
 			</aside>
 			{% block menuExtra %}
