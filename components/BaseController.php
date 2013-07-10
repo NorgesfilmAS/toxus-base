@@ -351,7 +351,20 @@ class BaseController extends CController
 					),	
 						
 				),						
-			),					
+			),
+			'datepicker' => array(
+				'basePath' => 'toxus.assets',
+				'css' => array(
+					'css/datepicker.css',
+					'css/timepicker.css',	
+				),	
+				'js' => array(
+					CClientScript::POS_END => array(
+						'js/bootstrap-datepicker.js',
+						'js/bootstrap-timepicker.js',	
+					),	
+				),											
+			),
 			'new' => array(
 				'basePath' => 'alias',
 				'css' => array(),

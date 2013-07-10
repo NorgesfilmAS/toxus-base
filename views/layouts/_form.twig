@@ -46,15 +46,19 @@
 					{{ this.form.htmlEditor(this.model, key) | raw}}						
 				{% elseif element.type=='chosen' %}
 					{{ this.form.chosen(this.model, key, element) }}	
-				{% elseif element.type=='datetime' %}						
-					<div class="input-prepend date form_datetime">	
-						<span class="add-on"><i class="icon-th"></i></span>
-						<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" size="16" type="text" value="{{ this.model.__get(key) }}" readonly class="form_datetime">						
+				{% elseif element.type=='date' %}						
+					<div class="input-prepend date">						
+						<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" size="16" type="text" value="{{ this.model.__get(key) }}" class="input-date" data-date-format="dd-mm-yyyy" {% if element.calendarWeeks %}data-date-calendar-weeks="true"{% endif %}>						
 					</div>	
-					<script type="text/javascript">
-						$(".form_datetime").datetimepicker(
-								{format: 'dd-mm-yyyy hh:ii'});
-					</script> 						
+				{{ this.registerScript(
+						'datepicker',"
+$().ready(function() {											
+	$('.input-date').datepicker({" ~		
+		"language : 'app.params.language ',
+		autoclose: true
+	});
+});")
+}}	
 				{% elseif element.type=='hidden' %}
 					<input type="hidden" id="id-{{ key }}" name="{{ form.model }}[{{key}}]" value="{{ this.model.__get(key) }}" />	
 				{% elseif element.type== 'view' %}

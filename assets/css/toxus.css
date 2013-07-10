@@ -264,3 +264,8 @@ http://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
 .short_headline .btn {
 	padding-bottom:  0px;
 }
+
+.datepicker .dow, .datepicker .cw, .datepicker .prev,.datepicker .switch, .datepicker .next {
+	background-color: white !important;
+	color: darkslategray !important;
+}

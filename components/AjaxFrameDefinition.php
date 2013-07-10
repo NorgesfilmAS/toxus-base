@@ -120,6 +120,11 @@ class AjaxFrameDefinition extends CComponent
 	}
 	
 	
+	public function setUrl($url, $value)
+	{
+		$s = '_on'.ucfirst($url).'Url';
+		$this->$s = $value;
+	}
 	public function getOnEditUrl()
 	{
 		if ($this->_onEditUrl === '') {
@@ -196,7 +201,6 @@ class AjaxFrameDefinition extends CComponent
 			if ($this->controller->model == null) {
 				$this->controller->model = $this->masterModel;
 			}
-			$masterId = $this->masterId;
 			$this->_form = $this->controller->loadForm($this->formName);
 		}
 		return $this->_form;
