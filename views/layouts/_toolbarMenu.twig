@@ -1,8 +1,19 @@
 {# render the user menu #}
 
 {% for key, item in menu %}
-  <a class="btn" href="{{ item.url | raw }}" data-placement="bottom" {% if item.tooltip %}title="{{ item.tooltip }}"{% endif %}>
+  <a  class="btn toolbar-toggle" href="{{ item.url | default('#')| raw }}" data-placement="bottom" {% if item.tooltip %}title="{{ item.tooltip }}"{% endif %}{% if item.toggle %}data-toggle="{{ item.toggle }}"{% endif %}>
   {% if item.icon is defined %}<i class="{{ item.icon }}"></i>{% endif %}
 	{% if item.label %}{{ item.label }}{% endif %}
 	</a>		 
+	{% if item.toggle %}
+	{{ this.registerScript("toolbar-toggle", "
+	$().ready(function() {
+    $('.toolbar-toggle').click(function() {			
+			id = $(this).data('toggle');
+			$(id).toggle();
+    });
+  });
+	") }}
+  {% endif %}
+
 {% endfor %}

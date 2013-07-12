@@ -269,3 +269,7 @@ http://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
 	background-color: white !important;
 	color: darkslategray !important;
 }
+
+.dropdown-menu hr {
+	margin: 3px 0 4px;	
+}

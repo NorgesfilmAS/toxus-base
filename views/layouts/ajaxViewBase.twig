@@ -5,6 +5,8 @@
 	<h5 class="short_headline">
 		<span>{{ this.t(sub.caption) }}</span>
 		<div class="short_headline-bar">
+			{{ this.menuHtml('toolbar') | raw }}
+			
 			{% if sub.onEditUrl %}
 				<span class="btn btn-small" id="btn-edit"><i class="icon-pencil"></i> {{ this.t('btn-edit') }}</span>
 			{% endif %}	

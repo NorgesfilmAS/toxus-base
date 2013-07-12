@@ -6,8 +6,11 @@
 {% set viewId = 0 %}
 
 <aside class="widget">
+	
 	<form class="form-search">
 		<table class="responsive point-grid">				
+			{% block menuSearch %}
+			<thead>
 			<tr>
 				<td >
 					<span class="input-append" >
@@ -16,45 +19,42 @@
 					{% if sub.onCreateUrl %}<a href="#" id="sub-add"><span class="add-on"><i class="icon-plus"></i></span></a>{% endif %}
 					</span>
 				</td>
-			</tr>				
-		{% for id, value in sub.items %}
-			{% if loop.first %}{% set viewId = sub.childRelationId | default(id) %}{% endif %}
+			</tr>	
+			</thead>
+			{% endblock %}	
+			{% block menuList %}	
+			<tbody>
+
+				{% for id, value in sub.items %}
+				{% if loop.first %}{% set viewUrl = sub.onViewUrl | replace( {'-key-' : id}) %}{% endif %}
 			<tr>
-				<td class="sub-link" id="link-{{id}}" data-id="{{id}}">{% block menuItem %}{{ value }}{% endblock %}</td>
+				<td class="item-link" id="link-{{id}}" data-id="{{id}}" data-url="{{ sub.onViewUrl |replace( {'-key-' : id})}}">{% block menuItem %}{{ value }}{% endblock %}</td>
 			</tr>
-		{% endfor %}	
+				{% endfor %}	
+			</tbody>
+			{% endblock %}
+			
 		</table>		
 	</form>		
 		
-	 {# loading the default information into the view #}	
-	{% if viewId > 0 and sub.onViewUrl != ''	%}		
-		<script type="text/javascript">
-			$().ready(function() {
-				url = '{{ sub.onViewUrl }}';
-				url = url.replace('-key-', '{{ viewId }}');
-				$('#{{ sub.slaveFrame }}').load(url);
-				$('#link-{{ viewId }}').addClass('sub-active');
-			});	
-		</script>	
-	{% endif %}	
 <script type="text/javascript">
 	$().ready(function() {
-		{% if sub.onViewUrl %}
-				
-		$('.sub-link').click(function() {
-			$('.sub-link').removeClass('sub-active');
-			$this = $(this);			
-			$this.addClass('sub-active');
-			var url = "{{ sub.onViewUrl | raw }}";
-			url = url.replace('-key-', $this.data('id'));
-			$('#{{ sub.slaveFrame }}').load(url);	
-{#			// alert($this.data('id')); #}
+		{% if sub.onViewUrl %}				
+		$('.item-link').click(function() {
+			$('.item-link').removeClass('sub-active');
+			$(this).addClass('sub-active');
+			$('#{{ sub.slaveFrame }}').load($(this).data('url'));	
 		});
+			{% for id, value in sub.items %}
+				{% if loop.first %}
+					
+		$('#{{ sub.slaveFrame }}').load("{{ sub.onViewUrl | replace( {'-key-' : id}) }}");
+				{% endif %}	
+			{% endfor %}		
 		{% endif %}
 		{% if sub.onCreateUrl  %}
-			
+
 		$('#sub-add').click(function() {
-{#		  	alert('{{sub.onCreateUrl}}'); #}
 			$('#{{ sub.slaveFrame }}').load("{{ sub.onCreateUrl }}");
 		});
 		{% endif %}

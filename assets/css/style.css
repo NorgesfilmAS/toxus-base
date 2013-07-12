@@ -52,7 +52,7 @@ blockquote, .statement, .header .tagline { font-family: Garamond, "Apple Garamon
 
 /* Link Styles
 ================================================== */
-a { text-decoration: underline }
+/* TOXUS a { text-decoration: underline } */
 a:hover {
     color: #53a3b7;
     text-decoration: none;
