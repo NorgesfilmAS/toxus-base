@@ -25,12 +25,19 @@
 				#}
 				{% for key, element in fields %}	
 
-				{% if element.type == 'dropdown' %}							
-				<select id="id-{{ key }}" name="{{ form.model }}[{{key}}]" class="{{ width }}">
+				{% if element.type == 'dropdown' or element.type == 'vat' %}							
+				  {% if element.type == 'vat' %}
+					<div class="input-prepend span4">
+						<span class="add-on">%</span>
+					{% endif %}	
+				<select id="id-{{ key }}" name="{{ form.model }}[{{key}}]" class="{{ width }} {{ element.class }}">
 					{% for itemKey, itemCaption in element.items %}
 					<option value="{{ itemKey }}" {% if itemKey == this.model.__get(key) %}selected="1"{% endif %} >{{ itemCaption }}</option>
 					{% endfor %}
 				</select>
+					{% if element.type == 'vat' %}
+					</div>	
+					{% endif %}
 				{% elseif element.type == 'radiobuttonlist' %}	
 					{{ html.activeRadioButtonList((this.model), 'article_type_id', element.items , {'labelOptions': {'style':'display:inline-block;padding-right:8px;margin-top:3px;'}, 'separator' : ' ' }) |raw }} 
 				{% elseif element.type == 'textarea' %}
@@ -82,9 +89,15 @@ $().ready(function() {
 	});
 })
 ") }}
-					
+						
+				{% elseif element.type=='currency' %}
+					{{ this.registerPackage('currency') }}
+					<div class="input-prepend">
+						<span class="add-on">&euro;</span>
+						<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="input-currency span6" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)" style="text-align: right;" /> 					
+					</div>	
 				{% else %}	
-					<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }}" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %}/> 
+					<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }}" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"/> 
 				{% endif %}
 			  {% endfor %}	
 			</div>	
@@ -115,9 +128,9 @@ $().ready(function() {
 	</fieldset>
 </form>
 
-{% if sub.isAjax %}
-
+{% if sub.isAjax or form.script %}
 <script type="text/javascript">
+{% if sub.isAjax %}	
 	$().ready(function() {
 		var options = {
 			target : '#{{ sub.slaveFrame }}',
@@ -140,6 +153,10 @@ $().ready(function() {
 		}
 	};
 	
-</script>	
+{% endif %}
+{% if form.script %}
+	{{ form.script | raw}}
+{% endif %}
 
+</script>	
 {% endif %}

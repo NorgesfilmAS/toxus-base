@@ -1,6 +1,7 @@
 {#
  Show the information from the view
 #}
+{% block viewContent %}
 <div>
 	<h5 class="short_headline">
 		<span>{{ this.t(sub.caption) }}</span>
@@ -46,3 +47,5 @@
 	});	
 		
 </script>	
+
+{% endblock %}

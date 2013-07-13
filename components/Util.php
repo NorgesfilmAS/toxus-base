@@ -46,6 +46,36 @@ class Util {
 		$s = strtotime ($date);
 		return date ('d/m/Y', $s);
 	}
+	
+	/**
+	 * convert a string of currency (english notation) into european notation
+	 * @param string $currency number with decimal:'.' thoutand: ','
+	 */
+	static function currencyToDisplay($currency)
+	{
+		if ($currency == null || trim($currency) == '') return '0,00';
+		$ret = str_replace(',', '', $currency);	// remove the thousant
+		$parts = explode('.', $ret);
+		if (!isset($parts[1]) || $parts[1] == '')
+			$parts[1] = '00';
+		elseif (strlen($parts[1]) > 2) {
+			$parts[1] = substr($parts[1], 0, 2);
+		} elseif (strlen($part[1])  == 1) {
+			$parts[1] .= '0';
+		}	
+		return $parts[0].','.$parts[1];
+	}
+	/**
+	 * convert an display (europe) version for currency into the english notation
+	 * @param string $value
+	 */
+	static function stringToCurrency($value)
+	{
+		$ret = str_replace('.','', $value);
+		$ret = str_replace(',', '.', $ret);
+		return $ret;
+	}
+	
 	/**
 	 * convert the dd[sep]mm[sep]yyyy format to mm dd yyyy format
 	 * 

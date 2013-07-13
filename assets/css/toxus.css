@@ -273,3 +273,14 @@ http://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
 .dropdown-menu hr {
 	margin: 3px 0 4px;	
 }
+
+
+.summery-caption {
+	font-size: 110%;	
+}
+.summery-label {
+	padding-left: 10px;
+}
+.summery-field {
+	padding-right: 10px;
+}

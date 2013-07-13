@@ -26,7 +26,6 @@
 			<tbody>
 
 				{% for id, value in sub.items %}
-				{% if loop.first %}{% set viewUrl = sub.onViewUrl | replace( {'-key-' : id}) %}{% endif %}
 			<tr>
 				<td class="item-link" id="link-{{id}}" data-id="{{id}}" data-url="{{ sub.onViewUrl |replace( {'-key-' : id})}}">{% block menuItem %}{{ value }}{% endblock %}</td>
 			</tr>
@@ -45,12 +44,18 @@
 			$(this).addClass('sub-active');
 			$('#{{ sub.slaveFrame }}').load($(this).data('url'));	
 		});
-			{% for id, value in sub.items %}
-				{% if loop.first %}
+			{% if sub.childRelationId != 0 %}
+		$('#{{ sub.slaveFrame }}').load("{{ sub.onViewUrl | replace( {'-key-' : sub.childRelationId}) }}");
+		$('#link-{{sub.childRelationId}}').addClass('sub-active');
+			{% else %}	
+				{% for id, value in sub.items %}
+					{% if loop.first %}
 					
 		$('#{{ sub.slaveFrame }}').load("{{ sub.onViewUrl | replace( {'-key-' : id}) }}");
-				{% endif %}	
-			{% endfor %}		
+		$('#link-{{ id }}').addClass('sub-active');
+					{% endif %}	
+				{% endfor %}		
+			{% endif %}		
 		{% endif %}
 		{% if sub.onCreateUrl  %}
 

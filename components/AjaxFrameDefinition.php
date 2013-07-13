@@ -48,7 +48,7 @@ class AjaxFrameDefinition extends CComponent
 	 * 
 	 */
 	public $listIdField = 'id';
-	public $listValueField = 'caption';
+	public $listValueField = null;
 	public $listValueFunction;	// function to call when to retrieve the data from a list item listItem(ActiveRecord $rec)
 	public $sorted = true;	
 	
@@ -100,7 +100,7 @@ class AjaxFrameDefinition extends CComponent
 			} else if ($this->childModel !== null) {
 				$relation = $this->masterRelation;
 				$this->_masterModel = $this->childModel->$relation;
-				$this->masterId = $this->masterModel->id;
+				$this->masterId = $this->_masterModel->id;
 			}
 		}
 		return $this->_masterModel;
@@ -181,12 +181,16 @@ class AjaxFrameDefinition extends CComponent
 		$id = $this->listIdField;
 		if ($this->listValueFunction === null) {
 			$valueField = $this->listValueField;
-		}	
+		}	else {
+			$valueField = null;
+		}
 		$result = array();
 		foreach ($listItems as $rec) {
 			if ($this->listValueFunction !== null) {
 				$result[$rec->$id] = call_user_func($this->listValueFunction, $rec);
-			} else {	
+			} elseif ($valueField == null) {
+				$result[$rec->$id] = $rec;
+			}	else {
 				$result[$rec->$id] = $rec->$valueField;
 			}	
 		}

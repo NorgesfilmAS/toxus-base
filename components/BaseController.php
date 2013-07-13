@@ -365,6 +365,25 @@ class BaseController extends CController
 					),	
 				),											
 			),
+			'currency' => array(
+				'basePath' => 'toxus.assets',
+					
+				'js' => array(
+				CClientScript::POS_END => array(
+						'js/jquery.maskMoney.js',
+					)		
+				),
+				'ready' => '$(".input-currency").maskMoney('.Util::param('currencyFormat', '{thousands:".", decimal:","}').')',				
+			),
+			'vat' => array(
+				'basePath' => 'toxus.assets',
+				'js' => array(
+				CClientScript::POS_END => array(
+						'js/customComboBox.js'
+					),	
+				),	
+			),	
+				
 			'new' => array(
 				'basePath' => 'alias',
 				'css' => array(),
@@ -397,12 +416,17 @@ class BaseController extends CController
 					foreach ($package['css'] as $css) {
 						Yii::app()->clientScript->registerCSSFile( $assetUrl.'/'.$css);					
 					}
-				if (isset($package['js']))	
+				if (isset($package['js'])){	
 					foreach ($package['js'] as $position => $scripts) {
 						foreach ($scripts as $script) {
 							Yii::app()->clientScript->registerScriptFile( $assetUrl.'/'.$script, $position);
 						}
 					}
+				}	
+				
+				if (isset($package['ready'])) {
+					Yii::app()->clientScript->registerScript('package-'.$name.'-ready',"$().ready(function() {\n".$package['ready']."\n});", CClientScript::POS_END);
+				}	
 				$this->_packages[$name] = $assetUrl;	// has been registered
 			}
 		}
@@ -992,5 +1016,14 @@ class BaseController extends CController
 	{
 		$this->model->delete();
 		return true;
+	}
+	
+	public function getVatOptions()
+	{
+		return array(
+			'0' => '0',
+			'6' => '6',
+			'21' => '21',	
+			);	
 	}
 }
