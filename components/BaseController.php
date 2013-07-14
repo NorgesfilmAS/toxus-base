@@ -1018,12 +1018,5 @@ class BaseController extends CController
 		return true;
 	}
 	
-	public function getVatOptions()
-	{
-		return array(
-			'0' => '0',
-			'6' => '6',
-			'21' => '21',	
-			);	
-	}
+	
 }

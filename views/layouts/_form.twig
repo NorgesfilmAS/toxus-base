@@ -55,7 +55,7 @@
 					{{ this.form.chosen(this.model, key, element) }}	
 				{% elseif element.type=='date' %}						
 					<div class="input-prepend date">						
-						<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" size="16" type="text" value="{{ this.model.__get(key) }}" class="input-date" data-date-format="dd-mm-yyyy" {% if element.calendarWeeks %}data-date-calendar-weeks="true"{% endif %}>						
+						<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" size="16" type="text" value="{{ this.model.__get(key) }}" class="input-date" data-date-format="{{ formatDef.dateFormat | raw }}" {% if element.calendarWeeks %}data-date-calendar-weeks="true"{% endif %}>						
 					</div>	
 				{{ this.registerScript(
 						'datepicker',"
@@ -93,7 +93,7 @@ $().ready(function() {
 				{% elseif element.type=='currency' %}
 					{{ this.registerPackage('currency') }}
 					<div class="input-prepend">
-						<span class="add-on">&euro;</span>
+						<span class="add-on">{{ format.currencySymbolHtml() |raw }}</span>
 						<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="input-currency span6" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)" style="text-align: right;" /> 					
 					</div>	
 				{% else %}	

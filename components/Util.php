@@ -28,7 +28,7 @@ class Util {
 	{
 		$params = array_merge(
 						array(
-							'seperator' => '/'	
+							'seperator' => '-'	
 						), 
 						$options);
 		
@@ -44,7 +44,7 @@ class Util {
 	{
 		if (substr($date, 0, 4) < '2000') return '';
 		$s = strtotime ($date);
-		return date ('d/m/Y', $s);
+		return date (formatDef::dateFormatPhp(), $s); //date ('d/m/Y', $s);
 	}
 	
 	/**
@@ -53,17 +53,17 @@ class Util {
 	 */
 	static function currencyToDisplay($currency)
 	{
-		if ($currency == null || trim($currency) == '') return '0,00';
+		if ($currency == null || trim($currency) == '') return '0'.FormatDef::decimalPoint().'00';
 		$ret = str_replace(',', '', $currency);	// remove the thousant
 		$parts = explode('.', $ret);
 		if (!isset($parts[1]) || $parts[1] == '')
 			$parts[1] = '00';
 		elseif (strlen($parts[1]) > 2) {
 			$parts[1] = substr($parts[1], 0, 2);
-		} elseif (strlen($part[1])  == 1) {
+		} elseif (strlen($parts[1])  == 1) {
 			$parts[1] .= '0';
 		}	
-		return $parts[0].','.$parts[1];
+		return $parts[0].FormatDef::decimalPoint().$parts[1];
 	}
 	/**
 	 * convert an display (europe) version for currency into the english notation
@@ -71,9 +71,8 @@ class Util {
 	 */
 	static function stringToCurrency($value)
 	{
-		$ret = str_replace('.','', $value);
-		$ret = str_replace(',', '.', $ret);
-		return $ret;
+		$ret = str_replace(FormatDef::thousandSeperator(),'', $value);		
+		return str_replace(FormatDef::decimalPoint(), '.', $ret);
 	}
 	
 	/**
