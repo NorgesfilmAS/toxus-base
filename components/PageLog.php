@@ -8,6 +8,14 @@
  */
 class PageLog extends CComponent
 {
+	/**
+	 * set this to name of the db (dbSystem) so the logging is written to an external db
+	 * 
+	 * @var string
+	 */
+	public $dbName;
+	
+	
 	private $_logging;
 	
 	public function init()
@@ -17,7 +25,12 @@ class PageLog extends CComponent
 	public function getLog()
 	{
 		if (empty($this->_logging)) {
-			$this->_logging = new Logging();
+			if ($this->dbName) {
+				$name = $this->dbName;
+				$this->_logging = new Logging(Yii::app()->$name);
+			} else {
+				$this->_logging = new Logging();
+			}	
 		}	
 		return $this->_logging;
 	}
@@ -43,16 +56,17 @@ class PageLog extends CComponent
 		if ($controller) {			
 			$this->_logging->controller = get_class($controller);
 			if ($controller instanceof Controller) {
-				if (isset($controller->model)) {
+				if (isset($controller->model) && isset($controller->model->id)) {
 					$this->_logging->model_id = $controller->model->id;
 				}	
 			} else {
-				$this->addText('Controller is not a Controller');
+				$this->addText('controller is not an instance Controller but of '.  get_class($controller));
 			}
 		} else {
 			$this->addText('There is no controller');
 		}	
-		$this->log->save();
+		if (!$this->log->save())
+			throw new CDbException('Could not write to log');
 	}					
 					
 }

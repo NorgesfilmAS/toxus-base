@@ -5,9 +5,25 @@ Yii::import('application.vendors.toxus.models._base.BaseLogging');
 class LoggingModel extends BaseLogging
 {
 	private $_write = true;  // if false the record is not written
+	private $_dbConnection = null;
 	
 	public static function model($className=__CLASS__) {
 		return parent::model($className);
+	}
+	
+	public function __construct($scenario = 'insert', $extra = null) {
+		if ($scenario instanceof CDbConnection) {
+			parent::__construct($extra);
+			$this->_dbConnection = $scenario;
+		} else {
+			parent::__construct($scenario);
+		}	
+	}
+	
+	public function getDbConnection() {
+		if ($this->_dbConnection)
+			return $this->_dbConnection;
+		return parent::getDbConnection();
 	}
 	
 	public function beforeSave() {
