@@ -6,10 +6,11 @@ class AjaxCreateAction extends AjaxAction
 	{
 		$view = $this->view;
 		$cd = $this->controller->definition($view, $id);
+		
 		$modelClass = $cd->childModelClass;
 		$this->controller->model = new $modelClass();		
-		$relationAttribute = $cd->relationAttribute;
-		$this->controller->model->$relationAttribute = $id;
+		
+		$this->controller->model->{$cd->relationAttribute} = $id;
 		
 		if ($_POST[$modelClass]) {
 			if ($this->controller->executeCreate($id))  {

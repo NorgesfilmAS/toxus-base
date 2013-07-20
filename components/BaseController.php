@@ -963,7 +963,7 @@ class BaseController extends CController
 		if (isset($e->errorInfo[1]) && $e->errorInfo[1] == 1062) {	// duplicate
 			$model->addError('id', Yii::t('app', 'This information already exists'));
 		} else {
-			$model->addError('id', Yii::t('app', 'There was an error saving the information. Please try again.'));
+			$model->addError('id', Yii::t('app', 'There was an error saving the information. Please try again.<br />'.$e->getMessage()));
 		}	
 	}
 	

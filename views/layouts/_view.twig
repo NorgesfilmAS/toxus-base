@@ -41,7 +41,7 @@
 				{% elseif element.type== 'password' %}
 				{% elseif element.type=='typeahead' %}
 					{{ element.caption }}	
-				{% elseif element.type=='button' %}	
+				{% elseif element.type=='button' or element.type=='dialog'%}	
 				{% else %}	
 					{{ model.__get(key) | raw }}	
 				{% endif %}

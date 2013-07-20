@@ -94,7 +94,14 @@ with yours and get your fb:admis content information where the XXXX goes.
 <!-- begin #page - the container for everything but header -->
 
 <div id="page">
+	
 	{% block content %}The content{% endblock %}	
+
+	<div class="modal fade hide" id="id-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+		<div class="modal-body">
+
+		</div>
+	</div>
 	
 	{% include this.viewPath('footer') %}
 	

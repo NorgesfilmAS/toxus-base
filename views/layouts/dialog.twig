@@ -1,0 +1,15 @@
+{# 
+ an empty dialog 
+ #}
+	<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">{% block dialogHeader %}header{%endblock %}</h3>
+  </div>
+  <div class="modal-body" >
+		{% block dialogBody %}This is the body{%endblock%}    
+  </div>
+  <div class="modal-footer">
+		{% block dialogFooter %}
+    <button class="btn" data-dismiss="modal" aria-hidden="true">{{ this.t('btn-close') }}</button>
+		{% endblock %}
+  </div>
