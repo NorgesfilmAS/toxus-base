@@ -155,13 +155,13 @@ $().ready(function() {
 {% if sub.isAjax %}	
 	$().ready(function() {
 		var options = {
-			target : '#{{ sub.slaveFrame }}',
+			target : '{{ form.refreshDiv | default('#'~sub.slaveFrame) }}',
 			success : processResponse
 		};
 		$('#{{ form.id |default('id-form')}}').ajaxForm(options);		
 		
 		$('#btn-cancel').click(function() {
-			$('#{{sub.masterFrame}}').load('{{ sub.onRefreshUrl }}');
+			$('{{ form.refreshDiv | default('#'~sub.masterFrame) }}').load('{{ sub.onRefreshUrl }}');
 		});
 	});
 	
@@ -169,9 +169,9 @@ $().ready(function() {
 	function processResponse(responseText, statusText, xhr, $form) {
 {#		alert(responseText); #}
 		if (responseText == 'ok') {/* everything went ok */
-			$('#{{sub.masterFrame}}').load('{{ sub.onRefreshUrl }}');
+			$('{{ form.refreshDiv | default('#'~sub.masterFrame) }}').load('{{ sub.onRefreshUrl }}');
 		} else {
-			$('#{{sub.slaveFrame}}').html(responseText);
+			$('{{ form.refreshDiv | default('#'~sub.slaveFrame) }}').html(responseText);
 		}
 	};
 	

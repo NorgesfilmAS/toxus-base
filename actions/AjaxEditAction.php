@@ -4,7 +4,7 @@ class AjaxEditAction extends AjaxAction
 {
 	/**
 	 * 
-	 * @param int $id the id of the item to show,not of the view.
+	 * @param int $id the id of the item to show,not of the base view.
 	 */
 	public function run($id)
 	{
@@ -16,7 +16,7 @@ class AjaxEditAction extends AjaxAction
 		
 		if ($_POST[$modelClass]) {
 			if ($this->controller->executeUpdate($id))  {
-				$cd->childRelationId = $this->controller->model->id;
+				// makes not sense! $cd->childRelationId = $this->controller->model->id;
 				echo 'ok';
 				return;	
 			}	

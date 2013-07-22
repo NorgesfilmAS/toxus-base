@@ -41,7 +41,7 @@ class AjaxFrameDefinition extends CComponent
 	public $masterRelation = '';
 	public $relationAttribute;				// the field that makes the relation between the master and the child
 	
-	public $childRelationId = null;						// if set masterModel->childRelation->id == $childId is highlighted
+	private $_childRelationId = null;						// if set masterModel->childRelation->id == $childId is highlighted
 	
 	/**
 	 * The fields to use in the masterModel->childRelation to fill the list view
@@ -215,5 +215,18 @@ class AjaxFrameDefinition extends CComponent
 			$this->_form = $this->controller->loadForm($this->formName);
 		}
 		return $this->_form;
+	}
+	
+	public function getChildRelationId()
+	{
+		if ($this->_childRelationId == null)
+			return Yii::app()->user->lastId;
+		else {
+			return $this->childRelationId;
+		}
+	}
+	public function setChildRelationId($id)
+	{
+		$this->_childRelationId = $id;
 	}
 }
