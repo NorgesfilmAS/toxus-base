@@ -284,3 +284,30 @@ http://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
 .summery-field {
 	padding-right: 10px;
 }
+
+.field-value {
+	display: inline-block;	
+	display: inline-block;	
+	width:40%;
+}
+
+.field-group span:first-child {
+	color: lightgray;
+	text-align: right;
+	display: inline-block;
+	padding-right: 3%;
+	width: 57%;	
+}
+
+.field-group12 span:first-child {
+	color: lightgray;
+	text-align: right;
+	display: inline-block;
+	padding-right: 1.5%;
+	width: 25%;	
+}
+.field-group12 .field-value {
+	display: inline-block;	
+	display: inline-block;	
+	width:73.5%;
+}

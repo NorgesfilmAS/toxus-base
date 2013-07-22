@@ -313,7 +313,15 @@ class BaseController extends CController
 					),
 				),
 			),
-				
+			'core' => array(
+				'basePath' => 'toxus.assets',		
+				'js' => array(	
+					CClientScript::POS_END => array(
+							'js/core.js', 
+							'js/toolbox.date.js',
+					),		
+				),		
+			),	
 			'smooth' => array(
 				'basePath' => 'toxus.assets',				
 				'js' => array(

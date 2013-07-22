@@ -1,24 +1,23 @@
-{#
- Show the information from the view
+{# 
+  a view based upon tabs
+
+	the caption of the tab should be:
+		<li class="active"><a href="#id-contact" data-toggle="tab">{{ this.t('participant') }}</a></li>
+		<li ><a href="#id-payments" data-toggle="tab">{{ this.t('payment') }}</a></li>
 #}
+
 {% block viewContent %}
-<div>
-	<h5 class="short_headline">
-		<span>{{ this.t(sub.caption) }}</span>
-		<div class="short_headline-bar">
-			{{ this.menuHtml('toolbar') | raw }}
-			
-			{% if sub.onEditUrl %}
-				<span class="btn btn-small" id="btn-edit"><i class="icon-pencil"></i> {{ this.t('btn-edit') }}</span>
-			{% endif %}	
-			
-			{% if sub.onDeleteUrl %}
-				<span class="btn btn-small" id="btn-delete">{{ this.t('btn-delete') }}</span>
-			{% endif %}	
-		</div>
-	</h5>
+
+<ul class="nav nav-tabs" id="id-view-tabs">
+	{% block tabCaptions %}
+		<li class="active"><a href="#id-tab-home" data-toggle="tab">{% block tabHomeCaption %}{{ this.t(sub.caption) | raw }}{%endblock%}</a></li>
+	{% endblock %}	
+</ul>
+
+<div class="tab-content">	
+	{% block tabBody %}
+	<div id="id-tab-home" class="tab-pane active">
 	
-	<div class="row-fluid">
 		{% if App.user.hasFlash('error') or App.user.hasFlash('success') or App.user.hasFlash('info') %}
 		<div class="span6x">
 			{% for key, flash in App.user.getFlashes %}
@@ -31,21 +30,27 @@
 
 		{% endif %}	
 		{% block formStart %}<div class="span6x">{% endblock %}
-			{% include this.viewPath('_view') %}
+		{% if sub.onEditUrl %}
+			<span class="btn btn-small float-right btn-info btn-tooltip" id="btn-edit" data-placement="bottom" data-toggle="tooltip" title="{{ this.t('btn-edit-tooltip') |raw }}" >{{ this.t('btn-edit') |raw}}</span>
+		{% endif %}	
+		{% include this.viewPath('_view') %}
 		{% block formEnd %}</div>{% endblock %}
-		{% block extraView %} {%endblock %}
 	</div>		
+	{% endblock %}	
 </div>
 
-<script type=text/javascript>	
-	$().ready(function() {
-		$('#btn-edit').click(function() {
-			url = '{{ sub.onEditUrl }}';
-			url = url.replace('-key-','{{ sub.childId }}');
-			$('#{{ sub.slaveFrame }}').load(url);
+<script>
+  $(function () {
+{% block tabScript %}		
+    $('#id-toolbar').tab();
+		$('.btn-tooltip').tooltip();		
+		{% if sub.onEditUrl %}
+		$('#btn-edit').on('click', function() {
+			$('#{{ sub.slaveFrame }}').load('{{ sub.onEditUrl | replace({'-key-' : sub.childId}) }}');
 		});
-	});	
-		
-</script>	
+		{% endif %}
+{% endblock %}		
+  })
+</script>
 
 {% endblock %}

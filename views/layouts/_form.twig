@@ -56,7 +56,7 @@
 					{{ this.form.chosen(this.model, key, element) }}	
 				{% elseif element.type=='date' %}						
 					<div class="input-prepend date">						
-						<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" size="16" type="text" value="{{ this.model.__get(key) }}" class="input-date" data-date-format="{{ formatDef.dateFormat | raw }}" {% if element.calendarWeeks %}data-date-calendar-weeks="true"{% endif %}>						
+						<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" size="16" type="text" value="{{ this.model.__get(key) }}" class="input-date" data-date-format="{{ format.dateFormat() | raw }}" {% if element.calendarWeeks %}data-date-calendar-weeks="true"{% endif %}>						
 					</div>	
 				{{ this.registerScript(
 						'datepicker',"
