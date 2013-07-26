@@ -256,13 +256,21 @@ class Util {
 		}	
 	}
 	
-	static function errorToString($errors)
+	static function errorToString($errors, $isHtml = false)
 	{
+					
 		$s = '';
-		foreach ($errors as $error) {
-			$s .= ', '.implode(',', $error);
+		if ($isHtml) {
+			foreach ($errors as $error) {
+				$s .= '<br />'.CHtml::encode(implode(', ', $error));
+			}
+			return substr($s, 6);
+		} else {
+			foreach ($errors as $error) {
+				$s .= ', '.implode(',', $error);
+			}
+			return substr($s, 2);
 		}
-		return substr($s, 2);
 	}
 	
 	/**
@@ -343,6 +351,18 @@ class Util {
 		$dt['is_dst'] = '';
 		return $dt;
   }		
+	
+	/**
+	 * fills the number with leading 0
+	 * 
+	 * @param the number $value
+	 * @param integer $threshold
+	 * @return string
+	 */
+	
+	static function addLeadingZero($value, $threshold = 2) {
+    return sprintf('%0' . $threshold . 's', $value);
+	}
 	
 	
 }
