@@ -1,0 +1,24 @@
+{# 
+	definition of a general purpose page which can be converted to a PDF
+  it's only defined of div which can be place 'anywhere' on the paper
+  
+  the final page can be loaded and the $pdf->html($this->render('pdfPage');
+#}
+<div class="header" >
+	{% block header %}
+	<div class="logo" >
+		{% block logo %}logo{% endblock %}
+	</div>
+	{% endblock %}	
+</div>
+
+<div class="body">
+	{% block body %}body{% endblock %}
+</div>
+
+<div class="footer" >
+	{% block footer %}footer{% endblock %}
+</div>
+
+
+
