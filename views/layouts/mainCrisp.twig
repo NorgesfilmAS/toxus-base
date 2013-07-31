@@ -53,7 +53,7 @@ with yours and get your fb:admis content information where the XXXX goes.
 
 <!-- JS JQuery in the head you can use ajax if you want ================ -->
 </head>
-<body class="index">
+<body class="index" data-target=".bs-docs-sidebar" data-spy="scroll" data-twttr-rendered="true">
 <!-- begin accesibility skip to nav skip content -->
 <ul class="visuallyhidden" id="top">
 	<li><a href="#nav" title="Skip to navigation" accesskey="n">{{ this.t('Skip to navigation') }}</a></li>
@@ -63,6 +63,7 @@ with yours and get your fb:admis content information where the XXXX goes.
 <!-- mobile navigation trigger-->
 <h5 class="mobile_nav"><a href="javascript:void(0)">&nbsp;<span></span></a></h5>
 <!--end mobile navigation trigger-->
+{% block preheader %}
 <section class="container preheader"> 
 	{# this is the login for the user #}
 	<nav class="user clearfix"> {{ this.menuHtml('user') }}</nav>
@@ -81,9 +82,9 @@ with yours and get your fb:admis content information where the XXXX goes.
 	{% endif %}
 	</ul>			
 </section>
-
+{% endblock %}
 <!-- begin .header-->
-<header class="header  clearfix"> <img src="{{ App.baseUrl }}/images/print-logo.png" class="print logo" alt="{{ App.params.company }}" />
+<header class="header  clearfix"> 	
 	<div class="container"> 
 		<nav id="main_menu">
 			{{ this.menuHtml('system') }}
@@ -94,7 +95,7 @@ with yours and get your fb:admis content information where the XXXX goes.
 <!-- close /.header --> 
 <!-- begin #page - the container for everything but header -->
 
-<div id="page">
+{#<div id="page"> #}
 	
 	{% block content %}The content{% endblock %}	
 
@@ -103,11 +104,12 @@ with yours and get your fb:admis content information where the XXXX goes.
 
 		</div>
 	</div>
-	
+	<footer id="footer" class="clearfix">
 	{% include this.viewPath('footer') %}
+	</footer>		
 	
 	<span class="backToTop"><a href="#top">back to top</a></span> 
-</div>
+{# </div> #}
 
 {# the page scripts #}
 {% block scripts %}{% endblock %}

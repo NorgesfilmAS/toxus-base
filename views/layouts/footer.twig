@@ -1,24 +1,23 @@
-<footer id="footer" class="clearfix">
-	<div class="container">
-		<div class="row-fluid">
-			<div class="span4">
-				{% include this.viewPath('footerLeft') %}
-			</div>
-			<div class="span4">
-				{% include this.viewPath('footerMiddle') %}
-			</div>
-			<div class="span4">
-				{% include this.viewPath('footerRight') %}
-			</div>
+
+<div class="container">
+	<div class="row-fluid">
+		<div class="span4">
+			{% include this.viewPath('footerLeft') %}
+		</div>
+		<div class="span4">
+			{% include this.viewPath('footerMiddle') %}
+		</div>
+		<div class="span4">
+			{% include this.viewPath('footerRight') %}
 		</div>
 	</div>
-	<section class="footerCredits">
-		<div class="container">
-			<ul class="clearfix">
-				<li>{{ this.t('copyright')|raw }}</li>
-				<li>{{ html.link(this.t('Site map'), App.baseUrl ~'/sitemap') |raw }}</li>
-				<li>{{ html.link(this.t('Privacy'), App.baseUrl ~ '/privacy') | raw }}</li>
-			</ul>
-		</div>		
-	</section>	
-</footer>
+</div>
+<section class="footerCredits">
+	<div class="container">
+		<ul class="clearfix">
+			<li>{{ this.t('copyright')|raw }}</li>
+			<li>{{ html.link(this.t('Site map'), App.baseUrl ~'/sitemap') |raw }}</li>
+			<li>{{ html.link(this.t('Privacy'), App.baseUrl ~ '/privacy') | raw }}</li>
+		</ul>
+	</div>		
+</section>	

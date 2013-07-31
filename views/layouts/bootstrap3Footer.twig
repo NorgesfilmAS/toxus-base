@@ -1,0 +1,23 @@
+
+<div class="container">
+	<div class="row">
+		<div class="col-lg-4">
+			{% include this.viewPath('footerLeft') %}
+		</div>
+		<div class="col-lg-4">
+			{% include this.viewPath('footerMiddle') %}
+		</div>
+		<div class="col-lg-4">
+			{% include this.viewPath('footerRight') %}
+		</div>
+	</div>
+</div>
+<section class="footerCredits">
+	<div class="container">
+		<ul class="footer-links text-center">
+			<li><a href="{{ this.createUrl('site/copyright') }}"> &copy; 2013 Toxus | </li>
+			<li><a href="{{ this.createUrl('site/sitemap') }}">{{ this.t('site map') }} | </li>
+			<li><a href="{{ this.createUrl('site/privacy') }}">{{ this.t('privacy') }}</li>
+		</ul>
+	</div>		
+</section>	

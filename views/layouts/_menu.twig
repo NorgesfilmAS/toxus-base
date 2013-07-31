@@ -8,7 +8,8 @@
 	{% endif %}
 {% endfor %}
 
-<ul class="navigation">
+{% if menu | length > 0 %}
+<ul class="{{ layout.class | default('navigation') }}">
 {% for key, item in menu %}
 	{% if item.type %}
 	{% else %}		
@@ -23,3 +24,4 @@
 	{% endif %}
 {% endfor %}
 </ul>		
+{% endif %}	

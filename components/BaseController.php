@@ -177,20 +177,24 @@ class BaseController extends CController
  * @param variant $menuDef the name of the system menu or an array['name'], array['menu'] with the definition
  * @return string echo the awnser
  */
-	public function menuHtml($menuDef, $controller = null)
+// pre version it was:	public function menuHtml($menuDef, $controller = null)
+	public function menuHtml($menuDef, $options = array())
 	{	
 		if (is_array($menuDef)) {
 			$menuName = isset($menuDef['name']) ? $menuDef['name'] : 'default';
 			$menu = array($menuName => isset($menuDef['menu']) ? $menuDef['menu'] : array());
 		} else {
 			$menuName = $menuDef;
-			$menu = $this->getMenu($controller);
+			$menu = $this->getMenu(); //$menu = $this->getMenu($controller);
 		}	
+		
 		if (!isset($menu[$menuName])) return '';
 		$params = array(
 			'menu' => $menu[$menuName],	
 			'name' => $menuName,	
 		);
+		if (isset($options['class']))
+			$params['layout'] = array('class'=>$options['class']);
 		
 		$templateFilename = Yii::getPathOfAlias('application.views.'.$this->id.'._'.$menuName.'Menu').'.twig';		
 		if (file_exists($templateFilename)) {
@@ -296,6 +300,23 @@ class BaseController extends CController
 										'js/bootstrap.min.js'
 					),
 				),
+			),	
+			'bootstrap3' =>array(
+				'basePath' => 'toxus.assets3',
+				'css' => array(
+						'css/bootstrap.css', 
+						'css/bootstrap-glyphicons.css',
+						'css/application.css',
+				),		
+				'js' => array(
+					CClientScript::POS_HEAD => array(
+										'js/modernizr.custom.87724.js'
+					),											
+					CClientScript::POS_END => array(
+										'js/bootstrap.js',
+										'js/respond.min.js'							
+					),
+				),					
 			),	
 			'crisp' => array(
 				'basePath' => 'toxus.assets',

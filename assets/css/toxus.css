@@ -311,3 +311,7 @@ http://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
 	display: inline-block;	
 	width:73.5%;
 }
+#main-content {
+	min-height: 500px;
+	
+}
