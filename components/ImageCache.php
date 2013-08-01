@@ -7,9 +7,10 @@ class ImageCache extends CComponent
 {
 	const BASEPATH = 'webroot.assets.cache';
 	const ROOTCACHE = '/assets/cache/';
+	const DIR_ORIGINAL = 'original';
 	
 	public $sizes = array(
-			'original' => array(
+			self::DIR_ORIGINAL => array(
 				'width' => null,
 				'height' => null,	
 			),
@@ -28,6 +29,11 @@ class ImageCache extends CComponent
 				'height' => 300,	
 				'quality' => 80,					
 			),
+			'wide' => array(
+				'width' => 400,
+				'height' => 200,	
+				'quality' => 90,															
+			)
 	);				
 
 	/**
@@ -56,7 +62,39 @@ class ImageCache extends CComponent
 	 */
 	public function getPath()
 	{
-		return Yii::getPathOfAlias(self::BASEPATH).'/original/';
+		return Yii::getPathOfAlias(self::BASEPATH.'.'.self::DIR_ORIGINAL).'/';
+	}
+	/**
+	 * remove an image from the cache
+	 *
+	 * @param array $options 
+	 * @param string $name the name of the file to remove 
+	 */
+	public function clear($id = null, $options=array())
+	{
+		$defaults = array_merge(array(
+				'deleteOriginal' => true,				
+			),
+			$options			
+		);
+		if ($id == null) { // remove everything from the cache
+			// http://stackoverflow.com/questions/4594180/deleting-all-files-from-a-folder-using-php
+			foreach ($this->sizes as $size => $options) {
+				if ($defaults['deleteOriginal'] == true || $size != self::DIR_ORIGINAL) {
+					foreach (new DirectoryIterator(Yii::getPathOfAlias(self::BASEPATH.'/'.$size)) as $fileInfo)
+						if(!$fileInfo->isDot())
+							unlink($fileInfo->getPathname());
+				}
+			}	
+		} else {
+			foreach ($this->sizes as $size => $options) {
+				if ($defaults['deleteOriginal'] == true || $size != self::DIR_ORIGINAL) {
+					$path = Yii::getPathOfAlias(self::BASEPATH.'/'.$size.'/'.$id);
+					if (file_exists($path))
+					  unlink($path);
+				}	
+			}
+		}	
 	}
 	
 	/**
@@ -74,7 +112,7 @@ class ImageCache extends CComponent
 		}
 		$pathFile = Yii::getPathOfAlias(self::BASEPATH.'.'.$size).'/'.$name;
 		if (!file_exists($pathFile)) {
-			$pathOriginal = Yii::getPathOfAlias(self::BASEPATH.'.original').'/'.$name;
+			$pathOriginal = $this->path.$name;
 			if (!file_exists($pathOriginal)) {
 				return false;	// file not found
 			}
