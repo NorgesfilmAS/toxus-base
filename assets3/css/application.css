@@ -49,6 +49,13 @@
     text-shadow: 0 1px 0 #FFFFFF;
 }
 
+.bs-sidebar .nav > .active > a, .bs-sidebar .nav > .active:hover > a, .bs-sidebar .nav > .active:focus > a {
+    background-color: transparent;
+    border-right: 1px solid #563D7C;
+    color: #563D7C;
+    font-weight: bold;
+}
+
 .navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
 	background-color: #dbd0eb;
 }

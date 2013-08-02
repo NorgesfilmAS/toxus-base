@@ -68,6 +68,7 @@ class ImageCache extends CComponent
 	 * remove an image from the cache
 	 *
 	 * @param array $options 
+	 *      deleteOriginal true/false if true the original directory is also emptied
 	 * @param string $name the name of the file to remove 
 	 */
 	public function clear($id = null, $options=array())

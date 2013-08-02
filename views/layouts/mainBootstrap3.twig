@@ -34,7 +34,9 @@
 			<div class="container">
 				{# anything in this container is the header of the application. It will scroll out of view #}
 				{% include this.viewPath('logo') %}				
+				<div class="header-toolbar">{% block headerButtons %}{% endblock %}</div>					
 			</div>
+
 		</div>
 {# there are two basic ways to show the page, with of without the nav #}
 		<div class="container bs-container">
@@ -53,7 +55,57 @@
 			
 
 		<div class="bs-footer">	
-		{% include this.viewPath('bootstrap3Footer') %}			
+			{% block bootstrap3Footer %}
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-4">
+						{% block footerLeft %}
+						<section>
+							<h4>{{ this.t('contact us') }}</h4>
+							<p>{{ App.params.company}}<br>
+								{{ App.params.companyAddress |raw }}<br/>
+							</p>
+							<p>
+								<strong>{{ this.t('email')}}:</strong> <a href="mailto:{{ App.params.companyEmail |default('info@toxus.nl') }}">{{ App.params.companyEmail |default('info@toxus.nl') }}</a> 
+							</p>
+							{% block footerLeftExtra %}{% endblock %}							
+						</section>
+						{% endblock %}													
+					</div>
+					<div class="col-lg-4">
+						{% block footerMiddle %}
+						<section>
+							<h4>{{ this.t('stay updated') }}</h4>
+							<p>{{ this.t('sign up for our newsletter. We won\'t share your email address.') }}</p>
+							{% include this.viewPath('newsletter') %}
+								<!--close input-append-->
+							</form>
+						</section>							
+						{% endblock %}	
+					</div>
+					<div class="col-lg-4">
+						{% block footerRight %}
+						<section>
+							<h4>{{ this.t('latest blog posts') }}</h4>		
+							{% block footerRightList %}{% endblock %}
+						</section>
+						{% endblock %}	
+					</div>
+				</div>
+			</div>
+			<section class="footerCredits">
+				{% block footerCredits %}
+				<div class="container">
+					<ul class="footer-links text-center">
+						<li><a href="{{ this.createUrl('site/copyright') }}"> &copy; 2013 Toxus | </li>
+						<li><a href="{{ this.createUrl('site/sitemap') }}">{{ this.t('site map') }} | </li>
+						<li><a href="{{ this.createUrl('site/privacy') }}">{{ this.t('privacy') }}</li>
+					</ul>
+				</div>		
+				{% endblock %}	
+			</section>	
+		 {% endblock %}	
+		{# include this.viewPath('bootstrap3Footer') #}			
 		</div>		
 			
 		<script	type="text/javascript">

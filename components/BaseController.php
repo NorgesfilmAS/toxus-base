@@ -1052,13 +1052,15 @@ class BaseController extends CController
 		$defaults = array_merge(
 						array(
 								'label-start' => '<span class="info-label">',
-								'label-end' => '</span>: ',
+								'label-end' => '</span> ',
 								'field-start' => '',
 								'field-end' => '',
+								'data-start' => '',
+								'data-end' =>'',
 								
 						), $options);
 		if (!empty($value)) {
-			return $defaults['label-start'].$label.$defaults['label-end'].$defaults['field-start'].CHtml::encode($value).$defaults['field-end'];
+			return $defaults['data-start'].$defaults['label-start'].$label.$defaults['label-end'].$defaults['field-start'].CHtml::encode($value).$defaults['field-end'].$defaults['data-end'];
 		}
 	}
 	

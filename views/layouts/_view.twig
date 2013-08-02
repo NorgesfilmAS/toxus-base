@@ -1,22 +1,20 @@
-		
+<dl class="{{ form.layoutClass |default('dl-horizontal') }}">
 		{% if form.controlWidth %}{% set width=form.controlWidth %}{% else %}{% set width='input-xlarge' %}{% endif %}
 		{% for groupKey, groupElement in form.elements %}			
 		{% if groupElement.hidden != true and groupElement.viewHidden != true %}
-		<div class="control-group{% if model.getErrors(groupKey) %} error {% endif %}">
+		{# <div class="control-group{% if model.getErrors(groupKey) %} error {% endif %}"> #}
+		
 			{% if  groupElement.type != 'hidden' %}
-			<span class="view-label" for="id-{{ groupKey }}">{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}:</span> 
+			{# <span class="view-label" for="id-{{ groupKey }}">{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}:</span>  #}
+			<dt>{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}</dt> 
 			{% endif %}
 			
-			<span class="view-data">
+			<dd>
 				{% if groupElement.elements | length > 0 %}
 					{% set fields = (groupElement.elements) %}
 				{% else %}
 					{% set fields = { (groupKey) : groupElement } %} {# must in () otherwise it's an string #}
 				{% endif %}	
-				{#
-				{% set key = groupKey %}
-				{% set element = groupElement %}
-				#}
 				{% for key, element in fields %}	
 
 				{% if element.type == 'dropdown' or element.type == 'readiobuttonlist' %}							
@@ -46,9 +44,10 @@
 					{{ model.__get(key) | raw }}	
 				{% endif %}
 			  {% endfor %}	
-			</span>	
+			</dd>	
 			
 			
-		</div>
+		{#</div> #}
 		{% endif %}
 		{% endfor %}	
+</dl>
