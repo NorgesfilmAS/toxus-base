@@ -1,0 +1,317 @@
+/* 
+    Document   : toxus
+    Created on : Mar 28, 2013, 3:35:33 PM
+    Author     : jaap
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+#id-chord-trick table td {
+	border-bottom-width: 0px;
+	border-right: 0px;
+}
+
+#id-chord-trick table {
+	border-width: 0px;
+	margin-bottom: 0;
+}
+
+.cmd-button {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+#sequence h2 , #sequence p {
+	color : white;
+}
+
+.hide-it {
+	display: none !important;
+}
+
+/* copy from bootstrap: textarea */
+.chzn-container {
+	background-color: #FFFFFF;
+  border: 1px solid #C7CFD6;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;	
+	font-family: "Ubuntu",Sans-Serif;
+	border-radius: 4px 4px 4px 4px;
+  color: #555555;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 4px 6px 0px 4px;;
+	font-weight: normal;	
+	width: 100%;
+}
+
+.chzn-container  .chzn-choices {
+	border: 0 none;
+	background-image: none;
+}
+.chzn-container-multi .chzn-choices .search-choice {
+	color: #555555;
+}
+
+.chzn-container-multi .chzn-choices .search-choice {
+	background-color: #fff;
+	background-image: none;
+	box-shadow: none;
+	border: 1px solid #CCCCCC;
+	margin-left: 1px;
+} 
+
+.chzn-container-active .chzn-choices  {
+	border-color: rgba(82, 168, 236, 0.8);
+	box-shadow: 0 0px 0px rgba(0,0,0,0.75) inset, 0 0 8px rgba(82, 168,236,0.6);
+	outline: 0 none;
+}
+/* ===== hover lock ================== */
+span.lock {
+    position: absolute;
+    width: 100%;
+    display: none;
+    height: 100%;
+    background: url(../images/lock.png) 50% 50% no-repeat;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}
+a:hover .lock {
+    display: block;
+    z-index: 200;
+    opacity: 1;
+}
+
+/* bootstrap list view pager error: next is on other line */
+.pager li {
+	border-right: none;
+}
+.pager li:last-child {
+	padding-left: 0px;	
+}
+.summary {
+	display: inline;
+	float: right;
+	margin: 20px 0;
+}
+.pagination {
+	display: inline;
+}
+.tox-pager-grid {
+	margin-top: 15px;
+}
+
+/* bootstrap 1.3.1 changes */
+a.btn {
+	text-decoration: none;
+}
+
+.widget .cookbook {
+	color: #53a3b7;
+	text-decoration: none;
+}
+
+
+a.videoicon span.videoicon {
+    background: url("../images/videoicon.png") no-repeat scroll 0 0 #FFFFFF;
+    border-left: 1px solid #FFFFFF;
+    border-top: 1px solid #FFFFFF;
+    bottom: 0;
+    display: block;
+    height: 25px;
+    position: absolute;
+    right: 0;
+    width: 25px;
+    z-index: 10;
+}
+/* logo definitions */
+#logo {
+	padding-left : 110px;
+	padding-top: 5px;
+}
+#logo a {
+	color: #DDD;
+	text-decoration: none;
+}
+#logo .word {
+	
+	font-size: 130%;
+	font-style: italic;
+	font-stretch: expanded;
+	line-height: 90%;
+	letter-spacing: 2px;
+
+	transform:scale(2,1); /* W3C */
+	-webkit-transform:scale(2,1); /* Safari and Chrome */
+	-moz-transform:scale(2,1); /* Firefox */
+	-ms-transform:scale(2,1); /* IE 9 */
+	-o-transform:scale(2,1); /* Opera */	
+}
+/* page header adjust */
+.admin-page {
+  margin-top: -2% !important;
+}
+.filters td {
+	margin: 0;
+	padding: 0;
+}
+.filters input, .filters select {	
+	margin: 0;
+	width: 96%;
+}
+
+.message-box {
+	width: 50%;
+	margin: 0 auto;
+}
+/* video, video video 
+http://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
+*/
+.video-wrapper {
+	position: relative;
+	padding-bottom: 56.25%; /* 16:9 */
+	padding-top: 25px;
+	height: 0;
+}
+
+.video-wrapper iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+/******  contemporary 3 columns layout with colums on the LEFT side ******/
+.left-three-cols {
+	background-image: url(../images/rule.png), url(../images/rule.png);
+	background-position: 24% 0, 50.5% 0;
+	background-repeat: repeat-y;
+}
+.left-three-cols .secondary-column .widget {padding:0 20px;}
+.left-three-cols .tertiary-column {padding-left:20px;}
+
+.sub-active {
+  background-color: #BFCFFF !important;
+}
+
+/* for typeahead.js */
+.twitter-typeahead .tt-query,
+.twitter-typeahead .tt-hint {
+  margin-bottom: 0;
+}
+
+.tt-dropdown-menu {
+  min-width: 160px;
+  margin-top: 2px;
+  padding: 5px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0,0,0,.2);
+  *border-right-width: 2px;
+  *border-bottom-width: 2px;
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+  -webkit-background-clip: padding-box;
+     -moz-background-clip: padding;
+          background-clip: padding-box;
+}
+
+.tt-suggestion {
+  display: block;
+  padding: 3px 20px;
+}
+
+.tt-suggestion.tt-is-under-cursor {
+  color: #fff;
+  background-color: #0081c2;
+  background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));
+  background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);
+  background-image: -o-linear-gradient(top, #0088cc, #0077b3);
+  background-image: linear-gradient(to bottom, #0088cc, #0077b3);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0)
+}
+
+.tt-suggestion.tt-is-under-cursor a {
+  color: #fff;
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+
+/* for working with the views */
+.view-label {
+	color: gray;
+	display: inline-block;
+	text-align: right;
+	width: 90px;
+}
+.view-data {
+	
+}
+.short_headline-bar {
+	display: inline-block;
+	float: right;
+}
+.short_headline .btn {
+	padding-bottom:  0px;
+}
+
+.datepicker .dow, .datepicker .cw, .datepicker .prev,.datepicker .switch, .datepicker .next {
+	background-color: white !important;
+	color: darkslategray !important;
+}
+
+.dropdown-menu hr {
+	margin: 3px 0 4px;	
+}
+
+
+.summery-caption {
+	font-size: 110%;	
+}
+.summery-label {
+	padding-left: 10px;
+}
+.summery-field {
+	padding-right: 10px;
+}
+
+.field-value {
+	display: inline-block;	
+	display: inline-block;	
+	width:40%;
+}
+
+.field-group span:first-child {
+	color: lightgray;
+	text-align: right;
+	display: inline-block;
+	padding-right: 3%;
+	width: 57%;	
+}
+
+.field-group12 span:first-child {
+	color: lightgray;
+	text-align: right;
+	display: inline-block;
+	padding-right: 1.5%;
+	width: 25%;	
+}
+.field-group12 .field-value {
+	display: inline-block;	
+	display: inline-block;	
+	width:73.5%;
+}
+#main-content {
+	min-height: 500px;
+	
+}

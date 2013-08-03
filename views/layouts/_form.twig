@@ -26,12 +26,17 @@
 				{% for key, element in fields %}	
 				{% if form.controlWidth %}{% set width=form.controlWidth %}{% else %}{% set width= element.width | default('input-xlarge') %}{% endif %}
 
+				{% if element.width %}
+				<div class="row">	
+					<div class="{{ element.width }}">
+				{% endif %}	
+							
 				{% if element.type == 'dropdown' or element.type == 'vat' %}							
 				  {% if element.type == 'vat' %}
 					<div class="input-prepend span4">
 						<span class="add-on">%</span>
 					{% endif %}	
-				<select id="id-{{ key }}" name="{{ form.model }}[{{key}}]" class="{{ width }} {{ element.class }}">
+				<select id="id-{{ key }}" name="{{ form.model }}[{{key}}]" class="{{ elementwidth }} {{ element.class }} form-control">
 					{% for itemKey, itemCaption in element.items %}
 					<option value="{{ itemKey }}" {% if itemKey == this.model.__get(key) %}selected="1"{% endif %} >{{ itemCaption }}</option>
 					{% endfor %}
@@ -40,7 +45,7 @@
 					</div>	
 					{% endif %}
 				{% elseif element.type == 'radiobuttonlist' %}	
-					{{ html.activeRadioButtonList((this.model), 'article_type_id', element.items , {'labelOptions': {'style':'display:inline-block;padding-right:8px;margin-top:3px;'}, 'separator' : ' ' }) |raw }} 
+					{{ html.activeRadioButtonList((this.model), key, element.items , {'labelOptions': {'style':'display:inline-block;padding-right:8px;margin-top:3px;'}, 'separator' : ' ' }) |raw }} 
 				{% elseif element.type == 'textarea' %}
 					<textarea id="id-{{ key }}" name="{{ form.model }}[{{key}}]" class="{% if element.class %}{{ element.class }} {%else%}{{ width }}{%endif%}" rows="{% if element.rows %}{{ element.rows }}{% else %}5{% endif %}">{{ this.model.__get(key) }}</textarea>
 				{% elseif element.type == 'checkbox' %}	
@@ -51,9 +56,13 @@
 				{% elseif element.type== 'finder' %}
 					{{ this.form.finder(this.model, key) | raw }}
 				{% elseif element.type== 'html' %}
-					{{ this.form.htmlEditor(this.model, key) | raw}}						
+					{{ this.htmlEditor(this.model, key) | raw}}						
 				{% elseif element.type=='chosen' %}
 					{{ this.form.chosen(this.model, key, element) }}	
+				{% elseif element.type=='mask' %}
+					{{ this.registerPackage('inputmask') }}	
+					<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }} form-control" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"/> 				
+					{{ this.registerScript('id-'~key, '$("#id-'~key~'").inputmask({"mask": "'~element.mask~'"})', 4) }}
 				{% elseif element.type=='date' %}						
 					<div class="input-prepend date">						
 						<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" size="16" type="text" value="{{ this.model.__get(key) }}" class="input-date" data-date-format="{{ format.dateFormat() | raw }}" {% if element.calendarWeeks %}data-date-calendar-weeks="true"{% endif %}>						
@@ -115,6 +124,12 @@ $().ready(function() {
 				{% else %}	
 					<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }} form-control" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"/> 
 				{% endif %}
+				
+				{% if element.width %}
+					</div>
+				</div>	
+				{% endif %}
+					
 			  {% endfor %}	
 			</div>	
 			

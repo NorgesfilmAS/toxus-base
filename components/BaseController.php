@@ -286,7 +286,7 @@ class BaseController extends CController
 	{
 		$packages = array(
 			'bootstrap' => array(
-				'basePath' => 'toxus.assets',
+				'basePath' => 'toxus.assetsBase.crisp',
 				'css' => array(
 						'css/bootstrap.css', 
 						'css/bootstrap-responsive.css',
@@ -302,7 +302,7 @@ class BaseController extends CController
 				),
 			),	
 			'bootstrap3' =>array(
-				'basePath' => 'toxus.assets3',
+				'basePath' => 'toxus.assetsBase.bootstrap3',
 				'css' => array(
 						'css/bootstrap.css', 
 						'css/bootstrap-glyphicons.css',
@@ -319,7 +319,7 @@ class BaseController extends CController
 				),					
 			),	
 			'crisp' => array(
-				'basePath' => 'toxus.assets',
+				'basePath' => 'toxus.assetsBase.crisp',
 				'css' => array(
 						'css/style.css', 
 						'css/header-1.css', 
@@ -335,7 +335,7 @@ class BaseController extends CController
 				),
 			),
 			'core' => array(
-				'basePath' => 'toxus.assets',		
+				'basePath' => 'toxus.assetsBase.crisp',		
 				'js' => array(	
 					CClientScript::POS_END => array(
 							'js/core.js', 
@@ -344,7 +344,7 @@ class BaseController extends CController
 				),		
 			),	
 			'smooth' => array(
-				'basePath' => 'toxus.assets',				
+				'basePath' => 'toxus.assetsBase.crisp',				
 				'js' => array(
 					CClientScript::POS_END => array(
 								'js/ddsmoothmenu-min.js',
@@ -354,15 +354,15 @@ class BaseController extends CController
 			),	
 				
 			'typeahead' => array(
-				'basePath' => 'toxus.assets',
+				'basePath' => 'toxus.assetsBase.typeahead',
 				'js' => array(
 					CClientScript::POS_END => array(
-						'js/typeahead.js',
+						'typeahead.js',
 					),						
 				),	
 			),	
 			'ajaxForm' => array(
-				'basePath' => 'toxus.assets',
+				'basePath' => 'toxus.assetsBase.jquery-form',
 				'js' => array(
 					CClientScript::POS_END => array(
 						'js/jquery.form.js',
@@ -370,7 +370,7 @@ class BaseController extends CController
 				),	
 			),	
 			'datetimepicker' => array(
-				'basePath' => 'toxus.assets',
+				'basePath' => 'toxus.assetsBase.crisp',
 				'css' => array(
 					'css/datetimepicker.css',	
 				),	
@@ -382,7 +382,7 @@ class BaseController extends CController
 				),						
 			),
 			'datepicker' => array(
-				'basePath' => 'toxus.assets',
+				'basePath' => 'toxus.assetsBase.boostrap-datepicker',
 				'css' => array(
 					'css/datepicker.css',
 					'css/timepicker.css',	
@@ -395,8 +395,7 @@ class BaseController extends CController
 				),											
 			),
 			'currency' => array(
-				'basePath' => 'toxus.assets',
-					
+				'basePath' => 'toxus.assetsBase.jquery-maskmoney',					
 				'js' => array(
 				CClientScript::POS_END => array(
 						'js/jquery.maskMoney.js',
@@ -404,8 +403,18 @@ class BaseController extends CController
 				),
 				'ready' => '$(".input-currency").maskMoney('.Util::param('currencyFormat', '{thousands:".", decimal:","}').')',				
 			),
+			'inputmask' => array(
+				'basePath' => 'toxus.assetsBase.jquery-inputmask',					
+				'js' => array(
+				CClientScript::POS_END => array(
+						'js/jquery.inputmask.js',
+					)		
+				),
+				// 'ready' => '$(".input-mask").maskMoney('.Util::param('currencyFormat', '{thousands:".", decimal:","}').')',				
+					
+			)	,
 			'vat' => array(
-				'basePath' => 'toxus.assets',
+				'basePath' => 'toxus.assetsBase.crisp',
 				'js' => array(
 				CClientScript::POS_END => array(
 						'js/customComboBox.js'
@@ -591,7 +600,7 @@ class BaseController extends CController
  */
 	public function htmlEditor($model, $attribute, $template='full', $options=array())
 	{
-		$this->widget('ext.tinymce.TinyMce', array(
+		$this->widget('toxus.extensions.tinymce.TinyMce', array(
 				'model' => $model,
 				'attribute' => $attribute,
 				// Optional config
@@ -600,13 +609,13 @@ class BaseController extends CController
 				// or use yandex spell: http://api.yandex.ru/speller/doc/dg/tasks/how-to-spellcheck-tinymce.xml
 				'spellcheckerUrl' => 'http://speller.yandex.net/services/tinyspell',
 				'fileManager' => array(
-						'class' => 'ext.elFinder.TinyMceElFinder',
+						'class' => 'toxus.extensions.elFinder.TinyMceElFinder',
 						'connectorRoute'=>'elFinder/connector',
 				),
 				'htmlOptions' => array(
 						'rows' => 6,
 						'cols' => 100,
-						'class' => 'span10',
+						'class' => 'span10 col-lg-10',
 				),
 				'settings' => array(
 							'theme_advanced_buttons1' =>
