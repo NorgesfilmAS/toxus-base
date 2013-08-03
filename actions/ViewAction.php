@@ -9,15 +9,14 @@ class ViewAction extends CAction
 	{		
 		$this->controller->model = $this->controller->loadModel($id, ucfirst($this->controller->id));
 		$form = false;
-		$mode = isset($_GET['mode']) ? $_GET['mode'] : 'view';
-		
+				
 		if (!empty($this->form)) {
 			$form = $this->controller->loadForm($this->form);
 		}
 		$this->controller->render($this->view, array(
 			'model' => $this->controller->model,
 			'form' => $form,	
-			'mode' => $mode	
+			'mode' => isset($_GET['mode']) ? $_GET['mode'] : 'view'	
 		));
 	}
 }

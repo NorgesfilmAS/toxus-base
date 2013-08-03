@@ -19,6 +19,8 @@
 class WebUser extends CWebUser
 {
 	
+	const LAST_INSERT_ID = 'lastInsertId';
+	
 	private $_profile;
 	
 	public function getProfile()
@@ -59,5 +61,33 @@ class WebUser extends CWebUser
 	{
 		return $this->profile->canEdit;
 	}
+	
+	
+	public function getLastInsertId()
+	{
+		if ($this->hasState(self::LAST_INSERT_ID))
+			return $this->getState (self::LAST_INSERT_ID);
+		return null;
+	}	
+	public function setLastInsertid($value)
+	{
+		$this->setState(self::LAST_INSERT_ID, $value);
+	}
+	public function clearLastInsert()
+	{
+		$this->setState(self::LAST_INSERT_ID, null);
+	}
+	
+	/**
+	 * returns the lastInsertId and removes the value
+	 * @return integer
+	 */
+	public function getLastId()
+	{
+		$id = $this->lastInsertId;
+		$this->clearLastInsert();
+		return $id;
+	}
+	
 }
 ?>

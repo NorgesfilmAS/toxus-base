@@ -29,7 +29,9 @@ class UpdateAction extends CAction
 		$this->controller->render( $this->edit, array(
 				'model' => $this->controller->model,
 				'layout' => 'ajaxForm', 
-				'form' => $form ));
+				'form' => $form,	
+				'mode' => isset($_GET['mode']) ? $_GET['mode'] : 'view'	
+		));
 		
 	}
 }

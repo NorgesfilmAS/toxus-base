@@ -31,12 +31,14 @@
 					<div class="{{ element.width }}">
 				{% endif %}	
 							
-				{% if element.type == 'dropdown' or element.type == 'vat' %}							
+				{% if element.type == 'dropdown' or element.type == 'vat' or element.type=='chosen' %}							
 				  {% if element.type == 'vat' %}
 					<div class="input-prepend span4">
 						<span class="add-on">%</span>
+					{% elseif element.type == 'chosen' %}
+						{{ this.registerPackage('chosen') }}
 					{% endif %}	
-				<select id="id-{{ key }}" name="{{ form.model }}[{{key}}]" class="{{ elementwidth }} {{ element.class }} form-control">
+				<select id="id-{{ key }}" name="{{ form.model }}[{{key}}]" class="{{ elementwidth }} {{ element.class }} form-control{% if element.type=='chosen' %} chosen-select{%endif%}">
 					{% for itemKey, itemCaption in element.items %}
 					<option value="{{ itemKey }}" {% if itemKey == this.model.__get(key) %}selected="1"{% endif %} >{{ itemCaption }}</option>
 					{% endfor %}
@@ -56,9 +58,22 @@
 				{% elseif element.type== 'finder' %}
 					{{ this.form.finder(this.model, key) | raw }}
 				{% elseif element.type== 'html' %}
-					{{ this.htmlEditor(this.model, key) | raw}}						
-				{% elseif element.type=='chosen' %}
-					{{ this.form.chosen(this.model, key, element) }}	
+					{{ this.htmlEditor(this.model, key) | raw}}												
+				{% elseif element.type=='chosenWrong' %}
+					{# {{ this.form.chosen(this.model, key, element) }}	#}
+					{{ this.widget(
+							'toxus.extensions.chosen.Chosen',
+							{	'model' : this.model,
+								'attribute' : key,
+								'data' : element.items | default({}),
+								'multiple' :element.multi | default(0),
+
+								'placeholderMultiple' : element.placeholder
+							},	
+							1
+						) |raw
+					}}
+						{#								'htmlOptions' : { 'class' : 'form-control' }, #}
 				{% elseif element.type=='mask' %}
 					{{ this.registerPackage('inputmask') }}	
 					<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }} form-control" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"/> 				

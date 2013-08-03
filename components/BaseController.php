@@ -421,6 +421,18 @@ class BaseController extends CController
 					),	
 				),	
 			),	
+			'chosen' => array( /* version 1.0 */
+				'basePath' => 'toxus.assetsBase.chosen',
+				'js' => array(
+					CClientScript::POS_END => array(
+						'chosen.jquery.js'
+					),	
+				),						
+				'css' => array(
+					'chosen.ext.css',	
+				),	
+				'ready' => '$(".chosen-select").chosen(); $(".chosen-container").addClass("form-control");',									
+			),	
 				
 			'new' => array(
 				'basePath' => 'alias',
