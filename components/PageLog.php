@@ -14,6 +14,7 @@ class PageLog extends CComponent
 	 * @var string
 	 */
 	public $dbName;
+	public $reportErrors = false;
 	
 	
 	private $_logging;
@@ -65,7 +66,7 @@ class PageLog extends CComponent
 		} else {
 			$this->addText('There is no controller');
 		}	
-		if (!$this->log->save())
+		if (!$this->log->save() && $this->reportErrors)
 			throw new CDbException('Could not write to log');
 	}					
 					

@@ -1,0 +1,12 @@
+{% extends this.viewPath('mainPage') %}
+
+{% block content %}
+<h1>List of the pages defined</h1>
+<ul>
+	{% for filename in files %}
+		<li><a href="{{ this.createUrl('page/update',{'page': filename}) }}"><span class="glyphicon-inbox"></span> {{ filename }}</a> </li>
+	{% endfor %}
+</ul>
+
+
+{% endblock %}

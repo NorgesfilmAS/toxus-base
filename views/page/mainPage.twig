@@ -1,0 +1,15 @@
+{% extends this.viewPath('main') %}
+
+{% block headerButtons %}
+  {% if mode == 'view' %}
+		<button class="btn btn-info btn-action btn-small" data-url="{{ this.createUrl('page/create') }}">New</button>
+		<button class="btn btn-info btn-action btn-small" data-url="{{ this.createUrl('page/update', {'page' : this.model.page })}}">Edit</button>
+		<button class="btn btn-info btn-action btn-small" data-url="{{ this.createUrl('page/list') }}">List</button>
+	{% endif %}	
+{% endblock %}
+
+{% block onReady %}
+	$('.btn-action').on('click', function() {
+		window.location = $(this).data('url');
+	});
+{% endblock %}

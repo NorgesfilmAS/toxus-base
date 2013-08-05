@@ -1,0 +1,18 @@
+{% extends this.viewPath('mainPage') %}
+{% block content %}
+
+<div class="bs-content">
+	{# must first display any error connected to the main record #}
+	{% if this.model.hasErrors() %}
+	<div class="row">
+		<div class="col-lg-8 col-offset-2 alert alert-danger">			
+			{{ html.errorSummary(this.model)|raw }}
+		</div>
+	</div>
+	{% endif %}	
+		
+	{% include this.viewPath('_form') %}
+</div>
+
+{% endblock %}
+

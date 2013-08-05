@@ -453,6 +453,34 @@ class BaseController extends CController
 						toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link insertdate "
 					});',									
 			),
+			'code' => array(
+				'basePath' => 'toxus.assetsBase.codemirror',
+				'js' => array(
+					CClientScript::POS_END => array(
+						'lib/codemirror.js',
+						'jquery-codemirror/jquery.codemirror.js',	
+						'mode/htmlmixed/htmlmixed.js'	
+					),	
+				),						
+				'css' => array(
+					'lib/codemirror.css',	
+				),
+				'ready' => '
+					$(".code-html").codemirror({ mode: "htmlmixed", lineNumbers: true, viewportMargin: Infinity});					
+					$(".code-javascript").codemirror({mode: "javascript", lineNumber: true,viewportMargin: Infinity });
+				'	
+			),	
+			'code-html' => array(
+				'basePath' => 'toxus.assetsBase.codemirror.mode',	
+				'js' => array(
+					CClientScript::POS_END => array(
+							'xml/xml.js',
+							'javascript/javascript.js',
+							'css/css.js',    
+							'htmlmixed/htmlmixed.js'
+					),	
+				),						
+			),	
 			'new' => array(
 				'basePath' => 'alias',
 				'css' => array(),
