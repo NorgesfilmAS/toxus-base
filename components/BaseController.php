@@ -432,8 +432,27 @@ class BaseController extends CController
 					'chosen.ext.css',	
 				),	
 				'ready' => '$(".chosen-select").chosen(); $(".chosen-container").addClass("form-control");',									
-			),	
-				
+			),
+			'tinymce' => array(
+				'basePath' => 'toxus.assetsBase.tinyMce',
+				'js' => array(
+					CClientScript::POS_END => array(
+						'js/tinymce/tinymce.min.js',
+						'js/tinymce/jquery.tinymce.min.js'	
+					),	
+				),						
+				'ready' => 
+					'tinymce.init({
+						selector: ".tinymce",
+						menubar: "edit format insert table tools view",
+						plugins: [
+							"autolink lists link charmap ",
+							"searchreplace visualblocks code fullscreen",
+							"insertdatetime table contextmenu paste autoresize"
+						],
+						toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link insertdate "
+					});',									
+			),
 			'new' => array(
 				'basePath' => 'alias',
 				'css' => array(),

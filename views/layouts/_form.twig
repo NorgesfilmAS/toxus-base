@@ -37,12 +37,14 @@
 						<span class="add-on">%</span>
 					{% elseif element.type == 'chosen' %}
 						{{ this.registerPackage('chosen') }}
+						{# needs an empty field, because field is remove if no value is selected, so changes to nothing would not be saved #}
+						<input id="id-{{ key }}-val" type="hidden" name="{{ form.model }}[{{key}}][]" />
 					{% endif %}	
-				<select id="id-{{ key }}" name="{{ form.model }}[{{key}}]" class="{{ elementwidth }} {{ element.class }} form-control{% if element.type=='chosen' %} chosen-select{%endif%}">
-					{% for itemKey, itemCaption in element.items %}
-					<option value="{{ itemKey }}" {% if itemKey == this.model.__get(key) %}selected="1"{% endif %} >{{ itemCaption }}</option>
+						<select id="id-{{ key }}" name="{{ form.model }}[{{key}}]{% if element.multi %}[]{% endif %}" class="{{ elementwidth }} {{ element.class }} form-control{% if element.type=='chosen' %} chosen-select{% endif %}" {% if element.placeholder %}data-placeholder="{{ element.placeholder }}"{%endif %}{% if element.multi %} multiple{% endif %} >
+					{% for itemKey, itemCaption in element.items %}								
+							<option value="{{ itemKey }}" {% if this.model.__get(key) | length > 0 %}{% if itemKey in this.model.__get(key) %}selected="1"{% endif %}{% else %}{% if itemKey == this.model.__get(key) %}selected="1"{% endif %} {% endif %} >{{ itemCaption }}</option>
 					{% endfor %}
-				</select>
+						</select>
 					{% if element.type == 'vat' %}
 					</div>	
 					{% endif %}
@@ -57,8 +59,13 @@
 					{{ this.form.image(this.model, key) | raw }}								
 				{% elseif element.type== 'finder' %}
 					{{ this.form.finder(this.model, key) | raw }}
-				{% elseif element.type== 'html' %}
+				{% elseif element.type== 'html2' %}						
 					{{ this.htmlEditor(this.model, key) | raw}}												
+				{% elseif element.type=='html' %}
+					{{ this.registerPackage('tinymce') }}	
+					<textarea id="id-{{ key }}" name="{{ form.model }}[{{key}}]" class="tinymce form-control {% if element.class %}{{ element.class }} {%else%}{{ width }}{%endif%}" rows="{% if element.rows %}{{ element.rows }}{% else %}5{% endif %}">{{ this.model.__get(key) }}</textarea>
+						
+ 		
 				{% elseif element.type=='chosenWrong' %}
 					{# {{ this.form.chosen(this.model, key, element) }}	#}
 					{{ this.widget(
