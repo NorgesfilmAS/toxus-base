@@ -165,15 +165,24 @@
 	 margin: 0 10px 0 0 !important;
  }
  /*end chosen fix */
-/**
+
+ /**
  codeMirror
+ autoresize
 */
 .CodeMirror {
   border: 1px solid #eee;
-  height: auto;
+  height: auto !important;
 }
 .CodeMirror-scroll {
   overflow-y: hidden;
   overflow-x: auto;
 }
  
+/**
+  for BootstrapLinkPager
+*/
+
+.hide-it {
+	display: none !important;
+}

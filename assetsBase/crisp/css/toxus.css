@@ -25,10 +25,6 @@
 	color : white;
 }
 
-.hide-it {
-	display: none !important;
-}
-
 /* copy from bootstrap: textarea */
 .chzn-container {
 	background-color: #FFFFFF;
