@@ -1081,6 +1081,9 @@ class BaseController extends CController
 	 */
 	public function resolveViewFile($viewName,$viewPath,$basePath,$moduleViewPath=null)
 	{
+		/**
+		 * don't get it, but should look the same way viewPath is looking for the file
+		 */
 	  $path = YiiBase::getPathOfAlias('webroot.protected.'.$this->vendorViewRoot.'.'.$this->getId());
 		$s = parent::resolveViewFile($viewName, $viewPath, $basePath, $path);
 		if ($s === false) {
@@ -1093,6 +1096,12 @@ class BaseController extends CController
 					if ($s == false) {
 						$path = YiiBase::getPathOfAlias('webroot.protected.'.$this->vendorViewRoot.'.layouts');			// has double //		
 						$s = parent::resolveViewFile('//'.$viewName, $viewPath, $basePath, $path);											
+						if ($s == false) {
+							$s = $this->viewPath ($viewName);
+							if ($s) {
+								$s = Yii::getPathOfAlias('application').'/'.$s;
+							}
+						}	
 					}
 				} 
 			}

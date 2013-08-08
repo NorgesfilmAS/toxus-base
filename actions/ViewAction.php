@@ -6,7 +6,7 @@ class ViewAction extends CAction
 	
 	public $view = 'view';
 	public $form = null;		// the name of the form ex extension
-	
+	public $defaultMode = 'view';
 	/**
 	 * 
 	 * @param type $id
@@ -25,7 +25,7 @@ class ViewAction extends CAction
 		$this->controller->render($this->view, array(
 			'model' => $this->controller->model,
 			'form' => $form,	
-			'mode' => isset($_GET['mode']) ? $_GET['mode'] : 'view'	
+			'mode' => isset($_GET['mode']) ? $_GET['mode'] : $this->defaultMode,	
 		));
 	}
 }

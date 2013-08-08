@@ -14,7 +14,7 @@
 	{% if item.type %}
 	{% else %}		
 		{% if item.hidden != true  %}
-	<li id="menu-{{ item.label | replace({' ' : '-'}) |lower }}">	
+	<li id="menu-{{ key | replace({' ' : '-'}) |lower }}">	
   <a href="{{ item.url | raw }}" data-placement="bottom" {% if item.tooltip %}title="{{ item.tooltip }}"{% endif %}>
   {% if item.icon is defined %}<i class="{{ item.icon }}"></i>{% endif %}
 	{% if item.label %}{{ item.label }}{% endif %}

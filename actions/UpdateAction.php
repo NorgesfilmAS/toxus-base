@@ -6,10 +6,15 @@
 
 class UpdateAction extends CAction
 {
-	public $view = 'view';	// the view to open after the information has been saved successfully
-	public $edit = 'edit';	// the view to open to edit the current information
+	/*
+	 * version 1.1: Introduced in PNEK 8/8/2013: $view and $edit defaults are changed to 
+	 * viewForm so it will default load a page that can switch between edit and view
+	 * 
+	 */
+	public $view = null;	// the view to open after the information has been saved successfully. must be the FULL path to the page
+	public $edit = 'viewForm';	// the view to open to edit the current information
 	public $form = null;		// the name of the form ex extension
-
+	public $menuItem = null;// the menu item to active. Should be a jQuery selector (#menu-agent, or .agent-item)
 	
 	public function run($id)
 	{
@@ -18,7 +23,11 @@ class UpdateAction extends CAction
 
 		if (isset($_POST[ucfirst($controllerId)])) {
 			if ($this->controller->executeUpdate()) {
-				$this->controller->redirect($this->controller->createUrl($controllerId.'/'.$this->view, array('id' => $id)));
+				if ($this->view == null) {
+					$this->view = Yii::app()->baseURL.'/'.Yii::app()->request->pathInfo;
+				}
+				$this->controller->redirect($this->view);
+				//$this->controller->redirect($this->controller->createUrl($controllerId.'/'.$this->view, array('id' => $id)));
 			}
 		}
 		if ($this->form == null)
@@ -30,7 +39,8 @@ class UpdateAction extends CAction
 				'model' => $this->controller->model,
 				'layout' => 'ajaxForm', 
 				'form' => $form,	
-				'mode' => isset($_GET['mode']) ? $_GET['mode'] : 'view'	
+				'mode' => isset($_GET['mode']) ? $_GET['mode'] : 'view',
+				'menuItem' => $this->menuItem,
 		));
 		
 	}
