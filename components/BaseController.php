@@ -25,6 +25,8 @@ class BaseController extends CController
 	protected $_assetBaseUrl;
 
 	protected $_packages = array()	; // css and js to load
+	
+	protected $_onReadyScript = array();  // the lines in the onReadyScript
 
 
 
@@ -397,7 +399,7 @@ class BaseController extends CController
 			'currency' => array(
 				'basePath' => 'toxus.assetsBase.jquery-maskmoney',					
 				'js' => array(
-				CClientScript::POS_END => array(
+					CClientScript::POS_END => array(
 						'js/jquery.maskMoney.js',
 					)		
 				),
@@ -406,7 +408,7 @@ class BaseController extends CController
 			'inputmask' => array(
 				'basePath' => 'toxus.assetsBase.jquery-inputmask',					
 				'js' => array(
-				CClientScript::POS_END => array(
+					CClientScript::POS_END => array(
 						'js/jquery.inputmask.js',
 					)		
 				),
@@ -416,7 +418,7 @@ class BaseController extends CController
 			'vat' => array(
 				'basePath' => 'toxus.assetsBase.crisp',
 				'js' => array(
-				CClientScript::POS_END => array(
+					CClientScript::POS_END => array(
 						'js/customComboBox.js'
 					),	
 				),	
@@ -480,6 +482,13 @@ class BaseController extends CController
 							'htmlmixed/htmlmixed.js'
 					),	
 				),						
+			),
+			'modal-dialog' => array(
+				'ready' => '
+						$(".menu-modal").on("click", function() {
+							$("#id-modal").modal("show"); 
+							$("#id-modal-body").load($(this).data("url"));
+					})'
 			),	
 			'new' => array(
 				'basePath' => 'alias',
@@ -508,25 +517,52 @@ class BaseController extends CController
 		if (!isset($this->_packages[$name])) {// test if it already registered
 			$package = $this->findPackage($name);
 			if (isset($package)) {
-				$assetUrl = Yii::app()->assetManager->publish(YiiBase::getPathOfAlias($package['basePath']));
-				if (isset($package['css']))
-					foreach ($package['css'] as $css) {
-						Yii::app()->clientScript->registerCSSFile( $assetUrl.'/'.$css);					
-					}
-				if (isset($package['js'])){	
-					foreach ($package['js'] as $position => $scripts) {
-						foreach ($scripts as $script) {
-							Yii::app()->clientScript->registerScriptFile( $assetUrl.'/'.$script, $position);
+				if (isset($package['basePath'])) {
+					$assetUrl = Yii::app()->assetManager->publish(YiiBase::getPathOfAlias($package['basePath']));
+					if (isset($package['css']))
+						foreach ($package['css'] as $css) {
+							Yii::app()->clientScript->registerCSSFile( $assetUrl.'/'.$css);					
 						}
-					}
-				}	
-				
+					if (isset($package['js'])){	
+						foreach ($package['js'] as $position => $scripts) {
+							foreach ($scripts as $script) {
+								Yii::app()->clientScript->registerScriptFile( $assetUrl.'/'.$script, $position);
+							}
+						}
+					}	
+				}		
 				if (isset($package['ready'])) {
-					Yii::app()->clientScript->registerScript('package-'.$name.'-ready',"$().ready(function() {\n".$package['ready']."\n});", CClientScript::POS_END);
+				//	Yii::app()->clientScript->registerScript('package-'.$name.'-ready',"$().ready(function() {\n".$package['ready']."\n});", CClientScript::POS_END);
+					$this->registerOnReady($package['ready']);
 				}	
 				$this->_packages[$name] = $assetUrl;	// has been registered
 			}
 		}
+	}
+	
+	/**
+	 * return the script associated with the package so we can load them 
+	 * in an ajax call
+	 * 
+	 * @param string $name the package to get the scripts from
+	 */
+	public function packageScripts($name)
+	{
+		$result = array();
+		$package = $this->findPackage($name);
+		if (isset($package)) {		
+			if (isset($package['basePath'])) {
+				$assetUrl = Yii::app()->assetManager->publish(YiiBase::getPathOfAlias($package['basePath']));
+				if (isset($package['js'])){	
+					foreach ($package['js'] as $scripts) {
+						foreach ($scripts as $script) {
+							$result[] = $assetUrl.'/'.$script;
+						}
+					}
+				}	
+			}
+		}
+		return $result;
 	}
 	
 	/**
@@ -583,6 +619,27 @@ class BaseController extends CController
 		} else {
 			Yii::app()->getClientScript()->registerCssFile($this->assetsBase.'/css/'.$filename, $media);		
 		}	
+	}
+	/**
+	 * add a script to the onReady statement
+	 * @param string $script
+	 */
+	public function registerOnReady($line)
+	{
+		$this->_onReadyScript[] = $line;
+		return '';
+	}
+	
+	/**
+	 * generate the onReady scription
+	 */
+	public function scriptOnReady()
+	{
+		$script = '';		
+		foreach ($this->_onReadyScript as $scriptLine) {
+			$script .= "\t\t".$scriptLine."\n";
+		}	
+		return $script;
 	}
 	
 	public function addHeader($header='X-UA-Compatible: IE=edge,chrome=1')

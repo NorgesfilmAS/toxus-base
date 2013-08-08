@@ -98,9 +98,9 @@
 				{% block footerCredits %}
 				<div class="container">
 					<ul class="footer-links text-center">
-						<li><a href="{{ this.createUrl('site/copyright') }}"> &copy; 2013 Toxus | </li>
-						<li><a href="{{ this.createUrl('site/sitemap') }}">{{ this.t('site map') }} | </li>
-						<li><a href="{{ this.createUrl('site/privacy') }}">{{ this.t('privacy') }}</li>
+						<li><a href="{{ this.createUrl('site/copyright') }}"> &copy; 2013 Toxus</a> | </li>
+						<li><a href="{{ this.createUrl('site/sitemap') }}">{{ this.t('site map') }}</a> | </li>
+						<li><a href="{{ this.createUrl('site/privacy') }}">{{ this.t('privacy') }}</a></li>
 					</ul>
 				</div>		
 				{% endblock %}	
@@ -108,10 +108,20 @@
 		 {% endblock %}	
 		{# include this.viewPath('bootstrap3Footer') #}			
 		</div>		
+		<div class="modal fade" id="id-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+			<div class="modal-body">
+				<div class="modal-dialog">
+					<div id="id-modal-body" class="modal-content">
+					LOADING INFORMATION ....
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->				
+			</div>
+		</div>
 			
 		<script	type="text/javascript">
 			$().ready(function() {
 				{% block onReady %}{% endblock %}
+				{{ this.scriptOnReady() | raw }}
 			});
 		</script>		
   </body>

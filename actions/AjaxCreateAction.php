@@ -2,7 +2,7 @@
 
 class AjaxCreateAction extends AjaxAction
 {
-	public function run($id)
+	public function run($id=null)
 	{
 		$view = $this->view;
 		$cd = $this->controller->definition($view, $id);

@@ -176,13 +176,19 @@ $().ready(function() {
 {% if sub.isAjax or form.script %}
 <script type="text/javascript">
 {% if sub.isAjax %}	
-	$().ready(function() {
-		var options = {
-			target : '{{ form.refreshDiv | default('#'~sub.slaveFrame) }}',
-			success : processResponse
-		};
+	{% for script in this.packageScripts('ajaxForm') %}
+		{# must load direct for the ajax definition otherwise there is a timing error #}
+		$.getScript("{{ script}}", function(data, textState) {
+			var options = {
+				target : '{{ form.refreshDiv | default('#'~sub.slaveFrame) }}',
+				success : processResponse
+			};
 		$('#{{ form.id |default('id-form')}}').ajaxForm(options);		
-		
+			
+		});
+	{% endfor %}	
+	
+	$().ready(function() {
 		$('#btn-cancel').click(function() {
 			$('{{ form.refreshDiv | default('#'~sub.masterFrame) }}').load('{{ sub.onRefreshUrl }}');
 		});
@@ -191,9 +197,11 @@ $().ready(function() {
 	
 	function processResponse(responseText, statusText, xhr, $form) {
 {#		alert(responseText); #}
-		if (responseText == 'ok') {/* everything went ok */
+		if (responseText == 'ok') {/* ok: load information in a div */
 			$('{{ form.refreshDiv | default('#'~sub.masterFrame) }}').load('{{ sub.onRefreshUrl }}');
-		} else {
+		} else	if (responseText == 'url') {/* ok, but open an other page */
+			window.location = "{{ sub.refreshUrl }}";
+		}	else {
 			$('{{ form.refreshDiv | default('#'~sub.slaveFrame) }}').html(responseText);
 		}
 	};
