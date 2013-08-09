@@ -363,7 +363,19 @@ class Util {
 	static function addLeadingZero($value, $threshold = 2) {
     return sprintf('%0' . $threshold . 's', $value);
 	}
-	
+
+	/**
+	 * replace multiple spaces with a single space
+	 * @param string $text
+	 * @return string
+	 */
+	static function trimSpaces($text)
+	{
+		while (strpos($text,"  ") !== false) 	{
+			$text=str_replace("  "," ",$text);
+		}
+		return trim($text);
+	}
 	
 }
 

@@ -489,6 +489,16 @@ class BaseController extends CController
 							$("#id-modal").modal("show"); 
 							$("#id-modal-body").load($(this).data("url"));
 					})'
+			),
+			'elastic' => array(
+				/* auto expand an textarea to the number of lines used */	
+				'basePath' => 'toxus.assetsBase.jquery-elastic',	
+				'js' => array(
+					CClientScript::POS_END => array(
+							'jquery.elastic.source.js',
+					),
+				),
+				'ready' => '$("textarea").elastic()',	
 			),	
 			'new' => array(
 				'basePath' => 'alias',

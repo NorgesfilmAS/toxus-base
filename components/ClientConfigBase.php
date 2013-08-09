@@ -63,4 +63,14 @@ class ClientConfigBase extends CComponent
 		else
 			return true;
 	}
+	
+	/**
+	 * the character used to seperate dates
+	 * 
+	 * @return string the character
+	 */
+	public function getDateSeperator()
+	{
+		return '-';
+	}
 }

@@ -22,7 +22,7 @@
 					 {% if itemKey == model.__get(key) %}{{ itemCaption }}{% endif %}
 					{% endfor %}
 				{% elseif element.type == 'textarea' %}
-					 {{ model.__get(key) }}
+					 {{ html.encode(model.__get(key)) |replace({"\n" : '<br />'}) |raw }}
 				{% elseif element.type == 'checkbox' %}	
 					{% if model.__get(key)==1 %}{{ this.t(element.trueCaption|default('yes'))}}{%else%}{{ this.t(element.falseCaption|default('no'))}}{%endif%}
 				{% elseif element.type== 'image' %}
