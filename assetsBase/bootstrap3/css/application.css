@@ -186,3 +186,14 @@
 .hide-it {
 	display: none !important;
 }
+
+/* for the dialog wait */
+.wait-icon {
+	width: 50%;
+  margin: 0 auto;	
+	text-align: center;
+}
+.id-wait {
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
