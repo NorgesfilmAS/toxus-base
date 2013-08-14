@@ -2,6 +2,11 @@
 
 class ClientConfigBase extends CComponent
 {
+	
+	public function __construct() {
+		$this->init();
+	}
+	
 	public function init()
 	{
 	}

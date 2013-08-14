@@ -99,7 +99,7 @@ class ImageCache extends CComponent
 	}
 	
 	/**
-	 * Retrieves the Url of the file to shou
+	 * Retrieves the Url of the file to show
 	 * 
 	 * @param string $name name of the image without any path
 	 * @param string $size one of the size definitions
@@ -140,7 +140,7 @@ class ImageCache extends CComponent
 	{
 
 	 */
-	private function imageResize($originalFilename, $newFilename, $size)
+	public function imageResize($originalFilename, $newFilename, $size)
 	{
     list($source_image_width, $source_image_height, $source_image_type) = getimagesize($originalFilename);
     switch ($source_image_type) {
@@ -152,6 +152,9 @@ class ImageCache extends CComponent
 				break;
 			case IMAGETYPE_PNG:
 				$source_gd_image = imagecreatefrompng($originalFilename);
+				break;
+			case IMAGETYPE_BMP :
+				$source_gd_image = imagecreatefromwbmp($originalFilename);
 				break;
     }
     if ($source_gd_image === false) {

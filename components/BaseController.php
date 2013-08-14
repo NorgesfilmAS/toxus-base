@@ -499,6 +499,18 @@ class BaseController extends CController
 					),
 				),
 				'ready' => '$("textarea").elastic()',	
+			),
+			'dropzone'=> array(
+				/* drag drop file upload */	
+				'basePath' => 'toxus.assetsBase.dropzone',	
+				'js' => array(
+					CClientScript::POS_END => array(
+							'dropzone.js',
+					),
+				),	
+				'css' => array(
+					'css/dropzone.css',	
+				),					
 			),	
 			'new' => array(
 				'basePath' => 'alias',
