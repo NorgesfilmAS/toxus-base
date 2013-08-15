@@ -337,7 +337,7 @@ class BaseController extends CController
 				),
 			),
 			'core' => array(
-				'basePath' => 'toxus.assetsBase.crisp',		
+				'basePath' => 'toxus.assetsBase.core',		
 				'js' => array(	
 					CClientScript::POS_END => array(
 							'js/core.js', 
@@ -486,7 +486,8 @@ class BaseController extends CController
 			'modal-dialog' => array(
 				'ready' => '
 						$(".menu-modal").on("click", function() {
-							$("#id-modal").modal("show"); 
+							$("#id-modal-body").html($("#id-wait-message").html());
+							$("#id-modal").modal("show"); 							
 							$("#id-modal-body").load($(this).data("url"));
 					})'
 			),
@@ -552,6 +553,8 @@ class BaseController extends CController
 							}
 						}
 					}	
+				} else {
+					$assetUrl = '';
 				}		
 				if (isset($package['ready'])) {
 				//	Yii::app()->clientScript->registerScript('package-'.$name.'-ready',"$().ready(function() {\n".$package['ready']."\n});", CClientScript::POS_END);
