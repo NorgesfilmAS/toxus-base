@@ -513,6 +513,16 @@ class BaseController extends CController
 					'css/dropzone.css',	
 				),					
 			),	
+			'jwplayer' => array(
+				/* auto expand an textarea to the number of lines used */	
+				'basePath' => 'toxus.assetsBase.jwplayer',	
+				'js' => array(
+					CClientScript::POS_END => array(
+							'jwplayer.js',
+					),
+				),
+				'ready' => 'jwplayer.key="0V3895lP4LH4KDl6jlC9NQ5mtM6YVhUZP9aURA=="',						
+			),	
 			'new' => array(
 				'basePath' => 'alias',
 				'css' => array(),

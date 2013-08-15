@@ -75,35 +75,31 @@ class ImageCache extends CComponent
 	/**
 	 * remove an image from the cache
 	 *
+	 * @param mixed id if string: the id of the file to remove if array the options
 	 * @param array $options 
-	 *      deleteOriginal true/false if true the original directory is also emptied
-	 * @param string $name the name of the file to remove 
+	 *      deleteOriginal true/false if true the original directory is also emptied	 
 	 */
 	public function clear($id = null, $options=array())
 	{
-		$defaults = array_merge(array(
+		if (!is_array($id)) $id = array('id'=> $id);
+		$opt = array_merge(array(
+				'wildcard' => ($id['id'] == null) ? '*.*' : $id['id'],
 				'deleteOriginal' => true,				
 			),
 			$options			
 		);
-		if ($id == null) { // remove everything from the cache
-			// http://stackoverflow.com/questions/4594180/deleting-all-files-from-a-folder-using-php
-			foreach ($this->sizes as $size => $options) {
-				if ($defaults['deleteOriginal'] == true || $size != self::DIR_ORIGINAL) {
-					foreach (new DirectoryIterator(Yii::getPathOfAlias(self::BASEPATH.'/'.$size)) as $fileInfo)
-						if(!$fileInfo->isDot())
-							unlink($fileInfo->getPathname());
-				}
-			}	
-		} else {
-			foreach ($this->sizes as $size => $options) {
-				if ($defaults['deleteOriginal'] == true || $size != self::DIR_ORIGINAL) {
-					$path = Yii::getPathOfAlias(self::BASEPATH.'/'.$size.'/'.$id);
-					if (file_exists($path))
-					  unlink($path);
+		foreach ($this->sizes as $size => $options) {
+			if ($opt['deleteOriginal'] == true || $size != self::DIR_ORIGINAL) {
+				$path = Yii::getPathOfAlias(self::BASEPATH.'/'.$size.'/'.$opt['wildcard']);
+				foreach (new DirectoryIterator($path) as $fileInfo) {
+					if (!$fileInfo->isDot()) {
+						if ($fileInfo->isFile()) {
+							unlink($path.'/'.$fileInfo->getFilename());		
+						}	
+					}
 				}	
-			}
-		}	
+			}		
+		}
 	}
 	
 	/**
