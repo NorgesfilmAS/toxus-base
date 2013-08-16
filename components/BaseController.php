@@ -486,9 +486,16 @@ class BaseController extends CController
 			'modal-dialog' => array(
 				'ready' => '
 						$(".menu-modal").on("click", function() {
-							$("#id-modal-body").html($("#id-wait-message").html());
-							$("#id-modal").modal("show"); 							
-							$("#id-modal-body").load($(this).data("url"));
+							div = $(this).data("div");
+							if (div) {
+								$(div + " .modal-content").html($("#id-wait-message").html());
+								$(div).modal("show"); 							
+								$(div + " .modal-content").load($(this).data("url"));
+							} else {
+								$("#id-modal-body").html($("#id-wait-message").html());
+								$("#id-modal").modal("show"); 							
+								$("#id-modal-body").load($(this).data("url"));							
+							}
 					})'
 			),
 			'elastic' => array(

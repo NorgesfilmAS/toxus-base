@@ -231,7 +231,7 @@ class ImageCache extends CComponent
     $thumbnail_gd_image = imagecreatetruecolor($thumbnail_image_width, $thumbnail_image_height);
     imagecopyresampled($thumbnail_gd_image, $source_gd_image, 0, 0, 0, 0, $thumbnail_image_width, $thumbnail_image_height, $source_image_width, $source_image_height);
 		
-		$this->saveImage($source_image_type, $newFilename, $data, isset($size['quality']) ? $size['quality'] : 90);
+		$this->saveImage($source_image_type, $newFilename, $thumbnail_gd_image, isset($size['quality']) ? $size['quality'] : 90);
     imagedestroy($source_gd_image);
     imagedestroy($thumbnail_gd_image);
     return true;		

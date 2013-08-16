@@ -197,3 +197,13 @@
 	margin-top: 30px;
 	margin-bottom: 30px;
 }
+/* creating a wider modal defintion: http://stackoverflow.com/questions/10169432/how-can-i-change-the-default-width-of-a-twitter-bootstrap-modal-box */
+
+body .modal-preview {
+ /* new custom width */
+	width: 750px;
+	/* must be half of the width, minus scrollbar on the left (30px) */
+	margin-left: -375px;	
+}
+
+
