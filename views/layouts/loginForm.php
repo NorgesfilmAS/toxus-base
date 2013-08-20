@@ -23,7 +23,7 @@ return array(
 		),
 		'forgot_password' => array(
 			'type' => 'link',
-			'url'	 => $this->createUrl('forgot-password'),
+			'url'	 => $this->createUrl('site/passwordRequest'),
 			'label' => $this->t('forgot password', 1),	
 		),
 			

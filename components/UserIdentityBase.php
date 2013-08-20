@@ -5,12 +5,12 @@
  * It contains the authentication method that checks if the provided
  * data can identity the user.
  */
-class UserIdentity extends CUserIdentity
+class UserIdentityBase extends CUserIdentity
 {
 	const ERROR_SUSPENDED = 3;
 	const ERROR_NOT_ACTIVATED = 4;
 	
-	private $_id = null;
+	protected $_id = null;
 	/**
 	 * Authenticates a user.
 	 * $this->username is the name given

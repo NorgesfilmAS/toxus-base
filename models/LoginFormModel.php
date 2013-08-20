@@ -6,6 +6,12 @@
  */
 class LoginFormModel extends CFormModel
 {
+	/** 
+	 * the class the create the user identity
+	 * @var string
+	 */
+	public $identityClass = 'UserIdentityBase';
+	
 	public $id;
 	private $_username;
 	private $_email;
@@ -90,22 +96,29 @@ class LoginFormModel extends CFormModel
 			array('email', 'required', 'on' => 'password'),		
 			
 			array('username, password,passwordRepeat', 'required', 'on' => 'new'),	
-			array('email', 'email', 'on' => 'login'),		
-			array('email', 'emailIsUnique','on' => 'new'),				
 			array('has_newsletter', 'boolean', 'on'=>'new'),	
 			array('password', 'length', 'min'=> 5, 'max' => 40, 'on'=>'new'),	
 			array('password', 'compare', 'compareAttribute'=>'passwordRepeat', 'on' => 'new'),				
-					
+/**
+ * must be moved to LoginForm
+ 				
+			array('email', 'email', 'on' => 'login'),		
+			array('email', 'emailIsUnique','on' => 'new'),				
+*/					
+
+
 		);
 	}
 
+	/*
+	 * MUST BE MOVED TO LoginForm
 	public function emailIsUnique($attribute, $params)
 	{
 		$model = UserProfile::model()->find('email=:email AND is_confirmed <> 0', array(':email' => $this->$attribute));
 		if ($model)
 			$this->addError ($attribute, Yii::t('app', 'The email address is already in use. Please sign in.'));
 	}
-	
+	*/
 	/**
 	 * Declares attribute labels.
 	 */
@@ -127,13 +140,14 @@ class LoginFormModel extends CFormModel
 	public function authenticate($attribute,$params)
 	{
 		if(!$this->hasErrors())	{
-			$this->_identity = new UserIdentity($this->username, $this->password);
+			$cls = $this->identityClass;
+			$this->_identity = new $cls($this->username, $this->password);
 			if(! $this->_identity->authenticate()) {
 				switch ($this->_identity->errorCode) {
-					case UserIdentity::ERROR_NOT_ACTIVATED :
+					case UserIdentityBase::ERROR_NOT_ACTIVATED :
 						$this->addError('username',  Yii::t('app', 'The account is not activated yet. Please confirm your email address by clicking on the link in the email send, or reregister.'));
 						break;;
-					case UserIdentity::ERROR_SUSPENDED :	
+					case UserIdentityBase::ERROR_SUSPENDED :	
 						$this->addError('username',  Yii::t('app', 'Your account has been suspended.'));
 						break;
 					default: 
@@ -150,10 +164,11 @@ class LoginFormModel extends CFormModel
 	public function login()
 	{
 		if($this->_identity === null)	{
-			$this->_identity = new UserIdentity($this->username, $this->password);
+			$cls = $this->identityClass;
+			$this->_identity = new $cls($this->username, $this->password);
 			$this->_identity->authenticate();
 		}
-		if($this->_identity->errorCode === UserIdentity::ERROR_NONE) {
+		if($this->_identity->errorCode === UserIdentityBase::ERROR_NONE) {
 			$duration = $this->rememberMe ? 3600*24*30 : 0; // 30 days
 			Yii::app()->user->login($this->_identity, $duration);
 			return true;

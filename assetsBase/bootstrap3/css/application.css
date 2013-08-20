@@ -207,4 +207,17 @@ body .modal-preview {
 	margin-left: -375px;	
 }
 
-
+/* to center an input (login, message) on an empty screen */
+.msgbox-layout {
+	margin-top: 40px;
+	margin-left: 40px;
+	
+}
+.msgbox-layout h5 {
+	font-size: 150%;
+}
+.border {
+	-moz-box-shadow: 0 0 1px gray;
+  -webkit-box-shadow: 0 0 1px gray;
+   box-shadow: 0 0 1px gray;
+}

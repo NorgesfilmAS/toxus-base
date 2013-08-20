@@ -93,7 +93,7 @@ $().ready(function() {
 				{% elseif element.type== 'view' %}
 					{{ this.renderPartial(element.view, {'model': this.model.__get(key)}) |raw }}
 				{% elseif element.type== 'password' %}
-					<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="password" class="{{ width }}" value="{{ this.model.__get(key) }}"/> 
+					<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" type="password" class="{{ width }} form-control" value="{{ this.model.__get(key) }}"/> 
 				{% elseif element.type=='typeahead' %}
 					
 					<input id="id-input-{{ key }}" type="text" class="{{ width }}" value="{{ element.caption }}"/>

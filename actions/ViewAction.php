@@ -17,14 +17,16 @@ class ViewAction extends CAction
 	 * 
 	 * @param type $id
 	 */
-	public function run($id)					
+	public function run($id=null)					
 	{		
 		if ($id == self::USE_LAST_ID)
 			$id = Yii::app()->user->lastId;
-		
-		$this->controller->model = $this->controller->loadModel($id, ucfirst($this->controller->id));
-		$form = false;
-				
+		if ($id) {
+			$this->controller->model = $this->controller->loadModel($id, ucfirst($this->controller->id));
+		} else {
+			$this->controller->model = null;
+		}
+		$form = false;				
 		if (!empty($this->form)) {
 			$form = $this->controller->loadForm($this->form);
 		}
