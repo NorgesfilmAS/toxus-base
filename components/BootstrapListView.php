@@ -10,4 +10,5 @@ class BootstrapListView extends CListView
 		$this->pagerCssClass = 'pager-unseen';
 		return parent::init();
 	}
+	
 }

@@ -35,8 +35,9 @@ class BootstrapGridView extends CGridView
 							//'nextPageLabel'  => '<img src="images/pagination/right.png">',
 							'lastPageLabel'  => null, //'&gt;&gt;',							
 						)	
-					);			
+					);
 	}
+
 	
 }
 
