@@ -1,20 +1,22 @@
 <?php
 /**
- * Optimizing client script manager that can minify and combine files (extends CClientScript)
+ * Extended Client Script Manager Class File
  *
- * @author Muayyad Alsadi <alsadi[at]gmail>, hightman <maminglian[at]gmail>
- * @link https://github.com/muayyad-alsadi/yii-EClientScript
+ * @author Hightman <hightman2[at]yahoo[dot]com[dot]cn>
+ * @author Muayyad Alsadi <alsadi[at]gmail>
+ *  
+ * @link http://www.czxiu.com/
+ * @copyright hightman
  * @license http://www.yiiframework.com/license/
- * @version 1.6
+ * @version 1.5
  */
 
 /**
- * Extended clientscript to combine/optimize script and css files automatically
+ * Extended clientScript to combine script and css files automatically
  *
  * @author hightman <hightman2@yahoo.com.cn>
- * @version $Id$
+ * @version 1.5
  * @package extensions.minify
- * @since 1.0
  */
 class EClientScript extends CClientScript
 {
@@ -44,19 +46,9 @@ class EClientScript extends CClientScript
 	public $optimizeCssFiles = true;
 
 	/**
-	 * @var boolean if to optimize the script files
+	 * @var boolean if to optimize the script files via googleCompiler(this may cause to much slower)
 	 */
 	public $optimizeScriptFiles = true;
-
-	/**
-	 * @var boolean if to optimize the inline css code
-	 */
-	public $optimizeInlineCss = false;
-
-	/**
-	 * @var boolean if to optimize the inline script code
-	 */
-	public $optimizeInlineScript = false;
 
 	/**
 	 * @var array local base path & url
@@ -69,18 +61,21 @@ class EClientScript extends CClientScript
 	private $_baseUrl;
 
 	/**
-	 * init base url map
+	 * init
 	 */
 	public function init()
 	{
 		// request
 		$this->_baseUrl = Yii::app()->request->baseUrl;
 		$baseUrl = $this->_baseUrl . '/';
-		$this->_baseUrlMap[$baseUrl] = dirname(Yii::app()->request->scriptFile) . DIRECTORY_SEPARATOR;
+		$basePath = dirname(Yii::app()->request->scriptFile) . DIRECTORY_SEPARATOR;
+		$this->_baseUrlMap[$baseUrl] = $basePath;
 		// themes
-		if (Yii::app()->theme) {
+		if (Yii::app()->theme)
+		{
+			$basePath = Yii::app()->theme->basePath . DIRECTORY_SEPARATOR;
 			$baseUrl = Yii::app()->theme->baseUrl . '/';
-			$this->_baseUrlMap[$baseUrl] = Yii::app()->theme->basePath . DIRECTORY_SEPARATOR;
+			$this->_baseUrlMap[$baseUrl] = $basePath;
 		}
 		parent::init();
 	}
@@ -88,37 +83,27 @@ class EClientScript extends CClientScript
 	/**
 	 * Change default of script position to CClinetScript::POS_END
 	 */
-	public function registerScriptFile($url, $position = self::POS_END, array $htmlOptions = array())
+	public function registerScriptFile($url, $position = self::POS_END, $htmlOptions = array())
 	{
-		if (substr($url, 0, 1) !== '/' && strpos($url, '://') === false) {
+		if (substr($url, 0, 1) !== '/' && strpos($url, '://') === false)
 			$url = $this->_baseUrl . '/' . $url;
-		}
 		return parent::registerScriptFile($url, $position, $htmlOptions);
 	}
 
 	public function registerCssFile($url, $media = '')
 	{
-		if (substr($url, 0, 1) !== '/' && strpos($url, '://') === false) {
+		if (substr($url, 0, 1) !== '/' && strpos($url, '://') === false)
 			$url = $this->_baseUrl . '/' . $url;
-		}
 		parent::registerCssFile($url, $media);
 	}
 
-	public function registerCss($id, $css, $media = '')
+	/**
+	 * Add \t into script codes of READY
+	 */
+	public function registerScript($id, $script, $position = self::POS_READY, $htmlOptions = array())
 	{
-		if ($this->optimizeInlineCss) {
-			$css = $this->optimizeCssCode($css);
-		}
-		return parent::registerCss($id, $css, $media);
-	}
-
-	public function registerScript($id, $script, $position = self::POS_READY, array $htmlOptions = array())
-	{
-		if ($this->optimizeInlineScript) {
-			$script = $this->optimizeScriptCode($script);
-		} elseif ($position === self::POS_READY) {
+		if ($position === self::POS_READY)
 			$script = "\t" . str_replace("\n", "\n\t", $script);
-		}
 		parent::registerScript($id, $script, $position, $htmlOptions);
 	}
 
@@ -126,9 +111,8 @@ class EClientScript extends CClientScript
 	{
 		parent::render($output);
 		// conditional js/css for IE
-		if ($this->hasScripts) {
+		if ($this->hasScripts)
 			$output = preg_replace('#(<(?:link|script) .+?) media="([lg]te? IE \d+)"(.*?>(?:</script>)?)#', '<!--[if \2]>\1\3<![endif]-->', $output);
-		}
 	}
 
 	/**
@@ -137,12 +121,10 @@ class EClientScript extends CClientScript
 	 */
 	public function renderHead(&$output)
 	{
-		if ($this->combineCssFiles) {
+		if ($this->combineCssFiles)
 			$this->combineCssFiles();
-		}
-		if ($this->combineScriptFiles && $this->enableJavaScript) {
+		if ($this->combineScriptFiles && $this->enableJavaScript)
 			$this->combineScriptFiles(self::POS_HEAD);
-		}
 		parent::renderHead($output);
 	}
 
@@ -153,9 +135,8 @@ class EClientScript extends CClientScript
 	public function renderBodyBegin(&$output)
 	{
 		// $this->enableJavascript has been checked in parent::render()
-		if ($this->combineScriptFiles) {
+		if ($this->combineScriptFiles)
 			$this->combineScriptFiles(self::POS_BEGIN);
-		}
 		parent::renderBodyBegin($output);
 	}
 
@@ -166,9 +147,8 @@ class EClientScript extends CClientScript
 	public function renderBodyEnd(&$output)
 	{
 		// $this->enableJavascript has been checked in parent::render()
-		if ($this->combineScriptFiles) {
+		if ($this->combineScriptFiles)
 			$this->combineScriptFiles(self::POS_END);
-		}
 		parent::renderBodyEnd($output);
 	}
 
@@ -179,72 +159,80 @@ class EClientScript extends CClientScript
 	protected function combineCssFiles()
 	{
 		// Check the need for combination
-		if (count($this->cssFiles) < 2) {
+		if (count($this->cssFiles) < 2)
 			return;
-		}
+
 		$cssFiles = array();
-		foreach ($this->cssFiles as $url => $media) {
+		$toCombine = array();
+		foreach ($this->cssFiles as $url => $media)
+		{
 			$file = $this->getLocalPath($url);
-			if ($file === false) {
+			if ($file === false)
 				$cssFiles[$url] = $media;
-			} else {
-				// DO-NOT convert media to lower HERE (i.e: lt IE 6)
-				$media = $media === '' ? 'all' : $media;
-				if (!isset($cssFiles[$media])) {
-					$cssFiles[$media] = array();
-				}
-				$cssFiles[$media][$url] = $file;
+			else
+			{
+				if ($media === '')
+					$media = 'all';
+				if (!isset($toCombine[$media]))
+					$toCombine[$media] = array();
+				$toCombine[$media][$url] = $file;
 			}
 		}
 
-		$this->cssFiles = array();
-		foreach ($cssFiles as $media => $files) {
-			if ($media === 'all') {
+		foreach ($toCombine as $media => $files)
+		{
+			if ($media === 'all')
 				$media = '';
-			}
-			if (!is_array($files)) {
-				$url = $media;
-				$media = $files;
-			} elseif (count($files) === 1) {
+			if (count($files) === 1)
 				$url = key($files);
-			} else {
+			else
+			{
 				// get unique combined filename
 				$fname = $this->getCombinedFileName($this->cssFileName, $files, $media);
 				$fpath = Yii::app()->assetManager->basePath . DIRECTORY_SEPARATOR . $fname;
 				// check exists file
-				if (($valid = file_exists($fpath)) === true) {
+				if (($valid = file_exists($fpath)) === true)
+				{
 					$mtime = filemtime($fpath);
-					foreach ($files as $file) {
-						if ($mtime < filemtime($file)) {
+					foreach ($files as $file)
+					{
+						if ($mtime < filemtime($file))
+						{
 							$valid = false;
 							break;
 						}
 					}
 				}
 				// re-generate the file
-				if (!$valid) {
-					$urlRegex = '#url\s*\(\s*([\'"])?(?!/|http://|data\:)([^\'"\s])#i';
+				if (!$valid)
+				{
+					$urlRegex = '#url\s*\(\s*([\'"])?(?!/|http://)([^\'"\s])#i';
 					$fileBuffer = '';
 					$charsetLine = '';
-					foreach ($files as $url => $file) {
+					foreach ($files as $url => $file)
+					{
 						$contents = file_get_contents($file);
-						if ($contents) {
+						if ($contents)
+						{
 							// Reset relative url() in css file
-							if (preg_match($urlRegex, $contents)) {
+							if (preg_match($urlRegex, $contents))
+							{
 								$reurl = $this->getRelativeUrl(Yii::app()->assetManager->baseUrl, dirname($url));
 								$contents = preg_replace($urlRegex, 'url(${1}' . $reurl . '/${2}', $contents);
 							}
 							// Check @charset line
-							if (preg_match('/@charset\s+"(.+?)";?/', $contents, $matches)) {
-								if ($charsetLine === '') {
+							if (preg_match('/@charset\s+"(.+?)";?/', $contents, $matches))
+							{
+								if ($charsetLine === '')
 									$charsetLine = '@charset "' . $matches[1] . '"' . ";\n";
-								}
 								$contents = preg_replace('/@charset\s+"(.+?)";?/', '', $contents);
 							}
 
 							// Append the contents to the fileBuffer
 							$fileBuffer .= "/*** CSS File: {$url}";
-							if ($this->optimizeCssFiles && strpos($file, '.min.') === false && strpos($file, '.pack.') === false) {
+							if ($this->optimizeCssFiles
+								&& strpos($file, '.min.') === false && strpos($file, '.pack.') === false)
+							{
 								$fileBuffer .= ", Original size: " . number_format(strlen($contents)) . ", Compressed size: ";
 								$contents = $this->optimizeCssCode($contents);
 								$fileBuffer .= number_format(strlen($contents));
@@ -258,8 +246,10 @@ class EClientScript extends CClientScript
 				// real url of combined file
 				$url = Yii::app()->assetManager->baseUrl . '/' . $fname . '?' . filemtime($fpath);
 			}
-			$this->cssFiles[$url] = $media;
+			$cssFiles[$url] = $media;
 		}
+		// use new cssFiles list replace old ones
+		$this->cssFiles = $cssFiles;
 	}
 
 	/**
@@ -269,20 +259,24 @@ class EClientScript extends CClientScript
 	 */
 	protected function combineScriptFiles($type = self::POS_HEAD)
 	{
-
 		// Check the need for combination
-		if (!isset($this->scriptFiles[$type]) || count($this->scriptFiles[$type]) < 2) {
+		if (!isset($this->scriptFiles[$type]) || count($this->scriptFiles[$type]) < 2)
 			return;
-		}
+
 		$toCombine = array();
 		$indexCombine = 0;
 		$scriptName = $scriptValue = array();
-		foreach ($this->scriptFiles[$type] as $url => $value) {
-			if (is_array($value) || !($file = $this->getLocalPath($url))) {
+		foreach ($this->scriptFiles[$type] as $url => $value)
+		{
+			if (is_array($value) || !($file = $this->getLocalPath($url)))
+			{
 				$scriptName[] = $url;
 				$scriptValue[] = $value;
-			} else {
-				if (count($toCombine) === 0) {
+			}
+			else
+			{
+				if (count($toCombine) === 0)
+				{
 					$indexCombine = count($scriptName);
 					$scriptName[] = $url;
 					$scriptValue[] = $url;
@@ -290,35 +284,44 @@ class EClientScript extends CClientScript
 				$toCombine[$url] = $file;
 			}
 		}
-		if (count($toCombine) > 1) {
+		if (count($toCombine) > 1)
+		{
 			// get unique combined filename
 			$fname = $this->getCombinedFileName($this->scriptFileName, array_values($toCombine), $type);
 			$fpath = Yii::app()->assetManager->basePath . DIRECTORY_SEPARATOR . $fname;
 			// check exists file
-			if (($valid = file_exists($fpath)) === true) {
+			if (($valid = file_exists($fpath)) === true)
+			{
 				$mtime = filemtime($fpath);
-				foreach ($toCombine as $file) {
-					if ($mtime < filemtime($file)) {
+				foreach ($toCombine as $file)
+				{
+					if ($mtime < filemtime($file))
+					{
 						$valid = false;
 						break;
 					}
 				}
 			}
 			// re-generate the file
-			if (!$valid) {
+			if (!$valid)
+			{
 				$fileBuffer = '';
-				foreach ($toCombine as $url => $file) {
+				foreach ($toCombine as $url => $file)
+				{
 					$contents = file_get_contents($file);
-					if ($contents) {
+					if ($contents)
+					{
 						// Append the contents to the fileBuffer
 						$fileBuffer .= "/*** Script File: {$url}";
-						if ($this->optimizeScriptFiles && strpos($file, '.min.') === false && strpos($file, '.pack.') === false) {
+						if ($this->optimizeScriptFiles
+							&& strpos($file, '.min.') === false && strpos($file, '.pack.') === false)
+						{
 							$fileBuffer .= ", Original size: " . number_format(strlen($contents)) . ", Compressed size: ";
 							$contents = $this->optimizeScriptCode($contents);
 							$fileBuffer .= number_format(strlen($contents));
 						}
 						$fileBuffer .= " ***/\n";
-						$fileBuffer .= $contents . "\n;\n";
+						$fileBuffer .= $contents . "\n\n";
 					}
 				}
 				file_put_contents($fpath, $fileBuffer);
@@ -338,10 +341,10 @@ class EClientScript extends CClientScript
 	 */
 	private function getLocalPath($url)
 	{
-		foreach ($this->_baseUrlMap as $baseUrl => $basePath) {
-			if (!strncmp($url, $baseUrl, strlen($baseUrl))) {
+		foreach ($this->_baseUrlMap as $baseUrl => $basePath)
+		{
+			if (!strncmp($url, $baseUrl, strlen($baseUrl)))
 				return $basePath . substr($url, strlen($baseUrl));
-			}
 		}
 		return false;
 	}
@@ -355,14 +358,14 @@ class EClientScript extends CClientScript
 	private function getRelativeUrl($from, $to)
 	{
 		$relative = '';
-		while (true) {
-			if ($from === $to) {
+		while (true)
+		{
+			if ($from === $to)
 				return $relative;
-			} elseif ($from === dirname($from)) {
+			else if ($from === dirname($from))
 				return $relative . substr($to, 1);
-			} elseif (!strncmp($from . '/', $to, strlen($from) + 1)) {
+			if (!strncmp($from . '/', $to, strlen($from) + 1))
 				return $relative . substr($to, strlen($from) + 1);
-			}
 			$from = dirname($from);
 			$relative .= '../';
 		}
@@ -378,10 +381,11 @@ class EClientScript extends CClientScript
 	private function getCombinedFileName($name, $files, $type = '')
 	{
 		$raw = '';
-		foreach ($files as $file) {
+		foreach ($files as $file)
+		{
 			$raw .= "\0" . $file . "\0" . @filemtime($file);
 		}
-		$ext = ($type === '' ? '' : '-' . $type) . '-' . substr(base64_encode(md5($raw, true)), 0, -2);
+		$ext = ($type === '' ? '' : '-' . $type) . '-' . base64_encode(md5($raw, true));
 		$pos = strrpos($name, '.');
 		$name = $pos === false ? $name . $ext : substr_replace($name, $ext, $pos, 0);
 		return strtr($name, '+=/ ', '--__');
@@ -399,7 +403,7 @@ class EClientScript extends CClientScript
 	}
 
 	/**
-	 * Optimize script code
+	 * Optimize script via google compiler
 	 * @param string $data script code
 	 * @return string optimized script code
 	 */
