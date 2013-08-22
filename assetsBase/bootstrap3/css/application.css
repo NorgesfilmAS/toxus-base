@@ -221,3 +221,7 @@ body .modal-preview {
   -webkit-box-shadow: 0 0 1px gray;
    box-shadow: 0 0 1px gray;
 }
+
+.no-left-padding {
+	padding-left:0px !important;
+}
