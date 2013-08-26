@@ -637,9 +637,9 @@ class BaseController extends CController
 		Yii::app()->getClientScript()->registerScript($name, $script, $atEnd);
 	}
 	
-	public function registerCore($part)
+	public function registerCore($part, $force = false)
 	{
-		Yii::app()->clientScript->registerCoreScript($part);
+		Yii::app()->clientScript->registerCoreScript($part, $force);
 	}
 
 	public function getAssetsBase()

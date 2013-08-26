@@ -10,7 +10,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		{{ this.addHeader() }}
-		{{ this.registerCore('jquery') }}
+		{{ this.registerCore('jquery', true) }}
 		{{ this.registerPackage('bootstrap3') }}
 		{{ this.registerPackage('core') }}
 		<meta name="description" content="{{ App.params.description | default('site description') }}" />	

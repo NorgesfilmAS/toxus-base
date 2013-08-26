@@ -10,14 +10,16 @@
   </div>
   <div class="modal-footer">
 		{% block dialogFooter %}
-    <button id="btn-close" class="btn">{{ this.t('btn-close') }}</button>
+    <button id="btn-close" class="btn action-close">{{ this.t('btn-close') }}</button>
 		{% endblock %}
   </div>
 <script type="text/javascript">
 	$().ready(function() {
-		$('#btn-close').on('click', function() {
-			$('#id-modal').modal('toggle');
+		$('.action-close').on('click', function() {
+			$('#id-modal').modal('hide');  
 		});
+		
 		{% block onReady %}{% endblock %}
 	});	
+
 </script>	

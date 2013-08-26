@@ -409,4 +409,17 @@ class EClientScript extends CClientScript
 		$minified = JSMinPlus::minify($code);
 		return ($minified === false ? $code : $minified);
 	}
+	
+	/**
+	 * Blocks jQuery from loading over and over again
+	 * 
+	 * @param string $name
+	 */
+	
+	public function registerCoreScript($name, $force = false)
+	{
+		if ($force || $name != 'jquery') {
+			parent::registerCoreScript($name);
+		}
+	}
 }
