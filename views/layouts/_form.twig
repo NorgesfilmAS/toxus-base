@@ -77,13 +77,14 @@
 					{{ this.registerScript('id-'~key, '$("#id-'~key~'").inputmask({"mask": "'~element.mask~'"})', 4) }}
 				{% elseif element.type=='date' %}						
 					<div class="input-prepend date">						
-						<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" size="16" type="text" value="{{ this.model.__get(key) }}" class="input-date" data-date-format="{{ format.dateFormat() | raw }}" {% if element.calendarWeeks %}data-date-calendar-weeks="true"{% endif %}>						
+						<input id="id-{{ key }}" name="{{ form.model }}[{{key}}]" size="16" type="date" value="{{ this.model.__get(key) }}" class=" form-control input-date" data-date-format="{{ format.dateFormat() | raw }}" {% if element.calendarWeeks %}data-date-calendar-weeks="true"{% endif %}>						
 					</div>	
+					{{ this.registerPackage('datepicker') }}
 				{{ this.registerScript(
 						'datepicker',"
 $().ready(function() {											
 	$('.input-date').datepicker({" ~		
-		"language : 'app.params.language ',
+		"language : '"~App.clientConfig.language~"',
 		autoclose: true
 	});
 });")
