@@ -224,6 +224,7 @@ body .modal-preview {
 
 .no-left-padding {
 	padding-left:0px !important;
+	padding-right:0px !important;
 }
 input.input-date {
 	width: 30%;
