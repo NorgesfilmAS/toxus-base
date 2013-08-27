@@ -229,3 +229,6 @@ body .modal-preview {
 input.input-date {
 	width: 30%;
 }
+.pagination .selected {
+  font-weight: bold;
+}
