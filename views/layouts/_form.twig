@@ -10,7 +10,7 @@
 		{% if groupElement.hidden != true and groupElement.formHidden != true %}
 		<div class="control-group form-group{% if this.model.getErrors(groupKey) %} error has-error{% endif %}">
 			{% if groupElement.type != 'checkbox' and groupElement.type != 'hidden' and groupElement.hideLabel != true %}
-			<label class="control-label col-lg-2 no-left-padding" for="id-{{ groupKey }}">{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ this.model.attributeLabel(groupKey) }}{% endif %}&nbsp;</label> 
+			<label for="id-{{ groupKey }}" class="control-label col-lg-2 no-left-padding {% if this.hasTooltip(groupKey) %} showtip" data-toggle="tooltip" data-placement="right" data-trigger="hover" data-original-title="{{ this.tooltip(groupKey) }}{% endif %}" >{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ this.model.attributeLabel(groupKey) }}{% endif %}&nbsp;</label> 
 			{% endif %}
 			
 			<div class="controls {% if groupElement.hideLabel != true %}col-lg-10{%else%}col-lg-12{%endif%}">
@@ -174,6 +174,7 @@ $().ready(function() {
 		</div>
 	</fieldset>
 </form>
+{{ this.registerOnReady('$(".showtip").tooltip();') }}
 
 {% if sub.isAjax or form.script %}
 <script type="text/javascript">
@@ -209,6 +210,7 @@ $().ready(function() {
 	};
 	
 {% endif %}
+
 {% if form.script %}
 	{{ form.script | raw}}
 {% endif %}

@@ -16,6 +16,12 @@ class BaseController extends CController
 	protected $_logPageView = true;
 	public $_menu = null;
 	
+  /**
+   * the name of the tooltip file placed in the message directory
+   * @var string
+   */
+  public $toolTipFilename = 'tooltip';
+  
 	public $_pageStyles = null;	
 	public $_defaultStyle = '';
 	public $_pageStyle = 'default'; // should come from $model->page_style	
@@ -1240,4 +1246,13 @@ class BaseController extends CController
 		}
 	}
 	
+  public function hasTooltip($attributeName)
+  {
+    $msg = Yii::t($this->toolTipFilename, $attributeName);
+    return $msg != $attributeName;
+  }
+  public function tooltip($attributeName, $params=array())
+  {
+    return Yii::t($this->toolTipFilename,$attributeName,$params);
+  }
 }
