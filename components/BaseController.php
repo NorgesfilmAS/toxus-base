@@ -35,6 +35,10 @@ class BaseController extends CController
 	protected $_onReadyScript = array();  // the lines in the onReadyScript
 
 
+	public function getVersion()
+	{
+		return '02.30';	// vendor:toxus: 0.2,  bootstrap 3.0
+	}
 
 	public function getForm()
 	{
