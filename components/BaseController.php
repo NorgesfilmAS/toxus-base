@@ -622,6 +622,12 @@ class BaseController extends CController
 	{
 		if (isset($this->_packages[$name]))
 			return $this->_packages[$name];
+		$package = $this->findPackage($name);
+		if (isset($package)) {
+			if (isset($package['basePath'])) {
+				return  Yii::app()->assetManager->publish(YiiBase::getPathOfAlias($package['basePath']));
+			}
+		}	
 		return null;
 	}
 	

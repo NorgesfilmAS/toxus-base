@@ -149,7 +149,9 @@
 		<script	type="text/javascript">
 			$().ready(function() {
 				{% block onReady %}{% endblock %}
-        /* SHOULD BE HERE */
+				$('.a-url').on('click', function() {
+					window.location = $(this).data('url');
+				});
 				{{ this.scriptOnReady() | raw }}
 			});
 		</script>		

@@ -232,3 +232,9 @@ input.input-date {
 .pagination .selected {
   font-weight: bold;
 }
+.small {
+  font-size: 60%;
+}
+.menu-modal {
+	cursor: pointer;
+}

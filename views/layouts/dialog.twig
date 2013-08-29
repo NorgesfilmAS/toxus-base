@@ -18,7 +18,9 @@
 		$('.action-close').on('click', function() {
 			$('#id-modal').modal('hide');  
 		});
-		
+		$('.a-url').on('click', function() {
+			window.location = $(this).data('url');
+		});		
 		{% block onReady %}{% endblock %}
     {{ this.scriptOnReady |raw }}  
 	});	
