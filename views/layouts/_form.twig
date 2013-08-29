@@ -1,5 +1,3 @@
-
-
 <form class="form-horizontal" method="post" action="{% if form.action %}{{form.action}}{% else %}{{ App.request.url }}{% endif %}" {% if this.model.isNewRecord %}{% if sub.onCreateUrl %}action="{{sub.onCreateUrl}}"{% elseif sub.onEditUrl %}action="{{sub.onEditUrl}}"{% endif %}{% endif %}  id="{{ form.id |default('id-form')}}" accept-charset="UTF-8">
 	<fieldset>
 		{% if form.title != '' %}
@@ -8,7 +6,7 @@
 		{% if form.controlWidth %}{% set width=form.controlWidth %}{% else %}{% set width= element.width | default('input-xlarge') %}{% endif %}
 		{% for groupKey, groupElement in form.elements %}			
 		{% if groupElement.hidden != true and groupElement.formHidden != true %}
-		<div class="control-group form-group{% if this.model.getErrors(groupKey) %} error has-error{% endif %}">
+		<div id="group-{{ groupKey}}" class="control-group form-group{% if this.model.getErrors(groupKey) %} error has-error{% endif %}">
 			{% if groupElement.type != 'checkbox' and groupElement.type != 'hidden' and groupElement.hideLabel != true %}
 			<label for="id-{{ groupKey }}" class="control-label col-lg-2 no-left-padding {% if this.hasTooltip(groupKey) %} showtip" data-toggle="tooltip" data-placement="right" data-trigger="hover" data-original-title="{{ this.tooltip(groupKey) }}{% endif %}" >{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ this.model.attributeLabel(groupKey) }}{% endif %}&nbsp;</label> 
 			{% endif %}
@@ -49,7 +47,14 @@
 					</div>	
 					{% endif %}
 				{% elseif element.type == 'radiobuttonlist' %}	
-					{{ html.activeRadioButtonList((this.model), key, element.items , {'labelOptions': {'style':'display:inline-block;padding-right:8px;margin-top:3px;'}, 'separator' : ' ' }) |raw }} 
+						<input id="id-{{ key }}" type="hidden" name="{{ form.model }}[{{ key }}]" value="">
+						<span id="{{ form.model }}_{{ key }}">
+							{% for itemKey, itemCaption in element.items %}
+								<input id="id-{{key}}-{{ loop.index0 }}" type="radio" class="id-{{key }}" name="{{ form.model }}[{{ key }}]" value="{{ itemKey }}">
+								<label for="id-{{key}}-{{ loop.index0 }}" style="display:inline-block;padding-right:8px;margin-top:3px;">{{ itemCaption }}</label>		
+							{% endfor %}
+						</span>	
+					{# html.activeRadioButtonList((this.model), key, element.items , {'labelOptions': {'style':'display:inline-block;padding-right:8px;margin-top:3px;'}, 'separator' : ' ', 'id':'-'~key}) |raw #} 
 				{% elseif element.type == 'textarea' %}
 					<textarea id="id-{{ key }}" name="{{ form.model }}[{{key}}]" class="{% if element.class %}{{ element.class }} {%else%}{{ width }}{%endif%} form-control" rows="{% if element.rows %}{{ element.rows }}{% else %}5{% endif %}">{{ this.model.__get(key) }}</textarea>
 					{{ this.registerPackage('elastic') }}
