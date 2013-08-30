@@ -34,6 +34,7 @@
 /* By default it's not affixed in mobile views, so undo that */
 .bs-sidebar.affix {
   position: static;
+	top: 100px;
 }
 
 /* First level of nav */
@@ -336,7 +337,9 @@ input.input-date {
 	float: right !important;
 	display:inline-block;
 }
-.navbar-nav li {
+
+.list-layout li {
 	display: inline-block !important;
 	margin-left: 15px;
+
 }
