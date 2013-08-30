@@ -326,7 +326,8 @@ class BaseController extends CController
 					),											
 					CClientScript::POS_END => array(
 										'js/bootstrap.js',
-										'js/respond.min.js'							
+										'js/respond.min.js',
+										'js/application.js',
 					),
 				),					
 			),	

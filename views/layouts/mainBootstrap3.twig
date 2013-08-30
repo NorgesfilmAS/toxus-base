@@ -19,19 +19,36 @@
 	<body>
 		<div class="navbar navbar-inverse navbar-fixed-top bs-docs-nav">
 			<div class="container">
-				<a href="{{ this.createUrl('/')}}" class="navbar-brand">{{ App.name }}</a>
-				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+				<button class="navbar-toggle pull-left" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<div class="nav-collapse bs-navbar-collapse">
+				<button class="navbar-toggle btn-info" type="button" data-toggle="collapse" data-target=".bs-item-menu" style="margin-right: 10px">
+					<span class="glyphicon glyphicon-retweet"></span>
+				</button>
+				{% set itemMenu %}
+					{% block itemMenuHeader %}{% endblock %}
+					{{ this.menuHtml('item', {'class': 'nav bs-sidenav' }) }}
+					{% block itemMenuFooter %}{% endblock %}						
+				{% endset %}	
+				<a href="{{ this.createUrl('/')}}" class="navbar-brand">{{ App.name }}</a>											
+				
+				<div class="collapse navbar-collapse bs-navbar-collapse" style="overflow-y:hidden;">
+					<div class="navbar-left">
 					{{ this.menuHtml('system', {'class': 'nav navbar-nav' }) }}
-				</div>
-				<div class="pull-right nav-collapse bs-navbar-collapse">
+					</div>
+					<div class="navbar-right pull-right">	
 					{{ this.menuHtml('user', {'class': 'nav navbar-nav' }) }}
+					</div>
 				</div>
-			</div>
+				</div>
+				<div class="visible-xs">
+				<div class="collapse navbar-collapse bs-item-menu">
+					{{ itemMenu | raw }}
+				</div>
+				</div>		
+			
 		</div>
 			
 		<div class="bs-header">
@@ -46,14 +63,12 @@
 		<div class="container bs-container">
 			{% block fullContent %}
 			<div class="row">
-				<div class="col-lg-3" >
-					<div class="bs-sidebar affix" data-spy="affix" data-offset="135"  >
-						{% block itemMenuHeader %}{% endblock %}
-						{{ this.menuHtml('item', {'class': 'nav bs-sidenav' }) }}
-						{% block itemMenuFooter %}{% endblock %}	
+				<div class="col-md-3 hidden-xs" >
+					<div class="bs-sidebar affix hidden-print" data-spy="affix" role="complementary"  >
+						{{ itemMenu | raw }}
 					</div>
 				</div>
-				<div class="col-lg-9">
+				<div class="col-md-9" role="main">
 					{% block content %}{% endblock %}					
 				</div>	
 			</div>
