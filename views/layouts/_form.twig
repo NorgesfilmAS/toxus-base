@@ -1,5 +1,4 @@
 {% set p = prefix | default('id-') %}
-P is{{ p }}
 
 <form class="form-horizontal" method="post" action="{% if form.action %}{{form.action}}{% else %}{{ App.request.url }}{% endif %}" {% if this.model.isNewRecord %}{% if sub.onCreateUrl %}action="{{sub.onCreateUrl}}"{% elseif sub.onEditUrl %}action="{{sub.onEditUrl}}"{% endif %}{% endif %}  id="{{ form.id |default(p~'form')}}" accept-charset="UTF-8">
 	<fieldset>

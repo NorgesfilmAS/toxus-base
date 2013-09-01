@@ -33,8 +33,13 @@
 
 /* By default it's not affixed in mobile views, so undo that */
 .bs-sidebar.affix {
-  position: static;
-	top: 100px;
+  position: fixed;
+	top: 80px;
+	width: 173px;
+}
+
+.bs-sidebar.affix-top {
+	width: 173px;
 }
 
 /* First level of nav */
@@ -80,6 +85,12 @@
   padding-left: 30px;
   font-size: 90%;
 }
+@media screen and (min-width: 768px) {
+	.bs-sidebar.affix-top {
+		width: 173px;
+	}
+
+}
 
 /* Show and affix the side nav when space allows it */
 @media screen and (min-width: 992px) {
@@ -88,6 +99,7 @@
   }
   /* Widen the fixed sidebar */
   .bs-sidebar.affix,
+	.bs-sidebar.affix-top,
   .bs-sidebar.affix-bottom {
     width: 213px;
   }
@@ -107,6 +119,7 @@
 @media screen and (min-width: 1200px) {
   /* Widen the fixed sidebar again */
   .bs-sidebar.affix-bottom,
+	.bs-sidebar.affix-top,
   .bs-sidebar.affix {
     width: 263px;
   }

@@ -63,12 +63,12 @@
 		<div class="container bs-container">
 			{% block fullContent %}
 			<div class="row">
-				<div class="col-md-3  hidden-xs" >
+				<div class="col-sm-3  hidden-xs" >
 					<div class="bs-sidebar affix hidden-print" role="complementary"  >
 						{{ itemMenu | raw }}
 					</div>
 				</div>
-				<div class="col-md-9" role="main">
+				<div class="col-sm-9" role="main">
 					{% block content %}{% endblock %}					
 				</div>	
 			</div>
@@ -80,7 +80,7 @@
 			{% block bootstrap3Footer %}
 			<div class="container">
 				<div class="row">
-					<div class="col-lg-4">
+					<div class="col-sm-4">
 						{% block footerLeft %}
 						<section>
 							<h4>{{ this.t('contact us') }}</h4>
@@ -94,7 +94,7 @@
 						</section>
 						{% endblock %}													
 					</div>
-					<div class="col-lg-4">
+					<div class="col-sm-4">
 						{% block footerMiddle %}
 						<section>
 							<h4>{{ this.t('stay updated') }}</h4>
@@ -105,7 +105,7 @@
 						</section>							
 						{% endblock %}	
 					</div>
-					<div class="col-lg-4">
+					<div class="col-sm-4">
 						{% block footerRight %}
 						<section>
 							<h4>{{ this.t('latest blog posts') }}</h4>		
