@@ -23,7 +23,7 @@ class RemoveAssetsAction extends CAction
 			}
 		}
 		if ($this->_debug) {
-			echo 'directory: '.$obj.'<br />';			
+			echo 'directory: '.$dir.'<br />';			
 		} else {
 			rmdir($dir);
 		}	
