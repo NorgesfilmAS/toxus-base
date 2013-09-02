@@ -24,8 +24,7 @@
 				{# t.registerOnReady('$(".menu-modal").on("click", function() { $("#id-modal").modal("toggle"); $("#id-modal-body").load($(this).data("url"));})') #}				
 			{% else %}
 				{{ html.link(menuItem.label, menuItem.url, menuItem.linkOptions)|raw }} </li>
-			{% endif %}
-			</li>	
+			{% endif %}	
 		{% endif %}
 	{% endfor %}
 {% endmacro %}
