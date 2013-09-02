@@ -1190,7 +1190,7 @@ class BaseController extends CController
 	 */
 	public function viewPath($filename, $options = array())
 	{
-		if ($options['extension']) {
+		if (isset($options['extension'])) {
 			$ext = $options['extension'];
 		} else {	
 			$ext = Yii::app()->viewRenderer->fileExtension;
