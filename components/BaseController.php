@@ -30,7 +30,7 @@ class BaseController extends CController
 	private $_formElements;
 	protected $_assetBaseUrl;
 
-	protected $_packages = array()	; // css and js to load
+	protected $_packages = array()	; // key => array('assetUrl', 'executeAfterLoad')
 	
 	protected $_onReadyScript = array();  // the lines in the onReadyScript
 
@@ -561,20 +561,32 @@ class BaseController extends CController
 	/**
 	 * register a package and returns the url to the assets dir
 	 * 
+	 * 
 	 * @param string $name
+	 * @param array $options
+	 *			executeScriptAfterLoad: execute the script after the package is loaded. Can be used in Ajax calls. After this script the onReady is executed
+	 *					if it's an array (key => value) key is the unique name, value is the script. (to stop duplicate loading of the code)
+	 *			isAjax: if true the packages are NOT register to auto load but are stored so the scriptOnReady will generate the load on demande
 	 */
-	public function registerPackage($name)
+	public function registerPackage($name, $options = array())
 	{
+		$opt = array_merge( 
+			array(				
+				'isAjax' => false,	
+				'executeAfterLoad' => null,					
+			),
+			$options);
+		
 		if (!isset($this->_packages[$name])) {// test if it already registered
 			$package = $this->findPackage($name);
 			if (isset($package)) {
 				if (isset($package['basePath'])) {
 					$assetUrl = Yii::app()->assetManager->publish(YiiBase::getPathOfAlias($package['basePath']));
-					if (isset($package['css']))
+					if (!$opt['isAjax'] && isset($package['css']))
 						foreach ($package['css'] as $css) {
 							Yii::app()->clientScript->registerCSSFile( $assetUrl.'/'.$css);					
 						}
-					if (isset($package['js'])){	
+					if (!$opt['isAjax'] &&  isset($package['js'])){	
 						foreach ($package['js'] as $position => $scripts) {
 							foreach ($scripts as $script) {
 								Yii::app()->clientScript->registerScriptFile( $assetUrl.'/'.$script, $position);
@@ -588,14 +600,26 @@ class BaseController extends CController
 				//	Yii::app()->clientScript->registerScript('package-'.$name.'-ready',"$().ready(function() {\n".$package['ready']."\n});", CClientScript::POS_END);
 					$this->registerOnReady($package['ready']);
 				}	
-				$this->_packages[$name] = $assetUrl;	// has been registered
+				$this->_packages[$name] = array('assetUrl' => $assetUrl);	// has been registered
 			}
 		}
+		// even if the package is already loaded, the script must be executed if not yet found
+		if (isset($opt['executeAfterLoad'])) {
+			// get the name of the script if it has one
+			$script = is_array($opt['executeAfterLoad']) ? $opt['executeAfterLoad'] : array(md5($opt['executeAfterLoad']) => $opt['executeAfterLoad']);
+			// check if there are scripts already
+			if (!isset($this->_packages[$name]['executeAfterLoad'])) { // first script to load
+				$this->_packages[$name]['executeAfterLoad'] = $script;
+			} elseif (!isset($this->_packages[$name]['executeAfterLoad'][key($script)])) {
+				// script not found: add to the end
+				$this->_packages[$name]['executeAfterLoad'][] = $script;
+			}
+		}	
 	}
 	
 	/**
 	 * return the script associated with the package so we can load them 
-	 * in an ajax call
+	 * in an ajax call: NOT NEEDED ANY MORE: use registerPackage('name', array('active' => 
 	 * 
 	 * @param string $name the package to get the scripts from
 	 */
@@ -626,7 +650,7 @@ class BaseController extends CController
 	public function getPackageBaseUrl($name)
 	{
 		if (isset($this->_packages[$name]))
-			return $this->_packages[$name];
+			return $this->_packages[$name]['assetUrl'];
 		$package = $this->findPackage($name);
 		if (isset($package)) {
 			if (isset($package['basePath'])) {
@@ -691,12 +715,65 @@ class BaseController extends CController
 	
 	/**
 	 * generate the onReady scription
+	 * 
+	 * @param bool $isAjax if true the pages are loaded through $.getScript and the code is executed when
+	 *   the package is loaded
+	 *   WARNING: css can't be loaded this way
 	 */
-	public function scriptOnReady()
+	public function scriptOnReady($isAjax = false)
 	{
 		$script = '';		
-		foreach ($this->_onReadyScript as $scriptLine) {
-			$script .= "\t\t".$scriptLine."\n";
+		if ($isAjax) {
+			// load the script and css dynamic and wait for the packages to load before executing scripts
+			foreach ($this->_packages as $name => $packageOptions) {
+				$package = $this->findPackage($name);
+				if (!$package) {
+					$script .= "/* package $name NOT FOUND */\n";
+				} else {
+					$script .= "/* package $name */\n";
+					if (isset($package['basePath'])) {
+						$assetUrl = Yii::app()->assetManager->publish(YiiBase::getPathOfAlias($package['basePath']));
+						if (isset($package['css'])) {
+							foreach ($package['css'] as $css) {
+								$script .= '$("<link/>", {'.
+									'rel: "stylesheet",'.
+									'type: "text/css",'.
+									'href: "'.$assetUrl.'/'.$css.'"'.
+									'}).appendTo("head");';
+							}
+						}	
+					}	
+					if (isset($package['js'])){	
+						foreach ($package['js'] as $scripts) {
+							$l = 1;
+							foreach ($scripts as $source) {
+								$script .= '$.getScript("'.$assetUrl.'/'.$source.'"';
+								if ($l == count($source) && isset($packageOptions['executeAfterLoad'])) {
+									$script .= ', function(data, textState) {';
+									foreach ($packageOptions['executeAfterLoad'] as $optName => $optSource) {
+										$script .= "/* script: $optName */\n";
+										$script .= $optSource;
+									}
+									if (isset($package['ready'])) {
+										$script .= "\n".$package['ready']."\n";
+									}
+									$script .= "});\n";
+								} else {
+									$script .= ");\n";
+								}	
+								$l++;
+							}
+						}
+					}	
+//					if (isset($package['ready'])) {
+//						$this->registerOnReady($package['ready']);
+//					}	
+				}
+			}
+		} else {
+			foreach ($this->_onReadyScript as $scriptLine) {
+				$script .= "\t\t".$scriptLine."\n";
+			}	
 		}	
 		return $script;
 	}

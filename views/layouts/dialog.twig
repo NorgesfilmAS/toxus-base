@@ -23,7 +23,7 @@
 			window.location = $(this).data('url');
 		});		
 		{% block onReady %}{% endblock %}
-    {{ this.scriptOnReady |raw }}  
+    {{ this.scriptOnReady(true) |raw }}  
 	});	
 
 </script>	
