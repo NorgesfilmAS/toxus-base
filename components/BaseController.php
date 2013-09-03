@@ -591,7 +591,7 @@ class BaseController extends CController
 		
 		if (!isset($this->_packages[$name])) {// test if it already registered
 			$package = $this->findPackage($name);
-			if (isset($package)) {
+			if ($opt['isAjax'] == false && isset($package)) { // do not load in the ajax version
 				if (isset($package['basePath'])) {
 					$assetUrl = Yii::app()->assetManager->publish(YiiBase::getPathOfAlias($package['basePath']));
 					if (!$opt['isAjax'] && isset($package['css']))
@@ -777,12 +777,13 @@ class BaseController extends CController
 							}
 						}
 					}	
-//					if (isset($package['ready'])) {
-//						$this->registerOnReady($package['ready']);
-//					}	
+					if (isset($package['ready'])) {
+						$this->registerOnReady($package['ready']);
+					}	
 				}
 			}
-		} else {
+		} else {			
+			Yii::log('non Ajax.onReady number of scripts = '.count($this->_onReadyScript), CLogger::LEVEL_TRACE, 'vender.toxus.compontent.BaseController');
 			foreach ($this->_onReadyScript as $scriptLine) {
 				$script .= "\t\t".$scriptLine."\n";
 			}	
