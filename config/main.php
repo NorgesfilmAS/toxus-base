@@ -153,6 +153,6 @@ return array(
 		'price-basic' => '19.95',
 		'price-extend' => '35.00',
 		'coupon-2013' => '%50',
-		'coupon-free' => '%100',	
+		'coupon-free' => '%100',
 	),
 );

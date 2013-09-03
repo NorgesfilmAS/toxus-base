@@ -54,6 +54,8 @@ class BaseController extends CController
 	 */
 	protected function loadMenu($controllerName)
 	{
+		Yii::log('Loading menu', CLogger::LEVEL_INFO);
+		
 		$menuDef =  array(
 			'system' => array(), 
 			'user'=> array(),
@@ -89,6 +91,16 @@ class BaseController extends CController
 			$menuDef[$name] = $event->menu;
 		}	
 		return $menuDef;
+	}
+	
+	public function init()
+	{
+		/**
+		 * if output is buffer, the information is send to firePHP if that is configured in the main.php
+		 */
+		if (isset(Yii::app()->params['firePHP']) && Yii::app()->params['firePHP'] == 1) {
+			ob_start();
+		}	
 	}
 	
 	/**
