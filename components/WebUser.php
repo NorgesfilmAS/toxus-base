@@ -37,6 +37,10 @@ class WebUser extends CWebUser
 		return $this->_profile;
 	}
 	
+	public function init() {
+		parent::init();
+	}
+	
 	public function getIsAdmin()
 	{
 		return $this->profile->rights_id >= UserProfile::ADMINISTRATOR;
