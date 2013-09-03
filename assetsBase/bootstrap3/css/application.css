@@ -327,8 +327,28 @@ body .modal-preview {
 
 .no-left-padding {
 	padding-left:0px !important;
-	padding-right:0px !important;
 }
+.no-horz-padding {
+	padding-left:0px !important;
+	padding-right:0px !important;			
+}
+.no-right-padding {
+	padding-right:0px !important;		
+}
+.no-top-padding {
+	padding-top:0px !important;		
+}
+.no-bottom-padding {
+	padding-bottom:0px !important;			
+}
+.no-vert-padding {
+	padding-bottom:0px !important;			
+	padding-top:0px !important;			
+}
+.no-padding {
+	padding: 0px;
+}
+
 input.input-date {
 	width: 30%;
 }
