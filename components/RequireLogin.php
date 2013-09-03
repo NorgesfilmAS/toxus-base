@@ -19,6 +19,7 @@ class RequireLogin extends CBehavior
 		$page = substr($page, strlen($dir) +1);
 
 		if (Yii::app()->urlManager->showScriptName) {
+			$part = array();
 			// page = index.php?r=site/search&XDEBUG_SESSION_START=netbeans-xdebug
 			//   or
 			// page = index.php/site/login
@@ -29,8 +30,7 @@ class RequireLogin extends CBehavior
 			}
 			if (count($phpFile) > 1) {
 				$args = explode('&', $phpFile[1]);
-				$l = 0;
-				$part = array();
+				$l = 0;				
 				while ($l < count($args)) {
 					if (substr($args[$l], 0,2) == 'r=') {
 						$part = explode('/', substr($args[$l],2));
