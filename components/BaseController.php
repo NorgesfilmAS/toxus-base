@@ -609,14 +609,18 @@ class BaseController extends CController
 					$assetUrl = '';
 				}		
 				if (isset($package['ready'])) {
-				//	Yii::app()->clientScript->registerScript('package-'.$name.'-ready',"$().ready(function() {\n".$package['ready']."\n});", CClientScript::POS_END);
+					Yii::log("Registering package $name, with onReady", CLogger::LEVEL_TRACE, 'toxus.compontents.BaseController');
 					$this->registerOnReady($package['ready']);
-				}	
+				}	else {
+					Yii::log("Registering package $name, with no onReady", CLogger::LEVEL_TRACE, 'toxus.compontents.BaseController');
+				}
 				$this->_packages[$name] = array('assetUrl' => $assetUrl);	// has been registered
 			}
 		}
 		// even if the package is already loaded, the script must be executed if not yet found
 		if (isset($opt['executeAfterLoad'])) {
+			Yii::log("Binding package executeAfterLoad for $name", CLogger::LEVEL_TRACE, 'toxus.compontents.BaseController');
+
 			// get the name of the script if it has one
 			$script = is_array($opt['executeAfterLoad']) ? $opt['executeAfterLoad'] : array(md5($opt['executeAfterLoad']) => $opt['executeAfterLoad']);
 			// check if there are scripts already
@@ -783,7 +787,7 @@ class BaseController extends CController
 				}
 			}
 		} else {			
-			Yii::log('non Ajax.onReady number of scripts = '.count($this->_onReadyScript), CLogger::LEVEL_TRACE, 'vender.toxus.compontent.BaseController');
+			Yii::log('non Ajax.onReady number of scripts = '.count($this->_onReadyScript), CLogger::LEVEL_TRACE, 'toxus.components.BaseController');
 			foreach ($this->_onReadyScript as $scriptLine) {
 				$script .= "\t\t".$scriptLine."\n";
 			}	
