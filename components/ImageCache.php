@@ -29,7 +29,7 @@ class ImageCache extends CComponent
 				'height' => 200,	
 				'quality' => 75,					
 				'fill' => true,		// make the image EXACT this size, padding it
-				'background-color' => array(230,230,235),	
+				'background-color' => array(255,255,255),// array(230,230,235),	
 			),
 
 			'large' => array(
