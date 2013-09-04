@@ -34,7 +34,8 @@ class BaseController extends CController
 	
 	protected $_onReadyScript = array();  // the lines in the onReadyScript
 
-
+	private $_newId = null;
+	
 	public function getVersion()
 	{
 		return '03';	// vendor:toxus: 0.2
@@ -1168,8 +1169,30 @@ class BaseController extends CController
 	{
 		$filename = $this->viewPath($formName, array('extension' => '.php') );
 		if ($filename) {
-			return require(Yiibase::getPathOfAlias('application').'/'.$filename );
-			// return require(Yiibase::getPathOfAlias('application.views.'.$this->id.".$formName").'.php');		
+			$form = require(Yiibase::getPathOfAlias('application').'/'.$filename );
+			// for loading default buttons
+			if (isset($form['buttons']) && is_string($form['buttons'])) {
+				switch ($form['buttons']) {
+					case 'default' : $form['buttons'] =  
+						array(
+						'view' => array(
+							'edit' => $this->button(array(
+								'label' => 'btn-edit',
+								'url' => '?mode=edit',
+								'position' => 'pull-right',						
+							)),	
+						),
+						'edit' => array(
+							$this->button('cancel'),				
+							$this->button('submit'),	
+						),	
+					);			
+					break;
+				default :
+					Yii::log('Unknown button type in load form: '.$form['buttons'].'. Expection: default');					
+				}
+			}
+			return $form;
 		}	
 		return false;
 	}
@@ -1360,4 +1383,74 @@ class BaseController extends CController
   {
     return Yii::t($this->toolTipFilename,$attributeName,$params);
   }
+	
+	/**
+	 * returns the array constructing a button in twig
+	 * 
+	 * standard buttons are: ok, cancel, command (set the default of a command)
+	 * 
+	 * 
+	 * @param mixed $options array or name of standard action
+	 */
+	public function button($options)
+	{
+		$btn = array(
+			'default' => false,				// use the default of one the standard button. default is the name of the button	
+			'label' => 'caption',
+			'url' => false,			
+			'position' => 'pull-right',
+			'type' => 'command',	
+			'style' => 'btn-info',
+			'width' => null,	
+			'visible' => true,	
+		);
+		if (is_string($options) || (is_array($options) && isset($options['default']))) {
+			$act = (is_array($options) && isset($options['default'])) ? $options['default'] : $options;
+			switch ($act) {
+				case 'submit' : 
+					$btn = array_merge($btn, array(
+							'label'  => false, //'btn-submit',
+							'position' => 'pull-right',
+							'type' => 'submit',
+							'style' => 'btn-primary',
+					));		
+					break;
+				case 'cancel' :	
+					$btn = array_merge($btn, array(
+							'label'  => 'btn-cancel',
+							'position' => 'pull-left',
+							'type' => 'cancel',
+							'style' => 'btn-default',
+					));		
+					break;					
+				case 'delete' :	
+					$btn = array_merge($btn, array(
+							'label'  => 'btn-delete',
+							'position' => 'left',
+							'type' => 'delete',
+							'action' => 'delete',
+							'style' => 'btn-warning',
+					));		
+					break;					
+				
+				default :
+					$btn['visible'] = false;
+					Yii::log('Unknown standard action '.$act.' for a button', CLogger::LEVEL_WARNING, 'toxus.BaseController.button');					
+					break;
+			}			
+		}
+		
+		if (is_array($options)) {
+			foreach ($options as $key => $option) {
+				if (isset($btn[$key])) {
+					$btn[$key] = $option;
+ 				} else {
+					Yii::log('The option '.$key.' is undefined for a button', CLogger::LEVEL_WARNING, 'toxus.BaseController.button');
+				}
+			}
+		}
+		return $btn;
+	}
+	
+	
 }

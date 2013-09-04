@@ -376,7 +376,11 @@ class Util {
 		}
 		return trim($text);
 	}
-	
+
+	static function formId($form)
+	{
+		return md5(json_encode($form));
+	}
 }
 
 ?>

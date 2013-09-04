@@ -16,7 +16,7 @@ class UpdateAction extends CAction
 	public $form = null;		// the name of the form ex extension
 	public $menuItem = null;// the menu item to active. Should be a jQuery selector (#menu-agent, or .agent-item)
 	
-	public function run($id)
+	public function run($id, $mode='view')
 	{
 		$controllerId = $this->controller->id;
 		$this->controller->model = $this->controller->loadModel($id, ucfirst($controllerId));
@@ -40,6 +40,7 @@ class UpdateAction extends CAction
 				'layout' => 'ajaxForm', 
 				'form' => $form,	
 				'mode' => isset($_GET['mode']) ? $_GET['mode'] : 'view',
+				'state' => isset($_GET['mode']) ? $_GET['mode'] : 'view',
 				'menuItem' => $this->menuItem,
 		));
 		

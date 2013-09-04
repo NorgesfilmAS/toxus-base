@@ -7,6 +7,8 @@ class ViewAction extends CAction
 	public $view = 'view';
 	public $form = null;		// the name of the form ex extension
 	public $defaultMode = 'view';
+	public $menuItem = null;// the menu item to active. Should be a jQuery selector (#menu-agent, or .agent-item)
+	
 	/**
 	 * extra parameters merged for the view
 	 * 
@@ -34,7 +36,9 @@ class ViewAction extends CAction
 				array(
 					'model' => $this->controller->model,
 					'form' => $form,	
-					'mode' => isset($_GET['mode']) ? $_GET['mode'] : $this->defaultMode,					
+					'mode' => isset($_GET['mode']) ? $_GET['mode'] : $this->defaultMode,
+					'state' => 'view',	
+					'menuItem' => $this->menuItem,						
 				),
 				$this->params
 		);				

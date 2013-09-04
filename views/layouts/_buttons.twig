@@ -1,0 +1,35 @@
+{#
+ generate the definition for the buttons
+ uses:  
+		- form.buttons: the button definition
+		- formId: the id of the form to store (for submitting)
+		- isAjax: the call is made as an ajax call
+		- state: edit | view
+		- this.model: to get information about the model (new/edit)
+
+ the definition of the button is defined in BaseController->button
+#}
+{# state #}
+{% for key, button in form.buttons[state] %}
+	{% if button.type == 'submit' %}	
+		<button class="btn {{ button.style }} {{ button.position }} id-{{ util.formId(form) }}" type="submit">{% if button.label %}{{ this.te(button.label) }}{%else%}{% if this.model.isNewRecord %}{{ this.t('btn-create') }} {% else %}{{ this.t('btn-save') }} {% endif %}{% endif %}</button>
+		{{ this.registerOnReady('$(".id-'~util.formId(form)~'").on("click", function() { $(".cls-'~util.formId(form)~'").submit(); }); ') }}
+	{% elseif button.type == 'cancel' %}	
+		{% if isAjax %}
+		<button  href="#" id="btn-cancel" class="btn {{ button.style }} {{ button.position }} action-close" data-dismiss="modal" type="button">{{ this.t(button.label) }}</button>											
+		{% else %}
+		<button class="btn {{ button.style }} {{ button.position }}" onClick="history.go(-1);return true;">{{ this.t(button.label) }}</button>							
+		{% endif %}		
+	{% elseif button.type == 'delete' %}	
+		<button class="btn {{ button.style }} {{ button.position }}" onClick="if (confirm('{{ (element.ask) | default(this.te('Delete this information?')) }}')) { window.location='{{ this.url }}'; }">{{ this.t(button.label)}}</button>							
+{#		
+	{% elseif element.type == 'link' %}
+		<br/><br /><a href="{{element.url}}">{{element.label}}</a>
+#}
+	{% elseif button.type == 'dialog' %}
+		<button type="button" class="btn {{ button.style }} {{ button.position }} btn-action menu-modal" data-url="{{ button.url }}" >{{ this.t(button.label) |raw }}</button>		
+	{% else %}	
+		<a href="{{ button.url }}" class="btn {{ button.style }} {{ button.position }}">{{ this.t(button.label) }}</a>							
+
+	{% endif %}
+{% endfor %}

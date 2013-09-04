@@ -85,6 +85,10 @@
   padding-left: 30px;
   font-size: 90%;
 }
+
+.bs-nav-toolbar {
+	padding-top: 6px;
+}
 @media screen and (min-width: 768px) {
 	.bs-sidebar.affix-top {
 		width: 173px;
