@@ -34,6 +34,6 @@ class LoginAction extends CAction
 					$this->controller->redirect(Yii::app()->user->returnUrl != '' ? Yii::app()->user->returnUrl : $this->createUrl($this->defaultUrl));
 			}	
 		}
-		$this->controller->render($this->view, array('form' => $form));
+		$this->controller->render($this->view, array('form' => $form, 'state' => 'edit'));
 	}
 }

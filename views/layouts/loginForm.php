@@ -16,16 +16,19 @@ return array(
 		),	
 	),
 	'buttons' => array(
-		'submit' => array(
-			'type' => 'submit',			
-			'style' => 'btn-primary',	
-			'label' => $this->te('btn-login'),	
-		),
-		'forgot_password' => array(
-			'type' => 'link',
-			'url'	 => $this->createUrl('site/passwordRequest'),
-			'label' => $this->t('forgot password', 1),	
-		),
-			
+		'edit' => array(	
+			'submit' => array(
+				'default' => 'submit',	
+				'type' => 'submit',			
+				'position' => 'pull-right',	
+				'label' => $this->te('btn-login'),	
+				'style' => 'btn-primary',					
+			),
+			'forgot_password' => array(
+				'type' => 'link',
+				'url'	 => $this->createUrl('site/passwordRequest'),
+				'label' => $this->t('forgot password', 1),	
+			),
+		),		
 	),		
 );
