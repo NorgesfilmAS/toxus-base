@@ -401,3 +401,7 @@ input.input-date {
 .sort-key {
 	cursor: pointer;
 }
+.grid-col-no-wrap {
+	white-space: nowrap;
+	overflow: hidden;
+}
