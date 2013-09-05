@@ -42,6 +42,10 @@
 	width: 173px;
 }
 
+.bs-nav-searchbar {
+	margin-top: 10px;
+}
+
 /* First level of nav */
 .bs-sidenav {
   margin-top: 30px;
@@ -378,5 +382,22 @@ input.input-date {
 .list-layout li {
 	display: inline-block !important;
 	margin-left: 15px;
-
+}
+/** using div as a table */
+.grid-header {
+	border-bottom: solid 3px lightgray;
+	font-weight: bold;
+	font-size: 110%;
+}
+.grid-row {
+	border-bottom: solid 1px lightgray;
+	margin-bottom: 0px;
+	padding-top: 3px;
+	padding-bottom: 5px;
+}
+.grid-row:hover {
+	background-color: #EEEEEE;
+}
+.sort-key {
+	cursor: pointer;
 }

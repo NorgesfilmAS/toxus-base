@@ -21,7 +21,6 @@
 				{# <a data-target="#id-modal" class="menu-action" data-toggle="modal" href="{{ menuItem.url }}">{{ menuItem.label }}</a> #}
 				<a href="#" class="menu-modal" data-url="{{ menuItem.url}}">{{ menuItem.label }}</a>
 				{{ t.registerPackage('modal-dialog') }}
-				{# t.registerOnReady('$(".menu-modal").on("click", function() { $("#id-modal").modal("toggle"); $("#id-modal-body").load($(this).data("url"));})') #}				
 			{% else %}
 				{{ html.link(menuItem.label, menuItem.url, menuItem.linkOptions)|raw }} </li>
 			{% endif %}	

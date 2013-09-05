@@ -87,16 +87,12 @@
 					<div class="input-prepend date">						
 						<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" size="16" type="date" value="{{ this.model.__get(key) }}" class=" form-control input-date" data-date-format="{{ format.dateFormat() | raw }}" {% if element.calendarWeeks %}data-date-calendar-weeks="true"{% endif %}>						
 					</div>	
-					{{ this.registerPackage('datepicker') }}
-				{{ this.registerScript(
-						'datepicker',"
-$().ready(function() {											
-	$('.input-date').datepicker({" ~		
-		"language : '"~App.clientConfig.language~"',
-		autoclose: true
-	});
-});")
-}}	
+					{{ this.registerPackage('datepicker', {'executeAfterLoad':
+"$('.input-date').datepicker({" ~		
+	"language : '"~App.clientConfig.language~"',
+	autoclose: true
+});
+"}) }}
 				{% elseif element.type=='hidden' %}
 					<input type="hidden" id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" value="{{ this.model.__get(key) }}" />	
 				{% elseif element.type== 'view' %}
@@ -129,17 +125,14 @@ $().ready(function() {
 					</div>	
 				{% elseif element.type=='button' %}
 					<span id="{{ p }}{{ key }}" class="btn {{element.style}}"{{element.popover|raw}}>{{element.caption}}</span>
-					
-<script type="text/javascript">
-	$().ready(function() {
-		$('#{{ p }}{{key}}').click(function() {
-			{{ element.script |raw }}
-		});
-		{% if element.popover %}
-		  $('#{{ p }}{{key}}').popover({trigger:'hover'});
-		{% endif %}
-	});			
-</script>
+
+{{ this.onReady(
+"$('#"~ p ~ key~"').click(function() {
+	"~ element.script ~"
+});") }}
+{% if element.popover %}
+	{{ this.onReady("$('#"~ p ~ key~"').popover({trigger:'hover'});") }}
+{% endif %}
 				{% elseif element.type=="dialog" %}
 				<a data-target="#id-modal" role="button" class="btn {{ element.style }}" data-toggle="modal" href="#" data-remote="{{ element.remote }}"  >{{ element.caption | default('click')}}</a>
 				{% else %}	
@@ -184,13 +177,31 @@ $().ready(function() {
 	#}
 	</fieldset>
 </form>
-{{ this.registerOnReady('$(".showtip").tooltip();') }}
+{{ this.onReady('$(".showtip").tooltip();') }}
 
 {% if sub.isAjax or form.script %}
 <script type="text/javascript">
 {% if sub.isAjax %}	
+	
+	{{ this.registerPackage('ajaxForm', {'isAjax' : true,'executeAfterLoad' : 
+"	var options = {
+		target : '"~form.refreshDiv | default('#'~sub.slaveFrame)~"',
+		success : processResponse
+	};
+	$('#"~form.id~"').ajaxForm(options);		
+	function processResponse(responseText, statusText, xhr, $form) {
+	if (responseText == 'ok') {/* ok: load information in a div */
+		$('"~form.refreshDiv | default('#'~sub.masterFrame)~"').load('"~ sub.onRefreshUrl ~"');
+	} else	if (responseText == 'url') {/* ok, but open an other page */
+		window.location = '"~ sub.refreshUrl ~"';
+	}	else {
+		$('"~ form.refreshDiv | default('#'~sub.slaveFrame) ~"').html(responseText);
+	}
+};
+"}) }}
+
+{#	
 	{% for script in this.packageScripts('ajaxForm') %}
-		{# must load direct for the ajax definition otherwise there is a timing error #}
 		$.getScript("{{ script}}", function(data, textState) {
 			var options = {
 				target : '{{ form.refreshDiv | default('#'~sub.slaveFrame) }}',
@@ -209,7 +220,7 @@ $().ready(function() {
 	
 	
 	function processResponse(responseText, statusText, xhr, $form) {
-{#		alert(responseText); #}
+
 		if (responseText == 'ok') {/* ok: load information in a div */
 			$('{{ form.refreshDiv | default('#'~sub.masterFrame) }}').load('{{ sub.onRefreshUrl }}');
 		} else	if (responseText == 'url') {/* ok, but open an other page */
@@ -218,12 +229,16 @@ $().ready(function() {
 			$('{{ form.refreshDiv | default('#'~sub.slaveFrame) }}').html(responseText);
 		}
 	};
-	
-{% endif %}
-
-{% if form.script %}
-	{{ form.script | raw}}
+#}	
 {% endif %}
 
 </script>	
+{% endif %}
+
+{% if form.onReady %}
+	{{ this.onReady(form.onReady) }}
+{% endif %}	
+
+{% if form.script %}
+	{{ this.registerScript('main-script', form.script) }}
 {% endif %}

@@ -722,12 +722,35 @@ class BaseController extends CController
 	}
 	/**
 	 * add a script to the onReady statement
+	 * NOT USED ANY MORE
 	 * @param string $script
 	 */
 	public function registerOnReady($line)
 	{
 		$this->_onReadyScript[] = $line;
 		return '';
+	}
+	/**
+	 * add a script to the onReady event 
+	 * 
+	 * @param string $script the script to execute in the onReady event
+	 * @param array $options
+	 *		name: if given this must be unique in the onReady 
+	 * 
+	 * @return boolean true if script is added
+	 */
+	public function onReady($script, $options = array())
+	{
+		if (isset($options['name'])) {
+			if (isset($this->_onReadyScript[$options['name']])) {
+				return false;
+			} else {
+				$this->_onReadyScript[$options['name']] = $script;
+			}						
+		} else {
+			$this->_onReadyScript[] = $script;
+		}	
+		return '';		
 	}
 	
 	/**
@@ -792,6 +815,15 @@ class BaseController extends CController
 			foreach ($this->_onReadyScript as $scriptLine) {
 				$script .= "\t\t".$scriptLine."\n";
 			}	
+			// check for any ExecuteAfterLoad
+			foreach ($this->_packages as $name => $packageOptions) {
+				if (isset($packageOptions['executeAfterLoad']) && is_array($packageOptions['executeAfterLoad'])) {
+					foreach ($packageOptions['executeAfterLoad'] as $optName => $optSource) {
+						$script .= "/* script: $name/$optName */\n";
+						$script .= $optSource;
+					}	
+				}	
+			}
 		}	
 		return $script;
 	}
