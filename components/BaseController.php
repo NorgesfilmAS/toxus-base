@@ -38,7 +38,7 @@ class BaseController extends CController
 	
 	public function getVersion()
 	{
-		return '03';	// vendor:toxus: 0.2
+		return '04';	// vendor:toxus: 0.2
 	}
 
 	public function getForm()
