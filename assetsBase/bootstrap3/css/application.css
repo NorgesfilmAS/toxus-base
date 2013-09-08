@@ -340,6 +340,10 @@ body .modal-preview {
 	padding-left:0px !important;
 	padding-right:0px !important;			
 }
+.no-horz-margin {
+	margin-left:0px !important;
+	margin-right:0px !important;			
+}
 .no-right-padding {
 	padding-right:0px !important;		
 }

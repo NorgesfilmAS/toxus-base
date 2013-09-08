@@ -9,7 +9,7 @@
 
  the definition of the button is defined in BaseController->button
 #}
-{# state #}
+{% set state = state | default('edit') %}
 {% for key, button in form.buttons[state] %}
 	{% if button.type == 'submit' %}	
 		<button class="btn {{ button.style }} {{ button.position }} id-{{ util.formId(form) }}" type="submit">{% if button.label %}{{ this.te(button.label) }}{%else%}{% if this.model.isNewRecord %}{{ this.t('btn-create') }} {% else %}{{ this.t('btn-save') }} {% endif %}{% endif %}</button>

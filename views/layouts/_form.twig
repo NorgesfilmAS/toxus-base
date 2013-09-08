@@ -3,9 +3,11 @@
 
 <form class="form-horizontal cls-{{ util.formId(form) }}" method="post" action="{% if form.action %}{{form.action}}{% else %}{{ App.request.url }}{% endif %}" {% if this.model.isNewRecord %}{% if sub.onCreateUrl %}action="{{sub.onCreateUrl}}"{% elseif sub.onEditUrl %}action="{{sub.onEditUrl}}"{% endif %}{% endif %}  id="{{ formId }}" accept-charset="UTF-8">
 	<fieldset>
+{# bootstrap3 		
 		{% if form.title != '' %}
 			<h5 class="short_headline"><span>{{ form.title |raw}}</span></h5>
 		{% endif %}
+#}
 		{% if form.controlWidth %}{% set width=form.controlWidth %}{% else %}{% set width= element.width | default('input-xlarge') %}{% endif %}
 		{% for groupKey, groupElement in form.elements %}			
 		{% if groupElement.hidden != true and groupElement.formHidden != true %}
@@ -103,7 +105,18 @@
 					
 					<input id="{{ p }}input-{{ key }}" type="text" class="{{ width }}" value="{{ element.caption }}"/>
 					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="hidden" value="{{ this.model.__get(key) }}">
-					{{ this.registerScript(
+	{{ this.registerPackage('typeahead', {'isAjax' : true,'executeAfterLoad' : "
+  s = '#"~p~"input-"~ key ~"';
+	$(s).typeahead({
+		name:'search-"~ key ~"',
+		remote:'" ~ element.url ~ "%QUERY'
+	});
+	$(s).on('typeahead:selected typeahead:autocompleted', function(e,datum) {
+		$('#"~ p ~ key ~"').val(datum.id);
+	});
+"}) }}
+					
+					{# this.registerScript(
 							form.model ~ '-' ~ key,"
 $().ready(function() {
   s = '#"~p~"input-"~ key ~"';
@@ -115,7 +128,7 @@ $().ready(function() {
 		$('#"~ p ~ key ~"').val(datum.id);
 	});
 })
-") }}
+") #}
 						
 				{% elseif element.type=='currency' %}
 					{{ this.registerPackage('currency') }}

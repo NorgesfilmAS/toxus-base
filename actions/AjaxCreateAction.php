@@ -2,6 +2,8 @@
 
 class AjaxCreateAction extends AjaxAction
 {
+	public $form = null;
+	
 	public function run($id=null)
 	{
 		$view = $this->view;

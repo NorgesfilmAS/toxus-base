@@ -3,6 +3,8 @@
 class CreatePopupAction extends CAction
 {
 	public $modelClass = null;
+	public $form = null;
+	
 	public function run()
 	{
 		$model = $this->modelClass;
@@ -18,8 +20,11 @@ class CreatePopupAction extends CAction
 		}
 		
 		Yii::import('toxus.actions.ViewAction');
+		if ($form == null) {
+			$this->form = lcfirst($model).'Fields';
+		}
 		$this->controller->render('create', array(
-			'form' => $this->controller->loadForm(lcfirst($model).'Fields'), 
+			'form' => $this->controller->loadForm($form), 
 			'sub' => array(
 					'isAjax' => true, 
 					'refreshUrl'=> $this->controller->createUrl(lcfirst($model).'/view', array('id' => ViewAction::USE_LAST_ID)),
