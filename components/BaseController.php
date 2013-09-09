@@ -770,7 +770,7 @@ class BaseController extends CController
 				if (!$package) {
 					$script .= "/* package $name NOT FOUND */\n";
 				} else {
-					$script .= "/* package $name */\n";
+					$script .= "/* package $name */\n\t";
 					if (isset($package['basePath'])) {
 						$assetUrl = Yii::app()->assetManager->publish(YiiBase::getPathOfAlias($package['basePath']));
 						if (isset($package['css'])) {
@@ -791,25 +791,34 @@ class BaseController extends CController
 								if ($l == count($source) && isset($packageOptions['executeAfterLoad'])) {
 									$script .= ', function(data, textState) {';
 									foreach ($packageOptions['executeAfterLoad'] as $optName => $optSource) {
-										$script .= "/* script: $optName */\n";
+										$script .= "\n\t\t/* script: $optName */\n\t\t";
 										$script .= $optSource;
 									}
 									if (isset($package['ready'])) {
-										$script .= "\n".$package['ready']."\n";
+										$script .= "\n\t\t".$package['ready']."\n";
 									}
-									$script .= "});\n";
-								} else {
-									$script .= ");\n";
+									$script .= "\n\t});\n";
+								} elseif ($l == count($source) && isset($package['ready'])) {
+									$script .= "/* script: package.ready */\n\t";
+									$script .= ', function(data, textState) {';
+									$script .= $package['ready'];
+								  $script .= "});\n";
+								} else	{
+									$script .= "\n\t);\n";
 								}	
 								$l++;
 							}
 						}
-					}	
-					if (isset($package['ready'])) {
-						$this->registerOnReady($package['ready']);
+					}	else {
+						if (isset($package['ready'])) {
+							$this->registerOnReady($package['ready']);  // SHOULD THIS NOT BE scriptOnReady (can be but is same!)
+						}	
 					}	
 				}
 			}
+			foreach ($this->_onReadyScript as $scriptLine) {
+				$script .= "\t\t".$scriptLine."\n";
+			}				
 		} else {			
 			Yii::log('non Ajax.onReady number of scripts = '.count($this->_onReadyScript), CLogger::LEVEL_TRACE, 'toxus.components.BaseController');
 			foreach ($this->_onReadyScript as $scriptLine) {

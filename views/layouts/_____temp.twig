@@ -1,0 +1,54 @@
+<script type="text/javascript">
+	$().ready(function() {
+		$('.action-close').on('click', function() {
+			$('#id-modal').modal('hide');  
+		});
+		$('.a-url').on('click', function() {
+			window.location = $(this).data('url');
+		});		
+		    /* package inputmask */
+$.getScript("/site/assets/3aeb6233/js/jquery.inputmask.js", function(data, textState) {/* script: 75fe4553ec5ea6d31fa64aa67522ae68 */
+$("#dia-year").inputmask({"mask": "9999"})});
+/* package ajaxForm */
+$.getScript("/site/assets/6bdd4231/js/jquery.form.js", function(data, textState) {/* script: fce97a7597eaf5bba3b3b0045662ef5d */
+	var options = {
+		target : '#id-model-body',
+		success : processResponse
+	};
+	$('.cls-9e0797ad0bbfdc61466ab4fc3150ec84').ajaxForm(options);		
+	function processResponse(responseText, statusText, xhr, $form) {
+		alert('in');
+		var response = jQuery.parseJSON(responseText);
+		alert(responseText);
+		if (typeof response =='object') {
+			if (response.status == 200) {
+				window.location = response.url;
+			} else {	
+				$('#id-modal-body').text('unexpected result.');
+			}	
+		}	else {
+			$('#id-modal-body').html(responseText);
+		}	
+	}
+});
+		$(".showtip").tooltip();
+		
+	$('.dia-type').on('change', function(event) {		
+		type = $(this).val();
+		if (type == 'Channel') {
+			$('#dia-group-master_id').show();
+		} else {
+			$('#dia-group-master_id').hide();
+		}
+	});
+	$('#dia-type-0').attr('checked', 'checked');;
+	function hideDiaGroup() {
+		$('#dia-group-master_id').hide();
+	};
+	setTimeout(hideDiaGroup,100);
+
+		$(".id-9e0797ad0bbfdc61466ab4fc3150ec84").on("click", function() { $(".cls-9e0797ad0bbfdc61466ab4fc3150ec84").submit(); }); 
+  
+	});	
+
+</script>

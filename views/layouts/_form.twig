@@ -39,7 +39,7 @@
 					<div class="input-prepend span4">
 						<span class="add-on">%</span>
 					{% elseif element.type == 'chosen' %}
-						{{ this.registerPackage('chosen') }}
+						{{ this.registerPackage('chosen', {'isAjax' : isAjax}) }}
 						{# needs an empty field, because field is remove if no value is selected, so changes to nothing would not be saved #}
 						<input id="{{ p }} {{ key }}-val" type="hidden" name="{{ form.model }}[{{key}}][]" />
 					{% endif %}	
@@ -62,7 +62,7 @@
 					{# html.activeRadioButtonList((this.model), key, element.items , {'labelOptions': {'style':'display:inline-block;padding-right:8px;margin-top:3px;'}, 'separator' : ' ', 'id':'-'~key}) |raw #} 
 				{% elseif element.type == 'textarea' %}
 					<textarea id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" class="{% if element.class %}{{ element.class }} {%else%}{{ width }}{%endif%} form-control" rows="{% if element.rows %}{{ element.rows }}{% else %}5{% endif %}">{{ this.model.__get(key) }}</textarea>
-					{{ this.registerPackage('elastic') }}
+					{{ this.registerPackage('elastic', {'isAjax' : isAjax }) }}
 				{% elseif element.type == 'checkbox' %}	
 					{# http://stackoverflow.com/questions/1809494/post-the-checkboxes-that-are-unchecked #}
 					<label class="checkbox"><input type="hidden" name="{{ form.model }}[{{key}}]" value="0" /><input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="checkbox" {% if this.model.__get(key) %}checked="1"{% endif %} value="1"/>{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ this.model.attributeLabel(groupKey) }}{% endif %}</label>
@@ -73,23 +73,23 @@
 				{% elseif element.type== 'html2' %}						
 					{{ this.htmlEditor(this.model, key) | raw}}												
 				{% elseif element.type=='html' %}
-					{{ this.registerPackage('tinymce') }}	
+					{{ this.registerPackage('tinymce',{'isAjax' : isAjax}) }}	
 					<textarea id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" class="tinymce form-control {% if element.class %}{{ element.class }} {%else%}{{ width }}{%endif%}" rows="{% if element.rows %}{{ element.rows }}{% else %}5{% endif %}">{{ this.model.__get(key) }}</textarea>
 				{% elseif element.type=='code' %}
-					{{ this.registerPackage('code') }}
+					{{ this.registerPackage('code',{'isAjax' : isAjax}) }}
 					{% if element.sourceType == 'html' %}
-						{{ this.registerPackage('code-html') }}
+						{{ this.registerPackage('code-html',{'isAjax' : isAjax}) }}
 					{% endif %}	
 					<textarea id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" class="code-{{ element.sourceType | default('html') }} form-control {% if element.class %}{{ element.class }} {%else%}{{ width }}{%endif%}" rows="{% if element.rows %}{{ element.rows }}{% else %}5{% endif %}">{{ this.model.__get(key) }}</textarea>
 				{% elseif element.type=='mask' %}
-					{{ this.registerPackage('inputmask') }}	
 					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }} form-control" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"/> 				
-					{{ this.registerScript(p ~ key, '$("#'~p~key~'").inputmask({"mask": "'~element.mask~'"})', 4) }}
+					{{ this.registerPackage('inputmask',{'isAjax' : isAjax , 'executeAfterLoad': 	
+						'$("#'~p~key~'").inputmask({"mask": "'~element.mask~'"})'}) }}
 				{% elseif element.type=='date' %}						
 					<div class="input-prepend date">						
 						<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" size="16" type="date" value="{{ this.model.__get(key) }}" class=" form-control input-date" data-date-format="{{ format.dateFormat() | raw }}" {% if element.calendarWeeks %}data-date-calendar-weeks="true"{% endif %}>						
 					</div>	
-					{{ this.registerPackage('datepicker', {'executeAfterLoad':
+					{{ this.registerPackage('datepicker', {'isAjax' : isAjax, 'executeAfterLoad':
 "$('.input-date').datepicker({" ~		
 	"language : '"~App.clientConfig.language~"',
 	autoclose: true
@@ -105,7 +105,7 @@
 					
 					<input id="{{ p }}input-{{ key }}" type="text" class="{{ width }}" value="{{ element.caption }}"/>
 					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="hidden" value="{{ this.model.__get(key) }}">
-	{{ this.registerPackage('typeahead', {'isAjax' : true,'executeAfterLoad' : "
+	{{ this.registerPackage('typeahead', {'isAjax' : isAjax,'executeAfterLoad' : "
   s = '#"~p~"input-"~ key ~"';
 	$(s).typeahead({
 		name:'search-"~ key ~"',
@@ -131,7 +131,7 @@ $().ready(function() {
 ") #}
 						
 				{% elseif element.type=='currency' %}
-					{{ this.registerPackage('currency') }}
+					{{ this.registerPackage('currency', {'isAjax' : isAjax}) }}
 					<div class="input-prepend">
 						<span class="add-on">{{ format.currencySymbolHtml() |raw }}</span>
 						<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="input-currency span6" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)" style="text-align: right;" /> 					

@@ -19,10 +19,41 @@
   {% include this.viewPath('_form') with {'isAjax' : 1 }%}
 	</div>		
 {% endblock %}
-			
+		
+
 {% block dialogFooter %}
 <div class="row no-horz-margin pull-right">
 	{% include this.viewPath('_buttons') with {'isAjax' : 1 } %}
 </div>
 {% endblock %}
 			
+
+{% block onReady %}
+	$(".cls-{{util.formId(form)}}").submit(function() { 
+		$.ajax({ // create an AJAX call...
+			data: $(this).serialize(), // get the form data
+			type: $(this).attr('method'), // GET or POST
+			url: $(this).attr('action'), // the file to call
+			success: processResponse
+		});
+		return false; // cancel original event to prevent form submitting
+	});
+	function processResponse(responseText, statusText, xhr, $form) {
+		var response=null;
+		try	{
+      response = $.parseJSON(responseText);
+    } catch(err){
+      response = false;
+    }      
+		if (typeof response =='object') {
+			if (response.status == 200) {
+				window.location = response.url;
+			} else {
+				alert({{ this.t('There was an unexepected response. (status != 200)') }});
+			}	
+		}	else {
+			$('#id-modal-body').html(responseText);
+		}	
+	}		
+
+{% endblock %}
