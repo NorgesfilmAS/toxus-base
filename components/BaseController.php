@@ -792,7 +792,12 @@ class BaseController extends CController
 									$script .= ', function(data, textState) {';
 									foreach ($packageOptions['executeAfterLoad'] as $optName => $optSource) {
 										$script .= "\n\t\t/* script: $optName */\n\t\t";
-										$script .= $optSource;
+										if (is_array($optSource)) {
+											foreach ($optSource as $s)
+												$script .= $s;
+										}	else {
+											$script .= $optSource;
+										}
 									}
 									if (isset($package['ready'])) {
 										$script .= "\n\t\t".$package['ready']."\n";
