@@ -1,0 +1,25 @@
+{#
+  systtem information in a dialog popup 
+#}
+{% extends this.viewPath('dialog') %}
+
+{% block dialogHeader %}
+<h4>System information</h4>
+{% endblock %}
+
+{% block dialogBody %}
+		{% for key, props in properties %}
+	<div class="row"><h3>{{ this.t(props.caption) }}</h3></div>
+
+	{% for name, value in props.items %}
+	<div class="row">		
+		<div class="col-sm-3">{{name}}</div>
+		<div class="col-sm-9">{{value}}</div>
+	</div>
+	
+	{% endfor %}				
+	{% endfor %}
+
+{% endblock %}
+		
+

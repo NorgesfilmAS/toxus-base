@@ -5,13 +5,14 @@
 	{# must first display any error connected to the main record #}
 	{% if this.model.hasErrors() %}
 	<div class="row">
-		<div class="col-lg-8 col-offset-2 alert alert-danger">			
+		<div class="col-sm-8 col-sm-offset-2 alert alert-danger">			
 			{{ html.errorSummary(this.model)|raw }}
 		</div>
 	</div>
 	{% endif %}	
-		
+	<div class="row">		
 	{% include this.viewPath('_form') %}
+	</div>		
 </div>
 
 {% endblock %}

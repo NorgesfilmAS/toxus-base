@@ -23,13 +23,15 @@ return array(
 		),	
 	),
 	'buttons' => array(
-		'submit' => array(
-			'type' => 'submit',			
-			'style' => 'btn-info',	
+		'edit' => array(	
+			'submit' => array(
+				'type' => 'submit',			
+				'style' => 'btn-info',	
+			),
+			'cancel' => array(
+				'type' => 'cancel',
+			),	
 		),
-		'cancel' => array(
-			'type' => 'cancel',
-		)	
 	),		
 		
 );
