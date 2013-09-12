@@ -8,7 +8,11 @@ class ViewAction extends CAction
 	public $form = null;		// the name of the form ex extension
 	public $defaultMode = 'view';
 	public $menuItem = null;// the menu item to active. Should be a jQuery selector (#menu-agent, or .agent-item)
-	
+	/**
+	 * the class to generate of no id is given
+	 * @var string
+	 */
+	public $modelClass = null;
 	/**
 	 * extra parameters merged for the view
 	 * 
@@ -26,7 +30,12 @@ class ViewAction extends CAction
 		if ($id) {
 			$this->controller->model = $this->controller->loadModel($id, ucfirst($this->controller->id));
 		} else {
-			$this->controller->model = null;
+			if ($this->modelClass !== null) {
+				$model = $this->modelClass;
+				$this->controller->model = new $model;
+			} else {
+				$this->controller->model = null;
+			}	
 		}
 		$form = false;				
 		if (!empty($this->form)) {
@@ -35,6 +44,7 @@ class ViewAction extends CAction
 		$params = array_merge(
 				array(
 					'model' => $this->controller->model,
+					'modelClass' => get_class($this->controller->model),	
 					'form' => $form,	
 					'mode' => isset($_GET['mode']) ? $_GET['mode'] : $this->defaultMode,
 					'state' => 'view',	
