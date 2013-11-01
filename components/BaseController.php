@@ -58,10 +58,12 @@ class BaseController extends CController
 		Yii::log('Loading menu', CLogger::LEVEL_INFO);
 		
 		$menuDef =  array(
-			'system' => array(), 
-			'user'=> array(),
-			'main'=> array(),
-			'item'=> array(),
+			'system' => array(), // top left  (in static menu bar)
+			'user'=> array(),    // top right (in static menu bar)
+			'logo' => array(),   // below top menu left aligned	(in page bar)
+			'header'=> array(),  // below top menu right aligned (in page bar)	
+			'main'=> array(),    
+			'item'=> array(),    // on item page left (in affix )
 			'toolbar'=> array(),
 			'explain'=> array(),
 			'footer'=> array(),
@@ -163,6 +165,15 @@ class BaseController extends CController
 		$event->menu = $this->userMenu($event->menu);
 		$this->raiseEvent('onUserMenu', $event);
 	}
+	public function onLogoMenu($event)
+	{
+		$this->raiseEvent('onLogoMenu', $event);		
+	}
+	public function onHeaderMenu($event)
+	{
+		$this->raiseEvent('onHeaderMenu', $event);		
+	}
+	
 	public function onMainMenu($event) 
 	{
 		$this->raiseEvent('onMainMenu', $event);

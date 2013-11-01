@@ -14,9 +14,11 @@
 		{{ this.registerCore('jquery', true) }}
 		{{ this.registerPackage('bootstrap3') }}
 		{{ this.registerPackage('core') }}
+		{% include this.viewPath('header') %}
 		<meta name="description" content="{{ App.params.description | default('site description') }}" />	
 	</head>
 	<body>
+		{% block menuTop %}
 		<div class="navbar navbar-inverse navbar-fixed-top bs-docs-nav">
 			<div class="container">
 				<button class="navbar-toggle pull-left" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
@@ -50,19 +52,26 @@
 				</div>
 				</div>		
 		</div>
-			
+		{% endblock %}
+		
 		<div class="bs-header">
 			<div class="container">
-				{# anything in this container is the header of the application. It will scroll out of view #}
-				{% include this.viewPath('logo') %}				
+				{# anything in this container is the header of the application. It will scroll out of view #}				
+				<div class="navbar-left">	
+					{% include this.viewPath('logo') %}									
+					{{ this.menuHtml('logo', {'class': 'nav navbar-nav' }) }}
+				</div>
 				<div class="header-toolbar">{% block headerButtons %}{% endblock %}</div>					
+				<div class="navbar-right pull-right">	
+					{{ this.menuHtml('header', {'class': 'nav navbar-nav' }) }}
+				</div>
+
 			</div>
 
 		</div>
 {# there are two basic ways to show the page, with of without the nav #}
 		<div class="container bs-container">
-			{%block test %}De test {%endblock%}
-			{% block fullContentXX %}
+			{% block fullContent %}
 			<div class="row">
 				<div class="col-sm-3  hidden-xs" >
 					<div class="bs-sidebar affix-top hidden-print" role="complementary"  >
