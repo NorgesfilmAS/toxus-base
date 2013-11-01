@@ -9,9 +9,9 @@
 class BaseController extends CController
 {
 	public $vendorViewRoot = 'vendors.toxus.views';
-	public $layout='//layouts/column1';
+	public $layout = '';////layouts/column1';
 	//public $breadcrumbs=array();
-	public $brand = 'Percussive Guitar';
+	public $brand = 'BaseController->brand';
 	public $model = null;
 	protected $_logPageView = true;
 	public $_menu = null;
