@@ -204,7 +204,7 @@ $().ready(function() {
 	$('#"~form.id~"').ajaxForm(options);		
 	function processResponse(responseText, statusText, xhr, $form) {
 	if (responseText == 'ok') {/* ok: load information in a div */
-		$('"~form.refreshDiv | default('#'~sub.masterFrame)~"').load('"~ sub.onRefreshUrl ~"');
+		$('"~form.refreshDiv | default('#'~sub.masterFrame)~"').load('/* this is an error: sub.onRefreshUrl */');
 	} else	if (responseText == 'url') {/* ok, but open an other page */
 		window.location = '"~ sub.refreshUrl ~"';
 	}	else {

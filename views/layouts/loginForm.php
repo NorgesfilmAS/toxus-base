@@ -1,7 +1,7 @@
 <?php
 
 return array(
-	'title' => $this->te('login to your account'),	
+	'title' => $this->te('login to your accountz'),	
 	'model' => 'LoginForm',
 	'action' => 'profile/login',	
 	'elements' => array(	
