@@ -1292,8 +1292,9 @@ class BaseController extends CController
 				return str_replace('.', '/', $this->vendorViewRoot).'/'.$this->getId().'/'.$filename.$ext;
 			} elseif (file_exists($path .'/layouts/'.$filename.$ext)) {
 				return str_replace('.', '/', $this->vendorViewRoot).'/layouts/'.$filename.$ext;
-			} else {			
-				return false;
+			} else {
+				throw new CException('The template "'.$filename.'" could not be found');
+			//	return false;
 			}	
 		}		
 	}
