@@ -6,6 +6,9 @@
  * if logPage = false no logging is done for the request, otherwise info is written
  * 
  */
+
+YiiBase::setPathOfAlias('assetsBase', realpath(dirname(dirname(__FILE__)).'/../assetsBase'));
+
 class BaseController extends CController
 {
 	public $vendorViewRoot = 'vendors.toxus.views';
