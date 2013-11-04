@@ -17,7 +17,7 @@ class LoginAction extends CAction
 	/**
 	 * the view to open for the form to login
 	 */
-	public $view = 'login';
+	public $view = 'formDialog';
 	
 	public function run()
 	{

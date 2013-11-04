@@ -19,7 +19,7 @@ class BootstrapGridView extends CGridView
 		}	
 		
 //		$this->selectableRows = 1;	
-		$this->pagerCssClass = 'pagination pagination-left';
+		$this->pagerCssClass = 'pagination-left';
 		$this->template = '{items} {pager} {summary}';
 		$this->pager = array_merge(
 						$this->pager,
@@ -28,7 +28,7 @@ class BootstrapGridView extends CGridView
 							'header'         => '', //<div class="pagination pagination-left">',
 							'footer'				 => '', // </div>',	
 							'selectedPageCssClass' => 'active',	
-							'htmlOptions'		 =>	array('class' => 'tox-pager-grid'),
+							'htmlOptions'		 =>	array('class' => 'pagination pagination-sm tox-pager-grid'),
 							'hiddenPageCssClass' => 'hide-it',	
 							'prevPageLabel'  => '&larr; ',
 							'nextPageLabel'  => '&rarr;',	

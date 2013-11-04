@@ -1,7 +1,7 @@
 <?php
 
 return array(
-	'title' => $this->te('login to your accountz'),	
+	'title' => $this->te('login to your account'),	
 	'model' => 'LoginForm',
 	'action' => 'profile/login',	
 	'elements' => array(	
@@ -27,7 +27,7 @@ return array(
 			'forgot_password' => array(
 				'type' => 'link',
 				'url'	 => $this->createUrl('site/passwordRequest'),
-				'label' => $this->t('forgot password', 1),	
+				'label' => $this->t('forgot password?', 1),	
 			),
 		),		
 	),		

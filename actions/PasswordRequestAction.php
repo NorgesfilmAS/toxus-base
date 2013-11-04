@@ -13,11 +13,11 @@ class PasswordRequestAction extends CAction
 			if ($this->controller->model->validate()) {
 				$profile = UserProfile::model()->find('email=:email', array(':email' => $this->controller->model->email));
 				if ($profile === null) {
-					Yii::app()->user->setFlash('error', 'There is no record found for this email address');
+					$this->controller->model->addError('email', 'There is no account with this email address');
 				} else {
 					$mail = new MailMessage();
 					if ($mail->render('requestPassword', array('model' => $profile))) {
-						$this->render('passwordSend', array('model' => $this->model));
+						$this->controller->render('passwordSend', array('model' => $this->controller->model));
 						return;
 					}	
 				}	

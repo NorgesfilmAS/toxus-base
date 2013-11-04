@@ -1,27 +1,24 @@
-{# 
-  defines which base template is used
-
- #}
-{% extends this.viewPath('formDialog') %}
+{% extends this.viewPath('main') %}
 
 {% block content %}
 <div class="row">
 	<div class="col-sm-6 col-xs-10 msgbox-layout border">
-		<h2>{{ form.title}}</h2>
+		<h2>{% block title %}{{ form.title}}{% endblock %}</h2>
 		{% if this.model.hasErrors() %}
-		<div class="row">
-			<br />
-			<div class="col-sm-10 col-sm-offset-1 alert alert-danger">			
-				{{ html.errorSummary(this.model)|raw }}
-			</div>
+		<div class="alert alert-danger">			
+			{{ html.errorSummary(this.model)|raw }}
 		</div>
 		{% endif %}		
+		{% block message %}{% endblock %}
 		<div class="{% if this.model.hasErrors() %}shake{% endif %} col-sm-12">		
+			{% if form %}
 			<div class="bs-content">
 		{% include this.viewPath('_form') %}
 			</div>		
 		{% include this.viewPath('_buttons') %}
+			{% endif %}
 		</div>		
 	</div>
-</div>		
+</div>	
+	
 {% endblock %}
