@@ -18,6 +18,13 @@
 		<meta name="description" content="{{ App.params.description | default('site description') }}" />	
 	</head>
 	<body>
+		{% set itemMenu %}
+			{% block menuLeft %}
+			{% block itemMenuHeader %}{% endblock %}
+			{{ this.menuHtml('item', {'class': 'nav bs-sidenav' }) }}
+			{% block itemMenuFooter %}{% endblock %}	
+			{% endblock %}
+		{% endset %}			
 		{% block menuTop %}
 		<div class="navbar navbar-inverse navbar-fixed-top bs-docs-nav">
 			<div class="container">
@@ -28,12 +35,7 @@
 				</button>
 				<button class="navbar-toggle btn-info" type="button" data-toggle="collapse" data-target=".bs-item-menu" style="margin-right: 10px">
 					<span class="glyphicon glyphicon-retweet"></span>
-				</button>
-				{% set itemMenu %}
-					{% block itemMenuHeader %}{% endblock %}
-					{{ this.menuHtml('item', {'class': 'nav bs-sidenav' }) }}
-					{% block itemMenuFooter %}{% endblock %}						
-				{% endset %}	
+				</button>				
 				<a href="{{ this.createUrl('/')}}" class="navbar-brand">{{ App.name }}</a>											
 				
 				<div class="collapse navbar-collapse bs-navbar-collapse" style="overflow-y:hidden;">
@@ -65,7 +67,6 @@
 				<div class="navbar-right pull-right">	
 					{{ this.menuHtml('header', {'class': 'nav navbar-nav' }) }}
 				</div>
-
 			</div>
 
 		</div>

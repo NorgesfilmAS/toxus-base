@@ -1,0 +1,47 @@
+{#
+  The master page of all pages
+#}
+
+{% extends this.viewPath('main') %}
+
+
+{% block content %}
+{% include this.viewPath('caption') %}
+
+<div class="bs-content">
+	{# must first display any error connected to the main record #}		
+	{% if model.hasErrors() %}
+	<div class="row">
+		<div class="col-lg-10 col-offset-2 alert alert-danger">			
+			{{ html.errorSummary(model)|raw }}
+		</div>
+	</div>
+	{% endif %}	
+		
+	{# now display the form #}	
+	{% if mode == 'edit' %}
+		{% include this.viewPath('_form') %}
+	{% else %}	
+		<div class="row">
+			<div class="col-sm-9">
+			{% include this.viewPath('_view') %}
+			</div>
+		</div>		
+	{% endif %}	
+</div>
+{% endblock %}
+
+
+{% block onReady %}
+  {% if menuItem %}
+		$('{{ menuItem }}').addClass('active');
+	{% endif %}	
+	$('.btn-edit').on('click', function() {
+		window.location = window.location+"?mode=edit"; 
+	});
+	{{ parent() }}
+{% endblock %}
+	
+	
+	
+	

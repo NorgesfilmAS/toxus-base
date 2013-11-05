@@ -12,24 +12,24 @@
 {% set state = state | default('edit') %}
 {% for key, button in form.buttons[state] %}
 	{% if button.type == 'submit' %}	
-		<button class="btn {{ button.style }} {{ button.position }} id-{{ util.formId(form) }}" type="submit">{% if button.label %}{{ this.te(button.label) }}{%else%}{% if this.model.isNewRecord %}{{ this.t('btn-create') }} {% else %}{{ this.t('btn-save') }} {% endif %}{% endif %}</button>
+		<button class="{{ button.style | default('btn') }} {{ button.position }} id-{{ util.formId(form) }}" {{ button.options |raw }} type="submit">{% if button.label %}{{ this.te(button.label) }}{%else%}{% if this.model.isNewRecord %}{{ this.t('btn-create') }} {% else %}{{ this.t('btn-save') }} {% endif %}{% endif %}</button>
 		{{ this.onReady("\n\t"~'$(".id-'~util.formId(form)~'").on("click", function() { $(".cls-'~util.formId(form)~'").submit(); }); ') }}
 	{% elseif button.type == 'cancel' %}	
 		{% if isAjax %}
-		<button  href="#" id="btn-cancel" class="btn {{ button.style }} {{ button.position }} action-close" data-dismiss="modal" type="button">{{ this.t(button.label) }}</button>											
+		<button  href="#" id="btn-cancel" class="{{ button.style |default('btn') }} {{ button.position }} action-close" data-dismiss="modal" {{ button.options |raw }} type="button">{{ this.t(button.label) }}</button>											
 		{% else %}
-		<button class="btn {{ button.style }} {{ button.position }}" onClick="history.go(-1);return true;">{{ this.t(button.label) }}</button>							
+		<button class="{{ button.style|default('btn') }} {{ button.position }}" {{ button.options |raw }} onClick="history.go(-1);return true;">{{ this.t(button.label) }}</button>							
 		{% endif %}		
 	{% elseif button.type == 'delete' %}	
-		<button class="btn {{ button.style }} {{ button.position }}" onClick="if (confirm('{{ (element.ask) | default(this.te('Delete this information?')) }}')) { window.location='{{ this.url }}'; }">{{ this.t(button.label)}}</button>							
+		<button class="{{ button.style |default('btn') }} {{ button.position }}" {{ button.options |raw }} onClick="if (confirm('{{ (element.ask) | default(this.te('Delete this information?')) }}')) { window.location='{{ this.url }}'; }">{{ this.t(button.label)}}</button>							
 {#		
 	{% elseif element.type == 'link' %}
 		<br/><br /><a href="{{element.url}}">{{element.label}}</a>
 #}
 	{% elseif button.type == 'dialog' %}
-		<button type="button" class="btn {{ button.style }} {{ button.position }} btn-action menu-modal" data-url="{{ button.url }}" >{{ this.t(button.label) |raw }}</button>		
+		<button type="button" class="{{ button.style | default('btn') }} {{ button.position }} btn-action menu-modal" data-url="{{ button.url }}" {{ button.options |raw }}>{{ this.t(button.label) |raw }}</button>		
 	{% else %}	
-		<a href="{{ button.url }}" class="btn {{ button.style }} {{ button.position }}">{{ this.t(button.label) }}</a>	
+		<a href="{{ button.url }}" class="{{ button.style | default('btn') }} {{ button.position }}" {{ button.options |raw }}>{{ this.t(button.label) }}</a>	
 	{% endif %}
 {% endfor %}
 		

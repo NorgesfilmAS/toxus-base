@@ -15,20 +15,34 @@ class UpdateAction extends CAction
 	public $edit = 'viewForm';	// the view to open to edit the current information
 	public $form = null;		// the name of the form ex extension
 	public $menuItem = null;// the menu item to active. Should be a jQuery selector (#menu-agent, or .agent-item)
+	public $allowEdit = true;	// if false a 403 will be returned
 	
 	public function run($id, $mode='view')
 	{
+		if (!$this->allowEdit) {
+			throw new CHttpException(403, 'Access denied');
+		}
 		$controllerId = $this->controller->id;
 		$this->controller->model = $this->controller->loadModel($id, ucfirst($controllerId));
-
+		$mode =  isset($_GET['mode']) ? $_GET['mode'] : 'view';
+						
 		if (isset($_POST[ucfirst($controllerId)])) {
 			if ($this->controller->executeUpdate()) {
+				/* this was in PNEK 
 				if ($this->view == null) {
 					$this->view = Yii::app()->baseURL.'/'.Yii::app()->request->pathInfo;
 				}
 				$this->controller->redirect($this->view);
 				//$this->controller->redirect($this->controller->createUrl($controllerId.'/'.$this->view, array('id' => $id)));
 			}
+				 * 
+				 */
+				if (false && $this->view != null) {
+					$this->controller->redirect($this->view);
+				}
+			}
+			$mode = 'view';
+			
 		}
 		if ($this->form == null)
 			$form = $this->controller->loadForm($controllerId. 'Fields'); 				
@@ -39,8 +53,8 @@ class UpdateAction extends CAction
 				'model' => $this->controller->model,
 				'layout' => 'ajaxForm', 
 				'form' => $form,	
-				'mode' => isset($_GET['mode']) ? $_GET['mode'] : 'view',
-				'state' => isset($_GET['mode']) ? $_GET['mode'] : 'view',
+				'mode' => $mode,
+				'state' => $mode,
 				'menuItem' => $this->menuItem,
 		));
 		

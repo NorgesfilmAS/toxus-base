@@ -27,7 +27,9 @@ return array(
 			'forgot_password' => array(
 				'type' => 'link',
 				'url'	 => $this->createUrl('site/passwordRequest'),
-				'label' => $this->t('forgot password?', 1),	
+				'label' => $this->t('forgot password?', 1),
+				'style' => 'btn btn-default btn-xs',
+				'options' => 'style="margin-top:7px"',	
 			),
 		),		
 	),		
