@@ -1,4 +1,4 @@
-#to: {{ model.email }}  
+#to: {{ model.email_to_confirm }}  
 #subject: New account for {{ App.params.company }}
 #body: 
 
@@ -6,7 +6,7 @@ Dear {{ model.username }}
 
 You are now part of the community.
 
-Please click on the link: http://{{ attribute(App.params, 'company-server')}}{{ App.baseUrl }}/profile/confirm/key/{{ model.login_key }}
+Please click on the link: {{ this.createAbsoluteUrl((action | default('site/profile')), {'confirm' : 1,'key' : model.login_key}) }}
 
 Best regards
 

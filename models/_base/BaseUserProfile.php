@@ -26,7 +26,7 @@
  * @property string $newsletter_key
  *
  */
-abstract class BaseUserProfile extends TwigActiveRecord {
+abstract class BaseUserProfile extends GxActiveRecord {
 
 	public static function model($className=__CLASS__) {
 		return parent::model($className);
@@ -46,11 +46,11 @@ abstract class BaseUserProfile extends TwigActiveRecord {
 
 	public function rules() {
 		return array(
-			array('username, password, email', 'required'),
+			array('username, password', 'required'),
 			array('is_confirmed, rights_id, has_newsletter, is_suspended', 'numerical', 'integerOnly'=>true),
 			array('username, password, password_md5, login_key, email, email_to_confirm, newsletter_key', 'length', 'max'=>255),
 			array('creation_date, modified_date, last_login', 'safe'),
-			array('password_md5, login_key, email_to_confirm, is_confirmed, rights_id, creation_date, modified_date, last_login, has_newsletter, is_suspended, newsletter_key', 'default', 'setOnEmpty' => true, 'value' => null),
+			array('password_md5, login_key, email, email_to_confirm, is_confirmed, rights_id, creation_date, modified_date, last_login, has_newsletter, is_suspended, newsletter_key', 'default', 'setOnEmpty' => true, 'value' => null),
 			array('id, username, password, password_md5, login_key, email, email_to_confirm, is_confirmed, rights_id, creation_date, modified_date, last_login, has_newsletter, is_suspended, newsletter_key', 'safe', 'on'=>'search'),
 		);
 	}

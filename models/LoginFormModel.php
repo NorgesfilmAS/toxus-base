@@ -41,10 +41,12 @@ class LoginFormModel extends CFormModel
 	}
 	public function setUsername($value)
 	{
+		$this->_identity = null;
 		$this->_username = $value;
 	}
 	public function setPassword($value)
 	{
+		$this->_identity = null;
 		$this->_password = $value;
 	}
 	public function getEmail()
@@ -95,10 +97,12 @@ class LoginFormModel extends CFormModel
 			array('email', 'email', 'on' => 'password'),	
 			array('email', 'required', 'on' => 'password'),		
 			
-			array('username, password,passwordRepeat', 'required', 'on' => 'new'),	
-			array('has_newsletter', 'boolean', 'on'=>'new'),	
-			array('password', 'length', 'min'=> 5, 'max' => 40, 'on'=>'new'),	
-			array('password', 'compare', 'compareAttribute'=>'passwordRepeat', 'on' => 'new'),				
+			/** the create scenario */	
+			array('email,username, password,passwordRepeat', 'required', 'on' => 'create'),	
+			array('email', 'email', 'allowEmpty'=> false, 'on' => 'create'),	
+			array('has_newsletter', 'boolean', 'on'=>'create'),	
+			array('password,passwordRepeat', 'length', 'min'=> 5, 'max' => 40, 'on'=>'create'),	
+			array('password', 'compare', 'compareAttribute'=>'passwordRepeat', 'on' => 'create'),				
 /**
  * must be moved to LoginForm
  				

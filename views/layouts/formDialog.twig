@@ -7,13 +7,16 @@
 {% block content %}
 <div class="row">
 	<div class="col-sm-6 col-xs-10 msgbox-layout border">
-		<h2>{% block title %}{{ form.title}}{% endblock %}</h2>
-		{% if this.model.hasErrors() %}
+		<h2>{% block title %}{{ form.title}} {{ title }} {% endblock %}</h2>
+		{% if errorText or this.model.hasErrors() %}
 		<div class="alert alert-danger">			
+			{% if this.model.hasErrors() %}
 			{{ html.errorSummary(this.model)|raw }}
+			{% endif %}
+			{{ errorText |raw }}			
 		</div>
 		{% endif %}		
-		{% block message %}{% endblock %}
+		{% block message %}{{ message  |raw }}{% endblock %}
 		<div class="{% if this.model.hasErrors() %}shake{% endif %} col-sm-12">		
 			{% if form %}
 			<div class="bs-content">
@@ -21,6 +24,7 @@
 			</div>		
 		{% include this.viewPath('_buttons') %}
 			{% endif %}
+		{% block endMessage %}{{ endMessage |raw}}{% endblock %}	
 		</div>		
 	</div>
 </div>	

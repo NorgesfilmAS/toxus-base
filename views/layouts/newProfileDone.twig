@@ -1,0 +1,13 @@
+{% extends this.viewPath('formDialog') %}
+
+{% block title %}
+{{ this.te('register new users') }}
+{% endblock %}
+
+{% block message %}
+<p>
+	{{ this.te('A mail has been send to your email address. It should arrive in a few minutes. In this mail there are the instruction to active your account.' ) |raw}} <br />
+	{{ this.te('If you did not recieve the mail, check your spam box.' ) |raw}}
+</p>
+
+{% endblock %}

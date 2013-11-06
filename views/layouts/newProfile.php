@@ -1,9 +1,9 @@
 <?php
 
 return array(
-	'title' => $this->te('create a new profile'),	
-	'model' => 'LoginForm',	
-	'action' => 'profile/new',	
+	'title' => $this->te('profile'),	
+	'model' => 'UserProfile',	
+	'action' => $this->createUrl('site/newProfile'),	
 	'elements' => array(	
 		'email' => array(
 			'type' => 'email'	
@@ -16,12 +16,17 @@ return array(
 		),
 		'passwordRepeat' => array(
 			'type' => 'password',	
+			'label' => $this->te('type password again'),	
 		),	
-		'has_newsletter' => array(
+ 		'has_newsletter' => array(
 			'type' => 'checkbox',	
+			'label' => $this->te('subscribe to the newsletter'),
+			'default' => 1,	
 		)	
 	),
-	'buttons' => array(
+	'buttons' => 'default'
+		/*
+		array(
 		'submit' => array(
 			'type' => 'submit',			
 			'style' => 'btn-primary',	
@@ -32,6 +37,8 @@ return array(
 			'url'	 => $this->createUrl('/login'),
 			'label' => $this->te('sign in with an existing profile.'),	
 		),
-			
-	),		
+	),			
+		 * 
+		 */
+		
 );

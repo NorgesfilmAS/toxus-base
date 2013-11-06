@@ -22,7 +22,7 @@ return array(
 				'type' => 'submit',			
 				'position' => 'pull-right',	
 				'label' => $this->te('btn-login'),	
-				'style' => 'btn-primary',					
+				'style' => 'btn btn-primary',					
 			),
 			'forgot_password' => array(
 				'type' => 'link',

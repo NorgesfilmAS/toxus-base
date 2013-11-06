@@ -65,7 +65,7 @@
 					{{ this.registerPackage('elastic', {'isAjax' : isAjax }) }}
 				{% elseif element.type == 'checkbox' %}	
 					{# http://stackoverflow.com/questions/1809494/post-the-checkboxes-that-are-unchecked #}
-					<label class="checkbox"><input type="hidden" name="{{ form.model }}[{{key}}]" value="0" /><input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="checkbox" {% if this.model.__get(key) %}checked="1"{% endif %} value="1"/>{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ this.model.attributeLabel(groupKey) }}{% endif %}</label>
+					<label class="checkbox"><input type="hidden" name="{{ form.model }}[{{key}}]" value="0" /><input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="checkbox" {% if this.model.__get(key) or groupElement.default == 1 %}checked="1"{% endif %} value="1"/>{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ this.model.attributeLabel(groupKey) }}{% endif %}</label>
 				{% elseif element.type== 'image' %}
 					{{ this.form.image(this.model, key) | raw }}								
 				{% elseif element.type== 'finder' %}

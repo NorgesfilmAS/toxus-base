@@ -1276,7 +1276,39 @@ class BaseController extends CController
 		Yii::app()->pageLog->log->write = $value;
 	}
 	
+	/**
+	 * finds the file in the array of paths
+	 * if file not find false is returned
+	 * 
+	 * @param string $filename
+	 * @param array $paths
+	 */
+	public function pathSearch($filename, $paths)
+	{
+		foreach ($paths as $key => $path) {
+			if (file_exists($path.'/'.$filename)) {
+				return $key.'/'.$filename;
+			}
+		}
+		return false;
+	}
 	
+	public function viewPath($filename, $options = array())
+	{
+		$filename = $filename.(isset($options['extension']) ? $options['extension'] : Yii::app()->viewRenderer->fileExtension);
+		$vendorRoot = YiiBase::getPathOfAlias('webroot.protected.'.$this->vendorViewRoot);
+		$shortVendorRoot = str_replace('.', '/', $this->vendorViewRoot);
+		$paths = array(
+			'views/'.$this->getId() => YiiBase::getPathOfAlias('webroot.protected.views').'/'.$this->getId(),
+			'views/layouts' => YiiBase::getPathOfAlias('webroot.protected.views').'/layouts',	
+			$shortVendorRoot.$this->getId() => $vendorRoot.'/'.$this->getId(),	
+			$shortVendorRoot.'/layouts' => $vendorRoot.'/layouts',		
+		);
+		if (($file = $this->pathSearch($filename, $paths)) == false) {
+			throw new CException('The template "'.$filename.'" could not be found');
+		}
+		return $file;		
+	}
 	/**
 	 * Looking for the in:
 	 *   current [view] directory
@@ -1284,11 +1316,15 @@ class BaseController extends CController
 	 *   in vendor/toxus/views/[view]/ directory
 	 *   in vendor/toxus/layout directory
 	 * 
+	 *  
 	 * 
 	 * @param string $filename the name of the file to find EXCLUDING twig
+	 * @param array $options
+	 *    extension string : the extension to use, default ''
+	 *    parent boolean: find the parent of this file, default false;
 	 * @return string
 	 */
-	public function viewPath($filename, $options = array())
+	public function viewPath2($filename, $options = array())
 	{
 		if (isset($options['extension'])) {
 			$ext = $options['extension'];
@@ -1395,9 +1431,9 @@ class BaseController extends CController
 	 * 
 	 * @return false 
 	 */
-	public function executeCreate()
+	public function executeCreate($options = array())
 	{
-		$controllerId = get_class($this->model);
+		$controllerId = isset($options['model']) ? $options['model'] : get_class($this->model);
 		$this->model->attributes = $_POST[$controllerId];
 		if ($this->model->validate()) {
 			try {
@@ -1461,7 +1497,7 @@ class BaseController extends CController
 			'url' => false,			
 			'position' => 'pull-right',
 			'type' => 'command',	
-			'style' => 'btn-info',
+			'style' => 'btn btn-info',
 			'width' => null,	
 			'visible' => true,	
 		);
@@ -1473,7 +1509,7 @@ class BaseController extends CController
 							'label'  => false, //'btn-submit',
 							'position' => 'pull-right',
 							'type' => 'submit',
-							'style' => 'btn-primary',
+							'style' => 'btn btn-primary',
 					));		
 					break;
 				case 'cancel' :	
@@ -1481,7 +1517,7 @@ class BaseController extends CController
 							'label'  => 'btn-cancel',
 							'position' => 'pull-left',
 							'type' => 'cancel',
-							'style' => 'btn-default',
+							'style' => 'btn btn-default',
 					));		
 					break;					
 				case 'delete' :	
@@ -1490,7 +1526,7 @@ class BaseController extends CController
 							'position' => 'left',
 							'type' => 'delete',
 							'action' => 'delete',
-							'style' => 'btn-warning',
+							'style' => 'btn btn-warning',
 					));		
 					break;					
 				
