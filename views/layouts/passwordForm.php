@@ -12,7 +12,7 @@ return array(
 		'edit' => array(	
 			'submit' => array(
 				'type' => 'submit',			
-				'style' => 'btn-primary',	
+				'style' => 'btn btn-primary',	
 				'label' => $this->te('request password')	
 			),
 		),		

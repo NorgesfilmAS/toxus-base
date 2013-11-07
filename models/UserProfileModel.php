@@ -12,7 +12,21 @@ class UserProfileModel extends BaseUserProfile
 	const ADMINISTRATOR = 1000;
 	const GOD = 10000;
 	
-	private $_passwordRepeat = null; // not used but needed for the forms
+	private $_passwordRepeat = null; // not used but needed for the create scenario
+	
+	/**
+	 * the url to use to confirm the creation of the account
+	 *  
+	 * @var string
+	 */
+	public $confirmationUrl = 'site/profile';
+	/**
+	 * the template to use to send the confirmation mail to the user
+	 * 
+	 * @var string
+	 */
+	public $confirmMail = 'confirmMail';
+	
 	
 	public function getPasswordRepeat()
 	{
@@ -39,6 +53,8 @@ class UserProfileModel extends BaseUserProfile
 				array('password', 'length', 'min'=>5, 'max'=>64, 'tooShort'=> Yii::t('app','Password is too short (minimum is 5 characters)')),        					
 				array('password', 'compare', 'compareAttribute'=>'passwordRepeat', 'on' => 'create'),									
 				array('username,email,password,passwordRepeat', 'required', 'on' => 'create'),	
+					
+				array('email,password,username,is_confirmed', 'safe', 'on'=>'createAdmin')	
 			)
 		);
 	}
@@ -46,7 +62,9 @@ class UserProfileModel extends BaseUserProfile
 	public function beforeSave() {
 		if ($this->isNewRecord) {
 			$this->creation_date = new CDbExpression('NOW()');
-			$this->newsletter_key = Util::generateRandomString(30);
+			$this->newsletter_key = Util::generateRandomString(30);			
+		}
+		if ($this->isNewRecord && $this->is_confirmed == 0) {
 			/** swap the email and email to confirm */
 			$this->email_to_confirm = $this->email;
 			$this->email = null;
@@ -93,9 +111,35 @@ class UserProfileModel extends BaseUserProfile
 		$this->email = $this->email_to_confirm;
 		return $wasConfirmed != 1;
 	}
+	/**
+	 * send a confirmation mail to the user
+	 * 
+	 */
+	public function sendConfirmation()
+	{
+		$mm = new MailMessage;
+		if (! $mm->render($this->confirmMail, array(
+			'model' => $this,
+			'action' => $this->confirmationUrl,		
+		))) {
+			$this->addError('email', Yii::t('app', 'Unable to send mail'));
+			return false;
+		}	
+		return true;
+	}
 	
 	public function getCanEdit()
 	{
 		return $this->rights_id >= self::MODERATOR;
 	}
+	
+	public function isConfirmedOptions()
+	{
+		return array(
+			'0' => Yii::t('app', 'No'),
+			'1' => Yii::t('app', 'Yes'),	
+		);
+		
+	}
+	
 }

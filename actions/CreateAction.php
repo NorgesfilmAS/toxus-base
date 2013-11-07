@@ -1,25 +1,35 @@
 <?php
 /**
  * create a new record in the database
+ * the scenario used is create
  * 
+ * version 2.0 jvk 2013.11.06
  */
-class CreateAction extends CAction
+yii::import('toxus.actions.BaseAction');
+
+class CreateAction extends BaseAction
 {
 	public $view = 'form';
 	public $form = null;
 	public $modelClass = null;
+	/**
+	 *
+	 * @var string the scenario used to get the info from the form
+	 */
+	public $scenario = 'create';
+	
 	
 	public function run()
 	{
+		$this->checkRights();
+		$controllerId = $this->controller->id;		
 		if ($this->modelClass == null) {
-			$controllerId = $this->controller->id;
 			$this->modelClass = ucfirst($controllerId);
 			$modelClass = $this->modelClass;			
 		} else {
 			$modelClass = $this->modelClass;
 		}			
-		$this->controller->model = new $modelClass('create');		
-		
+		$this->controller->model = new $modelClass($this->scenario);		
 		
 		if (isset($_POST[$modelClass])) {
 			if ($this->createModel()) {

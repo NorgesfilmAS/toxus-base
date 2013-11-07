@@ -410,3 +410,6 @@ input.input-date {
 	white-space: nowrap;
 	overflow: hidden;
 }
+.items {
+	width: 100%;
+}

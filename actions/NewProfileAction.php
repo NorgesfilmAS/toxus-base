@@ -82,13 +82,7 @@ class NewProfileAction extends CreateAction
 			
 			if ($this->controller->executeCreate()) {
 				// send the message to the user to confirm the newly created profile.
-				$s = $this->controller->createAbsoluteUrl('site/profile', array('confirm' => 1, 'key' => $this->controller->model->login_key));
-				$mm = new MailMessage;
-				if (! $mm->render($this->confirmMail, array(
-						'model' => $this->controller->model,
-						'action' => $this->action,		
-					))) {
-					$this->controller->model->addError('email', 'Unable to send mail');
+				if (!$this->controller->model->sendConfirmation()) {
 					$transaction->rollback();
 					return false;
 				};

@@ -1,16 +1,34 @@
 <?php
+/**
+ * delete a record from the system
+ * 
+ */
 
-class DeleteAction extends CAction
+Yii::import('toxus.actions.BaseAction');
+
+class DeleteAction extends BaseAction
 {
+	
+	
 	public function run($id)
 	{
-		$controllerId = $this->controller->id;
-		$modelClass = ucfirst($controllerId);
-		$this->controller->model = $this->controller->loadModel($modelClass, $id);
-		// what to do if the execute fails?
+		$this->checkRights();
+		
+		$modelClass = $this->modelName;		
+		$model = new $modelClass();		
+		
+		$this->controller->model = $model::model()->findByPk($id);
+		if (!$this->controller->model) {
+			throw new CDbException('Id '.$id.' of '.$model.' could not be found');
+		}
+		
 		if ($this->controller->executeDelete()) {
-			$this->controller->redirect($this->controller->createUrl($controllerId.'/index'));
+			$this->controller->redirect($this->successUrlFull);
 		}		
-		$this->controller->redirect($this->controller->createUrl($controllerId.'/view', array('id' => $id)));		
+		// show the user the error
+		$this->render('formDialog',array(
+			'title' => $this->controller->te('delete information'),
+			'model' => $this->controller->model	
+		));					
 	}
 }
