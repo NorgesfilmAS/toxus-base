@@ -41,7 +41,7 @@ class BaseController extends CController
 	
 	public function getVersion()
 	{
-		return '04';	// vendor:toxus: 0.2
+		return '05';	// vendor:toxus: 0.2
 	}
 
 	public function getForm()
@@ -341,20 +341,14 @@ class BaseController extends CController
 				),
 			),	
 			'bootstrap3' =>array(
-				'basePath' => 'toxus.assetsBase.bootstrap3',
+				'basePath' => 'assetsBase.bootstrap3.dist', //'toxus.assetsBase.bootstrap3',
 				'css' => array(
 						'css/bootstrap.css', 
 						'css/bootstrap-glyphicons.css',
-						'css/application.css',
 				),		
 				'js' => array(
-					CClientScript::POS_HEAD => array(
-										'js/modernizr.custom.87724.js'
-					),											
 					CClientScript::POS_END => array(
-										'js/bootstrap.js',
-										'js/respond.min.js',
-										'js/application.js',
+						'js/bootstrap.js',
 					),
 				),					
 			),	
@@ -377,11 +371,19 @@ class BaseController extends CController
 			'core' => array(
 				'basePath' => 'toxus.assetsBase.core',		
 				'js' => array(	
+					CClientScript::POS_HEAD => array(
+										'js/modernizr.custom.87724.js'
+					),																	
 					CClientScript::POS_END => array(
+							'js/respond.min.js',
+							'js/application.js',							
 							'js/core.js', 
 							'js/toolbox.date.js',
 					),		
-				),		
+				),
+				'css' => array(
+					'css/application.css',
+				)	
 			),	
 			'smooth' => array(
 				'basePath' => 'toxus.assetsBase.crisp',				
