@@ -17,7 +17,7 @@
 				{% endif %}	
 				{% for key, element in fields %}	
 
-				{% if element.type == 'dropdown' or element.type == 'readiobuttonlist' %}							
+				{% if element.type == 'dropdown' or element.type == 'radiobuttonlist' %}							
 					{% for itemKey, itemCaption in element.items %}
 					 {% if itemKey == model.__get(key) %}{{ itemCaption }}{% endif %}
 					{% endfor %}

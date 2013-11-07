@@ -3,30 +3,33 @@
  * update a record with the menu on the left site.
  * 
  */
+Yii::import('toxus.actions.BaseAction');
 
-class UpdateAction extends CAction
+class UpdateAction extends BaseAction
 {
 	/*
 	 * version 1.1: Introduced in PNEK 8/8/2013: $view and $edit defaults are changed to 
 	 * viewForm so it will default load a page that can switch between edit and view
 	 * 
 	 */
-	public $view = null;	// the view to open after the information has been saved successfully. must be the FULL path to the page
-	public $edit = 'viewForm';	// the view to open to edit the current information
-	public $form = null;		// the name of the form ex extension
-	public $menuItem = null;// the menu item to active. Should be a jQuery selector (#menu-agent, or .agent-item)
-	public $allowEdit = true;	// if false a 403 will be returned
+	public $view = 'viewForm';		// the view to open to edit the current information
+	public $form = null;					// the name of the form ex extension
+	public $menuItem = null;			// the menu item to active. Should be a jQuery selector (#menu-agent, or .agent-item)
+	public $scenario = 'update';	// default scenario to use to update the information
 	
 	public function run($id, $mode='view')
 	{
-		if (!$this->allowEdit) {
-			throw new CHttpException(403, 'Access denied');
+		if (!$this->allowed) {
+			throw new CHttpException(403, Yii::t('app', 'Access denied'));
 		}
-		$controllerId = $this->controller->id;
-		$this->controller->model = $this->controller->loadModel($id, ucfirst($controllerId));
+		$controllerId = ucfirst($this->controller->id);
+		$modelClass = $this->modelName;
+		$this->controller->model = $modelClass::model()->findByPk($id);
+		$this->controller->model->scenario = $this->scenario;
+		
 		$mode =  isset($_GET['mode']) ? $_GET['mode'] : 'view';
 						
-		if (isset($_POST[ucfirst($controllerId)])) {
+		if (isset($_POST[$modelClass])) {
 			if ($this->controller->executeUpdate()) {
 				/* this was in PNEK 
 				if ($this->view == null) {
@@ -37,19 +40,18 @@ class UpdateAction extends CAction
 			}
 				 * 
 				 */
-				if (false && $this->view != null) {
-					$this->controller->redirect($this->view);
+				if (false && $this->successUrlFull != null) {
+					$this->controller->redirect($this->successUrlFull);
 				}
 			}
-			$mode = 'view';
-			
+			$mode = 'view';			
 		}
 		if ($this->form == null)
 			$form = $this->controller->loadForm($controllerId. 'Fields'); 				
 		else 
 			$form = $this->controller->loadForm($this->form);
 		
-		$this->controller->render( $this->edit, array(
+		$this->render( $this->view, array(
 				'model' => $this->controller->model,
 				'layout' => 'ajaxForm', 
 				'form' => $form,	

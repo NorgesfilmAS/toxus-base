@@ -54,7 +54,9 @@ class UserProfileModel extends BaseUserProfile
 				array('password', 'compare', 'compareAttribute'=>'passwordRepeat', 'on' => 'create'),									
 				array('username,email,password,passwordRepeat', 'required', 'on' => 'create'),	
 					
-				array('email,password,username,is_confirmed', 'safe', 'on'=>'createAdmin')	
+				array('email,password,username,is_confirmed', 'safe', 'on'=>'createAdmin'),	
+				
+				array('email,password,username,is_confirmed,is_suspended,rights_id,has_newsletter,newsletter_key', 'safe', 'on'=>'update'),	
 			)
 		);
 	}
@@ -139,7 +141,6 @@ class UserProfileModel extends BaseUserProfile
 			'0' => Yii::t('app', 'No'),
 			'1' => Yii::t('app', 'Yes'),	
 		);
-		
 	}
 	
 }

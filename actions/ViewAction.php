@@ -1,18 +1,17 @@
 <?php
 
-class ViewAction extends CAction
+Yii::import('toxus.actions.BaseAction');
+
+class ViewAction extends BaseAction
 {
 	const USE_LAST_ID = '99123459182782628372';
 	
-	public $view = 'view';
-	public $form = null;		// the name of the form ex extension
+	public $view = 'viewForm';
+	public $form = null;					// the name of the form ex extension
 	public $defaultMode = 'view';
-	public $menuItem = null;// the menu item to active. Should be a jQuery selector (#menu-agent, or .agent-item)
-	/**
-	 * the class to generate of no id is given
-	 * @var string
-	 */
-	public $modelClass = null;
+	public $menuItem = null;			// the menu item to active. Should be a jQuery selector (#menu-agent, or .agent-item)
+
+	public $hasModel = false;
 	/**
 	 * extra parameters merged for the view
 	 * 
@@ -25,18 +24,19 @@ class ViewAction extends CAction
 	 */
 	public function run($id=null)					
 	{		
+		// $controllerId = ucfirst($this->controller->id);
+		$modelName = $this->modelName;
+		
 		if ($id == self::USE_LAST_ID)
 			$id = Yii::app()->user->lastId;
 		if ($id) {
-			$this->controller->model = $this->controller->loadModel($id, ucfirst($this->controller->id));
+			$this->controller->model = $modelName::model()->findByPk($id); 
+		} else if ($this->hasModel) {
+			$this->controller->model = new $modelName();		
 		} else {
-			if ($this->modelClass !== null) {
-				$model = $this->modelClass;
-				$this->controller->model = new $model;
-			} else {
-				$this->controller->model = null;
-			}	
+			$this->controller->model = null;				
 		}
+		
 		$form = false;				
 		if (!empty($this->form)) {
 			$form = $this->controller->loadForm($this->form);
@@ -50,8 +50,8 @@ class ViewAction extends CAction
 					'state' => 'view',	
 					'menuItem' => $this->menuItem,						
 				),
-				$this->params
+				$this->params    
 		);				
-		$this->controller->render($this->view, $params);
+		$this->render($this->view, $params);
 	}
 }

@@ -17,14 +17,30 @@ class BaseProfileController extends Controller
 					'modelClass' => $this->modelClass,	
 				  'allowed' => Yii::app()->user->isAdmin,						
 					'view' => 'formDialog',
-					'scenario' => 'adminCreate',	
+					'scenario' => 'adminCreate',
+					'form' => 'createAdminFields'	
 				),
 				'delete' => array(
 					'class' => 'toxus.actions.DeleteAction',
 					'modelClass' => $this->modelClass,
 				  'allowed' => Yii::app()->user->isAdmin,			
 					'successUrl' => $this->createUrl('profile/list'),	
-				)
+				),
+				'view' => array(
+					'class' => 'toxus.actions.ViewAction',
+					'modelClass' => $this->modelClass,	
+					'form' => 'overviewFields',	
+					'allowed' => Yii::app()->user->isAdmin,
+					'menuItem' => '.menu-overview',	
+				),
+				'update' => array(
+					'class' => 'toxus.actions.UpdateAction',
+					'modelClass' => $this->modelClass,
+					'form' => 'propertiesFields',		
+				  'allowed' => Yii::app()->user->isAdmin,		
+					'menuItem' => '.menu-properties',	
+				),
+				
 		);				
 	}
 	
@@ -40,6 +56,7 @@ class BaseProfileController extends Controller
 	/**
 	 * updates of user profile basics
 	 */
+	/**
 	public function actionUpdate()
 	{
 		Yii::import('application.controllers.ArticleController');
@@ -73,4 +90,6 @@ class BaseProfileController extends Controller
 		$this->render('update', array('model' => $this->model, 'form' => $form));
 	}
 	
+	 * 
+	 */
 }

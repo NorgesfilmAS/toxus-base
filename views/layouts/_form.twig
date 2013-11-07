@@ -55,7 +55,7 @@
 						<input id="{{ p }}{{ key }}" type="hidden" name="{{ form.model }}[{{ key }}]" value="">
 						<span id="{{ form.model }}_{{ key }}">
 							{% for itemKey, itemCaption in element.items %}
-								<input id="{{ p }}{{key}}-{{ loop.index0 }}" type="radio" class="{{ p }}{{key }}" name="{{ form.model }}[{{ key }}]" value="{{ itemKey }}">
+								<input id="{{ p }}{{key}}-{{ loop.index0 }}" type="radio" class="{{ p }}{{key }}" name="{{ form.model }}[{{ key }}]" {% if this.model.__get(key) == itemKey %}checked="1"{% endif%}value="{{ itemKey }}">
 								<label for="{{ p }}{{key}}-{{ loop.index0 }}" style="display:inline-block;padding-right:8px;margin-top:3px;">{{ itemCaption }}</label>		
 							{% endfor %}
 						</span>	

@@ -1301,7 +1301,7 @@ class BaseController extends CController
 		$paths = array(
 			'views/'.$this->getId() => YiiBase::getPathOfAlias('webroot.protected.views').'/'.$this->getId(),
 			'views/layouts' => YiiBase::getPathOfAlias('webroot.protected.views').'/layouts',	
-			$shortVendorRoot.$this->getId() => $vendorRoot.'/'.$this->getId(),	
+			$shortVendorRoot.'/'.$this->getId() => $vendorRoot.'/'.$this->getId(),	
 			$shortVendorRoot.'/layouts' => $vendorRoot.'/layouts',		
 		);
 		if (($file = $this->pathSearch($filename, $paths)) == false) {
