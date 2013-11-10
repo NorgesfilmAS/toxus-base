@@ -1,10 +1,16 @@
 <?php
-
+/**
+ * heavy modified version so it will connect to the bootstrap engine
+ * 
+ * JvK: 2013.11.08
+ */
 class ServerFileInput extends CInputWidget
 {
     public $settings = array();
     public $connectorRoute = false;
     private $assetsDir;
+		
+		public $buttonCaption = 'Browse';
 
     public function init()
     {
@@ -73,13 +79,32 @@ class ServerFileInput extends CInputWidget
         $contHtmlOptions = $this->htmlOptions;
         $contHtmlOptions['id'] = $id . 'container';
         echo CHtml::openTag('div', $contHtmlOptions);
-        $inputOptions = array('id' => $id, 'style' => 'float:left;' /*, 'readonly' => 'readonly'*/);
+				// TOXUS: add info for bootstrap
+        $inputOptions = array('id' => $id, 'style' => 'float:left;', 'class'=> 'form-control col-lg-4'  );
+				CHtml::resolveNameID($model, $this->attribute, $inputOptions);
+				/*
+				 * 
         if ($this->hasModel())
             echo CHtml::activeTextField($this->model, $this->attribute, $inputOptions);
         else
             echo CHtml::textField($name, $this->value, $inputOptions);
 
         echo CHtml::button('Browse', array('id' => $id . 'browse', 'class' => 'btn'));
+				 * 
+				 */
+				$source = '<div class="input-group">';
+        if ($this->hasModel())
+          $source .= CHtml::activeTextField($this->model, $this->attribute, $inputOptions);
+        else
+          $source .= CHtml::textField($name, $this->value, $inputOptions);
+				CHtml::resolveNameID($model, $this->attribute, $inputOptions);
+				$source .=		
+							' <span class="input-group-btn"> '.								
+							' <button id="'.$inputOptions['id'].'browse"  class="btn btn-default" type="button">'.$this->buttonCaption.'</button>'.
+							' </span>'.
+						'</div>';
+				
+				echo $source;
         echo CHtml::closeTag('div');
 
         $settings = array_merge(array(

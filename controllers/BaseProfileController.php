@@ -4,6 +4,8 @@ class BaseProfileController extends Controller
 {
 	public $modelClass = 'UserProfile';
 	
+	protected $adminActions = array('list','create','delete', 'update');
+	
 	public function actions()
 	{
 		return array(
