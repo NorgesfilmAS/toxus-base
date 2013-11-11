@@ -47,6 +47,14 @@ class Util {
 		return date (formatDef::dateFormatPhp(), $s); //date ('d/m/Y', $s);
 	}
 	
+	static function dateTimeToString($date)
+	{
+		if (is_object($date)) {
+			return $date->format(DateTime::ISO8601);
+		}
+		return $date;
+	}
+	
 	/**
 	 * convert a string of currency (english notation) into european notation
 	 * @param string $currency number with decimal:'.' thoutand: ','

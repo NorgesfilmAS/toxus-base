@@ -4,6 +4,9 @@ Yii::import('toxus.models._base.BaseCoupon');
 
 class CouponModel extends BaseCoupon
 {
+	const FORMAT_POSTFIX = '_FMT';
+
+	
 	public $startDate = null;
 	public $endDate = null;
 	
@@ -14,12 +17,19 @@ class CouponModel extends BaseCoupon
 	public function relations()
 	{
 		return array(
-				'payments' => array(self::HAS_MANY, 'Payment', 'coupon_id')
+				'payments' => array(self::HAS_MANY, 'PaymentModel', 'coupon_id')
 		);
 	}
-	public function afterFind() {
-		$this->startDate = Util::dateDisplay($this->start_date);
-		return parent::afterFind();
+
+	
+	
+	public function __get($name)
+	{
+		if (substr($name, - strlen(self::FORMAT_POSTFIX)) == self::FORMAT_POSTFIX) {
+			return Util::dateTimeToString(parent::__get(substr($name, 0, - strlen(self::FORMAT_POSTFIX)) ));
+		} else {
+			return parent::__get($name);
+		}	
 	}
 	
 	/**
@@ -29,7 +39,8 @@ class CouponModel extends BaseCoupon
 	public function getUsedCount()
 	{
 		$cnt = 0;
-		foreach ($this->payments as $payment) {
+		$p = $this->getRelated('payments', true);
+		foreach ($p as $payment) {
 			if ($payment->status_id == Payment::PAYMENT_SUCCESS) { 
 				$cnt++;
 			}
@@ -39,12 +50,12 @@ class CouponModel extends BaseCoupon
 	
 	public function getIsActive()
 	{
-		return ($this->is_active == 1); /* &&
-					($this->start_date == 0 || $this->start_date > date('Y-m-d')) &&
-					($this->end_date == 0 || $this->end_date <= date('Y-m-d')) &&
+		$now = new DateTime();
+		$firstDate = new DateTime('2000-01-01');
+		return ($this->is_active == 1)  &&
+					($this->start_date < $firstDate || $this->start_date < $now  ) &&
+					($this->end_date < $firstDate || $this->end_date >= $now) &&
 					($this->max_use_count == 0 || $this->usedCount < $this->max_use_count);
-		 * 
-		 */
 	}
 	
 }

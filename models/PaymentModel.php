@@ -53,6 +53,12 @@ class PaymentModel extends BasePayment
 		return parent::model($className);
 	}
 	
+	public function rules() {
+		$r = parent::rules();
+		unset($r[0]);		// slug, required   should not be in the rules section !
+		return $r;
+	}
+	
 	public function relations() {
 		return array(
 			'coupon' => array(self::BELONGS_TO, $this->couponModel, 'coupon_id')	

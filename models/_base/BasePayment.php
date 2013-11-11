@@ -14,7 +14,7 @@
  * @property string $slug
  * @property string $reference
  * @property string $transaction_id
- * @property string $date_created
+ * @property string $creation_date
  * @property integer $product_id
  * @property string $product_json
  * @property string $status_text
@@ -22,7 +22,7 @@
  * @property string $url_to_open_on_success
  * @property string $document_id
  * @property string $document_url
- * @property string $date_confirmed
+ * @property string $confirmation_date
  * @property string $invoice_number
  * @property string $invoice_address
  * @property string $invoice_referer
@@ -63,9 +63,9 @@ abstract class BasePayment extends GxActiveRecord {
 			array('slug', 'required'),
 			array('profile_id, product_id, status_id, coupon_id', 'numerical', 'integerOnly'=>true),
 			array('slug, reference, transaction_id, status_text, url_to_open_on_success, document_id, document_url, invoice_number, invoice_referer, caption, amount, discount_code, amount_ex_vat, discount_amount_ex_vat, discount_amount, total_amount_ex_vat, vat_percentage, vat_amount, total_amount', 'length', 'max'=>255),
-			array('date_created, product_json, date_confirmed, invoice_address, invoice_body', 'safe'),
-			array('profile_id, reference, transaction_id, date_created, product_id, product_json, status_text, status_id, url_to_open_on_success, document_id, document_url, date_confirmed, invoice_number, invoice_address, invoice_referer, invoice_body, caption, amount, coupon_id, discount_code, amount_ex_vat, discount_amount_ex_vat, discount_amount, total_amount_ex_vat, vat_percentage, vat_amount, total_amount', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, profile_id, slug, reference, transaction_id, date_created, product_id, product_json, status_text, status_id, url_to_open_on_success, document_id, document_url, date_confirmed, invoice_number, invoice_address, invoice_referer, invoice_body, caption, amount, coupon_id, discount_code, amount_ex_vat, discount_amount_ex_vat, discount_amount, total_amount_ex_vat, vat_percentage, vat_amount, total_amount', 'safe', 'on'=>'search'),
+			array('creation_date, product_json, confirmation_date, invoice_address, invoice_body', 'safe'),
+			array('profile_id, reference, transaction_id, creation_date, product_id, product_json, status_text, status_id, url_to_open_on_success, document_id, document_url, confirmation_date, invoice_number, invoice_address, invoice_referer, invoice_body, caption, amount, coupon_id, discount_code, amount_ex_vat, discount_amount_ex_vat, discount_amount, total_amount_ex_vat, vat_percentage, vat_amount, total_amount', 'default', 'setOnEmpty' => true, 'value' => null),
+			array('id, profile_id, slug, reference, transaction_id, creation_date, product_id, product_json, status_text, status_id, url_to_open_on_success, document_id, document_url, confirmation_date, invoice_number, invoice_address, invoice_referer, invoice_body, caption, amount, coupon_id, discount_code, amount_ex_vat, discount_amount_ex_vat, discount_amount, total_amount_ex_vat, vat_percentage, vat_amount, total_amount', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -86,7 +86,7 @@ abstract class BasePayment extends GxActiveRecord {
 			'slug' => Yii::t('app', 'Slug'),
 			'reference' => Yii::t('app', 'Reference'),
 			'transaction_id' => Yii::t('app', 'Transaction'),
-			'date_created' => Yii::t('app', 'Date Created'),
+			'creation_date' => Yii::t('app', 'Creation Date'),
 			'product_id' => Yii::t('app', 'Product'),
 			'product_json' => Yii::t('app', 'Product Json'),
 			'status_text' => Yii::t('app', 'Status Text'),
@@ -94,7 +94,7 @@ abstract class BasePayment extends GxActiveRecord {
 			'url_to_open_on_success' => Yii::t('app', 'Url To Open On Success'),
 			'document_id' => Yii::t('app', 'Document'),
 			'document_url' => Yii::t('app', 'Document Url'),
-			'date_confirmed' => Yii::t('app', 'Date Confirmed'),
+			'confirmation_date' => Yii::t('app', 'Confirmation Date'),
 			'invoice_number' => Yii::t('app', 'Invoice Number'),
 			'invoice_address' => Yii::t('app', 'Invoice Address'),
 			'invoice_referer' => Yii::t('app', 'Invoice Referer'),
@@ -121,7 +121,7 @@ abstract class BasePayment extends GxActiveRecord {
 		$criteria->compare('slug', $this->slug, true);
 		$criteria->compare('reference', $this->reference, true);
 		$criteria->compare('transaction_id', $this->transaction_id, true);
-		$criteria->compare('date_created', $this->date_created, true);
+		$criteria->compare('creation_date', $this->creation_date, true);
 		$criteria->compare('product_id', $this->product_id);
 		$criteria->compare('product_json', $this->product_json, true);
 		$criteria->compare('status_text', $this->status_text, true);
@@ -129,7 +129,7 @@ abstract class BasePayment extends GxActiveRecord {
 		$criteria->compare('url_to_open_on_success', $this->url_to_open_on_success, true);
 		$criteria->compare('document_id', $this->document_id, true);
 		$criteria->compare('document_url', $this->document_url, true);
-		$criteria->compare('date_confirmed', $this->date_confirmed, true);
+		$criteria->compare('confirmation_date', $this->confirmation_date, true);
 		$criteria->compare('invoice_number', $this->invoice_number, true);
 		$criteria->compare('invoice_address', $this->invoice_address, true);
 		$criteria->compare('invoice_referer', $this->invoice_referer, true);

@@ -17,6 +17,7 @@ class BaseTestController extends Controller
 		$this->setPath();
 		$a = new PaymentModelTest();
 		$a->testRecalculate();
+		$a->testCouponActive();
 	}
 	
 }
