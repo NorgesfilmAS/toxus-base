@@ -49,7 +49,7 @@ class PaymentProvider extends CComponent
 	 * 
 	 * @var string
 	 */
-	public $absoluteUrl = false;
+	public $absoluteUrl = '';
 	
 	/**
 	 * TEMP: the array loaded from Yii::app()->params['payment']
@@ -59,10 +59,16 @@ class PaymentProvider extends CComponent
 	 */
 	protected $_clientConfig = false;
 	
-	public function init()
+	/**
+	 * init the absolute URL if not defined to http://[server]/payment/
+	 */
+	public function __construct()
 	{
-		if (isset(Yii::app()->params[self::PAYMENT_URL])) {
-			$this->absoluteUrl = Yii::app()->params[self::PAYMENT_URL];
+		if ($this->absoluteUrl == '') {
+			$this->absoluteUrl =  Yii::app()->getRequest()->getHostInfo().Yii::app()->createUrl('payment'); 
+		}
+		if (substr($this->absoluteUrl,-1) != '/') {
+			$this->absoluteUrl .= '/';
 		}
 	}
 	
@@ -111,7 +117,7 @@ class PaymentProvider extends CComponent
 	}
 	protected function getSuccessUrl()
 	{
-		return $this->absoluteUrl.'/success/'.$this->model->slug;
+		return $this->absoluteUrl.'success/'.$this->model->slug;
 	}
 	/**
 	 * called when transaction is canceld
@@ -121,7 +127,7 @@ class PaymentProvider extends CComponent
 	}
 	protected function getCancelUrl()
 	{
-		return $this->absoluteUrl.'/canceled/'.$this->model->slug;
+		return $this->absoluteUrl.'cancel/'.$this->model->slug;
 	}
 	/**
 	 * Called when the Payment provider as to tell something
@@ -131,7 +137,7 @@ class PaymentProvider extends CComponent
 	}
 	public function getNotifyUrl()
 	{
-		return $this->absoluteUrl.'/notify/'.$this->model->slug;
+		return $this->absoluteUrl.'notify/'.$this->model->slug;
 	}
 	
 	/**
@@ -186,7 +192,7 @@ class PaymentProvider extends CComponent
 	 * 
 	 * @return string the url to open, false on error, or if nothing to do ''
 	 */
-	public function startPayment()
+	protected function startPayment()
 	{
 		throw new CHttpException(500, 'There is no startPayment defined for the '.get_class($this));
 	}

@@ -1,4 +1,14 @@
 <?php
+/**
+ * standard payment provider:
+ * 
+ * extension:
+ *  $this->bankList : array a list of bank know to the syste,
+ *	$this->bankId: integer the id of the bank to use
+ * 
+ *  version 1.0 JvK 2013.11.12
+ */
+
 
 Yii::import('toxus.extensions.paymentProvider.sisow.*');			
 
@@ -6,6 +16,9 @@ class SisowIdeal extends PaymentProvider
 {
 	public $name = 'Sisow Ideal';
 
+	
+	
+	
 	private $_sisow = null;
 	
 	public function getSisow()
@@ -23,7 +36,7 @@ class SisowIdeal extends PaymentProvider
 	/**
 	 * list the banks to use
 	 */
-	public function getItemsList() 
+	public function getBankList() 
 	{
 		$result = '';
 		$err = $this->sisow->DirectoryRequest($result, false, $this->isTestMode);
@@ -32,7 +45,7 @@ class SisowIdeal extends PaymentProvider
 		throw new ESisowException('Unable to load bank information ('.$err.')');		
 	}
 	
-	public function startPayment()
+	protected function startPayment()
 	{
 		$this->_errorCode = '';
 		$this->_errorMessage = null;
@@ -54,41 +67,5 @@ class SisowIdeal extends PaymentProvider
 		}
 		return $this->sisow->issuerUrl;		
 	}
-	
-	/**
-	 * Does the transaction with Sisow
-	 * 
- 	 * @param string $amount the amount to be paid
-	 * @param string $returnUrl the url called when all went well
-	 * @param string $cancelUrl the url called when canceld
-	 * @param string $paymentType the type of transaction ('' = ideal, ebill digi accept, overboeking
-	 * @param string $issuerId The id of the bank. If not avail, sisow will decide, if paymentType = overboeking => email
-	 * @param string $description the description for the payment
-	 * @param string $purchaseId (betalingskenmerk max 16 char)
-	 * 
-	 * @return string the url to redirect to or false if an error (errorCode, errorMessage) happend
-	 */
-	public function transaction($amount, $returnUrl, $cancelUrl = '', $notifyUrl = '', $paymentType = '', $issuerId='', $desciption='', $purchaseId = '')					
-	{
-		$this->_errorCode = '';
-		$this->_errorMessage = null;
-		
-		$this->sisow->amount = $amount;
-		$this->sisow->returnUrl = $returnUrl;
-		$this->sisow->cancelUrl = $cancelUrl;
-		$this->sisow->notifyUrl = $notifyUrl;
- 		$this->sisow->payment = $paymentType;
-		$this->sisow->issuerId = $issuerId;
-		$this->sisow->description = $desciption;
-		$this->sisow->purchaseId = $purchaseId;
-		$this->sisow->testmode = $this->testMode;
-		
-		$exitCode = $this->sisow->TransactionRequest();
-		if ($exitCode < 0) {
-			return false;
-		}
-		return $this->sisow->issuerUrl;
-	}
-	
 	
 }

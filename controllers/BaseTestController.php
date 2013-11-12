@@ -20,4 +20,11 @@ class BaseTestController extends Controller
 		$a->testCouponActive();
 	}
 	
+	public function actionProvider()
+	{
+		$this->setPath();
+		$a = new PaymentProviderTest();
+		$a->testBase();
+	}
+	
 }
