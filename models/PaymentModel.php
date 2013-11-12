@@ -81,12 +81,13 @@ class PaymentModel extends BasePayment
 			$this->slug = Util::generateRandomString(40);
 			$this->creation_date = new CDbExpression('NOW()');
 			if ($this->profile_id == 0) {
-				$this->profile_id = Yii::app()->user->profile_id;
+				$this->profile_id = Yii::app()->user->id;
 			}
 			if ($this->vat_percentage == null) {
 				$this->vat_percentage = 21;	// should be done in the config
 			}	
 		}
+		$this->recalculate();
 		return parent::beforeSave();
 	}
 	/**

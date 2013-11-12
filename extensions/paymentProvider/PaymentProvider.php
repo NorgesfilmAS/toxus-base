@@ -143,37 +143,46 @@ class PaymentProvider extends CComponent
 	/**
 	 * Runs a transaction through the system
 	 * 
-	 * @param string $slug the slug in the PaymentModel record
+	 * @param string or ActiveRecord $slug the slug in the PaymentModel record
 	 */
 	public function transaction($slug)
 	{
-		$model = $this->paymentModelClass;
-		$this->paymentModel = $model::model()->find('slug=:slug', array(':slug' => $slug));
+		if (is_string($slug)) {
+			$model = $this->paymentModelClass;
+			$this->paymentModel = $model::model()->find('slug=:slug', array(':slug' => $slug));
+		} elseif (is_a($slug, 'CModel' ))	{
+			$this->paymentModel = $slug;
+		}
 		if (!$this->paymentModel) {
 			throw new CDbException('Payment not found');
 		}
 		// check the status is 0, because we can NOT redo an action
-		if (!($this->status_id == PaymentModel::PAYMENT_NONE || $this->status_id == PaymentModel::PAYMENT_PENDING)) {
-			throw new CDbException('Payment is in use');
+		if (!($this->paymentModel->status_id == PaymentModel::PAYMENT_NONE || $this->paymentModel->status_id == PaymentModel::PAYMENT_PENDING)) {
+			throw new CDbException('Payment is in use: '.$this->paymentModel->status_id);
 		}
 		if (!$this->absoluteUrl) {
 			throw new CException('The absoluteUrl is not set');
 		}
 		// we have to change the Payment so we know what kind of transaction it was
-		$this->paymentModel->paymentProvider = get_class($this);
+		$this->paymentModel->payment_provider = get_class($this);
 		$this->paymentModel->status_id = PaymentModel::PAYMENT_STARTING;
 		$this->paymentModel->save();
 		
 		try {
-			if (!($url = $this->startPayment())) {		
-				$this->paymentModel->status_id = PaymentModel::PAYMENT_ERROR;
-				$this->paymentModel->status_text .= get_class($this). '.paymentModel returned an error:'.$this->getErrorMessage()."\n";
+			if ($this->paymentModel->amount > 0) {
+				if (!($url = $this->startPayment())) {		
+					$this->paymentModel->status_id = PaymentModel::PAYMENT_ERROR;
+					$this->paymentModel->status_text .= get_class($this). '.paymentModel returned an error:'.$this->getErrorMessage()."\n";
+				} else {
+					$this->paymentModel->status_id = PaymentModel::PAYMENT_TRANSACTION;				
+					if ($url !== '') { // redirect to the url given
+						Yii::app()->getRequest()->redirect($url, true, 200);
+					}
+				}	
 			} else {
-				$this->paymentModel->status_id = PaymentModel::PAYMENT_TRANSACTION;				
-				if ($url !== '') { // redirect to the url given
-					Yii::app()->getRequest()->redirect($url, true, 200);
-				}
-			}	
+				// payment of 0 should not be send to provider. Mark transaction as successfull
+				$this->paymentModel->status_id = PaymentModel::PAYMENT_SUCCESS;
+			}
 			$this->paymentModel->save();
 		} catch (Exception $e) {
 			$this->paymentModel->status_id = PaymentModel::PAYMENT_ERROR;
