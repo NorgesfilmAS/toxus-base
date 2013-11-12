@@ -16,6 +16,17 @@ class PageLog extends CComponent
 	public $dbName;
 	public $reportErrors = false;
 	
+	/**
+	 *
+	 * @var string the model to use for logging
+	 */
+	public $loggingModel = 'Logging';
+	
+	/**
+	 *
+	 * @var boolean. save after every modification
+	 */
+	public $autoSave = false;
 	
 	private $_logging;
 	
@@ -26,11 +37,12 @@ class PageLog extends CComponent
 	public function getLog()
 	{
 		if (empty($this->_logging)) {
+			$model = $this->loggingModel;			
 			if ($this->dbName) {
 				$name = $this->dbName;
-				$this->_logging = new Logging(Yii::app()->$name);
+				$this->_logging = new $model(Yii::app()->$name);
 			} else {
-				$this->_logging = new Logging();
+				$this->_logging = new $model();
 			}	
 		}	
 		return $this->_logging;
@@ -39,11 +51,13 @@ class PageLog extends CComponent
 	public function addText($msg)
 	{
 		$this->log->message .= $msg."\n";		
+		if ($this->autoSave)$this->log->save();
 	}
 	
 	public function add($data)
 	{
 		$this->log->message .= var_export($data, true)."\n";
+		if ($this->autoSave)$this->log->save();		
 	}
 	
 	public function writeExecutionTime($writeTime = true, $controller = null)

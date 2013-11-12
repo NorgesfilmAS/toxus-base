@@ -12,6 +12,7 @@
  * @property integer $id
  * @property integer $profile_id
  * @property string $slug
+ * @property string $description
  * @property string $reference
  * @property string $transaction_id
  * @property string $creation_date
@@ -38,6 +39,7 @@
  * @property string $vat_percentage
  * @property string $vat_amount
  * @property string $total_amount
+ * @property string $payment_provider
  *
  */
 abstract class BasePayment extends GxActiveRecord {
@@ -62,10 +64,10 @@ abstract class BasePayment extends GxActiveRecord {
 		return array(
 			array('slug', 'required'),
 			array('profile_id, product_id, status_id, coupon_id', 'numerical', 'integerOnly'=>true),
-			array('slug, reference, transaction_id, status_text, url_to_open_on_success, document_id, document_url, invoice_number, invoice_referer, caption, amount, discount_code, amount_ex_vat, discount_amount_ex_vat, discount_amount, total_amount_ex_vat, vat_percentage, vat_amount, total_amount', 'length', 'max'=>255),
-			array('creation_date, product_json, confirmation_date, invoice_address, invoice_body', 'safe'),
-			array('profile_id, reference, transaction_id, creation_date, product_id, product_json, status_text, status_id, url_to_open_on_success, document_id, document_url, confirmation_date, invoice_number, invoice_address, invoice_referer, invoice_body, caption, amount, coupon_id, discount_code, amount_ex_vat, discount_amount_ex_vat, discount_amount, total_amount_ex_vat, vat_percentage, vat_amount, total_amount', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, profile_id, slug, reference, transaction_id, creation_date, product_id, product_json, status_text, status_id, url_to_open_on_success, document_id, document_url, confirmation_date, invoice_number, invoice_address, invoice_referer, invoice_body, caption, amount, coupon_id, discount_code, amount_ex_vat, discount_amount_ex_vat, discount_amount, total_amount_ex_vat, vat_percentage, vat_amount, total_amount', 'safe', 'on'=>'search'),
+			array('slug, reference, transaction_id, status_text, url_to_open_on_success, document_id, document_url, invoice_number, invoice_referer, caption, amount, discount_code, amount_ex_vat, discount_amount_ex_vat, discount_amount, total_amount_ex_vat, vat_percentage, vat_amount, total_amount, payment_provider', 'length', 'max'=>255),
+			array('description, creation_date, product_json, confirmation_date, invoice_address, invoice_body', 'safe'),
+			array('profile_id, description, reference, transaction_id, creation_date, product_id, product_json, status_text, status_id, url_to_open_on_success, document_id, document_url, confirmation_date, invoice_number, invoice_address, invoice_referer, invoice_body, caption, amount, coupon_id, discount_code, amount_ex_vat, discount_amount_ex_vat, discount_amount, total_amount_ex_vat, vat_percentage, vat_amount, total_amount, payment_provider', 'default', 'setOnEmpty' => true, 'value' => null),
+			array('id, profile_id, slug, description, reference, transaction_id, creation_date, product_id, product_json, status_text, status_id, url_to_open_on_success, document_id, document_url, confirmation_date, invoice_number, invoice_address, invoice_referer, invoice_body, caption, amount, coupon_id, discount_code, amount_ex_vat, discount_amount_ex_vat, discount_amount, total_amount_ex_vat, vat_percentage, vat_amount, total_amount, payment_provider', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -84,6 +86,7 @@ abstract class BasePayment extends GxActiveRecord {
 			'id' => Yii::t('app', 'ID'),
 			'profile_id' => Yii::t('app', 'Profile'),
 			'slug' => Yii::t('app', 'Slug'),
+			'description' => Yii::t('app', 'Description'),
 			'reference' => Yii::t('app', 'Reference'),
 			'transaction_id' => Yii::t('app', 'Transaction'),
 			'creation_date' => Yii::t('app', 'Creation Date'),
@@ -110,6 +113,7 @@ abstract class BasePayment extends GxActiveRecord {
 			'vat_percentage' => Yii::t('app', 'Vat Percentage'),
 			'vat_amount' => Yii::t('app', 'Vat Amount'),
 			'total_amount' => Yii::t('app', 'Total Amount'),
+			'payment_provider' => Yii::t('app', 'Payment Provider'),
 		);
 	}
 
@@ -119,6 +123,7 @@ abstract class BasePayment extends GxActiveRecord {
 		$criteria->compare('id', $this->id);
 		$criteria->compare('profile_id', $this->profile_id);
 		$criteria->compare('slug', $this->slug, true);
+		$criteria->compare('description', $this->description, true);
 		$criteria->compare('reference', $this->reference, true);
 		$criteria->compare('transaction_id', $this->transaction_id, true);
 		$criteria->compare('creation_date', $this->creation_date, true);
@@ -145,6 +150,7 @@ abstract class BasePayment extends GxActiveRecord {
 		$criteria->compare('vat_percentage', $this->vat_percentage, true);
 		$criteria->compare('vat_amount', $this->vat_amount, true);
 		$criteria->compare('total_amount', $this->total_amount, true);
+		$criteria->compare('payment_provider', $this->payment_provider, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,

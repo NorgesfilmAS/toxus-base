@@ -3,8 +3,13 @@
  * the payment record.
  * 
  * The payment / invoice basis. 
+ * 
+ * To create a new payment set: profile_id (current user if 0), product_id, amount (ex vat) and the description
+ * 
+ * 
  * IF ANY VALUE IS CHANGE IN Payment or Coupon CALL: recalculate() and save()
  * 
+ * CALCULATIONS
  * all amount are stored with a . for decimal point
  * 
  * amount												: fixed: the amount ex vat given
@@ -40,7 +45,13 @@ Yii::import('toxus.models._base.BasePayment');
 
 class PaymentModel extends BasePayment
 {
-	const PAYMENT_SUCCESS = 3;
+	const PAYMENT_NONE = 0;						// not set yet
+	const PAYMENT_STARTING = 1;				// before contact provider
+	const PAYMENT_TRANSACTION = 2;		// waiting for provider to responde
+	const PAYMENT_SUCCESS = 3;				// provider said yes
+	const PAYMENT_CANCEL = 4;					// provider said no
+	const PAYMENT_PENDING = 5;				// not used (notification happend)
+	const PAYMENT_ERROR = 6;					// error happend: see status_text
 	
 	/**
 	 * the name of the class used to store the coupons in.
@@ -78,7 +89,11 @@ class PaymentModel extends BasePayment
 		}
 		return parent::beforeSave();
 	}
-	
+	/**
+	 * retrieve the code for the coupon
+	 * 
+	 * @return string
+	 */
 	public function getCouponCode()
 	{
 		return $this->discount_code;
