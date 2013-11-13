@@ -1,0 +1,6 @@
+[submodule "assetsBase/bootstrap302"]
+	path = assetsBase/bootstrap302
+	url = https://github.com/twbs/bootstrap.git
+[submodule "assetsBase/video-lightning"]
+	path = assetsBase/video-lightning
+	url = https://github.com/musocrat/jquery-video-lightning.git
