@@ -14,6 +14,7 @@
 		{{ this.registerCore('jquery', true) }}
 		{{ this.registerPackage('bootstrap3') }}
 		{{ this.registerPackage('core') }}
+		{% block head %}{% endblock %}		
 		{% include this.viewPath('header') %}
 		<meta name="description" content="{{ App.params.description | default('site description') }}" />	
 	</head>

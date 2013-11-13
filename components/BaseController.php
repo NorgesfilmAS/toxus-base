@@ -7,7 +7,7 @@
  * 
  */
 
-YiiBase::setPathOfAlias('assetsBase', realpath(dirname(dirname(__FILE__)).'/../assetsBase'));
+// YiiBase::setPathOfAlias('assetsBase', realpath(dirname(dirname(__FILE__)).'/../assetsBase'));
 
 class BaseController extends CController
 {
@@ -341,16 +341,21 @@ class BaseController extends CController
 				),
 			),	
 			'bootstrap3' =>array(
-				'basePath' => 'assetsBase.bootstrap3.dist', //'toxus.assetsBase.bootstrap3',
+				'basePath' => 'toxus.assetsBase.bootstrap302.dist', //'toxus.assetsBase.bootstrap3',
 				'css' => array(
 						'css/bootstrap.css', 
-						'css/bootstrap-glyphicons.css',
 				),		
 				'js' => array(
 					CClientScript::POS_END => array(
 						'js/bootstrap.js',
 					),
 				),					
+			),	
+			'glyphicons' => array(
+				'basePath' => 'toxus.assetsBase.glyphicons.dist', //'toxus.assetsBase.bootstrap3',
+				'css' => array(
+						'css/bootstrap-glyphicons.css',
+				),							
 			),	
 			'crisp' => array(
 				'basePath' => 'toxus.assetsBase.crisp',
