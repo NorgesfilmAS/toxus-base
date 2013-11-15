@@ -12,6 +12,13 @@ class BaseTestController extends Controller
 		Yii::import('phpunit.*');		
 	}
 	
+	public function actionArticle()
+	{
+		$this->setPath();
+		$a = new ArticleModelTest();
+		$a->testEditor();
+	}
+	
 	public function actionPayment()
 	{
 		$this->setPath();
