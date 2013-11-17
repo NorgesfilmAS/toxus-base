@@ -404,7 +404,7 @@ class BaseController extends CController
 				'basePath' => 'toxus.assetsBase.typeahead',
 				'js' => array(
 					CClientScript::POS_END => array(
-						'typeahead.js',
+						'dist/typeahead.js',
 					),						
 				),	
 			),	

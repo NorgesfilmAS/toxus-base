@@ -111,8 +111,8 @@
 				{% elseif element.type== 'password' %}
 					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="password" class="{{ width }} form-control" value="{{ this.model.__get(key) }}"/> 
 				{% elseif element.type=='typeahead' %}
-					
-					<input id="{{ p }}input-{{ key }}" type="text" class="{{ width }}" value="{{ element.caption }}"/>
+{# json of remote should be a[] => array('id' => 123, 'value' => 'John'); #}					
+					<input id="{{ p }}input-{{ key }}" type="text" class="{{ width }}  form-control" value="{{ element.caption }}"/>
 					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="hidden" value="{{ this.model.__get(key) }}">
 	{{ this.registerPackage('typeahead', {'isAjax' : isAjax,'executeAfterLoad' : "
   s = '#"~p~"input-"~ key ~"';
@@ -120,7 +120,7 @@
 		name:'search-"~ key ~"',
 		remote:'" ~ element.url ~ "%QUERY'
 	});
-	$(s).on('typeahead:selected typeahead:autocompleted', function(e,datum) {
+	$(s).on('typeahead:selected typeahead:autocompleted', function(e,datum, p) {
 		$('#"~ p ~ key ~"').val(datum.id);
 	});
 "}) }}

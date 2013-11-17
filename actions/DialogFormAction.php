@@ -52,7 +52,7 @@ class DialogFormAction extends CAction
 	public function run($id = null, $isId = true)
 	{				
 		if ($this->modelClass == null) {
-			Yii::log('The model is undefined', CLogger::LEVEL_WARNING, 'toxus.actions.DialogFormAction');
+			Yii::log('The modelClass is not defined', CLogger::LEVEL_WARNING, 'toxus.actions.DialogFormAction');
 			return;			
 		}	
 		if ($id == null) {

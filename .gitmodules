@@ -4,3 +4,6 @@
 [submodule "assetsBase/video-lightning"]
 	path = assetsBase/video-lightning
 	url = https://github.com/musocrat/jquery-video-lightning.git
+[submodule "assetsBase/typeahead"]
+	path = assetsBase/typeahead
+	url = https://github.com/twitter/typeahead.js.git
