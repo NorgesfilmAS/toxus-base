@@ -413,3 +413,48 @@ input.input-date {
 .items {
 	width: 100%;
 }
+/* for the twitter typeahead */
+
+.typeahead-wrapper {
+	display: block;
+	margin: 50px 0;
+}
+.twitter-typeahead {
+	width: 100%;
+}
+.tt-query {
+	width: 100%;
+}
+.tt-dropdown-menu {
+	background-color: #fff;
+	border: 1px solid #eee;
+	width: 100%;
+	-moz-border-bottom-colors: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	-moz-box-sizing: border-box;
+	box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
+	background-clip: padding-box;
+	border-radius: 4px;
+	margin-top: 9px;	
+}
+
+.tt-suggestion.tt-is-under-cursor {
+	background-color: #ccc;
+}
+
+.triggered-events {
+	float: right;
+	width: 500px;
+	height: 300px;
+}
+.tt-dataset-search-related p {
+	margin-bottom: 0px; 
+}
+.tt-suggestion {
+	padding: 5px 15px;
+}
+.tt-hint {
+	display: none;
+}
