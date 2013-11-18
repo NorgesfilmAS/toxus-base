@@ -158,7 +158,7 @@ $().ready(function() {
 				{% elseif element.type=="dialog" %}
 				<a data-target="#id-modal" role="button" class="btn {{ element.style }}" data-toggle="modal" href="#" data-remote="{{ element.remote }}"  >{{ element.caption | default('click')}}</a>
 				{% elseif element.type == "panel" %}
-				<div id="{{ p }}{{ key }}" class="form-control" style="height: auto;">{{ element.caption | raw}}</div>
+				<div id="{{ p }}{{ key }}" class="form-control" style="height: auto; min-height: 34px;">{{ element.caption | raw}}</div>
 				{% else %}	
 					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }} form-control" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"/> 
 				{% endif %}
