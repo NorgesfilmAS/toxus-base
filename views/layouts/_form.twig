@@ -147,16 +147,24 @@ $().ready(function() {
 						<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="input-currency span6" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)" style="text-align: right;" /> 					
 					</div>	
 				{% elseif element.type=='button' %}
-					<span id="{{ p }}{{ key }}" class="btn {{element.style}}"{{element.popover|raw}}>{{element.caption}}</span>
+					<span id="{{ p }}{{ key }}" class="btn {{element.style|default('btn-primary')}}"{{element.popover|raw}}>{{element.caption}}</span>
+{% if element.script %}					
 {{ this.onReady(
 "$('#"~ p ~ key~"').click(function() {
 	"~ element.script ~"
 });") }}
+{% endif %}
+{% if element.url %}
+{{ this.onReady(
+"$('#"~ p ~ key~"').click(function() {
+	window.location='"~ element.url ~"'
+});") }}					
+{% endif %}					
 {% if element.popover %}
 	{{ this.onReady("$('#"~ p ~ key~"').popover({trigger:'hover'});") }}
 {% endif %}
 				{% elseif element.type=="dialog" %}
-				<a data-target="#id-modal" role="button" class="btn {{ element.style }}" data-toggle="modal" href="#" data-remote="{{ element.remote }}"  >{{ element.caption | default('click')}}</a>
+				<a data-target="#id-modal" role="button" class="btn {{ element.style |default('btn-primary') }}" data-toggle="modal" href="#" data-remote="{{ element.remote }}"  >{{ element.caption | default('click')}}</a>
 				{% elseif element.type == "panel" %}
 				<div id="{{ p }}{{ key }}" class="form-control" style="height: auto; min-height: 34px;">{{ element.caption | raw}}</div>
 				{% else %}	

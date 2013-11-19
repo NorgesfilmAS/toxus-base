@@ -389,6 +389,16 @@ class Util {
 	{
 		return md5(json_encode($form));
 	}
+	
+	
+	static function substringIndex($str, $delim, $count)
+	{
+    if ($count < 0){
+      return implode($delim, array_slice(explode($delim, $str), $count));
+    } else {
+      return implode($delim, array_slice(explode($delim, $str), 0, $count));
+    }
+	}
 }
 
 ?>
