@@ -458,3 +458,12 @@ input.input-date {
 .tt-hint {
 	display: none;
 }
+
+/* the system messages */
+
+.tx-message .panel {
+	margin-top: 140px;
+}
+.tx-message .panel-body {
+	min-height: 100px;
+}

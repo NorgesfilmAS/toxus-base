@@ -1,35 +1,30 @@
 {% extends dialog ? this.viewPath('ajaxDialog') : this.viewPath('main') %}
 {# parameter:
- # - title    (the caption of the dialog | default= error)
- # - message  (the message to display)
+ # - title		[block: dialogHeader]   (the caption of the dialog | default=message)
+ # - body			[block: dialogBody]			(the message to display)
+ # -          [block: dialogFooter]   (default: close on the right side }  
  # - url      (next url to open)
+ # - closeCaption											(the caption of the ok button)
 #}
 {% block content %}
-<div class="row">
-	<div class="{{ width |default('col-sm-9')}} msgbox-layout border no-padding">
-	<div class="modal-header">
-    {# <button type="button" class="close action-close" data-dismiss="modal" aria-hidden="true">×</button> #}
-    {% block dialogHeader %}<h3>{{ title | default(this.te('error')) }}</h3>{%endblock %}
-  </div>
-
-  {% if message %}
-	<div class="row" style="margin-top: 100px;">
-		<div class="col-md-offset-3 col-md-6">
-			<h4>{{ message | raw}}</h4>
-		</div>		
-	</div>
-  {% endif %}
-	<div class="row" style="margin-top: 50px;">
-		<div class="col-md-3">{% block icon %}{{ icon | default('<i class="glyphicon glyphicon-wrench icon-size-large pull-right"></i>') | raw}}{% endblock %}</div>
-		<div class="col-md-6">
-			{% block body %} {{ body }}{% endblock %}
+<div class="row tx-message">
+	<div class="{{ width |default('col-sm-9')}} panel {{ style |default('panel-primary') }} no-padding">
+		<div class="panel-heading">
+			{# <button type="button" class="close action-close" data-dismiss="modal" aria-hidden="true">×</button> #}
+			{% block dialogHeader %}<h3 class="panel-title">{{ title | default(this.te('Message')) }}</h3>{%endblock %}
 		</div>
-	</div>	
-	<div class="modal-footer">
-		{% block dialogFooter %}
-    <a id="btn-close" class="btn btn-primary action-close" {% if url %}href="{{ url }}" {% else %}data-dismiss="modal"{% endif %}>{{ this.t(closeCaption | default('btn-close')) }}</a>
-		{% endblock %}
-  </div>		
+
+		<div class="panel-body">
+			{% block dialogBody %}
+			{% block body %}{{ body | raw}}{% endblock %}
+			{% endblock %}
+		</div>
+		
+		<div class="panel-footer text-center">
+			{% block dialogFooter %}
+			<a id="btn-close" class="btn btn-primary action-close" {% if url %}href="{{ url }}" {% else %}data-dismiss="modal"{% endif %}>{{ this.t(closeCaption | default('btn-close')) }}</a>
+			{% endblock %}
+		</div>		
 	</div>
 </div>
 
