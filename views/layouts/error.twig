@@ -1,6 +1,10 @@
 {% extends dialog ? this.viewPath('ajaxDialog') : this.viewPath('main') %}
-
-{% block fullContent %}
+{# parameter:
+ # - title    (the caption of the dialog | default= error)
+ # - message  (the message to display)
+ # - url      (next url to open)
+#}
+{% block content %}
 	<div class="modal-header">
     <button type="button" class="close action-close" data-dismiss="modal" aria-hidden="true">×</button>
     {% block dialogHeader %}<h3>{{ title | default(this.te('error')) }}</h3>{%endblock %}
@@ -8,7 +12,7 @@
 
 	<div class="row" style="margin-top: 100px;">
 		<div class="col-md-offset-3 col-md-6">
-			<h4>{{ message |nl2br }}</h4>
+			<h4>{{ message |nl2br |raw}}</h4>
 		</div>		
 	</div>
 	<div class="row">
@@ -32,7 +36,7 @@
 	{% endif %}
   <div class="modal-footer">
 		{% block dialogFooter %}
-    <button id="btn-close" class="btn caction-close" data-dismiss="modal">{{ this.t('btn-close') }}</button>
+    <a id="btn-close" class="btn btn-primary action-close" {% if url %}href="{{ url }}" {% else %}data-dismiss="modal"{% endif %}>{{ this.t(closeCaption | default('btn-close')) }}</a>
 		{% endblock %}
   </div>
 
