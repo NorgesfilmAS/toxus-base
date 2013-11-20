@@ -32,10 +32,8 @@ class FileInformation extends CComponent
 	{
 		if ($this->exists()) {
 			$this->_path = realpath($this->_path);
-			$this->_parts = pathinfo($this->_path);
-		} else {
-			$this->_parts = false;
-		}
+		}	
+		$this->_parts = pathinfo($this->_path);		
 	}
 	
 	public function setPath($filename)
@@ -75,12 +73,12 @@ class FileInformation extends CComponent
 	
 	public function getSize()
 	{
-		return $this->_parts == false ?  0 : filesize($this->_path);
+		return $this->exists() == false ?  0 : filesize($this->_path);
 	}
 	
   public function getSizeText()
 	{
-		if ($this->_parts == false) {
+		if ($this->exists() == false) {
 			return null;
 		} else {
 			$bytes = sprintf('%u', $this->size);
@@ -102,12 +100,12 @@ class FileInformation extends CComponent
 	 */
 	public function getTime()
 	{
-		return $this->_parts == false ? 0 : filectime($this->_path);
+		return $this->exists() == false ? 0 : filectime($this->_path);
 	}
 	
 	public function getContentType()
 	{
-		if ($this->_parts == false)
+		if ($this->exists() == false)
 			return false;
 		$finfo = finfo_open(FILEINFO_MIME_TYPE);
 		$type = finfo_file($finfo, $this->path);
@@ -120,6 +118,6 @@ class FileInformation extends CComponent
 	 */
 	public function touch()
 	{
-		return $this->parts == false ? false : touch($this->_path);
+		return $this->exists() == false ? false : touch($this->_path);
 	}
 }

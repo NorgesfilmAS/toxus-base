@@ -1,63 +1,37 @@
-{% extends this.viewPath('main') %}
-
+{% extends dialog ? this.viewPath('ajaxDialog') : this.viewPath('main') %}
+{# parameter:
+ # - title    (the caption of the dialog | default= error)
+ # - message  (the message to display)
+ # - url      (next url to open)
+#}
 {% block content %}
-	<div class="hero-unit">
-		<div class="container">
-			<h1>{% block title %}Contact{% endblock %}</h1>
-		</div>
-		<!--close container--> 
+<div class="row">
+	<div class="{{ width |default('col-sm-9')}} msgbox-layout border no-padding">
+	<div class="modal-header">
+    {# <button type="button" class="close action-close" data-dismiss="modal" aria-hidden="true">×</button> #}
+    {% block dialogHeader %}<h3>{{ title | default(this.te('error')) }}</h3>{%endblock %}
+  </div>
+
+  {% if message %}
+	<div class="row" style="margin-top: 100px;">
+		<div class="col-md-offset-3 col-md-6">
+			<h4>{{ message | raw}}</h4>
+		</div>		
 	</div>
-	<!--close hero-unit-->
-	
-	<div class="container clearfix" id="main-content">
-		<div class="row-fluid reverse-order contact-page">
-			<p class="clearfix">
-				Percussive Guitar has permanently altered the concept of platforms. 
-				We apply the proverb "The early bird catches the worm" not only to our solutions but our power to streamline. 
-				If you synergize robustly, you may have to e-enable virally.</p>
-			<hr />
-			<div class="span5">
-				<p class="right"> <a class="icon-map-marker various fancybox.iframe" title="Map and Directions" 
-														 href="https://maps.google.com/maps?f=d&source=s_d&saddr=&daddr=Pegasusstraat+85,2024VP+Haarlem,The+Netherlands&output=embed">&nbsp;</a> </p>
-				<p><strong>{{ App.params.company|raw }}</strong><br />
-					{{ App.params.companyAddress | raw }}<br/>
-					<strong>email:</strong> <a href="mailto:{{ App.params.companyEmail }}">{{ App.params.companyEmail }}</a> </p>
-				<h3 class="short_headline margin-top"><span>Get Percussive</span></h3>
-				<p>Sign up for our percussive newsletter. We won't share your email address.</p>
-				<div class="input-append">
-					<form method="post" action="{{ App.createUrl('contact/newsletter') }}">	
-					<input type="email" placeholder="Email Address" class="span6" name="Newsletter[email]" />
-					<button class="btn btn-primary">Sign Up</button>
-					</form>
-				</div>
-				<!--close input-append-->
-				<h3 class="short_headline margin-top"><span>Follow Us</span></h3>
-				<ul class="social">
-					<li><a class="socicon facebook" href="#" title="Facebook"></a></li>
-					<li><a class="socicon twitterbird" href="#" title="Twitter"></a></li>
-					<li><a class="socicon linkedin" href="#" title="LinkedIn"></a></li>
-					<li><a class="socicon dribbble" href="#" title="dribble"></a></li>
-				</ul>
-			</div>
-			<!--close span5 -->
-			
-			<div class="span7">
-				{% if App.user.hasFlash('error') or App.user.hasFlash('success') or App.user.hasFlash('info') %}
-				<div class="span10 offset1">
-					{% for key, flash in App.user.getFlashes %}
-					<div class="alert alert-{{ key }}">
-						{{ flash }}
-					</div>	
-					{% endfor %}	
-				</div>
-				{% endif %}	
-				{% block message %}Thank you{% endblock %}	
-			</div>
-			<!--close span7 --> 
+  {% endif %}
+	<div class="row" style="margin-top: 50px;">
+		<div class="col-md-3">{% block icon %}{{ icon | default('<i class="glyphicon glyphicon-wrench icon-size-large pull-right"></i>') | raw}}{% endblock %}</div>
+		<div class="col-md-6">
+			{% block body %} {{ body }}{% endblock %}
 		</div>
-		<!--close row-fluid--> 
+	</div>	
+	<div class="modal-footer">
+		{% block dialogFooter %}
+    <a id="btn-close" class="btn btn-primary action-close" {% if url %}href="{{ url }}" {% else %}data-dismiss="modal"{% endif %}>{{ this.t(closeCaption | default('btn-close')) }}</a>
+		{% endblock %}
+  </div>		
 	</div>
-	<!--close .container role="main-content" --> 
- 
+</div>
+
 {% endblock %}
-	
+	   
