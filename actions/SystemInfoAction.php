@@ -54,7 +54,7 @@ class SystemInfoAction extends CAction
 						
 		/** the system setup */
 		$setup = array();
-		$setup['max post size'] = array('value' => Util::maxPostSize(), 'explain' => 'Set in .htaccess through: php_value post_max_size 16M');
+		$setup['max post size'] = array('value' => Util::maxPostSize(false), 'explain' => 'Set in .htaccess through: php_value post_max_size 16M');
 		$setup['max file upload size'] = array('value' => Util::maxFileUploadSize(false), 'explain' => 'Set in .htaccess through php_value upload_max_filesize [n]M');
 		$prop['setup'] = array(
 			'caption' => 'Server setup',
