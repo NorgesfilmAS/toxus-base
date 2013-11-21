@@ -149,6 +149,18 @@ class ImageCache extends CComponent
 		return Yii::app()->baseUrl.self::ROOTCACHE.$size.'/'.$name;
 	}
 	
+	/** 
+	 * return the fysical path to the image cache
+	 * 
+	 * @param string $size the size of the image
+	 */
+	public function imagePath($size = false)
+	{
+		if ($size) {
+			return Yii::getPathOfAlias(self::BASEPATH.'.'.$size).'/';
+		}
+		return Yii::getPathOfAlias(self::BASEPATH).'/';
+	}
 	/**
 	 * load the binary data
 	 */
