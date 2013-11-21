@@ -19,6 +19,10 @@ class Util {
     return $string;
 	}
 	
+	static function unique()
+	{
+		return Util::generateRandomString(30);
+	}
 	/**
 	 * Convert a mySQL (2012-12-24 18:00:34) string into  php datetime
 	 *  
