@@ -19,7 +19,7 @@ class SystemInfoAction extends CAction
 	
 	public function run()
 	{
-		$prop = array('database', 'params');
+		$prop = array(); //array('database', 'params', 'setup');
 		$items = array();
 		$items['db-connection'] = Yii::app()->db->connectionString;
 		$items['db-username'] = Yii::app()->db->username;
@@ -52,6 +52,14 @@ class SystemInfoAction extends CAction
 			'items' => $server,					
 		);
 						
+		/** the system setup */
+		$setup = array();
+		$setup['max post size'] = array('value' => Util::maxPostSize(), 'explain' => 'Set in .htaccess through: php_value post_max_size 16M');
+		$setup['max file upload size'] = array('value' => Util::maxFileUploadSize(false), 'explain' => 'Set in .htaccess through php_value upload_max_filesize [n]M');
+		$prop['setup'] = array(
+			'caption' => 'Server setup',
+			'items' => $setup,					
+		);
 		
 		
 		//$prop['user'] = Yii::app()->user->id;

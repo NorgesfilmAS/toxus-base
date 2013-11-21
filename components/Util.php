@@ -399,6 +399,49 @@ class Util {
       return implode($delim, array_slice(explode($delim, $str), 0, $count));
     }
 	}
+	
+	/**
+	 * converts the 16M to the number of bytes 
+	 * 
+	 * @param string @value
+	 */
+	static function bytesToCount($value)
+	{
+    if ( is_numeric( $value ) ) {
+      return $value;
+    } else {
+			$value_length = strlen( $value );
+			$qty = substr( $value, 0, $value_length - 1 );
+			$unit = strtolower( substr( $value, $value_length - 1 ) );
+			switch ( $unit ) {
+				case 'k':
+						$qty *= 1024;
+						break;
+				case 'm':
+						$qty *= 1048576;
+						break;
+				case 'g':
+						$qty *= 1073741824;
+						break;
+			}
+			return $qty;
+		}	
+	}
+	
+	static function maxFileUploadSize($inBytes = true)
+	{
+		$value = ini_get( 'upload_max_filesize' );
+		if (!$inBytes) return $value;
+		return Util::bytesToCount($value);
+	}
+	static function maxPostSize($inBytes = true)
+	{
+		$value = ini_get('post_max_size');		
+		if (!$inBytes) return $value;
+		return Util::bytesToCount($value);
+
+	}
+	
 }
 
 ?>

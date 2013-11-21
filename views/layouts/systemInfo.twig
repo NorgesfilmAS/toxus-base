@@ -4,21 +4,31 @@
 {% extends this.viewPath('main') %}
 
 {% block content %}
+
 	<div class="row">
 	<h2>System information</h2>
 	</div>
 	{% for key, props in properties %}
-	<div class="row"><h3>{{ this.t(props.caption) }}</h3></div>
-
+	<div class="panel panel-primary">
+		<div class="panel-heading">{{ this.t(props.caption) }}</div>
+		<div class="panel-body">
+			
 	{% for name, value in props.items %}
 	<div class="row">		
 		<div class="col-sm-3">{{name}}</div>
-		<div class="col-sm-9">{{value}}</div>
-	</div>
-	
+		<div class="col-sm-9">{% if value is iterable  %}{{ value.value }} <a href="#" class="tip" data-toggle="tooltip" title="{{ value.explain }}"><span class="glyphicon glyphicon-question-sign"></span></a>{% else %}{{value}}{%endif %}</div>
+	</div>	
 	{% endfor %}			
-	
+			
+		</div>
+	</div>
 	{% endfor %}
+	
 {% endblock %}
-		
+
+{% block onReady %}
+	$('.tip').tooltip();
+	{{ parent() }}
+{% endblock %}	
+	
 
