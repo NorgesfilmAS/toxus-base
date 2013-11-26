@@ -49,6 +49,7 @@ class ViewAction extends BaseAction
 					'mode' => isset($_GET['mode']) ? $_GET['mode'] : $this->defaultMode,
 					'state' => 'view',	
 					'menuItem' => $this->menuItem,						
+					'layout' => $this->pageLayout,	
 				),
 				$this->params    
 		);				

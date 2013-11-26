@@ -27,7 +27,17 @@ class BaseAction extends CAction
 	 * @var string
 	 */
 	public $successUrl = null;
-	
+
+	/**
+	 * the layout of the curremt page
+	 *  - full			(all 12 columns)
+	 *  - content		(3 menu, 9 content)
+	 *  - sub				(3 menu, 3 sub info, 6 content), 
+	 *  - info			(3 menu, 6 content, 3 sub info)
+	 * @var string
+	 */
+	public $pageLayout = 'content';		// 
+
 	
 	/** 
 	 * the name of the model to create even if it is not defined by the calling routine

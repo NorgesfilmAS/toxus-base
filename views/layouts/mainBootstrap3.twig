@@ -69,11 +69,43 @@
 					{{ this.menuHtml('header', {'class': 'nav navbar-nav' }) }}
 				</div>
 			</div>
-
 		</div>
+		{% set colVis = pageLayout | default('content') %}
 {# there are two basic ways to show the page, with of without the nav #}
 		<div class="container bs-container">
-			{% block fullContent %}
+			<div class="row">			
+	{% if colVis == 'full' %}
+				<div class="col-sm-12" role="main">
+	{% else %}	
+				<div class="col-sm-3  hidden-xs" >
+					<div class="bs-sidebar affix-top hidden-print" role="complementary"  >
+						{{ itemMenu | raw }}
+					</div>
+				</div>
+		{% if colVis == 'sub' %}
+				<div class="col-sm-3">
+					{% block infoLeft %} {%endblock %}
+				</div>
+				<div class="col-sm-6" role="main">
+		{% elseif colVis == 'info' %}	
+				<div class="col-sm-6" role="main">					
+		{% else %}	
+				<div class="col-sm-9" role="main">
+		{%endif %}	
+	{%endif %}		
+				{% block content %}{% endblock %}										
+				</div>	
+	{% if colVis == 'info' %}	
+				<div class="col-sm-3">
+					{% block infoRight %}{%endblock %}
+				</div>					
+	{% endif %}					
+			</div>				
+		</div>	
+		
+{#		
+		<div class="container bs-container">
+			{% block fullContent %}			
 			<div class="row">
 				<div class="col-sm-3  hidden-xs" >
 					<div class="bs-sidebar affix-top hidden-print" role="complementary"  >
@@ -86,7 +118,7 @@
 			</div>
 			{% endblock %}	
 		</div>	
-			
+#}			
 
 		<div class="bs-footer">	
 			{% block bootstrap3Footer %}

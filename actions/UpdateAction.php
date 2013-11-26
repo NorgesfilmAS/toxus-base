@@ -53,7 +53,8 @@ class UpdateAction extends BaseAction
 		
 		$this->render( $this->view, array(
 				'model' => $this->controller->model,
-				'layout' => 'ajaxForm', 
+				'layout' => 'ajaxForm',		// WHY???
+				'layout' => $this->pageLayout,
 				'form' => $form,	
 				'mode' => $mode,
 				'state' => $mode,
