@@ -4,7 +4,7 @@
  {% set prefix = "dia-" %}
 	<div class="modal-header">
     <button type="button" class="close action-close" data-dismiss="modal" aria-hidden="true">×</button>
-    {% block dialogHeader %}dialogHeader{%endblock %}
+    <h4>{% block dialogHeader %}dialogHeader{%endblock %}</h4>
   </div>
   <div class="modal-body" >
 		{% block dialogBody %}This is the body{%endblock%}    

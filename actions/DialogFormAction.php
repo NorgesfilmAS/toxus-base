@@ -7,13 +7,9 @@
  * 
  * The call to the dialog is ALWAYS an ajax call. So if everything went ok, ok is returned
  */
-class DialogFormAction extends CAction
+Yii::import('toxus.actions.BaseAction');
+class DialogFormAction extends BaseAction
 {
-	/**
-	 * the form to display to the user
-	 * @var string
-	 */
-	public $modelClass = null;
 	/**
 	 * the name of the field in $modelClass to set the given id, when creating a new record
 	 * 
@@ -30,13 +26,8 @@ class DialogFormAction extends CAction
 	 * 
 	 * @var string
 	 */
-	public $template = 'dialogForm';
-	/**
-	 * the url to open after the form has been succesfully dismissed
-	 * 
-	 * @var string
-	 */
-	public $url = null;
+	public $view = 'dialogForm';
+	
 	/**
 	 * extra parameters that should be given to the template
 	 * @var array
@@ -76,11 +67,14 @@ class DialogFormAction extends CAction
 		$form = $this->controller->loadForm($this->form);
 		
 		if (isset($_POST[$this->modelClass])) {
+			if ($this->scenario) {
+				$this->controller->model->scenario = $this->scenario;
+			}
 			$this->controller->model->attributes = $_POST[$this->modelClass];
 			if ($this->controller->model->save()) {
 				$result = array(
 					'status' => '200',
-					'url' => str_replace('--key--',$this->controller->model->id, $this->url),	
+					'url' => str_replace('--key--',$this->controller->model->id, $this->successUrl),	
 				);
 				echo CJSON::encode($result);
 				Yii::app()->end(200);
@@ -92,7 +86,7 @@ class DialogFormAction extends CAction
 			array(
 				'form' => $form,				
 		));
-		$this->controller->render($this->template, $p);
+		$this->controller->render($this->view, $p);
 	}
 					
 }

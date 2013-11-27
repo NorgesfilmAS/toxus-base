@@ -38,6 +38,7 @@ class BaseAction extends CAction
 	 */
 	public $pageLayout = 'content';		// 
 
+	public $scenario = null;
 	
 	/** 
 	 * the name of the model to create even if it is not defined by the calling routine
