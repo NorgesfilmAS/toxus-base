@@ -1,0 +1,42 @@
+{# 
+	error page.
+  currently only for full pages
+
+	layout 3col nothing, 6 col message, 3 col nothing
+
+ # - title    (the caption of the dialog | default= error)
+ # - message  (the message to display)
+ # - url      (next url to open)
+
+#}
+{% set pageLayout = 'info' %}
+{% extends this.viewPath('main') %}
+
+{% block content %}
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <a href="{{ url | default(this.createUrl('site/index'))}}" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+        <h4 class="modal-title">{{ this.t( title | default('oeps, there was an error')) }}</h4>
+      </div>
+      <div class="modal-body">
+				{{ message |nl2br |raw}}  
+				{% if App.params.debug %}
+				<hr />
+						code: {{ code }}<br/>
+						type: {{ type }}<br />
+						file: {{ file }}<br />
+						line: {{ line }}<br /><br />
+						trace: {{ trace|nl2br }} <br />
+				{% endif %}
+      </div>
+      <div class=" text-center modal-footer">
+        <a href="{{ url | default(this.createUrl('site/index'))}}" type="button" class="btn btn-default" data-dismiss="modal">Close</a>        
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+
+{% endblock %}
+
+
+

