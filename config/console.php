@@ -13,25 +13,7 @@ return array(
 
 	// application components
 	'components'=>array(
-		'db'=>array(
-			//'connectionString' => 'mysql:host=www.icursus.com;dbname=icursus_site',				
-			//'connectionString' => 'mysql:host=127.0.0.1;dbname=pnek_rs3',				
-			'connectionString' => 'mysql:host=127.0.0.1;dbname=pnek_resource_space',					
-				
-			'username' => 'pnek_rs',	
-			'emulatePrepare' => true,
-			'password' => '!z11doen',
-			'charset' => 'utf8',
-		),
-		//'db' => array(	
-		'dbSystem' => array(			
-			'connectionString' => 'mysql:host=127.0.0.1;dbname=pnek_site',				
-			'username' => 'pnek_rs',	
-			'emulatePrepare' => true,
-			'password' => '!z11doen',
-			'charset' => 'utf8',
-			'class'  => 'CDbConnection'   	
-		),
+		'db'=> include(dirname(__FILE__).'/local.db.php'),
 			
 		'log'=>array(
 			'class'=>'CLogRouter',
