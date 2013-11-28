@@ -20,7 +20,7 @@ class PageLog extends CComponent
 	 *
 	 * @var string the model to use for logging
 	 */
-	public $loggingModel = 'Logging';
+	public $loggingModel = 'LoggingModel';
 	
 	/**
 	 *
