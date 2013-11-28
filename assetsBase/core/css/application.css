@@ -90,6 +90,16 @@
   font-size: 90%;
 }
 
+.nav-form {
+    padding: 10px;
+}
+.nav-form label {
+    color: #A9A9A9;
+    display: block;
+    font-weight: normal;
+    padding-bottom: 0;
+    padding-top: 0;
+}
 .bs-nav-toolbar {
 	padding-top: 6px;
 }

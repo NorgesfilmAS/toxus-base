@@ -27,6 +27,11 @@ class BaseSiteController extends Controller
 					'view' => 'system',
 					'form' => 'systemSetup',
 			),	
+			'index' => array(
+					'class' => 'toxus.actions.ViewAction',	
+					'view' => 'index',
+			),	
+				
 		);
 	}	
 
