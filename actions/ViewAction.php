@@ -17,11 +17,7 @@ class ViewAction extends BaseAction
 	 * 
 	 * @var array
 	 */
-	public $params = array();
-	/**
-	 * 
-	 * @param type $id
-	 */
+	
 	public function run($id=null)					
 	{		
 		// $controllerId = ucfirst($this->controller->id);

@@ -1,5 +1,18 @@
-<form class="id-search" method="get" action="{{ this.createUrl('site/search')}}">
+{#
+	Default search on the side. 
+  options: 
+   * navHasLayout      : if true, the layout buttons are displayed
+   * navHasExtraFields : if true, the folding search is displayed.					Overload: navExtraFields
+   * navHasMoreFields  : if true, the field below the extra are displayed		Overload: navMoreFields
+	 * navHasSearchOrder : if true, the search box is displayed								Overload: navSearchOrder
+
+   * searchUrl : the url for the form (default site/search)
+   * layout    : the layout to use. (default '')
+#}
+
+<form class="id-search" method="get" action="{{ searchUrl | default(this.createUrl('site/search')) }}">
 	<div class="nav-form nav bs-sidenav">	
+		{% if navHasLayout %}
 		<input type="hidden" class="id-layout" value="{{ layout }}" name="layout"/>
 		<div>
 			<ul class="list-layout">
@@ -8,7 +21,8 @@
 				<li id="id-4column"><a href="#" class="display-layout" data-layout="tiles"><span class="glyphicon glyphicon-th"></span></a></li>
 			</ul>
 		</div>
-
+		{% endif %}
+		
 		{% block navSearchFields %}
 		<label for="id-agent">{{ this.t('artist') }}</label>
 		<input type="text" id="id-agent" name="Art[agent]" class="form-control cls-search" value="{{ this.model.agent }}"/>		
@@ -16,7 +30,7 @@
 		<input type="text" id="id-title" name="Art[title]" class="form-control cls-search" value="{{ this.model.title }}" />
 		{% endblock %}
 
-		{% block navBlockExtraFields %}
+		{% if navHasExtraFields %}
 		<div class="nav-options">
 			<div class="nav-option-header cls-toggle"><label><span class="caption">{{ this.t('show extra search') }}</span><span class="pull-right nav-arrow">&#x25BC</span></label></div>
 			<div class="nav-option-body" style="display: none;">
@@ -41,9 +55,9 @@
 				{% endblock %}
 			</div>
 		</div>		
-		{% endblock %}
+		{% endif %}
 		
-		{% block navMoreFields %}
+		{% if navHasMoreFields %}
 		<label for="id-agent">{{ this.t('Direct search on ID') }}
     {% if App.user.hasFlash('error') %}
       <div class="text-warning">
@@ -52,8 +66,8 @@
     {% endif %}    
     </label>
 		<input type="text" id="id-agent" name="Art[searchId]" class="form-control" value="{{ this.model.searchId }}"/>		
-		{% endblock %}
-		{% block navBlockSearchOrder %}
+		{% endif %}
+		{% if navHasSearchOrder %}
 		<label for="id-sort">{{ this.t('sort by') }}</label>
 		{% block navSearchOrder %}
 		<select name="Art[searchOrder]" class="id-sort form-control">
@@ -63,7 +77,7 @@
 			<option value="id" {% if this.model.searchOrder == 'id' %}selected="1"{% endif %}>{{ this.t('id') }}</option>
 		</select>
 		{% endblock %}
-		{% endblock %}
+		{% endif %}
 		<div class="bs-nav-searchbar">
 		{% block navButtons %}	
 		<input type="submit" class="btn btn-info pull-right" value="{{this.t('search') }}"/>
@@ -131,7 +145,4 @@ $('.cls-toggle').on('click', function() {
 		$('.nav-arrow').html('&#x25B6');
 	}
 });
-$('.cls-digitization').val('"~this.model.is_digitized~"');
-$('.cls-collection').val('"~this.model.collection|join~"'); 
-
 ") }}

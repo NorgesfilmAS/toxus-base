@@ -40,6 +40,12 @@ class BaseAction extends CAction
 
 	public $scenario = null;
 	
+	/**
+	 *
+	 * @var array the params to merge for the rendering
+	 */
+	public $params = array();
+	
 	/** 
 	 * the name of the model to create even if it is not defined by the calling routine
 	 * 
@@ -78,5 +84,12 @@ class BaseAction extends CAction
 	public function render($view,$data=null,$return=false)
 	{
 		return $this->controller->render($view, $data, $return);
+	}
+	
+	protected function mergeParams($params)
+	{
+		return array_merge(
+						$params, 
+						$this->params);
 	}
 }
