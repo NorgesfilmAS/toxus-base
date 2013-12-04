@@ -23,6 +23,11 @@
     font-size: 60px;
     line-height: 1;
 }
+.items .panel-title {
+	max-height: 36px;
+  overflow: hidden;
+}
+
 /** next try */
 /*
  * Side navigation

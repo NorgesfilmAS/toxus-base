@@ -51,6 +51,12 @@
 				{% elseif element.type=='typeahead' %}
 					{{ element.caption }}	
 				{% elseif element.type=='button' or element.type=='dialog'%}	
+				{% elseif element.type=='email' %}
+					{% if model.__get(key) %}
+						<a href="mailto:{{ model.__get(key) }}">{{ model.__get(key) }}</a>
+					{% endif %}	
+				{% elseif element.type=='url' %}						
+						<a href="{{ model.__get(key) }}">{{ model.__get(key) }}</a>	
 				{% else %}	
 					{{ model.__get(key) | raw }}	
 				{% endif %}

@@ -12,7 +12,7 @@
 	{# must first display any error connected to the main record #}		
 	{% if model.hasErrors() %}
 	<div class="row">
-		<div class="col-lg-10 col-offset-2 alert alert-danger">			
+		<div class="col-lg-10 col-lg-offset-2 alert alert-danger">			
 			{{ html.errorSummary(model)|raw }}
 		</div>
 	</div>

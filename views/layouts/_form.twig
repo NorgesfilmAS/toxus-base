@@ -167,6 +167,8 @@ $().ready(function() {
 				<a data-target="#id-modal" role="button" class="btn {{ element.style |default('btn-primary') }}" data-toggle="modal" href="#" data-remote="{{ element.remote }}"  >{{ element.caption | default('click')}}</a>
 				{% elseif element.type == "panel" %}
 				<div id="{{ p }}{{ key }}" class="form-control" style="height: auto; min-height: 34px;">{{ element.caption | raw}}</div>
+				{% elseif element.type == 'email' %}
+					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="email" class="{{ width }} form-control" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"/> 				
 				{% else %}	
 					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }} form-control" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"/> 
 				{% endif %}

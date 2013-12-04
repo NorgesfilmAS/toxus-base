@@ -592,6 +592,12 @@ class BaseController extends CController
 		return null;
 	}
 	
+	
+	public function getReady($name)
+	{
+		$package = $this->findPackage($name);
+		return isset($package) && isset($package['ready']) ? $package['ready'] : '';
+	}
 	/**
 	 * register a package and returns the url to the assets dir
 	 * 

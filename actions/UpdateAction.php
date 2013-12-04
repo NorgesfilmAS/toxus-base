@@ -43,8 +43,8 @@ class UpdateAction extends BaseAction
 				if (false && $this->successUrlFull != null) {
 					$this->controller->redirect($this->successUrlFull);
 				}
+			$mode = 'view';							
 			}
-			$mode = 'view';			
 		}
 		if ($this->form == null)
 			$form = $this->controller->loadForm($controllerId. 'Fields'); 				
