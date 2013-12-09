@@ -4,6 +4,13 @@ class PasswordRequestAction extends CAction
 {
 	public $view = 'passwordForm';
 	
+	/**
+	 * if true the function UserProfile->resetPassword() is called before sending the mail
+	 * 
+	 * @var boolean
+	 */
+	public $resetPassword = false;
+	
 	public function run()
 	{
 		$this->controller->model = new LoginForm('password');		
@@ -15,10 +22,17 @@ class PasswordRequestAction extends CAction
 				if ($profile === null) {
 					$this->controller->model->addError('email', 'There is no account with this email address');
 				} else {
-					$mail = new MailMessage();
-					if ($mail->render('requestPassword', array('model' => $profile))) {
-						$this->controller->render('passwordSend', array('model' => $this->controller->model));
-						return;
+					if ($this->resetPassword) {
+						if (!$profile->resetPassword()) {
+							$this->controller->model->addError('email', 'The password could not be reset');
+						}
+					}
+					if (!$this->controller->model->hasErrors()) {
+						$mail = new MailMessage();
+						if ($mail->render('requestPassword', array('model' => $profile))) {
+							$this->controller->render('passwordSend', array('model' => $this->controller->model));
+							return;
+						}	
 					}	
 				}	
 			}	

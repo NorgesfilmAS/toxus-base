@@ -128,7 +128,9 @@ class MailMessage extends Controller
 		$textElements = explode("\n#", "\n".$text);
 		foreach ($textElements as $textElement ) { // textElement = from: jaap van der Kreeft
 			$a = explode(':', $textElement, 2);
-			$message[$a[0]] = trim($a[1]);				
+			if (count($a) > 1) {
+				$message[$a[0]] = trim($a[1]);				
+			}	
 		}
 		/* debug the mail message parsed */
 		// $this->log = print_r($this->_message, true);
