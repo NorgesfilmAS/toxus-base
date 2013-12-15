@@ -656,7 +656,7 @@ class BaseController extends CController
 				$this->_packages[$name]['executeAfterLoad'] = $script;
 			} elseif (!isset($this->_packages[$name]['executeAfterLoad'][key($script)])) {
 				// script not found: add to the end
-				$this->_packages[$name]['executeAfterLoad'][] = $script;
+				$this->_packages[$name]['executeAfterLoad'][key($script)] = $script[key($script)];
 			}
 		}	
 	}

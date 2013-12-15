@@ -111,6 +111,7 @@
 				{% elseif element.type== 'password' %}
 					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="password" class="{{ width }} form-control" value="{{ this.model.__get(key) }}"/> 
 				{% elseif element.type=='typeahead' %}
+					{% if element. associative | default(1) == 1 %}
 {# json of remote should be a[] => array('id' => 123, 'value' => 'John'); #}					
 					<input id="{{ p }}input-{{ key }}" type="text" class="{{ width }}  form-control" value="{{ element.caption }}"/>
 					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="hidden" value="{{ this.model.__get(key) }}">
@@ -125,6 +126,17 @@
 		" ~ element.onChange ~ "
 	});
 "}) }}
+					{% else %}
+					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }}  form-control" value="{{ this.model.__get(key) }}"/>
+	{{ this.registerPackage('typeahead', {'isAjax' : isAjax,'executeAfterLoad' : "
+  s = '#"~p~ key ~"';
+	$(s).typeahead({
+		name:'search-"~ key ~"',
+		remote:'" ~ element.url ~ "%QUERY'
+	});
+"}) }}
+					
+					{% endif %}
 					
 					{# this.registerScript(
 							form.model ~ '-' ~ key,"

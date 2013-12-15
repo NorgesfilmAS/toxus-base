@@ -468,7 +468,10 @@ input.input-date {
 	margin-bottom: 0px; 
 }
 .tt-suggestion {
-	padding: 5px 15px;
+	padding: 5px 15px 0px 15px;
+}
+.tt-suggestion p {
+	margin: 0 0 2px;
 }
 .tt-hint {
 	display: none;

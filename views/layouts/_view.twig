@@ -49,7 +49,11 @@
 					{{ model.__get(key) | raw }}	
 				{% elseif element.type== 'password' %}
 				{% elseif element.type=='typeahead' %}
+					{% if element.associative | default(1) %}
 					{{ element.caption }}	
+					{% else %}
+					{{ model.__get(key) }}	
+					{% endif %}
 				{% elseif element.type=='button' or element.type=='dialog'%}	
 				{% elseif element.type=='email' %}
 					{% if model.__get(key) %}
