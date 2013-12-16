@@ -3,7 +3,6 @@
 		{% for groupKey, groupElement in form.elements %}			
 		{% if groupElement.hidden != true and groupElement.viewHidden != true %}
 		{# <div class="control-group{% if model.getErrors(groupKey) %} error {% endif %}"> #}
-		{% if groupElement.elements | length == 0 and groupElement.hideOnEmpty == 0 | default(0) and not model.__get(groupKey) %}	
 			{% if  groupElement.type != 'hidden' %}
 			{# <span class="view-label" for="id-{{ groupKey }}">{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}:</span>  #}
 			<dt>{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}</dt> 
@@ -73,7 +72,6 @@
 			
 			
 		{#</div> #}
-		{% endif %}
 		{% endif %}	
 		{% endfor %}	
 		
