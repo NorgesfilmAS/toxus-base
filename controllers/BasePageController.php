@@ -14,7 +14,7 @@ class BasePageController extends Controller
 	{
 		if ($file == 'create'){
 			$this->actionCreate();
-		} elseif ($file == 'update') {
+		} elseif ($file == 'update' && isset($_GET['page'])) {
 			$this->actionUpdate($_GET['page']);
 		} else {
 			$filename = $this->viewPath($file);
@@ -45,10 +45,10 @@ class BasePageController extends Controller
 		 */
 		
 		$this->model = new FileContent;
-		if ($_POST['Page'] && isset($_POST['Page']['content'])) {
+		if (isset($_POST['Page']) && isset($_POST['Page']['content'])) {
 			$this->model->content = $_POST['Page']['content'];
 			$this->model->page = trim($_POST['Page']['page']);
-			$this->model->originalName = trim($_POST['Page']['originalNamee']);
+			$this->model->originalName = trim($_POST['Page']['originalName']);
 			if ($this->model->page == '') {
 				$this->model->addError('There is no filename');					
 			} else {
@@ -89,7 +89,7 @@ class BasePageController extends Controller
 	public function actionCreate()
 	{
 		$this->model = new FileContent;
-		if ($_POST['Page'] && isset($_POST['Page']['content'])) {
+		if (isset($_POST['Page']) && isset($_POST['Page']['content'])) {
 			$this->model->content = $_POST['Page']['content'];
 			$this->model->page = trim($_POST['Page']['page']);
 			if ($this->model->page == '') {
