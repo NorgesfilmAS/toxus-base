@@ -42,5 +42,25 @@ class BaseSiteController extends Controller
 		$this->redirect($this->createUrl('site/search'));
 	}
 
+	public function actionDecode($filename)
+	{
+		$name = YiiBase::getPathOfAlias('webroot').'/'.$filename;
+		if (Util::decodeUtf8File($name)) {
+			echo 'Information is decoded';
+		} else {
+			echo 'Error: Information NOT decoded. Usage site/decode?filename=name where name is '.$name;
+		}	
+		Yii::app()->end();
+	}
+	public function actionEncode($filename)
+	{
+		$name = YiiBase::getPathOfAlias('webroot').'/'.$filename;
+		if (Util::encodeUtf8File($name)) {
+			echo 'Information is encoded';
+		} else {
+			echo 'Error: Information NOT decoded. Usage site/encode?filename=name where name is '.$name;
+		}	
+		Yii::app()->end();
+	}
 	
 }

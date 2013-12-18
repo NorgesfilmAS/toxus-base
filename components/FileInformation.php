@@ -3,12 +3,13 @@
  * File information routines
  * 
  * version 1.0 jvk 2013-11-19
+ * /dir/name.ext
  * 
- * - filename
- * - dirName
- * - basepath
- * - extension
- * - name
+ * - filename			
+ * - dirName			(/dir)
+ * - basename			(name.ext)
+ * - extension		(ext)
+ * - name					(name)	
  * - exists
  * - size
  * - sizeText

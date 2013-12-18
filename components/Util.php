@@ -443,9 +443,49 @@ class Util {
 		$value = ini_get('post_max_size');		
 		if (!$inBytes) return $value;
 		return Util::bytesToCount($value);
-
 	}
 	
+	/**
+	 * reads a file as utf8 and calls decode utf8 and write the file with the filename.ut8
+	 * @param string $filename the name of the file
+	 */
+	static function decodeUtf8File($filename)
+	{
+		if (!file_exists($filename)) {
+			return false;
+		}
+		$s = file_get_contents($filename);
+		$sDecode = utf8_decode($s);
+		$fileInfo =  new FileInformation($filename);
+		$name = $fileInfo->dirName.'/'.$fileInfo->name.'.utf.'.$fileInfo->extension;
+		$l = 1;
+		while (file_exists($name) ) {
+			$name = $fileInfo->dirName.'/'.$fileInfo->name.'.utf.'.$l.'.'.$fileInfo->extension;
+			$l++;
+		}	
+		return file_put_contents($name, $sDecode);
+	}
+	
+/**
+	 * reads a file as utf8 and calls decode utf8 and write the file with the filename.ut8
+	 * @param string $filename the name of the file
+	 */
+	static function encodeUtf8File($filename)
+	{
+		if (!file_exists($filename)) {
+			return false;
+		}
+		$s = file_get_contents($filename);
+		$sDecode = utf8_encode($s);
+		$fileInfo =  new FileInformation($filename);
+		$name = $fileInfo->dirName.'/'.$fileInfo->name.'.utf.'.$fileInfo->extension;
+		$l = 1;
+		while (file_exists($name) ) {
+			$name = $fileInfo->dirName.'/'.$fileInfo->name.'.utf.'.$l.'.'.$fileInfo->extension;
+			$l++;
+		}	
+		return file_put_contents($name, $sDecode);
+	}	
 }
 
 ?>
