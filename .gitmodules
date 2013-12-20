@@ -7,3 +7,6 @@
 [submodule "assetsBase/typeahead2"]
 	path = assetsBase/typeahead2
 	url = https://github.com/twitter/typeahead.js.git
+[submodule "assetsBase/videojs"]
+	path = assetsBase/videojs
+	url = https://github.com/videojs/video.js.git
