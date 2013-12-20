@@ -1,16 +1,18 @@
 {# 
   Display the flash if it's there
  #}
+{% set styles = { 'error': 'danger', 'notice': 'info'} %}
+{# styles translates the flash type to the bootstrap panel type #}
 
-{% if App.user.hasFlash('error') %}
+{% for key, message in App.user.getFlashes() %}
 <br />
-<div class="panel panel-danger">
+<div class="panel panel-{{ attribute(styles, key) |default(key) }}">
 	<div class="panel-heading">
-    <h3 class="panel-title">Error</h3>
+    <h3 class="panel-title">{{ this.te(key) }}</h3>
   </div>
   <div class="panel-body">
-    {{ this.t(App.user.getFlash('error')) }}
+    {{ message | raw }}
   </div>
 </div>
-{% endif %}
-		
+
+{% endfor %}
