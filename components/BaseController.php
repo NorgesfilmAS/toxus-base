@@ -574,7 +574,18 @@ class BaseController extends CController
 					),
 				),
 				'ready' => 'jwplayer.key="0V3895lP4LH4KDl6jlC9NQ5mtM6YVhUZP9aURA=="',						
-			),	
+			),
+			'videojs' => array(
+				'basePath' => 'toxus.assetsBase.videojs.src',
+				'css' => array(
+					'cdn' => '//vjs.zencdn.net/4.2/video-js.css',	
+				),
+				'js' => array(
+					CClientScript::POS_END => array(
+						'cdn' => '//vjs.zencdn.net/4.2/video.js'
+					),	
+				)	
+			),
 			'new' => array(
 				'basePath' => 'alias',
 				'css' => array(),
@@ -623,13 +634,13 @@ class BaseController extends CController
 				if (isset($package['basePath'])) {
 					$assetUrl = Yii::app()->assetManager->publish(YiiBase::getPathOfAlias($package['basePath']));
 					if (!$opt['isAjax'] && isset($package['css']))
-						foreach ($package['css'] as $css) {
-							Yii::app()->clientScript->registerCSSFile( $assetUrl.'/'.$css);					
+						foreach ($package['css'] as $tx => $css) {
+							Yii::app()->clientScript->registerCSSFile((($tx === 'cdn') ? '' : ($assetUrl.'/')).$css);					
 						}
 					if (!$opt['isAjax'] &&  isset($package['js'])){	
 						foreach ($package['js'] as $position => $scripts) {
-							foreach ($scripts as $script) {
-								Yii::app()->clientScript->registerScriptFile( $assetUrl.'/'.$script, $position);
+							foreach ($scripts as $type => $script) {
+								Yii::app()->clientScript->registerScriptFile( ($type == 'cdn' ? '' : ($assetUrl.'/')).$script, $position);
 							}
 						}
 					}	
