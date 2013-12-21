@@ -291,6 +291,9 @@
  .chosen-container .search-choice {
 	 margin: 0 10px 0 0 !important;
  }
+ .chosen-single > span {
+	 margin-top: -2px;
+ }
  /*end chosen fix */
 
  /**
