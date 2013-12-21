@@ -640,7 +640,7 @@ class BaseController extends CController
 					if (!$opt['isAjax'] &&  isset($package['js'])){	
 						foreach ($package['js'] as $position => $scripts) {
 							foreach ($scripts as $type => $script) {
-								Yii::app()->clientScript->registerScriptFile( ($type == 'cdn' ? '' : ($assetUrl.'/')).$script, $position);
+								Yii::app()->clientScript->registerScriptFile( ($type === 'cdn' ? '' : ($assetUrl.'/')).$script, $position);
 							}
 						}
 					}	
