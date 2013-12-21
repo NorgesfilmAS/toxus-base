@@ -17,6 +17,17 @@ class SystemInfoAction extends CAction
 	 */
 	public $view = 'systemInfo';
 	
+	/**
+	 * actions (buttons) to put on the form
+	 */
+	public $actions = array(
+		'clearCache' => array(
+				'action' => 'site/clearCache',
+				//'params' => array(),
+				'caption' => 'Clear Assets',
+		)	
+	);
+	
 	public function run()
 	{
 		$prop = array(); //array('database', 'params', 'setup');
@@ -69,6 +80,6 @@ class SystemInfoAction extends CAction
 		if ($this->onExtraInfo != null) {
 			$prop = call_user_func_array($this->onExtraInfo, array($prop));
 		}
-		$this->controller->render($this->view, array('properties' => $prop));
+		$this->controller->render($this->view, array('properties' => $prop, 'actions' => $this->actions));
 	}
 }

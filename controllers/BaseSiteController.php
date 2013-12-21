@@ -20,7 +20,7 @@ class BaseSiteController extends Controller
 			'removeAssets' => 'toxus.actions.RemoveAssetsAction',
 			'systemInfo' => array(
 					'class'=> 'toxus.actions.SystemInfoAction',
-					'onExtraInfo' => array($this, 'systemInfo'),
+			//		'onExtraInfo' => array($this, 'systemInfo'),
 			),
 			'system' => array(
 					'class' => 'toxus.actions.ViewAction',	
@@ -42,8 +42,16 @@ class BaseSiteController extends Controller
 	public function actionClearCache($id = null)
 	{
 		Yii::app()->imageCache->clear($id);
-		Yii::app()->user->setFlash(Yii::t('app', 'Image cache has been cleared'));
-		$this->redirect($this->createUrl('site/search'));
+		$assets = new CFileHelper();
+
+		foreach ( new DirectoryIterator (YiiBase::getPathOfAlias('webroot.assets')) as $file ) {
+			if ($file->isDir() === TRUE && !($file->getBasename () === '.' || $file->getBasename () === '..')) {
+				$assets->removeDirectory(YiiBase::getPathOfAlias('webroot.assets.'.$file->getBasename()));				
+			}	
+    }
+		
+		Yii::app()->user->setFlash('success', Yii::t('app', 'Assets cache and the Image cache have been cleared.'));
+		$this->redirect($this->createUrl('site/systemInfo'));
 	}
 
 	public function actionDecode($filename)

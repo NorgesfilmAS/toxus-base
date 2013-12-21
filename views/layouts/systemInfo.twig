@@ -4,7 +4,7 @@
 {% extends this.viewPath('main') %}
 
 {% block content %}
-
+	{% include this.viewPath('flash') %}
 	<div class="row">
 	<h2>System information</h2>
 	</div>
@@ -15,15 +15,30 @@
 			
 	{% for name, value in props.items %}
 	<div class="row">		
-		<div class="col-sm-3">{{name}}</div>
-		<div class="col-sm-9">{% if value is iterable  %}{{ value.value }} <a href="#" class="tip" data-toggle="tooltip" title="{{ value.explain }}"><span class="glyphicon glyphicon-question-sign"></span></a>{% else %}{{value}}{%endif %}</div>
+		<div class="col-xs-3">{{name}}</div>
+		<div class="col-xs-9">{% if value is iterable  %}{{ value.value }} <a href="#" class="tip" data-toggle="tooltip" title="{{ value.explain }}"><span class="glyphicon glyphicon-question-sign"></span></a>{% else %}{{value}}{%endif %}</div>
 	</div>	
 	{% endfor %}			
 			
 		</div>
 	</div>
 	{% endfor %}
-	
+
+	{% if actions |length > 0 %}
+	<div class="panel panel-primary">
+		<div class="panel-heading">{{ this.t('actions') }}</div>
+		<div class="panel-body">
+	{% for key, action in actions %}
+		<div class="col-xs-3"></div>
+		<div class="col-xs-6">
+			<a href="{{ this.createUrl(action.action, action.params | default({}) ) }}" class="btn {{ action.style|default('btn-primary')}}">{{ this.te(action.caption) }}</a>
+		</div>
+	{% endfor %}
+		</div>
+	</div>	
+	{% endif %}
+
+
 {% endblock %}
 
 {% block onReady %}
