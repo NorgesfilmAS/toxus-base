@@ -1,6 +1,6 @@
 <?php
 
-Yii::import('application.vendors.toxus.models.LoggingModel');
+Yii::import('toxus.models.LoggingModel');
 
 class Logging extends LoggingModel
 {

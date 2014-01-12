@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-Yii::import('application.vendors.toxus.models.MailModel');
+Yii::import('toxus.models.MailModel');
 class Mail extends MailModel 
 {
 	

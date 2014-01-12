@@ -1,6 +1,6 @@
 <?php
 
-Yii::import('application.vendors.toxus.models._base.BaseUserProfile');
+Yii::import('toxus.models._base.BaseUserProfile');
 
 class UserProfileModel extends BaseUserProfile
 {

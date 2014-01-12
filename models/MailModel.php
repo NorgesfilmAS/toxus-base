@@ -1,6 +1,6 @@
 <?php
 
-Yii::import('application.vendors.toxus.models._base.BaseMail');
+Yii::import('toxus.models._base.BaseMail');
 
 class MailModel extends BaseMail
 {

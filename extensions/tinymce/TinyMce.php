@@ -93,7 +93,7 @@ class TinyMce extends CInputWidget
 
     public function init()
     {
-        $dir = dirname(__FILE__) . '/vendors/tinymce/jscripts/tiny_mce';
+        $dir = dirname(__FILE__) . '/vendor/tinymce/jscripts/tiny_mce';
         $this->assetsDir = Yii::app()->assetManager->publish($dir);
         $this->settings = array_merge(self::$defaultSettings, $this->settings);
         if ($this->language === false)

@@ -1,6 +1,6 @@
 <?php
 
-Yii::import('application.vendors.toxus.models._base.BaseMessage');
+Yii::import('toxus.models._base.BaseMessage');
 
 class MessageModel extends BaseMessage
 {

@@ -38,11 +38,11 @@ class TinyMceCompressorAction extends CAction
     {
         $this->settings = array_merge(self::$defaultSettings, $this->settings);
 
-        $dir = dirname(__FILE__) . '/vendors/tinymce/jscripts/tiny_mce';
+        $dir = dirname(__FILE__) . '/vendor/tinymce/jscripts/tiny_mce';
         if (empty($this->settings["cache_dir"]))
             $this->settings["cache_dir"] = Yii::getPathOfAlias('application.runtime');
         if (empty($this->settings["tinymce_dir"]))
-            $this->settings["tinymce_dir"] = dirname(__FILE__) . '/vendors/tinymce/jscripts/tiny_mce';
+            $this->settings["tinymce_dir"] = dirname(__FILE__) . '/vendor/tinymce/jscripts/tiny_mce';
         if (empty($this->settings["baseUrl"]))
             $this->settings["baseUrl"] = Yii::app()->assetManager->publish($dir);
     }

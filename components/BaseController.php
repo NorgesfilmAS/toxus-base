@@ -11,7 +11,7 @@
 
 class BaseController extends CController
 {
-	public $vendorViewRoot = 'vendors.toxus.views';
+	public $vendorViewRoot = 'vendor.toxus.views';
 	public $layout = false;////layouts/column1';
 	//public $breadcrumbs=array();
 	public $brand = 'BaseController->brand';

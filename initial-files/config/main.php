@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 // version: 1.x. Template are suckers
 
-YiiBase::setPathOfAlias('toxus', dirname(dirname(__FILE__)).'/vendors/toxus');
+YiiBase::setPathOfAlias('toxus', dirname(dirname(__FILE__)).'/vendor/toxus');
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Home',
