@@ -11,7 +11,7 @@
 
 class BaseController extends CController
 {
-	public $vendorViewRoot = 'vendor.toxus.views';
+	public $vendorViewRoot = 'toxus.views';
 	public $layout = false;////layouts/column1';
 	//public $breadcrumbs=array();
 	public $brand = 'BaseController->brand';
@@ -247,13 +247,13 @@ class BaseController extends CController
 				if (file_exists($templateFilename)) {
 					$s = $this->renderPartial('application.views.layouts._menu', $params, true);
 				} else {
-					$templateFilename = Yii::getPathOfAlias('application.'.$this->vendorViewRoot.'.layouts._'.$menuName.'Menu').'.twig';
+					$templateFilename = Yii::getPathOfAlias($this->vendorViewRoot.'.layouts._'.$menuName.'Menu').'.twig';
 					if (file_exists($templateFilename)) {
-						$s = $this->renderPartial('application.'.$this->vendorViewRoot.'.layouts._'.$menuName.'Menu', $params, true);
+						$s = $this->renderPartial($this->vendorViewRoot.'.layouts._'.$menuName.'Menu', $params, true);
 					} else {	
-						$templateFilename = Yii::getPathOfAlias('application.'.$this->vendorViewRoot.'.layouts._menu').'.twig';
+						$templateFilename = Yii::getPathOfAlias($this->vendorViewRoot.'.layouts._menu').'.twig';
 						if (file_exists($templateFilename)) {
-							$s = $this->renderPartial('application.'.$this->vendorViewRoot.'.layouts._menu', $params, true);
+							$s = $this->renderPartial($this->vendorViewRoot.'.layouts._menu', $params, true);
 						} else {
 							throw new CException('view file not found: '.$menuDef);
 						}	
@@ -1320,8 +1320,10 @@ class BaseController extends CController
 	public function viewPath($filename, $options = array())
 	{
 		$filename = $filename.(isset($options['extension']) ? $options['extension'] : Yii::app()->viewRenderer->fileExtension);
-		$vendorRoot = YiiBase::getPathOfAlias('webroot.protected.'.$this->vendorViewRoot);
-		$shortVendorRoot = str_replace('.', '/', $this->vendorViewRoot);
+		$vendorRoot = YiiBase::getPathOfAlias($this->vendorViewRoot);
+		$app = Yii::getPathOfAlias('application');
+		//		$shortVendorRoot = str_replace('.', '/', $this->vendorViewRoot);
+		$shortVendorRoot = substr($vendorRoot, strlen($app) + 1);
 		$paths = array(
 			'views/'.$this->getId() => YiiBase::getPathOfAlias('webroot.protected.views').'/'.$this->getId(),
 			'views/layouts' => YiiBase::getPathOfAlias('webroot.protected.views').'/layouts',	
@@ -1361,7 +1363,7 @@ class BaseController extends CController
 		} elseif (file_exists($path .'/layouts/'.$filename.$ext)) {
 			return 'views/layouts/'.$filename.$ext;
 		} else {
-			$path = YiiBase::getPathOfAlias('webroot.protected.'.$this->vendorViewRoot);
+			$path = YiiBase::getPathOfAlias($this->vendorViewRoot);
 			if (file_exists($path .'/'.$this->getId().'/'.$filename.$ext)) {
 				return str_replace('.', '/', $this->vendorViewRoot).'/'.$this->getId().'/'.$filename.$ext;
 			} elseif (file_exists($path .'/layouts/'.$filename.$ext)) {
@@ -1381,17 +1383,17 @@ class BaseController extends CController
 		/**
 		 * don't get it, but should look the same way viewPath is looking for the file
 		 */
-	  $path = YiiBase::getPathOfAlias('webroot.protected.'.$this->vendorViewRoot.'.'.$this->getId());
+	  $path = YiiBase::getPathOfAlias($this->vendorViewRoot.'.'.$this->getId());
 		$s = parent::resolveViewFile($viewName, $viewPath, $basePath, $path);
 		if ($s === false) {
 			$s = parent::resolveViewFile('/'.$viewName, $viewPath, $basePath, $path);
 			if ($s === false) {
 				$s = parent::resolveViewFile('//'.$viewName, $viewPath, $basePath, $path);
 				if ($s == false) {
-					$path = YiiBase::getPathOfAlias('webroot.protected.'.$this->vendorViewRoot.'.layouts');				
+					$path = YiiBase::getPathOfAlias($this->vendorViewRoot.'.layouts');				
 					$s = parent::resolveViewFile('/'.$viewName, $viewPath, $basePath, $path);					
 					if ($s == false) {
-						$path = YiiBase::getPathOfAlias('webroot.protected.'.$this->vendorViewRoot.'.layouts');			// has double //		
+						$path = YiiBase::getPathOfAlias($this->vendorViewRoot.'.layouts');			// has double //		
 						$s = parent::resolveViewFile('//'.$viewName, $viewPath, $basePath, $path);											
 						if ($s == false) {
 							$s = $this->viewPath ($viewName);

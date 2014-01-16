@@ -3,7 +3,7 @@
  * create a new profile 
  * 
  */
-Yii::import('application.vendor.toxus.actions.CreateAction');
+Yii::import('toxus.actions.CreateAction');
 class NewProfileAction extends CreateAction
 {
 	public $modelClass = 'UserProfile';

@@ -4,5 +4,5 @@
 Yii::import('toxus.extensions.ToxusTwigRenderer');
 class TwigViewRenderer extends ToxusTwigRenderer
 {
-	public $twigPathAlias = 'application.vendor.toxus.extensions.Twig';
+	public $twigPathAlias = 'toxus.extensions.Twig';
 }
