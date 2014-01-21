@@ -486,6 +486,17 @@ class Util {
 		}	
 		return file_put_contents($name, $sDecode);
 	}	
+	
+	static function uDate($format = 'Y-m-d H:i:s.u T', $utimestamp = null) 
+	{
+		if (is_null($utimestamp))
+			$utimestamp = microtime(true);
+
+		$timestamp = floor($utimestamp);
+		$milliseconds = round(($utimestamp - $timestamp) * 1000000);
+
+		return date(preg_replace('`(?<!\\\\)u`', $milliseconds, $format), $timestamp);
+	}
 }
 
 ?>
