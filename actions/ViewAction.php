@@ -9,6 +9,11 @@ class ViewAction extends BaseAction
 	public $view = 'viewForm';
 	public $form = null;					// the name of the form ex extension
 	public $defaultMode = 'view';
+	/**
+	 * user requested a special form of layout (like: grid, list, etc)
+	 * @var string
+	 */
+	public $defaultUserLayout = '';
 	public $menuItem = null;			// the menu item to active. Should be a jQuery selector (#menu-agent, or .agent-item)
 
 	public $hasModel = false;
@@ -18,8 +23,15 @@ class ViewAction extends BaseAction
 	 * @var array
 	 */
 	
-	public function run($id=null)					
+	public function run($id=null, $layout=null)					
 	{		
+		$layoutSession = $this->view.'_layout';
+		if ($layout != null) {
+			Yii::app()->session[$layoutSession] = $layout;			
+		}	else {
+			$layout = isset(Yii::app()->session[$layoutSession]) ? Yii::app()->session[$layoutSession] : $layout;
+		}
+		
 		// $controllerId = ucfirst($this->controller->id);
 		$modelName = $this->modelName;
 		
@@ -45,7 +57,8 @@ class ViewAction extends BaseAction
 					'mode' => isset($_GET['mode']) ? $_GET['mode'] : $this->defaultMode,
 					'state' => 'view',	
 					'menuItem' => $this->menuItem,						
-					'layout' => $this->pageLayout,	
+					'layout' => $this->pageLayout,
+					'userLayout' => $layout,				// extra for user requested layout	
 				),
 				$this->params    
 		);				
