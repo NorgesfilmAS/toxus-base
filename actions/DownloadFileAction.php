@@ -19,7 +19,7 @@ class DownloadFileAction extends BaseAction
 	 */
 	public $forceDownload = false;
 	
-	public function run($name)
+	public function run($name='')
 	{
 		$this->checkRights();
 		$filename = $this->path.$name;
@@ -34,10 +34,12 @@ class DownloadFileAction extends BaseAction
 		set_time_limit(0);
 		$file = @fopen($ff->path,"rb");
 		while(!feof($file))	{
-			print(@fread($file, 1024*8));
-			ob_flush();
-			flush();
+			$s = @fread($file, 1024*8);
+			@print($s);
+			@ob_flush();
+			@flush();
 		}		
 		@fclose($file);		
+		Yii::app()->end(200);
 	}
 }
