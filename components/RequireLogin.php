@@ -29,7 +29,7 @@ class RequireLogin extends CBehavior
 		$page = $_SERVER['REQUEST_URI'];
 		$dir = Yii::app()->baseUrl;
 		$page = substr($page, strlen($dir) +1);
-		Yii::log('Login for '.$page, CLogger::LEVEL_INFO, 'toxus.compontents.RequireLogin');
+		Yii::log('Login for '.$page, CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
 		if (Yii::app()->urlManager->showScriptName) {
 			$part = array('');
 			// page = index.php?r=site/search&XDEBUG_SESSION_START=netbeans-xdebug
@@ -56,16 +56,16 @@ class RequireLogin extends CBehavior
 					$l++;
 				}
 			}
-			Yii::log('Script visible', CLogger::LEVEL_INFO, 'toxus.compontents.RequireLogin');
+			Yii::log('Script visible', CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
 		} else {
 			$part = explode('/', $page);
-			Yii::log('Script invisible', CLogger::LEVEL_INFO, 'toxus.compontents.RequireLogin');
+			Yii::log('Script invisible', CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
 		}
 		if ($part[0] != 'gii' && Yii::app()->user->isGuest && !in_array($page, $this->allowedUrl + $this->_allowedSystemUrl)) {
-			Yii::log('Login required', CLogger::LEVEL_INFO, 'toxus.compontents.RequireLogin');
+			Yii::log('Login required', CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
       Yii::app()->user->loginRequired();
     } else {
-			Yii::log('No login required', CLogger::LEVEL_INFO, 'toxus.compontents.RequireLogin');
+			Yii::log('No login required', CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
 		}
 	}
 }
