@@ -18,7 +18,13 @@ class DownloadFileAction extends BaseAction
 	 * @var boolean
 	 */
 	public $forceDownload = false;
-	
+
+	/**
+	 * sends a file to the user
+	 * 
+	 * @param string $name the name of the file in the path directory
+	 * @throws CHttpException 404
+	 */
 	public function run($name='')
 	{
 		$this->checkRights();
@@ -34,8 +40,7 @@ class DownloadFileAction extends BaseAction
 		set_time_limit(0);
 		$file = @fopen($ff->path,"rb");
 		while(!feof($file))	{
-			$s = @fread($file, 1024*8);
-			@print($s);
+			@print(@fread($file, 1024*8));
 			@ob_flush();
 			@flush();
 		}		
