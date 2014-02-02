@@ -1525,7 +1525,8 @@ class BaseController extends CController
 			'type' => 'command',	
 			'style' => 'btn btn-info',
 			'width' => null,	
-			'visible' => true,	
+			'visible' => true,
+			'ask' => false,	
 		);
 		if (is_string($options) || (is_array($options) && isset($options['default']))) {
 			$act = (is_array($options) && isset($options['default'])) ? $options['default'] : $options;

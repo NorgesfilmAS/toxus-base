@@ -21,7 +21,7 @@
 		<button class="{{ button.style|default('btn') }} {{ button.position }}" {{ button.options |raw }} onClick="history.go(-1);return true;">{{ this.t(button.label) }}</button>							
 		{% endif %}		
 	{% elseif button.type == 'delete' %}	
-		<button class="{{ button.style |default('btn') }} {{ button.position }}" {{ button.options |raw }} onClick="if (confirm('{{ (element.ask) | default(this.te('Delete this information?')) }}')) { window.location='{{ this.url }}'; }">{{ this.t(button.label)}}</button>							
+		<button class="{{ button.style |default('btn') }} {{ button.position }}" {{ button.options |raw }} onClick="if (confirm('{{ (button.ask) | default(this.te('Delete this information?')) }}')) { window.location='{{ button.url }}'; }">{{ this.t(button.label)}}</button>							
 {#		
 	{% elseif element.type == 'link' %}
 		<br/><br /><a href="{{element.url}}">{{element.label}}</a>
