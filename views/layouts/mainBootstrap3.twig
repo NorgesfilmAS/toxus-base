@@ -166,7 +166,7 @@
 						<li><a href="{{ this.createUrl('site/copyright') }}"> &copy; 2013 Toxus</a> | </li>
 						<li><a href="{{ this.createUrl('site/sitemap') }}">{{ this.t('site map') }}</a> | </li>
 						<li><a href="{{ this.createUrl('site/privacy') }}">{{ this.t('privacy') }}</a></li>
-						<li class="version">version: {{ this.version }}{% block version %}3{% endblock %}</li>
+						<li class="version">version: {% block version %}{{ this.version }}3{% endblock %}</li>
 					</ul>
 				</div>		
 				{% endblock %}	
