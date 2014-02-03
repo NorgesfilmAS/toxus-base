@@ -415,11 +415,13 @@ class EClientScript extends CClientScript
 	 * 
 	 * @param string $name
 	 */
-	
+	/** moved to toxus.compontent.ClientScript
 	public function registerCoreScript($name, $force = false)
 	{
 		if ($force || $name != 'jquery') {
 			parent::registerCoreScript($name);
 		}
 	}
+	 * 
+	 */
 }
