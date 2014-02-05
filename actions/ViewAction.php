@@ -16,7 +16,23 @@ class ViewAction extends BaseAction
 	public $defaultUserLayout = '';
 	public $menuItem = null;			// the menu item to active. Should be a jQuery selector (#menu-agent, or .agent-item)
 
-	public $hasModel = false;
+	/**
+	 * Default modelName holds the name of Controller class, but this can be 
+	 * overwritten by setting the modelClass. 
+	 * 
+	 * ex:
+	 *   modelClass    hasModel     result: uses model
+	 *   null                       the controller class name            
+	 *   false                      false 
+	 *   'theModel'                 true  
+	 * 
+	 * @var boolean
+	 */
+//	public $hasModel = false;
+	public function getHasModel()
+	{
+		return ! ($this->modelClass === false);
+	}
 	/**
 	 * extra parameters merged for the view
 	 * 
@@ -37,7 +53,7 @@ class ViewAction extends BaseAction
 		
 		if ($id == self::USE_LAST_ID)
 			$id = Yii::app()->user->lastId;
-		if ($id) {
+		if ($id && $this->hasModel) {
 			$this->controller->model = $modelName::model()->findByPk($id); 
 		} else if ($this->hasModel) {
 			$this->controller->model = new $modelName();		

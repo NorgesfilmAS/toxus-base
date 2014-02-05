@@ -54,8 +54,8 @@ class BaseAction extends CAction
 	 */
 	protected function getModelName()
 	{
-		if ($this->_modelName == null) {
-			if ($this->modelClass == null) {
+		if ($this->_modelName === null) {
+			if ($this->modelClass === null) {
 				$controllerId = $this->controller->id;
 				$this->modelClass = ucfirst($controllerId);
 			}
