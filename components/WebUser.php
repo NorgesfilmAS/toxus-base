@@ -21,7 +21,7 @@ class WebUser extends CWebUser
 	
 	const LAST_INSERT_ID = 'lastInsertId';
 	
-	private $_profile;
+	protected $_profile;
 	
 	public function getProfile()
 	{

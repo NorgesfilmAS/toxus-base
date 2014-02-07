@@ -32,7 +32,13 @@
 				{% if element.width %}
 					<div class="{{ element.width }}">
 				{% endif %}	
-							
+		
+				{% if element.readOnly or this.model.isEditable(key) == false %}
+						{% set readOnly = ' disabled="disabled"'%}
+				{% else %}
+						{% set readOnly = '' %}
+				{% endif %}
+						
 				{% if element.type == 'dropdown' or element.type == 'vat' or element.type=='chosen' %}							
 				  {% if element.type == 'vat' %}
 					<div class="input-prepend span4">
@@ -40,9 +46,9 @@
 					{% elseif element.type == 'chosen' %}
 						{{ this.registerPackage('chosen', {'isAjax' : isAjax}) }}
 						{# needs an empty field, because field is remove if no value is selected, so changes to nothing would not be saved #}
-						<input id="{{ p }} {{ key }}-val" type="hidden" name="{{ form.model }}[{{key}}][]" />
+						<input id="{{ p }} {{ key }}-val" type="hidden" name="{{ form.model }}[{{key}}][]" {{ readOnly }}/>
 					{% endif %}	
-						<select id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]{% if element.multi %}[]{% endif %}" class="{{ elementwidth }} {{ element.class }} form-control{% if element.type=='chosen' %} chosen-select{% endif %}" {% if element.placeholder %}data-placeholder="{{ element.placeholder }}"{%endif %}{% if element.multi %} multiple{% endif %} >
+						<select id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]{% if element.multi %}[]{% endif %}" class="{{ elementwidth }} {{ element.class }} form-control{% if element.type=='chosen' %} chosen-select{% endif %}" {% if element.placeholder %}data-placeholder="{{ element.placeholder }}"{%endif %}{% if element.multi %} multiple{% endif %} {{ readOnly }}>
 					{% for itemKey, itemCaption in element.items %}								
 							<option value="{{ itemKey }}" {% if this.model.__get(key) | length > 0 %}{% if itemKey in this.model.__get(key) %}selected="1"{% endif %}{% else %}{% if itemKey == this.model.__get(key) %}selected="1"{% endif %} {% endif %} >{{ itemCaption }}</option>
 					{% endfor %}
@@ -51,20 +57,20 @@
 					</div>	
 					{% endif %}
 				{% elseif element.type == 'radiobuttonlist' %}	
-						<input id="{{ p }}{{ key }}" type="hidden" name="{{ form.model }}[{{ key }}]" value="">
+						<input id="{{ p }}{{ key }}" type="hidden" name="{{ form.model }}[{{ key }}]" value="" >
 						<span id="{{ form.model }}_{{ key }}">
 							{% for itemKey, itemCaption in element.items %}
-								<input id="{{ p }}{{key}}-{{ loop.index0 }}" type="radio" class="{{ p }}{{key }}" name="{{ form.model }}[{{ key }}]" {% if this.model.__get(key) == itemKey %}checked="1"{% endif%}value="{{ itemKey }}">
+								<input id="{{ p }}{{key}}-{{ loop.index0 }}" type="radio" class="{{ p }}{{key }}" name="{{ form.model }}[{{ key }}]" {% if this.model.__get(key) == itemKey %}checked="1"{% endif%}value="{{ itemKey }}" {{ readOnly }}>
 								<label for="{{ p }}{{key}}-{{ loop.index0 }}" style="display:inline-block;padding-right:8px;margin-top:3px;">{{ itemCaption }}</label>		
 							{% endfor %}
 						</span>	
 					{# html.activeRadioButtonList((this.model), key, element.items , {'labelOptions': {'style':'display:inline-block;padding-right:8px;margin-top:3px;'}, 'separator' : ' ', 'id':'-'~key}) |raw #} 
 				{% elseif element.type == 'textarea' %}
-					<textarea id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" class="{% if element.class %}{{ element.class }} {%else%}{{ width }}{%endif%} form-control" rows="{% if element.rows %}{{ element.rows }}{% else %}5{% endif %}">{{ this.model.__get(key) }}</textarea>
+					<textarea id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" class="{% if element.class %}{{ element.class }} {%else%}{{ width }}{%endif%} form-control" rows="{% if element.rows %}{{ element.rows }}{% else %}5{% endif %}" {{ readOnly }}>{{ this.model.__get(key) }}</textarea>
 					{{ this.registerPackage('elastic', {'isAjax' : isAjax }) }}
 				{% elseif element.type == 'checkbox' %}	
 					{# http://stackoverflow.com/questions/1809494/post-the-checkboxes-that-are-unchecked #}
-					<label class="checkbox"><input type="hidden" name="{{ form.model }}[{{key}}]" value="0" /><input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="checkbox" {% if this.model.__get(key) or groupElement.default == 1 %}checked="1"{% endif %} value="1"/>{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ this.model.attributeLabel(groupKey) }}{% endif %}</label>
+					<label class="checkbox"><input type="hidden" name="{{ form.model }}[{{key}}]" value="0" /><input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="checkbox" {% if this.model.__get(key) or groupElement.default == 1 %}checked="1"{% endif %} value="1" {{ readOnly }}/>{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ this.model.attributeLabel(groupKey) }}{% endif %}</label>
 				{% elseif element.type== 'image' %}
 					{{ this.form.image(this.model, key) | raw }}								
 				{% elseif element.type== 'finder' %}
@@ -83,20 +89,20 @@
 					{{ this.htmlEditor(this.model, key) | raw}}												
 				{% elseif element.type=='html' %}
 					{{ this.registerPackage('tinymce',{'isAjax' : isAjax}) }}	
-					<textarea id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" class="tinymce form-control {% if element.class %}{{ element.class }} {%else%}{{ width }}{%endif%}" rows="{% if element.rows %}{{ element.rows }}{% else %}5{% endif %}">{{ this.model.__get(key) }}</textarea>
+					<textarea id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" class="tinymce form-control {% if element.class %}{{ element.class }} {%else%}{{ width }}{%endif%}" rows="{% if element.rows %}{{ element.rows }}{% else %}5{% endif %}"{{ readOnly }}>{{ this.model.__get(key) }}</textarea>
 				{% elseif element.type=='code' %}
 					{{ this.registerPackage('code',{'isAjax' : isAjax}) }}
 					{% if element.sourceType == 'html' %}
 						{{ this.registerPackage('code-html',{'isAjax' : isAjax}) }}
 					{% endif %}	
-					<textarea id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" class="code-{{ element.sourceType | default('html') }} form-control {% if element.class %}{{ element.class }} {%else%}{{ width }}{%endif%}" rows="{% if element.rows %}{{ element.rows }}{% else %}5{% endif %}">{{ this.model.__get(key) }}</textarea>
+					<textarea id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" class="code-{{ element.sourceType | default('html') }} form-control {% if element.class %}{{ element.class }} {%else%}{{ width }}{%endif%}" rows="{% if element.rows %}{{ element.rows }}{% else %}5{% endif %}"{{ readOnly }}>{{ this.model.__get(key) }}</textarea>
 				{% elseif element.type=='mask' %}
-					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }} form-control" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"/> 				
+					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }} form-control" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"{{ readOnly }}/> 				
 					{{ this.registerPackage('inputmask',{'isAjax' : isAjax , 'executeAfterLoad': 	
 						'$("#'~p~key~'").inputmask({"mask": "'~element.mask~'"})'}) }}
 				{% elseif element.type=='date' %}						
 					<div class="input-prepend date">						
-						<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" size="16" type="date" value="{{ this.model.__get(key) }}" class=" form-control input-date" data-date-format="{{ format.dateFormat() | raw }}" {% if element.calendarWeeks %}data-date-calendar-weeks="true"{% endif %}>						
+						<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" size="16" type="date" value="{{ this.model.__get(key) }}" class=" form-control input-date" data-date-format="{{ format.dateFormat() | raw }}" {% if element.calendarWeeks %}data-date-calendar-weeks="true"{% endif %}{{ readOnly }}>						
 					</div>	
 					{{ this.registerPackage('datepicker', {'isAjax' : isAjax, 'executeAfterLoad':
 "$('.input-date').datepicker({" ~		
@@ -109,11 +115,11 @@
 				{% elseif element.type== 'view' %}
 					{{ this.renderPartial(element.view, {'model': this.model.__get(key)}) |raw }}
 				{% elseif element.type== 'password' %}
-					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="password" class="{{ width }} form-control" value="{{ this.model.__get(key) }}"/> 
+					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="password" class="{{ width }} form-control" value="{{ this.model.__get(key) }}"{{ readOnly }}/> 
 				{% elseif element.type=='typeahead' %}
 					{% if element. associative | default(1) == 1 %}
 {# json of remote should be a[] => array('id' => 123, 'value' => 'John'); #}					
-					<input id="{{ p }}input-{{ key }}" type="text" class="{{ width }}  form-control" value="{{ element.caption }}"/>
+					<input id="{{ p }}input-{{ key }}" type="text" class="{{ width }}  form-control" value="{{ element.caption }}"{{ readOnly }}/>
 					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="hidden" value="{{ this.model.__get(key) }}">
 	{{ this.registerPackage('typeahead', {'isAjax' : isAjax,'executeAfterLoad' : "
   s = '#"~p~"input-"~ key ~"';
@@ -127,7 +133,7 @@
 	});
 "}) }}
 					{% else %}
-					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }}  form-control" value="{{ this.model.__get(key) }}"/>
+					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }}  form-control" value="{{ this.model.__get(key) }}"{{ readOnly }}/>
 	{{ this.registerPackage('typeahead', {'isAjax' : isAjax,'executeAfterLoad' : "
   s = '#"~p~ key ~"';
 	$(s).typeahead({
@@ -156,10 +162,10 @@ $().ready(function() {
 					{{ this.registerPackage('currency', {'isAjax' : isAjax}) }}
 					<div class="input-prepend">
 						<span class="add-on">{{ format.currencySymbolHtml() |raw }}</span>
-						<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="input-currency span6" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)" style="text-align: right;" /> 					
+						<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="input-currency span6" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)" style="text-align: right;" {{ readOnly }}/> 					
 					</div>	
 				{% elseif element.type=='button' %}
-					<span id="{{ p }}{{ key }}" class="btn {{element.style|default('btn-primary')}}"{{element.popover|raw}}>{{element.caption}}</span>
+					<span id="{{ p }}{{ key }}" class="btn {{element.style|default('btn-primary')}}"{{element.popover|raw}}{{ readOnly }}>{{element.caption}}</span>
 {% if element.script %}					
 {{ this.onReady(
 "$('#"~ p ~ key~"').click(function() {
@@ -180,9 +186,9 @@ $().ready(function() {
 				{% elseif element.type == "panel" %}
 				<div id="{{ p }}{{ key }}" class="form-control" style="height: auto; min-height: 34px;">{{ element.caption | default(this.model.__get(key))}}</div>
 				{% elseif element.type == 'email' %}
-					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="email" class="{{ width }} form-control" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"/> 				
+					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="email" class="{{ width }} form-control" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"{{ readOnly }}/> 				
 				{% else %}	
-					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }} form-control" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"/> 
+					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }} form-control"{{ readOnly }} value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"/> 
 				{% endif %}
 				
 				{% if element.width %}

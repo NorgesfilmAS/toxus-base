@@ -11,4 +11,13 @@ class TwigActiveRecord extends GxActiveRecord
 			return isset($this->getMetaData()->columns[$name]);
 		return true;
 	}
+	
+	public function isEditable($fieldname)
+	{
+		return true;
+	}
+	public function isVisible($fieldname)
+	{
+		return true;
+	}
 }
