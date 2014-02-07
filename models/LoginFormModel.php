@@ -180,4 +180,12 @@ class LoginFormModel extends CFormModel
 			return false;
 		}	
 	}
+	public function isEditable($fieldname)
+	{
+		return true;
+	}
+	public function isVisible($fieldname)
+	{
+		return true;
+	}
 }
