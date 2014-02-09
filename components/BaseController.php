@@ -586,6 +586,17 @@ class BaseController extends CController
 					),	
 				)	
 			),
+			'sortable' => array(
+				'basePath' => 'toxus.assetsBase.jquery-sortable.source',
+				'css' => array(
+					'css/coderay.css',
+				),
+				'js' => array(
+					CClientScript::POS_END => array(
+						'js/jquery-sortable-min.js',
+					),	
+				),
+			),	
 			'new' => array(
 				'basePath' => 'alias',
 				'css' => array(),

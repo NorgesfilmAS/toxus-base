@@ -19,6 +19,18 @@
   {% if item.icon is defined %}<i class="{{ item.icon }}"></i>{% endif %}
 	{% if item.label %}{{ item.label |raw }}{% endif %}
 	</a>
+	{% if item.items | length > 0 %}		
+	<ul class="nav">
+		{% for subKey, subItem in item.items %}
+			<li class="menu-{{ subKey | replace({' ' : '-'}) |lower }}">	
+			<a href="{{ subItem.url | raw }}" data-placement="bottom" {% if subItem.tooltip %}title="{{ subItem.tooltip }}"{% endif %}>
+			{% if subItem.icon is defined %}<i class="{{ subItem.icon }}"></i>{% endif %}
+			{% if subItem.label %}{{ subItem.label |raw }}{% endif %}
+			</a>
+			</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
   </li>		
 		{% endif %}
 	{% endif %}

@@ -29,7 +29,7 @@
 	{% elseif button.type == 'dialog' %}
 		<button type="button" class="{{ button.style | default('btn') }} {{ button.position }} btn-action menu-modal" data-url="{{ button.url }}" {{ button.options |raw }}>{{ this.t(button.label) |raw }}</button>		
 	{% else %}	
-		<a href="{{ button.url }}" class="{{ button.style | default('btn') }} {{ button.position }}" {{ button.options |raw }}>{{ this.t(button.label) }}</a>	
+		<a href="{{ button.url }}" class="{{ button.style | default('btn') }} {{ button.position }} menu-button" {{ button.options |raw }}>{{ this.t(button.label) }}</a>	
 	{% endif %}
 {% endfor %}
 		

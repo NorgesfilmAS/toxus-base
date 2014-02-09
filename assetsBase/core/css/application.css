@@ -86,7 +86,7 @@
 /* Nav: second level (shown on .active) */
 .bs-sidebar .nav .nav {
   display: none; /* Hide by default, but at >768px, show it */
-  margin-bottom: 8px;
+/*  margin-bottom: 8px; */
 }
 .bs-sidebar .nav .nav > li > a {
   padding-top:    3px;
@@ -487,4 +487,38 @@ input.input-date {
 }
 .tx-message .panel-body {
 	min-height: 100px;
+}
+
+.menu-button {
+	margin-left : 5px;
+}
+
+body.dragging, body.dragging * {
+  cursor: move !important;
+}
+
+.dragged {
+  position: absolute;
+  opacity: 0.5;
+  z-index: 2000;
+}
+
+ol.drag-list li.placeholder {
+  position: relative;
+  /** More li styles **/
+}
+ol.drag-list li.placeholder:before {
+  position: absolute;
+  /** Define arrowhead **/
+}
+ol.vertical li {
+    background: none repeat scroll 0 0 #EEEEEE;
+    border: 1px solid #CCCCCC;
+    color: #0088CC;
+    display: block;
+    margin: 3px;
+    padding: 3px;
+}
+ol.simple_with_animation {
+	padding-left: 0px;
 }
