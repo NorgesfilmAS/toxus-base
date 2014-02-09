@@ -40,10 +40,13 @@ class UpdateAction extends BaseAction
 			}
 				 * 
 				 */
+				if ($this->successUrl) {
+					$this->controller->redirect($this->controller->createUrl($this->successUrl, array('id' => $id)));					
+				}
 				if (false && $this->successUrlFull != null) {
 					$this->controller->redirect($this->successUrlFull);
 				}
-			$mode = 'view';							
+				$mode = 'view';							
 			}
 		}
 		if ($this->form == null)

@@ -26,7 +26,7 @@ class BaseAction extends CAction
 	 * default is [controller->id/index]
 	 * @var string
 	 */
-	public $successUrl = null;
+	public $successUrl = false;
 
 	/**
 	 * the layout of the curremt page
