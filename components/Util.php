@@ -557,8 +557,30 @@ class Util {
         $to = trim(ip2long(substr($network, $d+1)));
         $ip = ip2long($ip);
         return ($ip>=$from and $ip<=$to);
-    }
-}
+    }	
+	}
+	
+	/**
+	 * generate a filename out of a string
+	 * 
+	 * @param string $string
+	 * @param bool $force_lowercase
+	 * @param bool $anal If set to *true*, will remove all non-alphanumeric characters.
+ 	 * @return string
+	 */
+	static function sanitize($string, $force_lowercase = true, $anal = false) {
+    $strip = array("~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "=", "+", "[", "{", "]",
+                   "}", "\\", "|", ";", ":", "\"", "'", "&#8216;", "&#8217;", "&#8220;", "&#8221;", "&#8211;", "&#8212;",
+                   "â€”", "â€“", ",", "<", ".", ">", "/", "?");
+    $clean = trim(str_replace($strip, "", strip_tags($string)));
+    $clean = preg_replace('/\s+/', "-", $clean);		//tx: add the +
+    $clean = ($anal) ? preg_replace("/[^a-zA-Z0-9]/", "", $clean) : $clean ;
+    return ($force_lowercase) ?
+        (function_exists('mb_strtolower')) ?
+            mb_strtolower($clean, 'UTF-8') :
+            strtolower($clean) :
+        $clean;
+	}
 	
 }
 
