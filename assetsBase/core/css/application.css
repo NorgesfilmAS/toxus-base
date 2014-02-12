@@ -149,28 +149,6 @@
 }
 
 
-/*
-.bs-sidebar.affix, .bs-sidebar.affix-bottom {
-		margin-top: 20px;
-    width: 270px;
-}
-.bs-sidebar.affix {
-    position: fixed;
-    top: 80px;
-}
-.bs-nav-toolbar {
-	margin-top: 20px;
-	padding-left: 10px;
-}
-
-.bs-sidebar.affix-bottom {
-    position: absolute;
-}
-.bs-sidebar.affix-bottom .bs-sidenav, .bs-sidebar.affix .bs-sidenav {
-    margin-bottom: 0;
-    margin-top: 0;
-}
-*/
 .bs-sidenav {
     background-color: #F7F5FA;
     border-radius: 5px 5px 5px 5px;
@@ -278,6 +256,7 @@
 	 -webkit-appearance:none;
 	 background: url(dropdown.png) no-repeat right 10px !important;
 	 padding-right: 15px;
+	 background-color: white !important;
  }
  }
  /* fix chosen incompatible */
