@@ -1,0 +1,14 @@
+#-- Yii files
+site/protected/config/local.php
+*.bak
+nbproject/private/*
+#----OS files
+.DS_STORE
+.DS_STORE?
+._*
+.Spotlite-V100
+.Trashes
+Icon?
+ehtumbs.db
+Thumbs.db
+.svn
