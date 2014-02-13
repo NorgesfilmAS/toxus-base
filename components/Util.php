@@ -500,6 +500,7 @@ class Util {
 	
 	/**
 	 * removes all diacrit chacters by their closes
+	 * 
 	 * @param string $str
 	 * @return string
 	 */
