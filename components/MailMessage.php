@@ -42,7 +42,7 @@ class MailMessage extends Controller
 		$filename = Yii::getPathOfAlias('application.views.mail.'.$viewName).$extension;
 		if (is_file($filename))
 			return $filename;
-		$filename = Yii::getPathOfAlias('application.'.$this->vendorViewRoot.'.mail.'.$viewName).$extension;
+		$filename = Yii::getPathOfAlias('application.vendors.'.$this->vendorViewRoot.'.mail.'.$viewName).$extension;
 		if (is_file($filename))
 			return $filename;
 
