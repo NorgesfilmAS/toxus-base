@@ -11,3 +11,6 @@
 	path = assetsBase/videojs
 	url = https://github.com/videojs/video.js.git
 
+[submodule "assetsBase/jquery-sortable"]
+	path = assetsBase/jquery-sortable
+	url = https://github.com/johnny/jquery-sortable.git
