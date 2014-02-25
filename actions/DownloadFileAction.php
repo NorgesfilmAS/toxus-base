@@ -29,7 +29,7 @@ class DownloadFileAction extends BaseAction
 	 * @param string $name the name of the file
 	 * @throws CHttpException
 	 */
-	public function run($name)
+	public function run($name='')
 	{
 		$this->checkRights();
 		$filename = $this->path.$name;
