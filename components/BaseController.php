@@ -1267,6 +1267,7 @@ class BaseController extends CController
 			$form = require(Yiibase::getPathOfAlias('application').'/'.$filename );
 			// for loading default buttons
 			if (isset($form['buttons']) && is_string($form['buttons'])) {
+				$form['_buttons'] = $form['buttons']; // remember the state
 				switch ($form['buttons']) {
 					case 'default' : $form['buttons'] =  
 						array(

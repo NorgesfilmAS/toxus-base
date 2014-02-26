@@ -62,6 +62,7 @@ class UpdateAction extends BaseAction
 				'mode' => $mode,
 				'state' => $mode,
 				'menuItem' => $this->menuItem,
+				'transactionId' => isset($_GET['transaction']) ? $_GET['transaction'] : 0,
 		));
 		
 	}
