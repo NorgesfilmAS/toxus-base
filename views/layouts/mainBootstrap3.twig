@@ -15,14 +15,14 @@
 		{{ this.registerPackage('bootstrap3') }}
 		{{ this.registerPackage('core') }}
 		{% block head %}{% endblock %}		
-		{% include this.viewPath('header') %}
+		{% include this.viewPath('header') |raw %}
 		<meta name="description" content="{{ App.params.description | default('site description') }}" />	
 	</head>
 	<body>
 		{% set itemMenu %}
 			{% block menuLeft %}
 			{% block itemMenuHeader %}{% endblock %}
-			{{ this.menuHtml('item', {'class': 'nav bs-sidenav' }) }}
+			{{ this.menuHtml('item', {'class': 'nav bs-sidenav' }) |raw }}
 			{% block itemMenuFooter %}{% endblock %}	
 			{% endblock %}
 		{% endset %}			
@@ -41,10 +41,10 @@
 				
 				<div class="collapse navbar-collapse bs-navbar-collapse" style="overflow-y:hidden;">
 					<div class="navbar-left">
-					{{ this.menuHtml('system', {'class': 'nav navbar-nav' }) }}
+					{{ this.menuHtml('system', {'class': 'nav navbar-nav' }) |raw }}
 					</div>
 					<div class="navbar-right pull-right">	
-					{{ this.menuHtml('user', {'class': 'nav navbar-nav' }) }}
+					{{ this.menuHtml('user', {'class': 'nav navbar-nav' }) |raw }}
 					</div>
 				</div>
 				</div>
@@ -62,11 +62,11 @@
 				{# anything in this container is the header of the application. It will scroll out of view #}				
 				<div class="navbar-left">	
 					{% include this.viewPath('logo') %}									
-					{{ this.menuHtml('logo', {'class': 'nav navbar-nav' }) }}
+					{{ this.menuHtml('logo', {'class': 'nav navbar-nav' }) |raw }}
 				</div>
 				<div class="header-toolbar">{% block headerButtons %}{% endblock %}</div>					
 				<div class="navbar-right pull-right">	
-					{{ this.menuHtml('header', {'class': 'nav navbar-nav' }) }}
+					{{ this.menuHtml('header', {'class': 'nav navbar-nav' }) |raw }}
 				</div>
 			</div>
 		</div>

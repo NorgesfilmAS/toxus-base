@@ -234,34 +234,16 @@ class BaseController extends CController
 		);
 		if (isset($options['class']))
 			$params['layout'] = array('class'=>$options['class']);
-		
-		$templateFilename = Yii::getPathOfAlias('application.views.'.$this->id.'._'.$menuName.'Menu').'.twig';		
-		if (file_exists($templateFilename)) {
-			$s = $this->renderPartial('application.views.'.$this->id.'._'.$menuName.'Menu', $params, true);							
+		$path = $this->viewPath('_'.$menuName.'Menu',array('return' => true));
+		if (!$path) {
+			$path = $this->viewPath('_menu',array('return' => true, 'noExtension' => true));
+			if ($path) {
+				$s = $this->renderPartial('_menu', $params, true);
+			}
 		} else {
-			$templateFilename = Yii::getPathOfAlias('application.views.layouts._'.$menuName.'Menu').'.twig';
-			if (file_exists($templateFilename)) {
-				$s = $this->renderPartial('application.views.layouts._'.$menuName.'Menu', $params, true);							
-			} else {
-				$templateFilename = Yii::getPathOfAlias('application.views.layouts._menu').'.twig';
-				if (file_exists($templateFilename)) {
-					$s = $this->renderPartial('application.views.layouts._menu', $params, true);
-				} else {
-					$templateFilename = Yii::getPathOfAlias($this->vendorViewRoot.'.layouts._'.$menuName.'Menu').'.twig';
-					if (file_exists($templateFilename)) {
-						$s = $this->renderPartial($this->vendorViewRoot.'.layouts._'.$menuName.'Menu', $params, true);
-					} else {	
-						$templateFilename = Yii::getPathOfAlias($this->vendorViewRoot.'.layouts._menu').'.twig';
-						if (file_exists($templateFilename)) {
-							$s = $this->renderPartial($this->vendorViewRoot.'.layouts._menu', $params, true);
-						} else {
-							throw new CException('view file not found: '.$menuDef);
-						}	
-					}
-				}	
-			}	
-		}	
-		echo $s;
+			$s = $this->renderPartial('_'.$menuName.'Menu', $params, true);
+		}
+		return $s;
 	}
 
 
@@ -1329,21 +1311,45 @@ class BaseController extends CController
 		return false;
 	}
 	
+	/**
+	 * 
+	 * @param string $filename name without the extension
+	 * @param array $options defined:
+	 *   'extension' => use this extension for the file
+	 *   'libOnly' => will only search the vendor definitions
+	 *   'return' => if 1 the no error will be thrown, but false is returned
+	 *   'noExtension' => return the filename without the extension
+	 * 
+	 * @return boolean / string the path to the file relative to application
+	 * @throws CException
+	 */
 	public function viewPath($filename, $options = array())
 	{
-		$filename = $filename.(isset($options['extension']) ? $options['extension'] : Yii::app()->viewRenderer->fileExtension);
+		$extension = (isset($options['extension']) ? $options['extension'] : Yii::app()->viewRenderer->fileExtension);
+		$filename = $filename.$extension;
 		$vendorRoot = YiiBase::getPathOfAlias($this->vendorViewRoot);
 		$app = Yii::getPathOfAlias('application');
 		//		$shortVendorRoot = str_replace('.', '/', $this->vendorViewRoot);
 		$shortVendorRoot = substr($vendorRoot, strlen($app) + 1);
-		$paths = array(
-			'views/'.$this->getId() => YiiBase::getPathOfAlias('webroot.protected.views').'/'.$this->getId(),
-			'views/layouts' => YiiBase::getPathOfAlias('webroot.protected.views').'/layouts',	
-			$shortVendorRoot.'/'.$this->getId() => $vendorRoot.'/'.$this->getId(),	
-			$shortVendorRoot.'/layouts' => $vendorRoot.'/layouts',		
-		);
+		
+		if (isset($options['libOnly']) && $options['libOnly']) {
+			$paths = array();
+		} else {
+			$paths = array(
+				'views/'.$this->getId() => YiiBase::getPathOfAlias('webroot.protected.views').'/'.$this->getId(),
+				'views/layouts' => YiiBase::getPathOfAlias('webroot.protected.views').'/layouts',	
+			);		
+		}
+		$paths[$shortVendorRoot.'/'.$this->getId()] = $vendorRoot.'/'.$this->getId();
+		$paths[$shortVendorRoot.'/layouts'] = $vendorRoot.'/layouts';
 		if (($file = $this->pathSearch($filename, $paths)) == false) {
+			if (isset($options['return']) && $options['return']) {
+				return false;
+			}
 			throw new CException('The template "'.$filename.'" could not be found');
+		}
+		if (isset($options['noExtension']) && $options['noExtension']) {
+			$file = substr($file, 0, - strlen($extension));
 		}
 		return $file;		
 	}
@@ -1389,9 +1395,16 @@ class BaseController extends CController
 
 	/**
 	 * Overloaded Yii version	 
+	 * 
+	 * 
 	 */
 	public function resolveViewFile($viewName,$viewPath,$basePath,$moduleViewPath=null)
 	{
+		$s = $this->viewPath(($viewName));
+		if ($s) {
+			return YiiBase::getPathOfAlias('application').'/'.$s;
+		}
+		return $s;
 		/**
 		 * don't get it, but should look the same way viewPath is looking for the file
 		 */
