@@ -38,20 +38,23 @@ class UpdateAction extends BaseAction
 				}
 			}
 		}
-		if ($this->form == null)
+		if ($this->form == null) {
 			$form = $this->controller->loadForm($controllerId. 'Fields'); 				
-		else 
+		} elseif (is_string($form)) { 
 			$form = $this->controller->loadForm($this->form);
+		} else {
+			$form = $this->form;
+		}	
 		
 		$this->render( $this->view, array(
 				'model' => $this->controller->model,
-				'layout' => 'ajaxForm',		// WHY???
+	//			'layout' => 'ajaxForm',		// WHY???
 				'layout' => $this->pageLayout,
 				'form' => $form,	
 				'mode' => $mode,
 				'state' => $mode,
 				'menuItem' => $this->menuItem,
-				'transactionId' => isset($_GET['transaction']) ? $_GET['transaction'] : 0,
+//				'transactionId' => isset($_GET['transaction']) ? $_GET['transaction'] : 0,
 		));
 		
 	}

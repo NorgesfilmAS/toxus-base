@@ -1,4 +1,7 @@
 <?php
+/**
+ * NOT USED ANYMORE IN THE NEW DEFINITION
+ */
 
 class ClientConfigBase extends CComponent
 {

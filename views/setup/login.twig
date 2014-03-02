@@ -1,0 +1,10 @@
+{*
+  login into the setup system
+*}
+{% extends this.viewPath('dialogForm') %}
+
+{% block onReady %}
+	$('#id-test').on('click', function() {
+		$('#id-modal-body').html($('#id-wait-message').html()); //responseText);		
+	});
+{% endblock %}

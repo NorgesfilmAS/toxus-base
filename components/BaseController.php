@@ -61,17 +61,17 @@ class BaseController extends CController
 		Yii::log('Loading menu', CLogger::LEVEL_INFO);
 		
 		$menuDef =  array(
+			'item'=> array(),    // on item page left (in affix )
 			'system' => array(), // top left  (in static menu bar)
 			'user'=> array(),    // top right (in static menu bar)
 			'logo' => array(),   // below top menu left aligned	(in page bar)
 			'header'=> array(),  // below top menu right aligned (in page bar)	
 			'main'=> array(),    
-			'item'=> array(),    // on item page left (in affix )
-			'toolbar'=> array(),
-			'explain'=> array(),
+//			'toolbar'=> array(),
+//			'explain'=> array(),
 			'footer'=> array(),
-			'popup'=> array(),
-			'help'=> array(),
+//			'popup'=> array(),
+//			'help'=> array(),
 		);
 
 		/**
@@ -79,13 +79,16 @@ class BaseController extends CController
 		 */
 		foreach ($menuDef as $name => $menu) {
 			$eventName = 'on'.ucfirst($name).'Menu';
-			Yii::app()->config->connectEvents($this, $eventName);
+	//		Yii::app()->config->connectEvents($this, $eventName);
 
 			$menuFilename = Yii::getPathOfAlias('application.views.'.$controllerName.'.'.$name.'Menu').'.php';
 			if (!file_exists($menuFilename)) {
 				$menuFilename = Yii::getPathOfAlias('application.views.layouts.'.$name.'Menu').'.php';
 				if (!file_exists($menuFilename)) {
-					$menuFilename = null;
+					$menuFilename = Yii::getPathOfAlias('toxus.views.'.$controllerName.'.'.$name.'Menu').'.php';	
+					if (!file_exists($menuFilename)) {
+						$menuFilename = null;
+					}	
 				}
 			}
 			if (!empty($menuFilename))
@@ -1237,6 +1240,37 @@ class BaseController extends CController
 	}
 	
 	/**
+	 * Parses a form for special tokens like buttons
+	 * @param array $form
+	 */
+	public function parseForm($form)
+	{
+		if (isset($form['buttons']) && is_string($form['buttons'])) {
+			$form['_buttons'] = $form['buttons']; // remember the state
+			switch ($form['buttons']) {
+				case 'default' : $form['buttons'] =  
+					array(
+					'view' => array(
+						'edit' => $this->button(array(
+							'label' => 'btn-edit',
+							'url' => '?mode=edit',
+							'position' => 'pull-right',						
+						)),	
+					),
+					'edit' => array(
+						$this->button('cancel'),				
+						$this->button('submit'),	
+					),	
+				);			
+				break;
+			default :
+				Yii::log('Unknown button type in load form: '.$form['buttons'].'. Expection: default');					
+			}
+		}
+		return $form;		
+	}
+	
+	/**
 	 * Loads the definition of form in the array
 	 * 
 	 * @param string $formName
@@ -1248,29 +1282,7 @@ class BaseController extends CController
 		if ($filename) {
 			$form = require(Yiibase::getPathOfAlias('application').'/'.$filename );
 			// for loading default buttons
-			if (isset($form['buttons']) && is_string($form['buttons'])) {
-				$form['_buttons'] = $form['buttons']; // remember the state
-				switch ($form['buttons']) {
-					case 'default' : $form['buttons'] =  
-						array(
-						'view' => array(
-							'edit' => $this->button(array(
-								'label' => 'btn-edit',
-								'url' => '?mode=edit',
-								'position' => 'pull-right',						
-							)),	
-						),
-						'edit' => array(
-							$this->button('cancel'),				
-							$this->button('submit'),	
-						),	
-					);			
-					break;
-				default :
-					Yii::log('Unknown button type in load form: '.$form['buttons'].'. Expection: default');					
-				}
-			}
-			return $form;
+			return $this->parseForm($form);
 		}	
 		return false;
 	}
