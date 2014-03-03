@@ -60,6 +60,8 @@
 					{% endif %}	
 				{% elseif element.type=='url' %}						
 						<a href="{{ model.__get(key) }}">{{ model.__get(key) }}</a>	
+				{% elseif element.type=='raw' %}
+						{{ element.value | raw }}
 				{% else %}	
 					{{ model.__get(key) | raw }}	
 				{% endif %}
@@ -67,9 +69,9 @@
 					&nbsp;<a href="{{ element.openUrl}}"><span class="glyphicon glyphicon-link"></span></a>
 				{% endif %}
 					
-			  {% endfor %}	
+			  {% endfor %}&nbsp;
+
 			</dd>	
-			
 			
 		{#</div> #}
 		{% endif %}	

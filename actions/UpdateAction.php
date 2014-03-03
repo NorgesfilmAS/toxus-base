@@ -31,37 +31,30 @@ class UpdateAction extends BaseAction
 						
 		if (isset($_POST[$modelClass])) {
 			if ($this->controller->executeUpdate()) {
-				/* this was in PNEK 
-				if ($this->view == null) {
-					$this->view = Yii::app()->baseURL.'/'.Yii::app()->request->pathInfo;
-				}
-				$this->controller->redirect($this->view);
-				//$this->controller->redirect($this->controller->createUrl($controllerId.'/'.$this->view, array('id' => $id)));
-			}
-				 * 
-				 */
 				if ($this->successUrl) {
 					$this->controller->redirect($this->controller->createUrl($this->successUrl, array('id' => $id)));					
+				} else {
+					$this->controller->redirect($this->controller->createUrl($this->controller->route, array('id' => $id)));					
 				}
-				if (false && $this->successUrlFull != null) {
-					$this->controller->redirect($this->successUrlFull);
-				}
-				$mode = 'view';							
 			}
 		}
-		if ($this->form == null)
+		if ($this->form == null) {
 			$form = $this->controller->loadForm($controllerId. 'Fields'); 				
-		else 
+		} elseif (is_string($form)) { 
 			$form = $this->controller->loadForm($this->form);
+		} else {
+			$form = $this->form;
+		}	
 		
 		$this->render( $this->view, array(
 				'model' => $this->controller->model,
-				'layout' => 'ajaxForm',		// WHY???
+	//			'layout' => 'ajaxForm',		// WHY???
 				'layout' => $this->pageLayout,
 				'form' => $form,	
 				'mode' => $mode,
 				'state' => $mode,
 				'menuItem' => $this->menuItem,
+//				'transactionId' => isset($_GET['transaction']) ? $_GET['transaction'] : 0,
 		));
 		
 	}

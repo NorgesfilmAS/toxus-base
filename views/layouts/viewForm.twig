@@ -4,10 +4,9 @@
 
 {% extends this.viewPath('main') %}
 
-
 {% block content %}
 {% include this.viewPath('caption') %}
-
+{% set mode = mode |default('view') %}
 <div class="bs-content">
 	{# must first display any error connected to the main record #}		
 	{% if model.hasErrors() %}
@@ -20,13 +19,19 @@
 		
 	{# now display the form #}	
 	{% if mode == 'edit' %}
-		{% include this.viewPath('_form') %}
-	{% else %}	
-		<div class="row">
-			<div class="col-sm-9">
-			{% include this.viewPath('_view') %}
-			</div>
-		</div>		
+		{% block formContent %}
+			{% include this.viewPath('_form') %}
+		{% endblock %}
+	{% elseif mode == 'view' %}
+		{% block viewContent %}
+			<div class="row">
+				<div class="col-sm-10">
+				{% include this.viewPath('_view') %}
+				</div>
+			</div>		
+		{% endblock %}
+	{% else %}
+		{% block otherMode %}mode: {{ mode }}{% endblock %}
 	{% endif %}	
 </div>
 {% endblock %}
@@ -39,6 +44,7 @@
 	$('.btn-edit').on('click', function() {
 		window.location = window.location+"?mode=edit"; 
 	});
+
 	{{ parent() }}
 {% endblock %}
 	
