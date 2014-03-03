@@ -30,8 +30,9 @@ class LoginAction extends CAction
 			
 			$this->controller->model->attributes = $_POST['LoginForm'];
 			if ($this->controller->model->validate()) {
-				if ($this->controller->model->login())
+				if ($this->controller->model->login()) {
 					$this->controller->redirect(Yii::app()->user->returnUrl != '' ? Yii::app()->user->returnUrl : $this->createUrl($this->defaultUrl));
+				}	
 			}	
 		}
 		$this->controller->render($this->view, array('form' => $form, 'state' => 'edit'));
