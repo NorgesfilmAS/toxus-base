@@ -62,26 +62,30 @@ class PageLog extends CComponent
 	
 	public function writeExecutionTime($writeTime = true, $controller = null)
   {
-		if ($writeTime) {
-		  $this->log->processing_time = Yii::getLogger()->getExecutionTime();
-		}	
-		$this->_logging->profile_id = Yii::app()->user->id;
-		if ($controller == null)
-			$controller = Yii::app ()->controller;
-		if ($controller) {			
-			$this->_logging->controller = get_class($controller);
-			if ($controller instanceof Controller) {
-				if (isset($controller->model) && isset($controller->model->id)) {
-					$this->_logging->model_id = $controller->model->id;
-				}	
+		try {
+			if ($writeTime) {
+				if (! isset($this->log)) return;
+				$this->log->processing_time = Yii::getLogger()->getExecutionTime();
+			}	
+			$this->_logging->profile_id = Yii::app()->user->id;
+			if ($controller == null)
+				$controller = Yii::app ()->controller;
+			if ($controller) {			
+				$this->_logging->controller = get_class($controller);
+				if ($controller instanceof Controller) {
+					if (isset($controller->model) && isset($controller->model->id)) {
+						$this->_logging->model_id = $controller->model->id;
+					}	
+				} else {
+					$this->addText('controller is not an instance Controller but of '.  get_class($controller));
+				}
 			} else {
-				$this->addText('controller is not an instance Controller but of '.  get_class($controller));
-			}
-		} else {
-			$this->addText('There is no controller');
-		}	
-		if (!$this->log->save() && $this->reportErrors)
-			throw new CDbException('Could not write to log');
-	}					
-					
+				$this->addText('There is no controller');
+			}	
+			if (!$this->log->save() && $this->reportErrors)
+				throw new CDbException('Could not write to log');
+		} catch (Exception $e) {
+			
+		}					
+	}	
 }

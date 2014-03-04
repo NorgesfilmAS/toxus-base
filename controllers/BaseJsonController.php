@@ -1,6 +1,6 @@
 <?php
 
-class BaseJasonController extends CController
+class BaseJsonController extends Controller
 {
 	/**
 	 * to definitions: 
@@ -9,15 +9,35 @@ class BaseJasonController extends CController
 	 * 
 	 * @var array the result returned to the caller
 	 */
-	public $result = array(
+	protected $result = array(
 			'status' => array(
 					'success' => true,					// if all went well
 					'message' => '',						// message to the user
-					'statusCode' => 200,				// http status codes
+					'statuscode' => 200,				// http status codes
 					'errors' => array(),				// a key => error text array
 			),
 			'data' => array(),
 	);
+	
+	public function filters()
+	{
+		return array(
+			'accessControl',
+		);
+  }
+	public function accessRules()
+  {
+		return array(
+				array('allow',
+						'actions'=>array('login'),
+						'roles'=>array('*'),
+				),
+				array('deny',
+						'actions'=>array('*'),
+						'users'=>array('*'),
+				),
+		);
+  }	
 	
 	public function getSuccess()
 	{
@@ -33,7 +53,7 @@ class BaseJasonController extends CController
 	 */
 	public function getStatusCode()
 	{
-		return $this->result['status']['statusCode'];
+		return $this->result['status']['statuscode'];
 	}
 	/**
 	 * set the status of the call
@@ -42,7 +62,7 @@ class BaseJasonController extends CController
 	 */
 	public function setStatusCode($code)
 	{
-		$this->result['status']['statusCode'] = $code;
+		$this->result['status']['statuscode'] = $code;
 	}
 	public function getMessage()
 	{
@@ -59,7 +79,7 @@ class BaseJasonController extends CController
 	 */
 	public function addError($key, $text)
 	{
-		$this->result['status']['error'][$key] = $text;
+		$this->result['status']['errors'][$key] = $text;
 		$this->result['status']['success'] = false;
 	}
 	/**

@@ -2,6 +2,12 @@
 
 class SetupFormModel extends CFormModel
 {
+	/**
+	 * change to use an other extended class
+	 * @var string
+	 */
+	public $setupClass = 'SetupFormModel';
+	
 	public $isNewRecord = false;	
 	public function isEditable($key)
 	{
@@ -19,7 +25,7 @@ class SetupFormModel extends CFormModel
 		
 		$form = array(
 			'title' => Yii::t('config','System setup'),
-			'model' => 'SetupForm',	
+			'model' => $this->setupClass,	
 		);		
 		$elements = array();
 		foreach (Yii::app()->config->sections() as $sectionName => $section) {

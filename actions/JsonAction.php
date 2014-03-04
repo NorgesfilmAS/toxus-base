@@ -18,7 +18,7 @@ class JsonAction extends CAction
 	
 	public function __construct($controller,$id)
 	{
-		if (!($controller instanceof BaseJasonController)) {
+		if (!($controller instanceof BaseJsonController)) {
 			throw new CException('JsonAction always needs a JasonController');
 		}
 		parent::__construct($controller, $id);

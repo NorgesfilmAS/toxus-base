@@ -2,14 +2,17 @@
 
 class BaseSetupController extends Controller
 {
+	public $setupClass = 'SetupFormModel';
+	
 	public function actionIndex($id=null, $mode='edit')
 	{
 		if (!(Yii::app()->user->getState('adminId', null) != null)) {
 			$this->redirect($this->createUrl('setup/login'));
 		}
-		$this->model = new SetupForm();
-		if (isset($_POST['SetupForm'])) {
-			$this->model->attributes = $_POST['SetupForm'];
+		$class = $this->setupClass;
+		$this->model = new $class();
+		if (isset($_POST[$class])) {
+			$this->model->attributes = $_POST[$class];
 			if ($this->model->validate()) {
 				$this->model->save();
 			}

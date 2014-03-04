@@ -4,6 +4,8 @@
  * handles the basis of the login as a json call
  * 
  */
+Yii::import('toxus.actions.JsonAction');
+
 class JsonLoginAction extends JsonAction
 {
 	/**
@@ -36,6 +38,8 @@ class JsonLoginAction extends JsonAction
 							$this->controller->$func();
 						}
 					}
+					$this->controller->asJson();
+					return;
 				}
 			}
 			$this->controller->message = Yii::t('app', 'Combination of User, Password is wrong.');
@@ -43,7 +47,7 @@ class JsonLoginAction extends JsonAction
 			$this->controller->message = Yii::t('app', 'No login credentials found');
 		}
 		$this->controller->success = false;
-		$this->controller->addError('username', Yii::t('app', 'Loginn credentials are wrong.'));
+		$this->controller->addError('username', Yii::t('app', 'Login credentials are wrong.'));
 		$this->controller->asJson();
 	}
 }
