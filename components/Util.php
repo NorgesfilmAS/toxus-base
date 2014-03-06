@@ -607,6 +607,25 @@ class Util {
 
 		return $str;
 	}
+	
+	/**
+	 * date : format is yyyy-mm-dd
+	 * time : format is hh:mm:ss
+	 */
+	static function dateAndTime2Timestamp($date, $time = null)
+	{
+		if ($time) {
+			if (strlen($time) == 5) {
+				$time .= ':01';
+			}
+			$s = $date.' '.$time;			
+		} else {	
+			$s = $date.' 00:00:01';			
+		}	
+		$d = DateTime::createFromFormat('Y-m-d H:i:s', $s);
+		return date_timestamp_get($d);
+			
+	}
 }
 
 ?>
