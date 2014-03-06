@@ -106,7 +106,7 @@
 					</div>	
 					{{ this.registerPackage('datepicker', {'isAjax' : isAjax, 'executeAfterLoad':
 "$('.input-date').datepicker({" ~		
-	"language : '"~App.clientConfig.language~"',
+	"language : '"~App.config.language~"',
 	autoclose: true
 });
 "}) }}
