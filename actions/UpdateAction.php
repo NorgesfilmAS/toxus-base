@@ -40,7 +40,7 @@ class UpdateAction extends BaseAction
 		}
 		if ($this->form == null) {
 			$form = $this->controller->loadForm($controllerId. 'Fields'); 				
-		} elseif (is_string($form)) { 
+		} elseif (is_string($this->form)) { 
 			$form = $this->controller->loadForm($this->form);
 		} else {
 			$form = $this->form;
