@@ -33,4 +33,9 @@
 	{% endif %}
 {% endfor %}
 		
+{# untested: should create buttons on-the-fly #}
+{% for key, button in form.extraButtons %}
+	<a href="{{ button.url }}" class="{{ button.style | default('btn') }} {{ button.position }} menu-button" {{ button.options |raw }}>{{ this.t(button.label) }}</a>	
+{% endfor %}
+		
 	

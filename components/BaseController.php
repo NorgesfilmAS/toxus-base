@@ -208,6 +208,16 @@ class BaseController extends CController
 	{
 		$this->raiseEvent('onHelpMenu', $event);
 	}
+	/**
+	 * 
+	 * @param array $menu the menu definition
+	 * @param string $menuDef the type of menu generated
+	 * @param array $options options for the menu 
+	 */
+	protected function beforeMenuGenerated($menu, $name, $options)
+	{
+		return $menu;
+	}
 
 /**
  * generate the HTML code for menuName, depending on what menu is available.
@@ -231,12 +241,14 @@ class BaseController extends CController
 		}	
 		
 		if (!isset($menu[$menuName])) return '';
+		$m = $this->beforeMenuGenerated($menu[$menuName], $menuDef, $options);
 		$params = array(
-			'menu' => $menu[$menuName],	
+			'menu' => $m, // $menu[$menuName],	
 			'name' => $menuName,	
 		);
 		if (isset($options['class']))
 			$params['layout'] = array('class'=>$options['class']);
+		// $this->beforeMenuGenerated(&$menu, $menuDef, $options);
 		$path = $this->viewPath('_'.$menuName.'Menu',array('return' => true));
 		if (!$path) {
 			$path = $this->viewPath('_menu',array('return' => true, 'noExtension' => true));
@@ -1344,10 +1356,14 @@ class BaseController extends CController
 		//		$shortVendorRoot = str_replace('.', '/', $this->vendorViewRoot);
 		$shortVendorRoot = substr($vendorRoot, strlen($app) + 1);
 		
-		if (isset($options['libOnly']) && $options['libOnly']) {
-			$paths = array();
-		} else {
-			$paths = array(
+		$paths = array();
+		if (substr($filename,0,1) == '/') { // looking in a fixed directory /test/index
+			$p = explode('/', $filename);
+			$paths = array('views/'.$p[1] => Yii::getPathOfAlias('webroot.protected.views').'/'.$p[1]);
+			$filename = $p[2];
+		} 
+		if (!(isset($options['libOnly']) && $options['libOnly'])) {
+			$paths = $paths + array(
 				'views/'.$this->getId() => YiiBase::getPathOfAlias('webroot.protected.views').'/'.$this->getId(),
 				'views/layouts' => YiiBase::getPathOfAlias('webroot.protected.views').'/layouts',	
 			);		

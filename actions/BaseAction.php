@@ -48,6 +48,13 @@ class BaseAction extends CAction
 	
 	
 	/** 
+	 * function called when model is created
+	 * 
+	 * @var array / string 
+	 */
+	public $onCreateModel = false;
+	
+	/** 
 	 * the name of the model to create even if it is not defined by the calling routine
 	 * 
 	 * @return string

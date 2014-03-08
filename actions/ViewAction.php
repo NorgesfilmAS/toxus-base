@@ -17,6 +17,12 @@ class ViewAction extends BaseAction
 	public $menuItem = null;			// the menu item to active. Should be a jQuery selector (#menu-agent, or .agent-item)
 
 	/**
+	 * the default values to set for the new records
+	 * @var false / array  [attrubite] => value
+	 */
+	public $modelDefaults = false;
+	
+	/**
 	 * Default modelName holds the name of Controller class, but this can be 
 	 * overwritten by setting the modelClass. 
 	 * 
@@ -48,17 +54,27 @@ class ViewAction extends BaseAction
 			$layout = isset(Yii::app()->session[$layoutSession]) ? Yii::app()->session[$layoutSession] : $layout;
 		}
 		
-		// $controllerId = ucfirst($this->controller->id);
-		$modelName = $this->modelName;
-		
-		if ($id == self::USE_LAST_ID)
-			$id = Yii::app()->user->lastId;
-		if ($id && $this->hasModel) {
-			$this->controller->model = $modelName::model()->findByPk($id); 
-		} else if ($this->hasModel) {
-			$this->controller->model = new $modelName();		
+		if ($this->onCreateModel) {
+			call_user_func($this->onCreateModel, $id, $this);
 		} else {
-			$this->controller->model = null;				
+			// $controllerId = ucfirst($this->controller->id);
+			$modelName = $this->modelName;
+
+			if ($id == self::USE_LAST_ID)
+				$id = Yii::app()->user->lastId;
+			if ($id && $this->hasModel) {
+				$this->controller->model = $modelName::model()->findByPk($id); 
+			} else if ($this->hasModel) {
+				$this->controller->model = new $modelName();
+				$this->controller->model->unsetAttributes();	// clear the defaults
+				if ($this->modelDefaults) {
+					foreach ($this->modelDefaults as $attribute => $value) {
+						$this->controller->model->$attribute = $value;
+					}
+				}
+			} else {
+				$this->controller->model = null;				
+			}
 		}
 		
 		$form = false;				

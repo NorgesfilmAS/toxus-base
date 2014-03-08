@@ -1,5 +1,4 @@
 {# render a menu #}
-
 {% for key, item in menu %}
 	{% if item.type=='caption-right' %}
 	<h5 class="short_headline right"><span>{{ item.caption }}</span></h5>
@@ -14,12 +13,24 @@
 	{% if item.type %}
 	{% else %}		
 		{% if item.hidden != true  %}
-	<li class="menu-{{ key | replace({' ' : '-'}) |lower }}">	
-  <a href="{{ item.url | raw }}" data-placement="bottom" {% if item.tooltip %}title="{{ item.tooltip }}"{% endif %}>
+	<li class="menu-{{ key | replace({' ' : '-'}) |lower }} menu-item">	
+  <a href="{{ item.url | default('#') | raw }}" data-placement="bottom" {% if item.tooltip %}title="{{ item.tooltip }}"{% endif %}
+	{% if item.isDropDown %}
+		 class="cls-{{ util.formId(item.label)}}"
+{{ this.onReady(
+	"$('.cls-" ~util.formId(item.label)~"').on('click', function() {
+     $('.menu-item').removeClass('active');
+	   $('.menu-"~key | replace({' ' : '-'}) |lower ~"').addClass('active'); });") 
+}}
+	{% endif %}
+	>
   {% if item.icon is defined %}<i class="{{ item.icon }}"></i>{% endif %}
 	{% if item.label %}{{ item.label |raw }}{% endif %}
 	</a>
-	{% if item.items | length > 0 %}		
+	{% if item.items | length > 0 %}	
+		{% if item.dropDown %}
+		MAKE DROP
+		{% endif %}
 	<ul class="nav">
 		{% for subKey, subItem in item.items %}
 			<li class="menu-{{ subKey | replace({' ' : '-'}) |lower }}">	
