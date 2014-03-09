@@ -1,20 +1,30 @@
 {#
   the system menu
 #}
+
 {% macro menuSystemBuilder(menu, name, t) %}
 	{% for key, menuItem in menu %}	
+		{% if menuItem.isVisible | default(1) == 1 %}
 		{% if 'page' in menuItem|keys %}
 	<li class="parent">
 		<a href="javascript:void()" >{{ menuItem.label }}<i></i></a>
 		{{ t.form.page(menuItem.page) }}
 	</li>		
 		{% elseif 'items' in menuItem|keys %}	
+{#	
 	<li class="parent">
 		<a href="javascript:void()" >{{ menuItem.label }}<i></i></a>
 		<ul>
 		{{ _self.menuSystemBuilder(menuItem.items) }}
 		</ul>
 	</li>		
+#}
+		<li class="dropdown">
+			<a href="#" data-toggle="dropdown" role="button" >{{ menuItem.label }}</a>
+			<ul class="dropdown-menu" role="menu">
+			{{ _self.menuSystemBuilder(menuItem.items) }}
+			</ul>
+		</li>		
 		{% else %}			
 			<li>
 			{% if menuItem.dialog %}					
@@ -25,6 +35,7 @@
 				{{ html.link(menuItem.label, menuItem.url, menuItem.linkOptions)|raw }} </li>
 			{% endif %}	
 		{% endif %}
+		{%endif %}	
 	{% endfor %}
 {% endmacro %}
 
