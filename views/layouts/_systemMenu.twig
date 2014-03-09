@@ -3,6 +3,7 @@
 #}
 {% macro menuSystemBuilder(menu, name, t) %}
 	{% for key, menuItem in menu %}	
+		{% if menuItem.isVisible | default(1) == 1 %}
 		{% if 'page' in menuItem|keys %}
 	<li class="parent">
 		<a href="javascript:void()" >{{ menuItem.label }}<i></i></a>
@@ -22,9 +23,11 @@
 				<a href="#" class="menu-modal" data-url="{{ menuItem.url}}">{{ menuItem.label }}</a>
 				{{ t.registerPackage('modal-dialog') }}
 			{% else %}
-				{{ html.link(menuItem.label, menuItem.url, menuItem.linkOptions)|raw }} </li>
+				{{ html.link(menuItem.label, menuItem.url, menuItem.linkOptions)|raw }}
 			{% endif %}	
-		{% endif %}
+			 </li>	
+		{% endif %}		
+	{% endif %}		
 	{% endfor %}
 {% endmacro %}
 

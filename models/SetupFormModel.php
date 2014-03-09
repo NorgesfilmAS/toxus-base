@@ -29,30 +29,32 @@ class SetupFormModel extends CFormModel
 		);		
 		$elements = array();
 		foreach (Yii::app()->config->sections() as $sectionName => $section) {
-			if (isset($section['group']) && $group != $section['group']) {
-				$mark = '<a name="'.md5($section['group']).'"></a>';
-				$group = $section['group'];				
-			} else {
-				$mark = '';
-			}
-			$elements[$sectionName.'Header'] = array(
-				'value' => $mark.'<h4>'.  CHtml::encode($section['label']).'</h4>',
-				'hideLabel' => true,
-				'type' => 'raw'	
-			);
-			foreach ($section['items'] as $varName => $properties) {
-				$type = isset($properties['type']) ? $properties['type'] : 'text';
-				$a = array(
-					'label' => isset($properties['label']) ? $properties['label'] : $varName,	
-				);
-				if ($type == 'text') {
-					$a['type'] = 'text';
-				} elseif ($type == 'boolean') {
-					$a['type'] = 'checkbox';
+			if ($section->isEditable) {
+				if (isset($section['group']) && $group != $section['group']) {
+					$mark = '<a name="'.md5($section['group']).'"></a>';
+					$group = $section['group'];				
+				} else {
+					$mark = '';
 				}
-				$a['tooltip'] = isset($properties['info']) ?$properties['info'] : false;
-				$elements[$sectionName.'-'.$varName] = $a;
-			}
+				$elements[$sectionName.'Header'] = array(
+					'value' => $mark.'<h4>'.  CHtml::encode($section['label']).'</h4>',
+					'hideLabel' => true,
+					'type' => 'raw'	
+				);
+				foreach ($section['items'] as $varName => $properties) {
+					$type = isset($properties['type']) ? $properties['type'] : 'text';
+					$a = array(
+						'label' => isset($properties['label']) ? $properties['label'] : $varName,	
+					);
+					if ($type == 'text') {
+						$a['type'] = 'text';
+					} elseif ($type == 'boolean') {
+						$a['type'] = 'checkbox';
+					}
+					$a['tooltip'] = isset($properties['info']) ?$properties['info'] : false;
+					$elements[$sectionName.'-'.$varName] = $a;
+				}
+			}	
 		}
 		$form['elements'] = $elements;
 		$form['buttons'] = 'default';

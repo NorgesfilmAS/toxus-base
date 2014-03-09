@@ -71,6 +71,10 @@ class SectionProperties extends CMap
 	{
 		return $this->_raw;
 	}
+	public function isEditable()
+	{
+		return (!isset($this->_raw['is_editable'])) || $this->_raw['is_editable'];
+	}
 }
 
 class ApplicationConfig extends CComponent

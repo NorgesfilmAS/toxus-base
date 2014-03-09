@@ -33,7 +33,7 @@
 					<div class="{{ element.width }}">
 				{% endif %}	
 		
-				{% if element.readOnly or this.model.isEditable(key) |default(true) == false %}
+				{% if element.readOnly %}
 						{% set readOnly = ' disabled="disabled"'%}
 				{% else %}
 						{% set readOnly = '' %}
