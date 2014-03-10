@@ -169,16 +169,15 @@
 				{% block footerCredits %}
 				<div class="container">
 					<ul class="footer-links text-center">
-						<li><a href="{{ this.createUrl('site/copyright') }}"> &copy; 2013 Toxus</a> | </li>
-						<li><a href="{{ this.createUrl('site/sitemap') }}">{{ this.t('site map') }}</a> | </li>
-						<li><a href="{{ this.createUrl('site/privacy') }}">{{ this.t('privacy') }}</a></li>
+						{% block copyright %}<li><a href="{{ this.createUrl('site/copyright') }}"> &copy; 2013 -2014 Toxus</a> | </li>{% endblock %}
+						{% block sitemap %}<li><a href="{{ this.createUrl('site/sitemap') }}">{{ this.t('site map') }}</a> | </li>{% endblock %}
+						{% block privacy %}<li><a href="{{ this.createUrl('site/privacy') }}">{{ this.t('privacy') }}</a></li>{% endblock %}
 						<li class="version">version: {% block version %}{{ this.version }}3{% endblock %}</li>
 					</ul>
 				</div>		
 				{% endblock %}	
 			</section>	
 		 {% endblock %}	
-		{# include this.viewPath('bootstrap3Footer') #}			
 		</div>		
 		<div class="modal fade" id="id-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 			<div class="modal-body">
