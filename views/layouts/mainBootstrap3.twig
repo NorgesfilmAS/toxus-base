@@ -59,15 +59,21 @@
 		
 		<div class="bs-header" {% block bsHeaderOptions %}{% endblock %}>
 			<div class="container">
+				{% block header %}
 				{# anything in this container is the header of the application. It will scroll out of view #}				
 				<div class="navbar-left">	
+					{% block headerLeft %}
 					{% include this.viewPath('logo') %}									
 					{{ this.menuHtml('logo', {'class': 'nav navbar-nav' }) |raw }}
+					{% endblock %}
 				</div>
 				<div class="header-toolbar">{% block headerButtons %}{% endblock %}</div>					
 				<div class="navbar-right pull-right">	
+					{% block headerRight %}
 					{{ this.menuHtml('header', {'class': 'nav navbar-nav' }) |raw }}
+					{% endblock %}
 				</div>
+				{% endblock %}
 			</div>
 		</div>
 		{% set colVis = pageLayout | default('content') %}
