@@ -50,7 +50,7 @@
 					{% endif %}	
 						<select id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]{% if element.multi %}[]{% endif %}" class="{{ elementwidth }} {{ element.class }} form-control{% if element.type=='chosen' %} chosen-select{% endif %}" {% if element.placeholder %}data-placeholder="{{ element.placeholder }}"{%endif %}{% if element.multi %} multiple{% endif %} {{ readOnly }}>
 					{% for itemKey, itemCaption in element.items %}								
-							<option value="{{ itemKey }}" {% if this.model.__get(key) | length > 0 %}{% if itemKey in this.model.__get(key) %}selected="1"{% endif %}{% else %}{% if itemKey == this.model.__get(key) %}selected="1"{% endif %} {% endif %} >{{ itemCaption }}</option>
+							<option value="{{ itemKey }}" {% if this.model.__get(key) | length > 0 %}{% if itemKey in this.model.__get(key) %}selected="1"{% endif %}{% else %}{% if itemKey == this.model.__get(key) %}selected="1"{% endif %} {% endif %} >{% if itemCaption %}{{ itemCaption }}{% else %}&nbsp;{% endif %}</option>
 					{% endfor %}
 						</select>
 					{% if element.type == 'vat' %}

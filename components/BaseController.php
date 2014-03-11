@@ -475,7 +475,7 @@ class BaseController extends CController
 				'css' => array(
 					'chosen.ext.css',	
 				),	
-				'ready' => '$(".chosen-select").chosen(); $(".chosen-container").addClass("form-control");',									
+				'ready' => '$(".chosen-select").chosen({ allow_single_deselect:true }); $(".chosen-container").addClass("form-control");',									
 			),
 			'tinymce' => array(
 				'basePath' => 'toxus.assetsBase.tinyMce',
