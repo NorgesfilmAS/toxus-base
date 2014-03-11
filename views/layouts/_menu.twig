@@ -1,4 +1,61 @@
-{# render a menu #}
+{# 
+	render a menu 
+	menu is array of items. 
+		item.type:			[caption-right | caption ]	- the caption above the menus
+		item.hidden:		[true | false]	- hides the entire menu item
+		item.icon				{text} - the icon class to display in front
+		item.label			{text} - the raw label to display
+		item.url				{text} - the raw url
+		item.items			array  - the sub items of this menu item
+		item.tooltip		{text} - the title used in the links
+		item.isDropDown [0|1]	  
+
+	the layout.class can set the style of the main <ul> Default 'navigation'	
+#}
+{# 
+	rendering the header above the menu 
+	can have multiple items by the type of 'caption-right' or 'caption'
+
+#}
+
+{% macro menuItemBuilder(menu, t, level) %}
+	{% for key, menuItem in menu %}	
+		{% if menuItem.hidden != true %}
+			{% if menuItem.type %}
+			{% else %}
+				<li class="menu-{{ key | replace({' ' : '-'}) |lower }} menu-item{% if menuItem.items %} menu-submenu {% endif %}">	
+				{% if menuItem.url %}	
+				<a href="{{ menuItem.url | default('#') | raw }}" data-placement="bottom" {% if menuItem.tooltip %}title="{{ menuItem.tooltip }}"{% endif %}
+				{% if menuItem.isDropDown %}
+					 class="cls-{{ util.formId(menuItem.label)}}"
+			{{ t.onReady(
+				"$('.cls-" ~util.formId(menuItem.label)~"').on('click', function() {
+					 $('.menu-item').removeClass('active');
+					 $('.menu-"~key | replace({' ' : '-'}) |lower ~"').addClass('active'); });") 
+			}}
+				{% endif %}
+					 
+				>
+				{% if menuItem.icon is defined %}<span class="{{ menuItem.icon }}"></span>{% endif %}
+				{% if menuItem.label %}{{ menuItem.label |raw }}{% endif %}
+				</a>
+				{% else %}
+					<span class="menu-item-text">
+					{% if menuItem.icon is defined %}<span class="{{ menuItem.icon }}"></span>{% endif %}
+					{% if menuItem.label %}{{ menuItem.label |raw }}{% endif %}					
+					</span>
+				{% endif %}
+				{% if menuItem.items | length > 0 %}	
+				<ul class="nav menu-level-{{ level }} menu-submenu">
+					{{ _self.menuItemBuilder(menuItem.items, t, level + 1) }}
+				</ul>
+				{% endif %}
+				</li>		
+			{% endif %}
+		{% endif %}
+	{% endfor %}
+{% endmacro %}
+
 {% for key, item in menu %}
 	{% if item.type=='caption-right' %}
 	<h5 class="short_headline right"><span>{{ item.caption }}</span></h5>
@@ -7,6 +64,16 @@
 	{% endif %}
 {% endfor %}
 
+{% if menu | length > 0 %}
+<ul class="{{ layout.class | default('navigation') }}">
+	{{ _self.menuItemBuilder(menu, this, 0) }}
+</ul>
+{% endif %}
+	
+{# 
+	render the items of the menu 
+#}
+{#	
 {% if menu | length > 0 %}
 <ul class="{{ layout.class | default('navigation') }}">
 {% for key, item in menu %}
@@ -24,7 +91,7 @@
 }}
 	{% endif %}
 	>
-  {% if item.icon is defined %}<i class="{{ item.icon }}"></i>{% endif %}
+  {% if item.icon is defined %}<span class="{{ item.icon }}"></span>{% endif %}
 	{% if item.label %}{{ item.label |raw }}{% endif %}
 	</a>
 	{% if item.items | length > 0 %}	
@@ -48,3 +115,4 @@
 {% endfor %}
 </ul>		
 {% endif %}	
+#}

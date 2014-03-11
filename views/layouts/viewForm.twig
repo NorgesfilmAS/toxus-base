@@ -38,9 +38,14 @@
 
 
 {% block onReady %}
-  {% if menuItem %}
+  {% if menuItem is iterable %}
+		{% for item in menuItem %}
+			$('{{ item }}').addClass('active');
+		{% endfor %}
+  {% elseif menuItem %}
 		$('{{ menuItem }}').addClass('active');
 	{% endif %}	
+		
 	$('.btn-edit').on('click', function() {
 		window.location = window.location+"?mode=edit"; 
 	});
