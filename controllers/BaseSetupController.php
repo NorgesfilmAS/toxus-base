@@ -51,4 +51,9 @@ class BaseSetupController extends Controller
 		Yii::app()->user->setState('adminId', null);
 		$this->redirect($this->createUrl('setup/index'));
 	}
+	
+	public function actionInfo()
+	{
+		phpinfo();
+	}
 }

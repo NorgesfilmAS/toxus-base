@@ -54,6 +54,12 @@ class BaseAction extends CAction
 	 */
 	public $onCreateModel = false;
 	
+	/**
+	 * routine to call after the update is successfull
+	 * 
+	 * @var array
+	 */
+	public $onAfterUpdate = false;
 	/** 
 	 * the name of the model to create even if it is not defined by the calling routine
 	 * 

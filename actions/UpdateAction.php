@@ -34,6 +34,9 @@ class UpdateAction extends BaseAction
 						
 		if (isset($_POST[$modelClass])) {
 			if ($this->controller->executeUpdate()) {
+				if ($this->onAfterUpdate) {
+					call_user_func($this->onAfterUpdate, $id, $this);
+				}
 				if ($this->successUrl) {
 					$this->controller->redirect($this->controller->createUrl($this->successUrl, array('id' => $id)));					
 				} else {
