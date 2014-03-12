@@ -20,12 +20,15 @@
 
 {% macro menuItemBuilder(menu, t, level) %}
 	{% for key, menuItem in menu %}	
+		{% if menuItem is iterable %}
 		{% if menuItem.hidden != true %}
 			{% if menuItem.type %}
 			{% else %}
 				<li class="menu-{{ key | replace({' ' : '-'}) |lower }} menu-item{% if menuItem.items %} menu-submenu {% endif %}">	
-				{% if menuItem.url %}	
+				{% if menuItem.url != 'xxxx' %}	
 				<a href="{{ menuItem.url | default('#') | raw }}" data-placement="bottom" {% if menuItem.tooltip %}title="{{ menuItem.tooltip }}"{% endif %}
+					 {% if menuItem.style %} class="{{ menuItem.style }}" {% endif %}
+{# I don't get it and why do we use it					 
 				{% if menuItem.isDropDown %}
 					 class="cls-{{ util.formId(menuItem.label)}}"
 			{{ t.onReady(
@@ -33,26 +36,37 @@
 					 $('.menu-item').removeClass('active');
 					 $('.menu-"~key | replace({' ' : '-'}) |lower ~"').addClass('active'); });") 
 			}}
-				{% endif %}
-					 
+				{% endif %}					 
+#}
 				>
+				{% if menuItem.level %}
+					<span class="menu-item-level-{{ menuItem.level}}">
+				{% endif %}		
 				{% if menuItem.icon is defined %}<span class="{{ menuItem.icon }}"></span>{% endif %}
 				{% if menuItem.label %}{{ menuItem.label |raw }}{% endif %}
+				{% if menuItem.level %}
+					</span>
+				{% endif %}	
 				</a>
 				{% else %}
-					<span class="menu-item-text">
+					{% if menuItem.level %}
+						<span class="menu-item-level-{{ menuItem.level}}">
+					{% endif %}		
 					{% if menuItem.icon is defined %}<span class="{{ menuItem.icon }}"></span>{% endif %}
 					{% if menuItem.label %}{{ menuItem.label |raw }}{% endif %}					
-					</span>
+					{% if menuItem.level %}
+						</span>
+					{% endif %}	
 				{% endif %}
 				{% if menuItem.items | length > 0 %}	
-				<ul class="nav menu-level-{{ level }} menu-submenu">
+				<ul class="nav menu-level-{{ level }} menu-submenu menu-level">
 					{{ _self.menuItemBuilder(menuItem.items, t, level + 1) }}
 				</ul>
 				{% endif %}
 				</li>		
 			{% endif %}
 		{% endif %}
+		{% endif %}		
 	{% endfor %}
 {% endmacro %}
 
@@ -65,7 +79,7 @@
 {% endfor %}
 
 {% if menu | length > 0 %}
-<ul class="{{ layout.class | default('navigation') }}">
+<ul class="{{ menu.style | default(layout.class)}}">
 	{{ _self.menuItemBuilder(menu, this, 0) }}
 </ul>
 {% endif %}

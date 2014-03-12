@@ -23,10 +23,13 @@ class UpdateAction extends BaseAction
 			throw new CHttpException(403, Yii::t('app', 'Access denied'));
 		}
 		$controllerId = ucfirst($this->controller->id);
-		$modelClass = $this->modelName;
-		$this->controller->model = $modelClass::model()->findByPk($id);
-		$this->controller->model->scenario = $this->scenario;
-		
+		$modelClass = $this->modelName;		
+		if ($this->onCreateModel) {
+			call_user_func($this->onCreateModel, $id, $this);
+		} else {
+			$this->controller->model = $modelClass::model()->findByPk($id);
+		}	
+		$this->controller->model->scenario = $this->scenario;		
 		$mode =  isset($_GET['mode']) ? $_GET['mode'] : 'view';
 						
 		if (isset($_POST[$modelClass])) {
