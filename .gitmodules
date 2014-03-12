@@ -14,3 +14,6 @@
 [submodule "assetsBase/jquery-sortable"]
 	path = assetsBase/jquery-sortable
 	url = https://github.com/johnny/jquery-sortable.git
+[submodule "assetsBase/bootstrap-switch"]
+	path = assetsBase/bootstrap-switch
+	url = https://github.com/nostalgiaz/bootstrap-switch.git

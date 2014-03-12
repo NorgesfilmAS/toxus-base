@@ -593,7 +593,18 @@ class BaseController extends CController
 						'js/jquery-sortable-min.js',
 					),	
 				),
-			),	
+			),
+			'bootstrap-switch' => array(
+				'basePath' => 'toxus.assetsBase.bootstrap-switch.build',
+				'css' => array(
+					'css/bootstrap3/bootstrap-switch.css',
+				),
+				'js' => array(
+					CClientScript::POS_END => array(
+						'js/bootstrap-switch.js',
+					),	
+				),
+			),				
 			'new' => array(
 				'basePath' => 'alias',
 				'css' => array(),

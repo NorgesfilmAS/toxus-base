@@ -8,6 +8,7 @@ class RuntimeConfig extends CComponent
 {
 	private $_data;
 	private $_eventObjects = array();
+	public $language = 'en';
 	
 	
 	
