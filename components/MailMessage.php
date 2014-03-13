@@ -28,6 +28,31 @@ class MailMessage extends Controller
 	}
 	
 	/**
+	 * send a message to the user and logs it
+	 * 
+	 * @param type $to
+	 * @param type $subject
+	 * @param type $content
+	 * @param type $data
+	 * @return boolean 
+	 */
+	public function send($to, $subject, $content, $data = array())
+	{
+		$log = array();
+		$body = str_replace(array_keys($data),array_values($data), $content);
+		$log['parsed'] = $body;
+		
+		if (!mail($to, $subject, $body)) {
+			$log['error'] = 'not send';
+			$this->logMessage($body, $log);
+			return false;
+		} else {
+			$this->logMessage($body, $log);
+			return true;
+		}	
+	}
+	
+	/**
 	 * get the fysical name of the or false
 	 * 
 	 * @param string $viewName	 
@@ -141,7 +166,9 @@ class MailMessage extends Controller
 	{
 		$params['server'] = $_SERVER;
 		$params['request'] = $_REQUEST;
-		$params['session'] = $_SESSION;
+		if (session_id() != '') {
+			$params['session'] = $_SESSION;
+		}	
 		$params['message'] = $msg;
 		$mail = new Mail();
 		$mail->log = var_export($params, true);

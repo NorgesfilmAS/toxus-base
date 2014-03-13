@@ -29,13 +29,29 @@ class RequireLogin extends CBehavior
 		$page = $_SERVER['REQUEST_URI'];
 		$dir = Yii::app()->baseUrl;
 		$page = substr($page, strlen($dir) +1);
-		Yii::log('Login for '.$page, CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
+		Yii::log('Testing login for '.$page, CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
 		if (Yii::app()->urlManager->showScriptName) {
 			$part = array('');
 			// page = index.php?r=site/search&XDEBUG_SESSION_START=netbeans-xdebug
 			//   or
-			// page = index.php/site/login
-			
+			// page = index.php/site/login?r=laksdfjla
+			$php = substr($page, strlen('index.php') + 1); // makes it: r=site/search or site/login?r=xxx
+			if ($php == '') {
+				$page = 'site/index';
+			} else {
+				$parts = explode('?', $php);
+				if (count($parts) > 0 && strlen($part[0] = 0)) {  // it's ?r=index.php
+					$parts = explode('=', $parts[0]);
+					if (count($parts) > 1) {
+						$page = $parts[1];			// the site/login
+					} else {
+						Yii::log('Failed scanning url: '.$page, CLogger::LEVEL_ERROR, 'security.toxus.compontents.RequireLogin');
+					}
+				} else {				// it's site/login?xx=lasd
+					$page = $part[0];
+				}
+			}	
+/*			
 			$phpFile = explode('?', $page);
 			if (count($phpFile) == 1) {
 				$phpFile = explode('/', $page, 2);
@@ -56,13 +72,16 @@ class RequireLogin extends CBehavior
 					$l++;
 				}
 			}
-			Yii::log('Script visible', CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
+ * 
+ */
+			Yii::log('index.php is visible: page changed to '.$page, CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
 		} else {
 			$part = explode('/', $page);
-			Yii::log('Script invisible', CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
+			Yii::log('Direct url', CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
 		}
-		if ($part[0] != 'gii' && Yii::app()->user->isGuest && !in_array($page, $this->allowedUrl + $this->_allowedSystemUrl)) {
-			Yii::log('Login required', CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
+		$a = array_merge($this->allowedUrl, $this->_allowedSystemUrl);
+		if ($part[0] != 'gii' && Yii::app()->user->isGuest && !in_array($page, $a)) {
+			Yii::log('Login required for '.$page, CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
       Yii::app()->user->loginRequired();
     } else {
 			Yii::log('No login required', CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
