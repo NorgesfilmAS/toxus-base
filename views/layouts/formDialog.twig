@@ -7,7 +7,7 @@
 {% block content %}
 
 <div class="row">
-	<div class="col-sm-6 col-xs-10 msgbox-layout border">
+	<div class="col-sm-8 col-xs-10 msgbox-layout border well">
 		<h2>{% block title %}{{ form.title}} {{ title }} {% endblock %}</h2>
 		{% if errorText or this.model.hasErrors() %}
 		<div class="alert alert-danger">			

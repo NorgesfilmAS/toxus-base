@@ -5,7 +5,7 @@
 		{# <div class="control-group{% if model.getErrors(groupKey) %} error {% endif %}"> #}
 			{% if  groupElement.type != 'hidden' %}
 			{# <span class="view-label" for="id-{{ groupKey }}">{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}:</span>  #}
-			<dt>{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}</dt> 
+			<dt>{% if groupElement.hideLabel != true %}{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}{% endif %}</dt> 
 			{% endif %}
 			
 			<dd>
@@ -54,9 +54,14 @@
 					{{ model.__get(key) }}	
 					{% endif %}
 				{% elseif element.type=='button' or element.type=='dialog'%}	
+					{% if element.showMode |default('view') == 'view' %}
+				<h4>
+					<span id="" class="a-url btn {{element.style|default('btn-primary')}}"{{element.popover|raw}} data-url="{{ element.url }}">{{element.caption}}</span>
+				</h4>	
+					{% endif %}
 				{% elseif element.type=='email' %}
 					{% if model.__get(key) %}
-						<a href="mailto:{{ model.__get(key) }}">{{ model.__get(key) }}</a>
+					<a href="mailto:{{ model.__get(key) }}">{{ model.__get(key) }}</a>
 					{% endif %}	
 				{% elseif element.type=='url' %}						
 						<a href="{{ model.__get(key) }}">{{ model.__get(key) }}</a>	

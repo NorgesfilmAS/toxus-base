@@ -17,7 +17,7 @@ class UpdateAction extends BaseAction
 	public $menuItem = null;			// the menu item to active. Should be a jQuery selector (#menu-agent, or .agent-item)
 	public $scenario = 'update';	// default scenario to use to update the information
 	
-	public function run($id, $mode='view')
+	public function run($id = null, $mode='view')
 	{
 		if (!$this->allowed) {
 			throw new CHttpException(403, Yii::t('app', 'Access denied'));
@@ -55,7 +55,6 @@ class UpdateAction extends BaseAction
 		$params = array_merge(		
 			array(
 				'model' => $this->controller->model,
-	
 				'layout' => $this->pageLayout,
 				'form' => $form,	
 				'mode' => $mode,

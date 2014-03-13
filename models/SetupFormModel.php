@@ -29,7 +29,7 @@ class SetupFormModel extends CFormModel
 		);		
 		$elements = array();
 		foreach (Yii::app()->config->sections() as $sectionName => $section) {
-			if ($section->isEditable) {
+			if (!isset($section['isEditable']) || $section['isEditable']) {
 				if (isset($section['group']) && $group != $section['group']) {
 					$mark = '<a name="'.md5($section['group']).'"></a>';
 					$group = $section['group'];				
@@ -46,11 +46,15 @@ class SetupFormModel extends CFormModel
 					$a = array(
 						'label' => isset($properties['label']) ? $properties['label'] : $varName,	
 					);
+					$a['type'] = $type;
+/*					
 					if ($type == 'text') {
 						$a['type'] = 'text';
 					} elseif ($type == 'boolean') {
 						$a['type'] = 'checkbox';
 					}
+ * 
+ */
 					$a['tooltip'] = isset($properties['info']) ?$properties['info'] : false;
 					$elements[$sectionName.'-'.$varName] = $a;
 				}

@@ -31,8 +31,8 @@ class BaseSetupController extends Controller
 	public function actionLogin()
 	{
 		$params = array('form' => $this->loadForm('loginForm'));
-		if (isset($_POST['Login'])) {
-			$params['password'] = isset($_POST['Login']['password']) ? $_POST['Login']['password'] : '';
+		if (isset($_POST['SetupFormModel'])) {
+			$params['password'] = isset($_POST['SetupFormModel']['password']) ? $_POST['SetupFormModel']['password'] : '';
 			if ($params['password'] <> '') {
 				$s = Yii::app()->config->security['password'];
 				if ($params['password'] == $s) {

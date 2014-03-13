@@ -2,7 +2,8 @@
 
 return array(
 		'title' => Yii::t('config', 'Admin module'),
-		'model' => 'Login',
+		//'model' => 'Login',
+		'model' => 'SetupFormModel',
 		'elements' => array(
 				'password' => array(
 						'type' => 'password',

@@ -110,7 +110,7 @@ class ApplicationConfig extends CComponent
 	 * @var boolean
 	 */
 	
-		public function init()
+	public function init()
 	{
 		$path = YiiBase::getPathOfAlias(self::CONFIG_PATH);	
 		if (!is_dir($path)) {
