@@ -51,7 +51,21 @@ class UpdateAction extends BaseAction
 		} else {
 			$form = $this->form;
 		}	
-		
+
+		$params = array_merge(		
+			array(
+				'model' => $this->controller->model,
+	
+				'layout' => $this->pageLayout,
+				'form' => $form,	
+				'mode' => $mode,
+				'state' => $mode,
+				'menuItem' => $this->menuItem,
+			),
+			$this->params
+		);
+		$this->render($this->view, $params);
+/*		
 		$this->render( $this->view, array(
 				'model' => $this->controller->model,
 	//			'layout' => 'ajaxForm',		// WHY???
@@ -62,6 +76,6 @@ class UpdateAction extends BaseAction
 				'menuItem' => $this->menuItem,
 //				'transactionId' => isset($_GET['transaction']) ? $_GET['transaction'] : 0,
 		));
-		
+*/		
 	}
 }
