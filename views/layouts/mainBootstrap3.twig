@@ -49,11 +49,13 @@
 				</div>
 				</div>
 				
+				{% block extraNav %}
 				<div class="visible-xs">
 				<div class="collapse navbar-collapse bs-item-menu">
 					{{ itemMenu | raw }}
 				</div>
 				</div>		
+				{% endblock %}
 		</div>
 		{% endblock %}
 		

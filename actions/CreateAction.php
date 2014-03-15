@@ -9,7 +9,7 @@ yii::import('toxus.actions.BaseAction');
 
 class CreateAction extends BaseAction
 {
-	public $view = 'form';
+	public $view = 'viewForm';
 	public $form = null;
 	public $modelClass = null;
 	/**
@@ -23,17 +23,29 @@ class CreateAction extends BaseAction
 	{
 		$this->checkRights();
 		$controllerId = $this->controller->id;		
-		if ($this->modelClass == null) {
-			$this->modelClass = ucfirst($controllerId);
-			$modelClass = $this->modelClass;			
+		if ($this->onCreateModel) {
+			call_user_func($this->onCreateModel, 0, $this);
 		} else {
-			$modelClass = $this->modelClass;
-		}			
-		$this->controller->model = new $modelClass($this->scenario);		
+			if ($this->modelClass == null) {
+				$this->modelClass = ucfirst($controllerId);
+				$modelClass = $this->modelClass;			
+			} else {
+				$modelClass = $this->modelClass;
+			}			
+			$this->controller->model = new $modelClass();		
+			$this->controller->model->scenario = $this->scenario;
+		}	
 		
 		if (isset($_POST[$modelClass])) {
 			if ($this->createModel()) {
-				$this->controller->redirect($this->controller->createUrl($controllerId.'/index'));				
+				if ($this->onAfterUpdate) {
+					call_user_func($this->onAfterUpdate, $this->model->id, $this);
+				}
+				if ($this->successUrl) {
+					$this->controller->redirect($this->controller->createUrl($this->successUrl, array('id' => $this->controller->model->id)));					
+				} else {
+					$this->controller->redirect($this->controller->createUrl($controllerId.'/index'));				
+				}	
 			}
 		}
 		if ($this->form == null)
@@ -43,7 +55,10 @@ class CreateAction extends BaseAction
 		
 		$this->controller->render($this->view, array(
 				'model' => $this->controller->model, 
-				'form' => $this->controller->formAdjust($form)));	
+				'form' => $form,
+				'mode' => 'edit',
+		));	
+		
 	}
 	
 	protected function createModel()
