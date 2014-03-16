@@ -16,7 +16,7 @@ class BaseAction extends CAction
 	
 	/**
 	 *
-	 * @var string the class used to create a model
+	 * @var string | null | false the class used to create a model, null => find it from the controller, false => no model to load
 	 */
 	public $modelClass = null;
 	private $_modelName = null;
@@ -54,6 +54,10 @@ class BaseAction extends CAction
 	 */
 	protected function getModelName()
 	{
+		if ($this->_modelName === false) {
+			return false;	// no model for this page
+		}
+		
 		if ($this->_modelName === null) {
 			if ($this->modelClass === null) {
 				$controllerId = $this->controller->id;

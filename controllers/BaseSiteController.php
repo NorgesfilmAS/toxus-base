@@ -29,6 +29,7 @@ class BaseSiteController extends Controller
 			),	
 			'index' => array(
 					'class' => 'toxus.actions.ViewAction',	
+					'modelClass' => false,
 					'view' => 'index',
 			),
 			'maintenance' => array(
