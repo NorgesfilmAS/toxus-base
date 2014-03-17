@@ -51,40 +51,18 @@ class RequireLogin extends CBehavior
 					$page = $parts[0];
 				}
 			}	
-/*			
-			$phpFile = explode('?', $page);
-			if (count($phpFile) == 1) {
-				$phpFile = explode('/', $page, 2);
-			}
-			if (count($phpFile) > 1) {
-				$args = explode('&', $phpFile[1]);
-				$l = 0;				
-				while ($l < count($args)) {
-					if (substr($args[$l], 0,2) == 'r=') {
-						$part = explode('/', substr($args[$l],2));
-						$page = count($part) > 1 ? ($part[0].'/'.$part[1]) : $part[0];
-						break;
-					}	elseif ( strstr($args[$l], '=') == false) {
-						$part = explode('/', $args[$l]);
-						$page = count($part) > 1 ? ($part[0].'/'.$part[1]) : $part[0];
-						break;
-					}
-					$l++;
-				}
-			}
- * 
- */
 			Yii::log('index.php is visible: page changed to '.$page, CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
 		} else {
 			$parts = explode('/', $page);
 			Yii::log('Direct url', CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
 		}
 		$a = array_merge($this->allowedUrl, $this->_allowedSystemUrl);
-		if ($parts[0] != 'gii' && Yii::app()->user->isGuest && !in_array($page, $a)) {
-			Yii::log('Login required for '.$page, CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
-      Yii::app()->user->loginRequired();
-    } else {
-			Yii::log('No login required', CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
+		foreach ($a as $path) {
+			if (fnmatch($path, $page)) {
+				Yii::log('No login required', CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
+				return;
+			}
 		}
+		Yii::log('Login required for '.$page, CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
 	}
 }
