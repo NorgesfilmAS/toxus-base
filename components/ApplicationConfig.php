@@ -273,7 +273,7 @@ class ApplicationConfig extends CComponent
 				$chg = $sec[$varName];
 				if ($org != $chg) {
 					if (isset($result[$sectionName])) {
-						$result[$sectionName][$varName] = $chng;
+						$result[$sectionName][$varName] = $chg;
 					} else {
 						$result[$sectionName] = array($varName => $chg);
 					}
