@@ -1,0 +1,48 @@
+{# 
+	list the articles available
+#}
+{% extends this.viewPath('main') %}
+
+{# 
+  create a list of article on the left
+#}
+{% block menuLeft %}
+	<div class="article-search">
+		<form method="get" class="article-search-form well form-inline">
+			{{ this.te('search') }}			
+			<input type="text" id="id-field" class="article-search-field  form-control input-sm">
+		</form>
+	</div>	
+	<div class="art-result well">
+	</div>
+{% endblock %}
+
+{% block extraNav %}{% endblock %}
+
+{% block content %}
+	<div class="row article-body">
+		{% if this.model %}
+		{% include this.viewPath('view') %}
+		{% endif %}
+	</div>
+{% endblock %}
+
+		
+{% block onReady %}
+	$('.article-search-field').on('keyup', function() {
+		$.ajax( {
+			'url' : "{{ this.createUrl('article/list', {'q' :''}) }}" + $(this).val(),
+			'success' : function(data) {
+					$('.art-result').html(data);			
+			}		
+		});
+	});
+ 	$.ajax({
+		'url' : "{{ this.createUrl('article/list') }}",
+		'success' : function(data) {
+			 $('.art-result').html(data);			
+		}				
+	});
+	
+	{{ parent() }}
+{% endblock %}		

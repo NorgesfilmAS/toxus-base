@@ -1,0 +1,17 @@
+{# 
+  display a article 
+#}
+
+<div class="row">
+
+<div class="col-sm-offset-1 col-sm-9 article-body">
+	<h2>{{ this.model.title }}
+	<div class="pull-right well well-sm">
+			<a class=" btn-edit btn btn-info" href="{{ this.createUrl('article/edit', {'id' : this.model.id, 'mode' : 'edit'}) }}">{{ this.te('edit') }}</a>
+			<a class="btn-new btn btn-info" href="{{ this.createUrl('article/create') }}">{{ this.te('new') }}</a></div>
+	</h2>
+	<div class="article-content">
+	{{ this.model.content | raw }}
+	</div>	
+</div>	
+</div>

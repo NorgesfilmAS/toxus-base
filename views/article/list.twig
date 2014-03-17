@@ -1,0 +1,24 @@
+{# 
+	listing the articles selected
+#}
+
+<div class="article-list">
+{% for article in this.model %}
+<div class="row">
+	<div class="col-sm-12">
+		<a href="#" class="a-link" data-url="{{ this.createUrl('article/v', {'key' : article.key }) }}">{{ article.title }}</a>
+	</div>
+</div>
+{% endfor %}
+</div>
+
+<script type="text/javascript">
+	$('.a-link').on('click', function() {
+		$.ajax({
+			'url' : $(this).data('url'),
+			'success' : function(data) {
+				$('{{ loadingDiv | default('.article-body') }}').html(data);
+			}
+		});		
+	});
+</script>
