@@ -64,6 +64,9 @@ class RequireLogin extends CBehavior
 			}
 		}
 		Yii::log('Login required for '.$page, CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
+		if (!Yii::app()->user->isGuest) {
+			return;
+		}
 		Yii::app()->user->loginRequired();
 	}
 }
