@@ -172,7 +172,7 @@ class MailMessage extends Controller
 		$params['message'] = $msg;
 		$mail = new Mail();
 		$mail->log = var_export($params, true);
-		$mail->message = $msg['body'];
+		$mail->message = isset($msg['body']) ? $msg['body'] : '(no body)';
 		$mail->save();
 	}
 	

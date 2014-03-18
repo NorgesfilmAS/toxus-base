@@ -38,11 +38,7 @@
 
 
 {% block onReady %}
-  {% if menuItem is iterable %}
-		{% for item in menuItem %}
-			$('{{ item }}').addClass('active');
-		{% endfor %}
-  {% elseif menuItem %}
+  {% if menuItem %}
 		$('{{ menuItem }}').addClass('active');
 	{% endif %}	
 		
