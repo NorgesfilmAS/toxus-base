@@ -53,8 +53,13 @@ class RequireLogin extends CBehavior
 			}	
 			Yii::log('index.php is visible: page changed to '.$page, CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
 		} else {
-			$parts = explode('/', $page);
 			Yii::log('Direct url', CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
+		}
+		$parts = explode('/', $page);
+		if (count($parts > 2)) {
+			$page = $parts[0].'/'.$parts[1];
+		} else {
+			$page = implode('/', $parts);
 		}
 		$a = array_merge($this->allowedUrl, $this->_allowedSystemUrl);
 		foreach ($a as $path) {
