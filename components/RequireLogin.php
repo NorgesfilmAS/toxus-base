@@ -36,7 +36,7 @@ class RequireLogin extends CBehavior
 			//   or
 			// page = index.php/site/login?r=laksdfjla
 			$php = substr($page, strlen('index.php') + 1); // makes it: r=site/search or site/login?r=xxx
-			if ($php == '') {
+			if ($php === false || $php == '') {
 				$page = 'site/index';
 			} else {
 				$parts = explode('?', $php);
@@ -64,5 +64,6 @@ class RequireLogin extends CBehavior
 			}
 		}
 		Yii::log('Login required for '.$page, CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
+		Yii::app()->user->loginRequired();
 	}
 }
