@@ -2,6 +2,22 @@
 
 class Util {
 	
+	static $monthNames = array(
+			1 => 'Januari', 
+			2 => 'Februari',
+			3 => 'Maart',
+			4 => 'April', 
+			5 => 'Mei', 
+			6 => 'Juni', 
+			7 => 'Juli', 
+			8 => 'Augustus', 
+			9 => 'September', 
+			10 =>	'Oktober', 
+			11 => 'November', 
+			12 =>	'December'				
+		);
+		
+	
 	/**
 	 *
 	 * Generate a random string for a slug usage
@@ -18,6 +34,8 @@ class Util {
     }
     return $string;
 	}
+	
+	
 	
 	static function unique()
 	{
@@ -248,8 +266,7 @@ class Util {
 			}";
 	}
 	
-	
-	/**
+		/**
 	 * Delete all files and directories in the path. Path will remain valid
 	 * @param string $path
 	 * info from: http://stackoverflow.com/questions/4594180/deleting-all-files-from-a-folder-using-php
