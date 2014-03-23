@@ -2,6 +2,13 @@
 
 class BaseJsonController extends Controller
 {
+	
+	/**
+	 * Allow the information to be send to other origins.
+	 * 
+	 * @var boolean
+	 */
+	protected $allowOtherOrigin = true;
 	/**
 	 * to definitions: 
 	 *	- status: information about the call
@@ -18,6 +25,14 @@ class BaseJsonController extends Controller
 			),
 			'data' => array(),
 	);
+	
+	public function init() {
+		if ($this->allowOtherOrigin) {
+			header('Access-Control-Allow-Origin: *');
+		}	
+		Yii::app()->json;				
+		parent::init();
+	}
 	
 	public function filters()
 	{
@@ -123,4 +138,28 @@ class BaseJsonController extends Controller
 			echo CJSON::encode($this->result);
 		}
 	}
+	
+	public function asData()
+	{
+		echo CJSON::encode($this->result['data']);
+	}
+	
+	
+	/**
+	 * Set the error to this in the data buffer
+	 * 
+	 * @param integer code			the 4xx code
+	 * @param string $message
+	 * @param array $params
+	 */
+	public function raiseError($code, $message, $params = array()) 
+	{
+		$this->success = false;
+		$this->statusCode = $code;
+		$this->message = $message;
+		$this->addErrors($params);
+		$this->asJson();
+		Yii::app()->end();
+	}
+	
 }
