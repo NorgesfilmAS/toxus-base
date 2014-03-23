@@ -3,6 +3,11 @@
 /**
  * handles the basis of the login as a json call
  * 
+ * there are two attributes:
+ *   username
+ *   password
+ * 
+ * 
  */
 Yii::import('toxus.actions.JsonAction');
 
