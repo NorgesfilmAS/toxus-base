@@ -15,6 +15,8 @@ class JsonLoginAction extends JsonAction
 {
 	/**
 	 * function to call after the login succeeds
+	 * function afterLogin($id) 
+	 * where id is the id of user
 	 * @var string / array
 	 */
 	public $afterLogin = false;
@@ -40,7 +42,7 @@ class JsonLoginAction extends JsonAction
 							call_user_func($this->afterLogin);
 						} else {
 							$func = $this->afterLogin;
-							$this->controller->$func();
+							$this->controller->$func($this->controller->model->id);
 						}
 					}
 					$this->controller->asJson();
