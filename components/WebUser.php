@@ -31,7 +31,7 @@ class WebUser extends CWebUser
 				$this->_profile = new UserProfile;
 				$this->_profile->username = 'Guest';
 				$this->_profile->id = 1;
-				$this->_profile->rights_id = UserProfile::GUEST;
+				$this->_profile->rights_id = 1;// UserProfile::GUEST;
 			}	
 		}
 		return $this->_profile;
