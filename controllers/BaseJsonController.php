@@ -22,6 +22,7 @@ class BaseJsonController extends Controller
 					'message' => '',						// message to the user
 					'statuscode' => 200,				// http status codes
 					'errors' => array(),				// a key => error text array
+					'sessionId' => 'undefined',	//
 			),
 			'data' => array(),
 	);
@@ -114,6 +115,10 @@ class BaseJsonController extends Controller
 			}
 		}	
 	}	
+	public function hasErrors()
+	{
+		return $this->result['status']['success'] == false;
+	}
 	
 	public function getData()
 	{
