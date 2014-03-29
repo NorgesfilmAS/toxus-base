@@ -63,8 +63,12 @@ class Jsonize extends CComponent {
 				if (is_numeric($name)) {// simple relation, handle scalar values, activerecord objects and arrays of ActiveRecord
 					$related = $ar->$value;
 					$json[$value]=(is_object($related) || is_array($related))?jsonize($related, true, true, $onlySpecifiedAttributes):$related;
-				} else // nested rels
+				} elseif (is_string($value)) { // TOXUS: rename the field from 'fieldname' => 'json name'
+					$related = $ar->$name;
+					$json[$value]=(is_object($related) || is_array($related))?jsonize($related, true, true, $onlySpecifiedAttributes):$related;
+				} else {	// nested rels 
 					$json[$name]=jsonize($ar->$name, $value, true, $onlySpecifiedAttributes);
+				}	
 			}
 		}
 		return $json;

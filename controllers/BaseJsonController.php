@@ -167,4 +167,18 @@ class BaseJsonController extends Controller
 		Yii::app()->end();
 	}
 	
+	protected function fixBooleans($data) 
+	{
+		$result = array();
+		foreach ($data as $key => $value) {
+			if ($value == 'true') {
+				$result[$key] = 1;				
+			} elseif ($result[$key] == 'false') {
+				$result[$key] = 0;
+			} else {
+				$result[$key] = $value;
+			}
+		}
+		return $result;
+	}
 }
