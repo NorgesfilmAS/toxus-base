@@ -181,4 +181,24 @@ class BaseJsonController extends Controller
 		}
 		return $result;
 	}
+	/**
+	 * changes camel case to unscope
+	 * and 'false' false and 'true' to true
+	 * @param type $datac
+	 */
+	protected function fixPost($data)
+	{
+		$result = array();
+		foreach ($data as $key => $value) {
+			$fieldname = Util::fromCamelCase($key);
+			if ($value == 'true') {
+				$result[$fieldname] = 1;				
+			} elseif ($result[$key] == 'false') {
+				$result[$fieldname] = 0;
+			} else {
+				$result[$fieldname] = $value;
+			}
+		}
+		return $result;
+	}
 }
