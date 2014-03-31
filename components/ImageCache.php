@@ -166,7 +166,7 @@ class ImageCache extends CComponent
 	 */
 	private function openImage($name)
 	{
-		list($source_image_width, $source_image_height, $source_image_type) = getimagesize($name);
+		list($source_image_width, $source_image_height, $source_image_type) = @getimagesize($name);
     switch ($source_image_type) {
 			case IMAGETYPE_GIF:
 				$source_gd_image = imagecreatefromgif($name);
