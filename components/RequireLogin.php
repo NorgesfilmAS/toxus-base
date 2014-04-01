@@ -35,20 +35,25 @@ class RequireLogin extends CBehavior
 			// page = index.php?r=site/search&XDEBUG_SESSION_START=netbeans-xdebug
 			//   or
 			// page = index.php/site/login?r=laksdfjla
-			$php = substr($page, strlen('index.php') + 1); // makes it: r=site/search or site/login?r=xxx
-			if ($php === false || $php == '') {
+			$php = substr($page, strlen('index.php') ); // makes it: r=site/search or site/login?r=xxx
+			if (substr($php, 0,1) == '?') {
 				$page = 'site/index';
 			} else {
-				$parts = explode('?', $php);
-				if (count($parts) > 0 && strlen($parts[0]) == 0) {  // it's ?r=index.php
-					$parts = explode('=', $parts[0]);
-					if (count($parts) > 1) {
-						$page = $parts[1];			// the site/login
-					} else {
-						Yii::log('Failed scanning url: '.$page, CLogger::LEVEL_ERROR, 'security.toxus.compontents.RequireLogin');
+				$php =substr($php, 1);
+				if ($php === false || $php == '') {
+					$page = 'site/index';
+				} else {
+					$parts = explode('?', $php);
+					if (count($parts) > 0 && strlen($parts[0]) == 0) {  // it's ?r=index.php
+						$parts = explode('=', $parts[0]);
+						if (count($parts) > 1) {
+							$page = $parts[1];			// the site/login
+						} else {
+							Yii::log('Failed scanning url: '.$page, CLogger::LEVEL_ERROR, 'security.toxus.compontents.RequireLogin');
+						}
+					} else {				// it's site/login?xx=lasd
+						$page = $parts[0];
 					}
-				} else {				// it's site/login?xx=lasd
-					$page = $parts[0];
 				}
 			}	
 			Yii::log('index.php is visible: page changed to '.$page, CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
