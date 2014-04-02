@@ -76,7 +76,20 @@ class Util {
 		}
 		return $date;
 	}
-	
+
+	/**
+	 * 
+	 * @param date $date
+	 * @return string: yyyy-mm-dd
+	 */
+	static function dateTimeToSqlString($date)
+	{
+		if (is_object($date)) {
+			return $date->format('Y-m-d');
+		}
+		return $date;
+	}
+
 	/**
 	 * convert a string of currency (english notation) into european notation
 	 * @param string $currency number with decimal:'.' thoutand: ','
