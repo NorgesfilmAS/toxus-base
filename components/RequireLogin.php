@@ -61,7 +61,7 @@ class RequireLogin extends CBehavior
 			Yii::log('Direct url', CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
 		}
 		$parts = explode('/', $page);
-		if (count($parts > 2)) {
+		if (count($parts) > 2) {
 			$page = $parts[0].'/'.$parts[1];
 		} else {
 			$page = implode('/', $parts);
