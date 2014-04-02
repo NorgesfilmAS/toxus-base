@@ -9,6 +9,7 @@ class UserIdentityBase extends CUserIdentity
 {
 	const ERROR_SUSPENDED = 3;
 	const ERROR_NOT_ACTIVATED = 4;
+	const ERROR_RANGE_BLOCK = 5;			// out of range
 	
 	protected $_id = null;
 	/**

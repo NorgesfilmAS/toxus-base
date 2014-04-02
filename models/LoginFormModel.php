@@ -154,6 +154,9 @@ class LoginFormModel extends CFormModel
 					case UserIdentityBase::ERROR_SUSPENDED :	
 						$this->addError('username',  Yii::t('app', 'Your account has been suspended.'));
 						break;
+					case UserIdentityBase::ERROR_RANGE_BLOCK :	
+						$this->addError('username',  Yii::t('app', 'You can not login from your location.'));
+						break;
 					default: 
 						$this->addError('password',  Yii::t('app', 'Incorrect username or password.'));
 				}				
