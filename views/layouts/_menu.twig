@@ -19,53 +19,59 @@
 #}
 
 {% macro menuItemBuilder(menu, t, level) %}
+
 	{% for key, menuItem in menu %}	
 		{% if menuItem is iterable %}
-		{% if menuItem.hidden != true %}
-			{% if menuItem.type %}
-			{% else %}
-				<li class="menu-{{ key | replace({' ' : '-'}) |lower }} menu-item{% if menuItem.items %} menu-submenu {% endif %}">	
-				{% if menuItem.url != 'xxxx' %}	
-				<a href="{{ menuItem.url | default('#') | raw }}" data-placement="bottom" {% if menuItem.tooltip %}title="{{ menuItem.tooltip }}"{% endif %}
-					 {% if menuItem.style %} class="{{ menuItem.style }}" {% endif %}
-{# I don't get it and why do we use it					 
-				{% if menuItem.isDropDown %}
-					 class="cls-{{ util.formId(menuItem.label)}}"
-			{{ t.onReady(
-				"$('.cls-" ~util.formId(menuItem.label)~"').on('click', function() {
-					 $('.menu-item').removeClass('active');
-					 $('.menu-"~key | replace({' ' : '-'}) |lower ~"').addClass('active'); });") 
-			}}
-				{% endif %}					 
-#}
-				>
-				{% if menuItem.level %}
-					<span class="menu-item-level-{{ menuItem.level}}">
-				{% endif %}		
-				{% if menuItem.icon is defined %}<span class="{{ menuItem.icon }}"></span>{% endif %}
-				{% if menuItem.label %}{{ menuItem.label |raw }}{% endif %}
-				{% if menuItem.level %}
-					</span>
-				{% endif %}	
-				</a>
+			{% if menuItem.hidden != true %}
+				{% if menuItem.type %}
 				{% else %}
+					<li class="menu-{{ key | replace({' ' : '-'}) |lower }} menu-item{% if menuItem.items %} menu-submenu {% endif %}">	
+					{% if menuItem.url != 'xxxx' %}	
+					<a href="{{ menuItem.url | default('#') | raw }}" data-placement="bottom" {% if menuItem.tooltip %}title="{{ menuItem.tooltip }}"{% endif %}
+						 {% if menuItem.style %} class="{{ menuItem.style }}" {% endif %}
+	{# I don't get it and why do we use it					 
+					{% if menuItem.isDropDown %}
+						 class="cls-{{ util.formId(menuItem.label)}}"
+				{{ t.onReady(
+					"$('.cls-" ~util.formId(menuItem.label)~"').on('click', function() {
+						 $('.menu-item').removeClass('active');
+						 $('.menu-"~key | replace({' ' : '-'}) |lower ~"').addClass('active'); });") 
+				}}
+					{% endif %}					 
+	#}
+					>
 					{% if menuItem.level %}
 						<span class="menu-item-level-{{ menuItem.level}}">
 					{% endif %}		
 					{% if menuItem.icon is defined %}<span class="{{ menuItem.icon }}"></span>{% endif %}
-					{% if menuItem.label %}{{ menuItem.label |raw }}{% endif %}					
+					{% if menuItem.label %}{{ menuItem.label |raw }}{% endif %}
 					{% if menuItem.level %}
 						</span>
+					{% endif %}
+					{% if menuItem.badge %}	
+						<span class="pull-right badge-menu badge {{ menuItem.badgeStyle | default('badge-info')}}" >{{ menuItem.badge }}</span>	
 					{% endif %}	
+					</a>
+						
+					{% else %}
+						YYY
+						{% if menuItem.level %}
+							<span class="menu-item-level-{{ menuItem.level}}">
+						{% endif %}		
+						{% if menuItem.icon is defined %}<span class="{{ menuItem.icon }}"></span>{% endif %}
+						{% if menuItem.label %}{{ menuItem.label |raw }}{% endif %}					
+						{% if menuItem.level %}
+							</span>
+						{% endif %}	
+					{% endif %}
+					{% if menuItem.items | length > 0 %}	
+					<ul class="nav menu-level-{{ level }} menu-submenu menu-level">
+						{{ _self.menuItemBuilder(menuItem.items, t, level + 1) }}
+					</ul>
+					{% endif %}
+					</li>		
 				{% endif %}
-				{% if menuItem.items | length > 0 %}	
-				<ul class="nav menu-level-{{ level }} menu-submenu menu-level">
-					{{ _self.menuItemBuilder(menuItem.items, t, level + 1) }}
-				</ul>
-				{% endif %}
-				</li>		
 			{% endif %}
-		{% endif %}
 		{% endif %}		
 	{% endfor %}
 {% endmacro %}
