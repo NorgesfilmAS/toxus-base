@@ -1354,6 +1354,7 @@ class BaseController extends CController
 	 *   'libOnly' => will only search the vendor definitions
 	 *   'return' => if 1 the no error will be thrown, but false is returned
 	 *   'noExtension' => return the filename without the extension
+	 *   'directory' => the directory to search in default: class name
 	 * 
 	 * @return boolean / string the path to the file relative to application
 	 * @throws CException
@@ -1361,6 +1362,7 @@ class BaseController extends CController
 	public function viewPath($filename, $options = array())
 	{
 		$extension = (isset($options['extension']) ? $options['extension'] : Yii::app()->viewRenderer->fileExtension);
+		$classname = isset($options['directory']) ? $options['directory'] : $this->getId();
 		$filename = $filename.$extension;
 		$vendorRoot = YiiBase::getPathOfAlias($this->vendorViewRoot);
 		$app = Yii::getPathOfAlias('application');
@@ -1375,11 +1377,11 @@ class BaseController extends CController
 		} 
 		if (!(isset($options['libOnly']) && $options['libOnly'])) {
 			$paths = $paths + array(
-				'views/'.$this->getId() => YiiBase::getPathOfAlias('webroot.protected.views').'/'.$this->getId(),
+				'views/'.$classname => YiiBase::getPathOfAlias('webroot.protected.views').'/'.$classname,
 				'views/layouts' => YiiBase::getPathOfAlias('webroot.protected.views').'/layouts',	
 			);		
 		}
-		$paths[$shortVendorRoot.'/'.$this->getId()] = $vendorRoot.'/'.$this->getId();
+		$paths[$shortVendorRoot.'/'.$classname] = $vendorRoot.'/'.$classname;
 		$paths[$shortVendorRoot.'/layouts'] = $vendorRoot.'/layouts';
 		if (($file = $this->pathSearch($filename, $paths)) == false) {
 			if (isset($options['return']) && $options['return']) {

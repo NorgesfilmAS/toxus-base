@@ -171,9 +171,9 @@ class BaseJsonController extends Controller
 	{
 		$result = array();
 		foreach ($data as $key => $value) {
-			if ($value == 'true') {
+			if ($value === 'true') {
 				$result[$key] = 1;				
-			} elseif ($result[$key] == 'false') {
+			} elseif ($result[$key] === 'false') {
 				$result[$key] = 0;
 			} else {
 				$result[$key] = $value;
@@ -191,9 +191,9 @@ class BaseJsonController extends Controller
 		$result = array();
 		foreach ($data as $key => $value) {
 			$fieldname = Util::fromCamelCase($key);
-			if ($value == 'true') {
+			if ($value === 'true') {
 				$result[$fieldname] = 1;				
-			} elseif ($result[$key] == 'false') {
+			} elseif ($result[$key] === 'false') {
 				$result[$fieldname] = 0;
 			} else {
 				$result[$fieldname] = $value;
@@ -228,11 +228,12 @@ class BaseJsonController extends Controller
 				
 				if (is_numeric($key)) {			// 3 => 'name' or 3 => array(...)
 					if (is_string($field)) {		// 3 => fieldnam
+						$keyName = $field; 
 						if (isset($record->$field)) {
-							$value = $record->$field;							
-							$keyName = $field; 
+							$value = $record->$field;														
 						} else {
-							Yii::log('Unknown field: '.$field, CLogger::LEVEL_ERROR, 'toxus.json.controller');
+							Yii::log('Field is unknown of null: '.$field, CLogger::LEVEL_INFO, 'toxus.json.controller');
+							$value = '';
 						}
 					} elseif (is_array($field)) {		// what would that mean??
 						Yii::log('Unknown definition: [number] => array(..)', CLogger::LEVEL_ERROR, 'toxus.json.controller');
@@ -258,7 +259,7 @@ class BaseJsonController extends Controller
 						Yii::log('Unknown key type: '.$key, CLogger::LEVEL_ERROR, 'toxus.json.controller');
 					}		
 				}
-				if (!$value) $value = 0;
+//				if (!$value) $value = 0;
 				if ($useIndex) {
 					$result[$index][$keyName] = $value;
 				} else {
