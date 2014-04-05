@@ -190,6 +190,7 @@ class BaseJsonController extends Controller
 	{
 		$result = array();
 		foreach ($data as $key => $value) {
+			$result[$key] = $value;		// remember the ofiginal value
 			$fieldname = Util::fromCamelCase($key);
 			if ($value === 'true') {
 				$result[$fieldname] = 1;				
