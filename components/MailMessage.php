@@ -1,6 +1,6 @@
 <?php
 
-class MailMessage extends Controller
+class MailMessage extends BaseController
 {
 	
 	public function __construct()
@@ -15,7 +15,8 @@ class MailMessage extends Controller
 	 */
 	public function render($viewName, $data = array(), $return = false)
 	{
-		$viewFile = $this->getViewFile($viewName);
+		$viewFile = YiiBase::getPathOfAlias('application').'/'. $this->viewPath($viewName, array('directory' => 'mail'));
+//		$viewFile = $this->getViewFile($viewName);
 		if(($renderer = Yii::app()->getViewRenderer()) !== null && $renderer->fileExtension === '.'.CFileHelper::getExtension($viewFile))
       $content = $renderer->renderFile($this, $viewFile, $data, true);
     else
@@ -79,7 +80,7 @@ class MailMessage extends Controller
 		$log = array('viewName' => $viewName);
 		
 		$default = array(
-			'from' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'],
+			'from' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'].'>',
 			'to' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'].'>',
 			'subject' => Yii::t('app', 'Message from {name}', array('name' => Yii::app()->params['company'])),
 			'body' => '',	
