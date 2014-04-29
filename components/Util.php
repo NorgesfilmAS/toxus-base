@@ -66,7 +66,7 @@ class Util {
 	{
 		if (substr($date, 0, 4) < '2000') return '';
 		$s = strtotime ($date);
-		return date (formatDef::dateFormatPhp(), $s); //date ('d/m/Y', $s);
+		return date (FormatDef::dateFormatPhp(), $s); //date ('d/m/Y', $s);
 	}
 	
 	static function dateTimeToString($date)
