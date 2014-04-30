@@ -517,3 +517,10 @@ ol.simple_with_animation {
 	background-repeat: no-repeat;
 	background-position: 2px 4px;;
 }
+
+/* twitter typeahead 0.10  cursor position */
+.tt-cursor {
+	color: white;
+	background-color: #5BC0DE;
+	padding-bottom: 2px;
+}

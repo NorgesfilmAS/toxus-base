@@ -116,7 +116,7 @@
 					{{ this.renderPartial(element.view, {'model': this.model.__get(key)}) |raw }}
 				{% elseif element.type== 'password' %}
 					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="password" class="{{ width }} form-control" value="{{ this.model.__get(key) }}"{{ readOnly }}/> 
-				{% elseif element.type=='typeahead' %}
+				{% elseif element.type=='typeahead.old' %}
 					{% if element. associative | default(1) == 1 %}
 {# json of remote should be a[] => array('id' => 123, 'value' => 'John'); #}					
 					<input id="{{ p }}input-{{ key }}" type="text" class="{{ width }}  form-control" value="{{ element.caption }}"{{ readOnly }}/>
@@ -157,6 +157,40 @@ $().ready(function() {
 	});
 })
 ") #}
+					
+					{% elseif element.type=='typeahead' %}
+					<input id="{{ p }}input-{{ key }}" type="text" class="{{ width }}  form-control" value="{{ element.caption }}"{{ readOnly }}/>
+					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="hidden" value="{{ this.model.__get(key) }}">
+	{{ this.registerPackage('typeahead', {'isAjax' : isAjax,'executeAfterLoad' : "
+	var items"~key~" = new Bloodhound({
+		datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+		queryTokenizer: Bloodhound.tokenizers.whitespace,
+		limit: 20,
+		remote: { 
+			url: '"~element.url~"%QUERY',
+			ajax : {
+				beforeSend: function(jqXhr, settings){
+				//	console.log('done');
+					$('#"~p~key~"').val('');
+				}
+			}
+		}	
+  });
+	items"~key~".initialize();
+
+	$('#"~p~"input-"~key~"').typeahead(null, {
+		name: 'items"~key~"',
+		displayKey: '"~element.displayKey | default('value')~"',
+		highlight: true,
+		source: items"~key~".ttAdapter()
+	});
+
+	$('#"~p~"input-"~key~"').bind('typeahead:selected', function(obj, datum, name) {      
+		$('#"~p~key~"').val(datum."~element.idKey | default('id')~");
+	//	console.log(obj,datum,name);
+	});
+
+"}) }}
 						
 				{% elseif element.type=='currency' %}
 					{{ this.registerPackage('currency', {'isAjax' : isAjax}) }}
