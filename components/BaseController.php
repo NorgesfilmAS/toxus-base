@@ -595,7 +595,7 @@ class BaseController extends CController
 				),
 			),
 			'bootstrap-switch' => array(
-				'basePath' => 'toxus.assetsBase.bootstrap-switch.build',
+				'basePath' => 'toxus.assetsBase.bootstrap-switch.dist',
 				'css' => array(
 					'css/bootstrap3/bootstrap-switch.css',
 				),
