@@ -17,3 +17,6 @@
 [submodule "assetsBase/bootstrap-switch"]
 	path = assetsBase/bootstrap-switch
 	url = https://github.com/nostalgiaz/bootstrap-switch.git
+[submodule "extensions/postmark/api"]
+	path = extensions/postmark/api
+	url = https://github.com/balaclark/postmark-yii.git

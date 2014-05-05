@@ -1,6 +1,18 @@
 <?php
 /**
  * generate the polling definition on disk
+ * version 1.0 - april 2014
+ * 
+ * 
+ * Copyright 2014, Jaap van der Kreeft, Toxus, www.toxus.nl
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @author Jaap van der Kreeft (jaap@toxus.nl) at toxus (www.toxus.nl)
+ * @copyright Copyright 2013 - 2014, Jaap van der Kreeft, Toxus, www.toxus.nl
+ * @version 0.1.0
+ * @license http://www.opensource.org/licenses/mit-license.php The MIT License
+ * 
  * 
  * example:
  *  to start a sender:
@@ -8,9 +20,9 @@
  *  this returns a path to call to get the latest news from the server
  * 
  *  to send a message call
- *    $this->sendMessage('invite.new', '1234', array('message' => 'Will you come to the party'));
+ *    $this->notifyMessage('invite.new', '1234', array('message' => 'Will you come to the party'));
  *  or to send to multiple clients
- *    $this->sendMessage('invite.new', array('1234', '222'), array('message' => 'Will you all come to my party'));  
+ *    $this->notifyMessage('invite.new', array('1234', '222'), array('message' => 'Will you all come to my party'));  
  * 
  *  the message deliverd is:
  *    array('event' => 'invite.new', 
@@ -80,16 +92,15 @@ class PullMessageBehavior extends CBehavior
 	 * @param array $data the array to send to the user 
 	 * @param array method the methode ($this, getData) to call to get the json information
 	 */
-	public function sendMessage($message, $users, $data, $method = null)
+	public function notifyMessage($message, $users, $data, $method = null)
 	{
 		if (!is_array($users))  {
 			$users = array($users);
 		}	
 
 		foreach ($users as $userId) {
-			
 			$userDir = $userDir = $this->rootDir().$userId;
-			if (is_dir($userDir)) {
+			if (is_dir($userDir)) { // user is not globaly registered so nothing to do
 				if ($method) {	// get the array
 					$data = call_user_func($method);
 				}
