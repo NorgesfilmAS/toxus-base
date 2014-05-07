@@ -101,7 +101,7 @@
 					{{ this.registerPackage('inputmask',{'isAjax' : isAjax , 'executeAfterLoad': 	
 						'$("#'~p~key~'").inputmask({"mask": "'~element.mask~'"})'}) }}
 				{% elseif element.type=='date' %}						
-					<div class="input-prepend date">						
+					<div class="input-prepend date">							
 						<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" size="16" type="date" value="{{ this.model.__get(key) }}" class=" form-control input-date" data-date-format="{{ format.dateFormat() | raw }}" {% if element.calendarWeeks %}data-date-calendar-weeks="true"{% endif %}{{ readOnly }}>						
 					</div>	
 					{{ this.registerPackage('datepicker', {'isAjax' : isAjax, 'executeAfterLoad':
@@ -159,8 +159,12 @@ $().ready(function() {
 ") #}
 					
 					{% elseif element.type=='typeahead' %}
+					{% if element. associative | default(1) == 1 %}											
 					<input id="{{ p }}input-{{ key }}" type="text" class="{{ width }}  form-control" value="{{ element.caption }}"{{ readOnly }}/>
 					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="hidden" value="{{ this.model.__get(key) }}">
+					{% else %}
+					<input id="{{ p }}input-{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }}  form-control" value="{{ this.model.__get(key) }}"{{ readOnly }}/>
+					{% endif %}
 	{{ this.registerPackage('typeahead', {'isAjax' : isAjax,'executeAfterLoad' : "
 	var items"~key~" = new Bloodhound({
 		datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
@@ -223,19 +227,19 @@ $().ready(function() {
 					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="email" class="{{ width }} form-control" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"{{ readOnly }}/> 				
 				{% elseif element.type == 'raw' %}
 					{{ element.value | raw }}
-				{% else %}	
+				{% else %}
 					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }} form-control"{{ readOnly }} value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"/> 
 				{% endif %}
 				
 				{% if element.width %}
 				</div>	
 				{% endif %}
-					
 			  {% endfor %}	
 			</div>	
 			
 			
 		</div>
+		
 		{% endif %}
 		{% endfor %}	
 		{#	
