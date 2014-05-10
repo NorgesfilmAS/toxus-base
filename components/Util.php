@@ -64,8 +64,12 @@ class Util {
 
 	static function dateDisplay($date)
 	{
-		if (substr($date, 0, 4) < '2000') return '';
-		$s = strtotime ($date);
+		if (is_string($date)) {
+			if (substr($date, 0, 4) < '2000') return '';
+			$s = strtotime ($date);
+		} else {
+			$s = $date;
+		}	
 		return date (FormatDef::dateFormatPhp(), $s); //date ('d/m/Y', $s);
 	}
 	
@@ -376,8 +380,8 @@ class Util {
 								unset($dt[$k]);
 						}
 				}
-				if( !checkdate($dt['month'], $dt['day'], $dt['year']) ){
-						$dt['error_count'] = 1;
+				if(isset($dt['year']) && !checkdate($dt['month'], $dt['day'], $dt['year']) ){
+					$dt['error_count'] = 1;
 				}
 		}
 		else {
