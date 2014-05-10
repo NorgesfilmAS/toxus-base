@@ -106,35 +106,37 @@ class PullMessageBehavior extends CBehavior
 				}
 				$jsonFragment = CJSON::encode($data);
 				$instances = glob($userDir.'/*.json', GLOB_BRACE);
-				foreach ($instances as $filename) {
-					// $filename = $inst.'.json'; 
-				
-					$fo = fopen($filename, 'rw');
-					if (!flock($fo, LOCK_EX)) {
-						throw new CException(Yii::t('app','Can get a lock on file {filename}', array('{filename}' => $filename)));
-					}
-					$content = file_get_contents($filename);
-					
-					if ($content == '[]') {
-						$data = array();
-					} else {
-						try {
-							$data = CJSON::decode($content);
-						}catch (Exception $e ){
+				if (is_array($instances)) {
+					foreach ($instances as $filename) {
+						// $filename = $inst.'.json'; 
+
+						$fo = fopen($filename, 'rw');
+						if (!flock($fo, LOCK_EX)) {
+							throw new CException(Yii::t('app','Can get a lock on file {filename}', array('{filename}' => $filename)));
+						}
+						$content = file_get_contents($filename);
+
+						if ($content == '[]') {
 							$data = array();
-						}	
+						} else {
+							try {
+								$data = CJSON::decode($content);
+							}catch (Exception $e ){
+								$data = array();
+							}	
+						}
+
+						$data[] = array(
+							'event' => $message,
+							'data'	=> $jsonFragment
+						);
+						file_put_contents($filename, CJSON::encode($data));
+
+						flock($fo, LOCK_UN);
+						fclose($fo);			
+
 					}
-					
-					$data[] = array(
-						'event' => $message,
-						'data'	=> $jsonFragment
-					);
-					file_put_contents($filename, CJSON::encode($data));
-					
-					flock($fo, LOCK_UN);
-					fclose($fo);			
-  
-				}
+				}	
 			}
 			 
 		}
