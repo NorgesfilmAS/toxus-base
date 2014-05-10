@@ -118,7 +118,11 @@ class PullMessageBehavior extends CBehavior
 					if ($content == '[]') {
 						$data = array();
 					} else {
-						$data = CJSON::decode($content);
+						try {
+							$data = CJSON::decode($content);
+						}catch (Exception $e ){
+							$data = array();
+						}	
 					}
 					
 					$data[] = array(
