@@ -671,6 +671,18 @@ class Util {
 		}
 		return implode('_', $ret);
 	}
+	
+	/**
+	 * change the file extension
+	 * 
+	 * @param string $filename
+	 * @param string $newExtension extension without the .
+	 * @return string
+	 */
+	static function fileChangeExtension($filename, $newExtension) {
+    $info = pathinfo($filename);
+    return $info['dirname'].'/'. $info['filename'] . '.' . $newExtension;
+	}
 }
 
 ?>

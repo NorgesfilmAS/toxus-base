@@ -104,37 +104,54 @@ class PullMessageBehavior extends CBehavior
 				if ($method) {	// get the array
 					$data = call_user_func($method);
 				}
-				$jsonFragment = CJSON::encode($data);
 				$instances = glob($userDir.'/*.json', GLOB_BRACE);
 				if (is_array($instances)) {
 					foreach ($instances as $filename) {
-						// $filename = $inst.'.json'; 
-
 						$fo = fopen($filename, 'rw');
 						if (!flock($fo, LOCK_EX)) {
 							throw new CException(Yii::t('app','Can get a lock on file {filename}', array('{filename}' => $filename)));
 						}
-						$content = file_get_contents($filename);
+						try {
+							// should check then timestamp that it has been read the last x minutes
+							// otherwise remove the file and directory
+							$timeStampFile = Util::fileChangeExtension($filename, 'timestamp');
+							if (!file_exists($timeStampFile)) {
+								Yii::log('The timestamp: '.$timeStampFile.' does not exist, creation', CLogger::LEVEL_WARNING, 'pullmessage.notifyMessage');
+								file_put_contents($timeStampFile, time());	// the expire
+							} else {
+								$timestamp = file_get_contents($timeStampFile);
+								$t = Yii::app()->config->polling['unreadTimeout'];
+								if (time() - $timestamp > $t)  {	// time has passed
+									unlink($timeStampFile);
+									flock($fo, LOCK_UN);
+									fclose($fo);	
+									unlink($filename);
+									continue;
+								}
+							}
+							
+							$content = file_get_contents($filename);
 
-						if ($content == '[]') {
-							$data = array();
-						} else {
-							try {
-								$data = CJSON::decode($content);
-							}catch (Exception $e ){
-								$data = array();
-							}	
-						}
+							if ($content == '[]') {
+								$store = array();
+							} else {
+								try {
+									$store = CJSON::decode($content);
+								} catch (Exception $e ){
+									$store[] = array();
+								}	
+							}
 
-						$data[] = array(
-							'event' => $message,
-							'data'	=> $jsonFragment
-						);
-						file_put_contents($filename, CJSON::encode($data));
-
+							$store[] = array(			// push a new message
+								'event' => $message,
+								'timestamp' => time(),
+								'data'	=> $data
+							);
+							file_put_contents($filename, CJSON::encode($store));
+						} catch (Exception $e) 
+						{};
 						flock($fo, LOCK_UN);
-						fclose($fo);			
-
+						fclose($fo);	
 					}
 				}	
 			}
