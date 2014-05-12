@@ -65,6 +65,12 @@ class BaseAction extends CAction
 	 * 
 	 * @return string
 	 */
+	/**
+	 * the menu item to show
+	 * @var string
+	 */
+	public $menuItem = null;			
+	
 	protected function getModelName()
 	{
 		if ($this->_modelName === false) {
