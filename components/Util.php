@@ -648,7 +648,7 @@ class Util {
 	 */
 	static function dateAndTime2Timestamp($date, $time = null)
 	{
-		if ($time) {
+		if ($time && $time !== ':00') {
 			if (strlen($time) == 5) {
 				$time .= ':01';
 			}
