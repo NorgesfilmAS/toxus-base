@@ -80,7 +80,7 @@
 		</div>
 		{% set colVis = pageLayout | default('content') %}
 {# there are two basic ways to show the page, with of without the nav #}
-		<div class="container bs-container">
+		<div class="container bs-container {% block appClass %}{% endblock %}">
 			<div class="row">			
 	{% if colVis == 'full' %}
 				<div class="col-sm-12" role="main">
