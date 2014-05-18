@@ -29,6 +29,7 @@ class BaseController extends CController
 	public $_defaultStyle = '';
 	public $_pageStyle = 'default'; // should come from $model->page_style	
 	public $logPageSpeed = true;    // if true the page generation speed is stored 
+	public $logPage = true;
 	
 	private $_formElements;
 	protected $_assetBaseUrl;
@@ -1317,7 +1318,9 @@ class BaseController extends CController
 	
 	public function writeTime()
 	{
-		Yii::app()->pageLog->writeExecutionTime($this->logPageSpeed, $this);
+		if ($this->logPage) {
+			Yii::app()->pageLog->writeExecutionTime($this->logPageSpeed, $this);
+		}	
 	}	
 	
 	public function getLogPage()
@@ -1326,7 +1329,9 @@ class BaseController extends CController
 	}
 	public function setLogPage($value)
 	{
-		Yii::app()->pageLog->log->write = $value;
+		if ($this->logPage) {
+			Yii::app()->pageLog->log->write = $value;
+		}	
 	}
 	
 	/**
