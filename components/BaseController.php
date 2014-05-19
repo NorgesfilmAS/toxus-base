@@ -375,7 +375,8 @@ class BaseController extends CController
 				'basePath' => 'toxus.assetsBase.core',		
 				'js' => array(	
 					CClientScript::POS_HEAD => array(
-										'js/modernizr.custom.87724.js'
+//										'js/modernizr.custom.87724.js'
+						'js/modernizr.js'
 					),																	
 					CClientScript::POS_END => array(
 							'js/respond.min.js',

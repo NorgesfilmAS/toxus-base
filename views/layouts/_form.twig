@@ -105,10 +105,12 @@
 						<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" size="16" type="date" value="{{ this.model.__get(key) }}" class=" form-control input-date" data-date-format="{{ format.dateFormat() | raw }}" {% if element.calendarWeeks %}data-date-calendar-weeks="true"{% endif %}{{ readOnly }}>						
 					</div>	
 					{{ this.registerPackage('datepicker', {'isAjax' : isAjax, 'executeAfterLoad':
-"$('.input-date').datepicker({" ~		
-	"language : '"~App.config.language~"',
-	autoclose: true
-});
+"if (!window.Modernizr.inputtypes.date) { /* bugfix Chrome buildin picker */
+	$('.input-date').datepicker({" ~		
+		"language : '"~App.config.language~"',
+		autoclose: true
+	});
+}
 "}) }}
 				{% elseif element.type=='hidden' %}
 					<input type="hidden" id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" value="{{ this.model.__get(key) }}" />	
