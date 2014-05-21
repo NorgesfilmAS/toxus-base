@@ -23,7 +23,7 @@
  * @property string $state
  *
  */
-abstract class BaseDebugInfo extends GxActiveRecord {
+abstract class BaseDebugInfo extends TwigActiveRecord {
 
 	public static function model($className=__CLASS__) {
 		return parent::model($className);
