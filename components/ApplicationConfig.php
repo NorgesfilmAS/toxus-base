@@ -110,7 +110,12 @@ class ApplicationConfig extends CComponent
 	 * @var boolean
 	 */
 	
-	public function init()
+	/**
+	 * opens the system configuration with out merging the setup specific infor
+	 *
+	 * @returns array the arry definition of the setup  
+	 */
+	private function openConfig() 
 	{
 		$path = YiiBase::getPathOfAlias(self::CONFIG_PATH);	
 		if (!is_dir($path)) {
@@ -125,7 +130,14 @@ class ApplicationConfig extends CComponent
 			throw new CException(Yii::t('config', 'The system setup file ({filename}) does not exist.',
 							array('{filename}' => $systemSetupPath)));
 		}
-		$this->_config = require($systemSetupPath);
+		return require($systemSetupPath);
+	}
+	
+	public function init()
+	{
+		// load the system wide config
+		
+		$this->_config = $this->openConfig();
 		// check for any 'bound' parameters
 		foreach ($this->_config as $section => $properties) {
 			foreach ($properties['items'] as $key => $property) {
@@ -261,12 +273,15 @@ class ApplicationConfig extends CComponent
 	 */
 	public function save($configId)
 	{
+		/*
 		$originalConfig = new ApplicationConfig();
 		$originalConfig->configuration = $this->configuration;
 		$originalConfig->init();
+		*/
+		$originalConfig = $this->openConfig();
 		
 		$result = array();
-		foreach ($originalConfig->sections() as $sectionName => $section) {
+		foreach ($originalConfig as $sectionName => $section) {
 			$sec = $this->$sectionName;
 			foreach ($section['items'] as $varName => $properties) {			
 				$org = $properties['value'];
