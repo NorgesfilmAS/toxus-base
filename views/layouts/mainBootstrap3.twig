@@ -171,7 +171,7 @@
 				{% block footerCredits %}
 				<div class="container">
 					<ul class="footer-links text-center">
-						{% block copyright %}<li><a href="{{ this.createUrl('site/copyright') }}"> &copy; 2013 -2014 Toxus</a> | </li>{% endblock %}
+						{% block copyright %}<li><a href="{{ this.createUrl('article/index', {'copyright' :'' }) }}"> &copy; 2013 -2014 Toxus</a> | </li>{% endblock %}
 						{% block sitemap %}<li><a href="{{ this.createUrl('site/sitemap') }}">{{ this.t('site map') }}</a> | </li>{% endblock %}
 						{% block privacy %}<li><a href="{{ this.createUrl('site/privacy') }}">{{ this.t('privacy') }}</a></li>{% endblock %}
 						<li class="version">version: {% block version %}{{ this.version }}3{% endblock %}</li>

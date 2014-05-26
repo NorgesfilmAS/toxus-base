@@ -16,6 +16,10 @@ return array(
 				), 
 				'content' => array(
 					'type' => 'html'	
+				),
+				'footerOrder' => array(
+					'type' => 'dropdown',
+					'items' => $this->model->footerOrderOptions()	
 				)
 		),
 		'buttons' => 'default'

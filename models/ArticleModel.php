@@ -10,7 +10,8 @@
  *      title,
  *      content,
  *      className,
- *      groups 
+ *      groups,
+ *			footerOrder     - integer 0: do not show, 1 ... 1000 show in footer, 1 first, 2 second, etc 
  * 
  * the id of the article is guid of 20. Should be unique
  */
@@ -27,6 +28,7 @@ class ArticleModel extends CModel
 		'showGeneral' => 'Show general',
 		'showModerator' => 'Show moderators',	
 		'showAdmin' => 'Show admin',
+		'footerOrder' => 'Footer order',	
 	);
 	
 	private $_d = false;
@@ -44,6 +46,7 @@ class ArticleModel extends CModel
 	public function rules() {
 		return array(
 			array('title,key', 'required'),
+			array('footerOrder', 'numerical', 'integerOnly'=>true),
 			array('content, className,showGeneral, showModerators,showAdmin', 'safe')
 		);		
 	}
@@ -193,6 +196,26 @@ class ArticleModel extends CModel
 	}
 	
 	/**
+	 * List all the Article shown in the footer
+	 * 
+	 * @return array of ArticleModel
+	 */
+	public function findFooterArticles($limit = 5) 
+	{
+		$result = array();
+		foreach ($this->articles as $key => $article) {
+			if (isset($article['footerOrder']) && $article['footerOrder'] > 0) {
+				$result[$article['footerOrder']] = array(
+					'key' => 	$article['key'],
+					'title' => $article['title'],
+				);		
+			}
+		}
+		ksort($result);
+		return array_slice($result, 0, $limit);
+	}
+	
+	/**
 	 * save the information into one of the two json 
 	 * if isDev = true:   config/articles.json otherwise in config/setup/article.json
 	 * 
@@ -254,5 +277,17 @@ class ArticleModel extends CModel
 	public function getIsNewRecord()
 	{
 		return $this->_isNewRecord;
+	}
+	
+	public function footerOrderOptions()
+	{
+		return array(
+			'0' => '(do not show)',
+			'1' => 'first',
+			'2' => 'second',
+			'3' => 'third',
+			'4' => 'fourth',
+			'5' => 'fifths',
+		);
 	}
 }

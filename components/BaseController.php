@@ -1648,5 +1648,14 @@ class BaseController extends CController
 		return $btn;
 	}
 	
+	/**
+	 * List the article to be shown in the footer
+	 * 
+	 * @return array of article => key
+	 */
+	public function getFooterArticles() {
+		$ret = new ArticleModel();
+		return $ret->findFooterArticles();
+	}
 	
 }

@@ -17,6 +17,11 @@ return array(
 					'type' => 'panel',
 					'readOnly' => false,	
 					'width' => 'col-sm-4'							
+				),	
+				'footerOrder' => array(
+					'type' => 'dropdown',
+					'items' => $this->model->footerOrderOptions(),	
+					'width' => 'col-sm-3'							
 				)	
 			),		
 		),			
