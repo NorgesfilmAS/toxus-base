@@ -524,3 +524,7 @@ ol.simple_with_animation {
 	background-color: #5BC0DE;
 	padding-bottom: 2px;
 }
+/* article layout */
+.article-content td {
+	vertical-align: top;
+}
