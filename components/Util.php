@@ -648,8 +648,9 @@ class Util {
 	 */
 	static function dateAndTime2Timestamp($date, $time = null)
 	{
+		// fix if there are no time given
 		if ($time && $time !== ':00') {
-			if (strlen($time) == 5) {
+			if (strlen($time) == 5) {  // should include the seconds
 				$time .= ':01';
 			}
 			$s = $date.' '.$time;			
@@ -658,7 +659,6 @@ class Util {
 		}	
 		$d = DateTime::createFromFormat('Y-m-d H:i:s', $s);
 		return date_timestamp_get($d);
-			
 	}
 	
 	// http://stackoverflow.com/questions/1993721/how-to-convert-camelcase-to-camel-case
