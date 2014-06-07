@@ -270,6 +270,11 @@ class BaseJsonController extends Controller
 						Yii::log('Unknown key type: '.$key, CLogger::LEVEL_ERROR, 'toxus.json.controller');
 					}		
 				}
+				if (is_numeric($value)) {
+					$value = $value+0;
+				} elseif (is_bool($value)) {
+					$value = $value ? 1 : 0;
+				}
 //				if (!$value) $value = 0;
 				if ($useIndex) {
 					$result[$index][$keyName] = $value;
