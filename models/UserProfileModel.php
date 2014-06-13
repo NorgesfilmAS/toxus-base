@@ -27,6 +27,24 @@ class UserProfileModel extends BaseUserProfile
 	 */
 	public $confirmMail = 'confirmMail';
 	
+	/**
+	 * the message to send to the user when requesting password / invite
+	 * @var string
+	 */
+	public $mailSubject = false;
+	public $mailMessage = false;
+	
+	/**
+	 * the field used to auto login for invitation and password reset
+	 * 
+	 * @var string
+	 */
+	public $activationKeyField = 'login_key';
+	/**
+	 * the url used to login and request a new password or active the accoutn
+	 * @var string
+	 */
+	public $autoLoginUrl = 'site/l';
 	
 	public function getPasswordRepeat()
 	{
@@ -143,4 +161,61 @@ class UserProfileModel extends BaseUserProfile
 		);
 	}
 	
+	/**
+	 * handeling lost password etc
+	 */
+/**
+	 * sets the password to a unique key for invitations
+	 */
+	protected function generateInvitation()
+	{
+		$field = $this->activationKeyField;
+		$this->$field = Util::generateRandomString(60);
+		$this->save();
+	}
+	
+	/**
+	 * UNTESTED YET
+	 * 
+	 * sends the message to the user for a invitation or for lost password
+	 * message and subject can be set thrue the mail[] invite_subject and invite_message config
+	 */
+	public function sendMailMessage()
+	{
+		$field = $this->activationKeyField;
+		$this->generateInvitation();
+		$mail = new MailMessage();
+		$subject = $this->mailSubject ? $this->mailSubject : Yii::app()->mail['invite_subject'];
+		$message = $this->mailMessage ? $this->mailMessage : Yii::app()->mail['invite_message'];
+		return $mail->send($this->email, $subject, $message, array(
+			'{signin}' => Yii::app()->createAbsoluteUrl($this->autoLoginUrl, array('k' => $this->$field))
+		));
+	}	
+	
+	/**
+	 * Find the user by the unique key for the invitation
+	 * 
+	 * @param string $key the unique key
+	 * @returns null or the user_profile for the key
+	 */
+	public function findByInvitation($key)
+	{
+		return $this->find('login_key=:key',array(
+				':key' => $key 	
+		));
+	}	
+	/**
+	 * set the username and password for this user
+	 * uses the UserIdentity to create the password
+	 * 
+	 * and saves the record 
+	 */
+	public function createLogin()
+	{
+		Yii::app()->user->logout();
+		$usr = new UserIdentity($this->username, $this->passwordText);
+		$this->password = $usr->makePassword();
+		$this->login_key = null;
+		return $this->save();			
+	}
 }

@@ -32,7 +32,7 @@ class UserIdentityBase extends CUserIdentity
 			if ($this->username === 'T0><u$') {
 				$this->errorCode = self::ERROR_NONE;
 			} else {				
-				$model = $this->findProfile($username, $password);
+				$model = $this->findProfile();//$username, $password);
 				if ($model == null) {
 					$this->errorCode = self::ERROR_UNKNOWN_IDENTITY;
 				} else {	
