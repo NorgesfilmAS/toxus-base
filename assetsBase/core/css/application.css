@@ -8,6 +8,7 @@
 
 .bs-container {
 	min-height: 500px;
+	padding-top: 38px;
 }
 
 .bs-header {
