@@ -685,6 +685,23 @@ class Util {
     $info = pathinfo($filename);
     return $info['dirname'].'/'. $info['filename'] . '.' . $newExtension;
 	}
+	
+	static function rows2models($rows, $className, $order = false)
+	{
+		$result = array();
+		foreach ($rows as $row) {
+			$a = $className::model()->findByPk($row['id']);
+			if ($order) {
+				$result[$a->$order] = $a;
+			} else {
+				$result[$row['id']] = $a;
+			}
+		}
+		if ($order) {
+			ksort($result);
+		}
+		return $result;
+	}
 }
 
 ?>
