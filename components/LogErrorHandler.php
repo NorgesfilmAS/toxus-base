@@ -17,7 +17,16 @@
 
 class LogErrorHandler extends CErrorHandler 
 {
-	public $logUrl = 'http://www.toxus.nl/api/debug/log'; // false;
+	/*
+	 * log to a fixed url (an other server)
+	 */
+	public $logUrl = false; // 'http://www.toxus.nl/api/debug/log'; // false;
+	/**
+	 * log to an url on the same server
+	 * @var string
+	 */
+	public $logAction = 'site/log';	
+	
 	public $appIdent = false;				// the application running
 	public $deviceIdent = false;		// the machine running on
 	public $sessionIdent = false;		// session for user
@@ -26,40 +35,52 @@ class LogErrorHandler extends CErrorHandler
 	public function handle($event)
 	{
 		parent::handle($event);		// must be first because it analyses the stacktrace
-		
-		if ($this->logUrl) {	// logging is active
-			Yii::import('toxus.extensions.EHttpClient.*' );
+		Yii::import('toxus.extensions.EHttpClient.*' );		
+		if ($this->logUrl) {
 			$client = new EHttpClient($this->absoluteUrl($this->logUrl), array(
 				'maxredirects' => 0,
 				'timeout'	=> 30,
-			));
-			if ($event instanceof CExceptionEvent) {
-				$err = $this->exception;
-			} else { // CErrorEvent
-				$err = $this->error;
-			}	
-			$stack = $err['traces'];
-			$state = array(
-				'file' => $err['file'],
-				'line' => $err['line']	
-			);			
-			$r = Yii::app()->request;
-			$reply = array(
-				'appId' => $this->appIdent,
-				'deviceId' => $this->deviceIdent ? $this->deviceIdent : $r->userHostAddress,
-				'sessionId' => $this->sessionIdent ? $this->sessionIdent : '(none)',
-				'userId' => $this->userId ? $this->userId : Yii::app()->user->id,
-				'typeId' => 0, //$err['type'],
-				'errorUrl' => $r->requestUri,
-				'errorMessage' => $event->message,
-				'cause' => ($event instanceof CExceptionEvent) ? 'exception' : 'error',
-				'stackTrace' => $stack,
-				'state' => $state,	
-			);
-			$response = $client->setRawData(CJSON::encode($reply, 'application/json'))->request('POST');
-			if ($response->isSuccessful()) {
-				$stack = $event;
-			}
+			));			
+		} elseif ($this->logAction && Yii::app()->controller) {
+			$client = new EHttpClient(Yii::app()->controller->createAbsoluteUrl($this->logAction), array(
+				'maxredirects' => 0,
+				'timeout'	=> 30,
+			));						
+		} else { // logging is off
+			return;
+		}
+
+		if ($event instanceof CExceptionEvent) {
+			$e = $event->exception;
+			$err['traces'] = $e->getTrace();
+			$err['file'] = $e->getFile();
+			$err['line'] = $e->getLine(); 
+			$err['message'] = $e->getMessage();
+		} else { // CErrorEvent
+			$err = $this->error;
+			$err['message'] = $event->message;
+		}	
+		$stack = $err['traces'];
+		$state = array(
+			'file' => $err['file'],
+			'line' => $err['line']	
+		);			
+		$r = Yii::app()->request;
+		$reply = array(
+			'appId' => $this->appIdent,
+			'deviceId' => $this->deviceIdent ? $this->deviceIdent : $r->userHostAddress,
+			'sessionId' => $this->sessionIdent ? $this->sessionIdent : '(none)',
+			'userId' => $this->userId ? $this->userId : Yii::app()->user->id,
+			'typeId' => 0, //$err['type'],
+			'errorUrl' => $r->requestUri,
+			'errorMessage' => $err['message'],
+			'cause' => ($event instanceof CExceptionEvent) ? 'exception' : 'error',
+			'stackTrace' => $stack,
+			'state' => $state,	
+		);
+		$response = $client->setRawData(CJSON::encode($reply, 'application/json'))->request('POST');
+		if ($response->isSuccessful()) {
+			$stack = $event;
 		}
 	}
 	

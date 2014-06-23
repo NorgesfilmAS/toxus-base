@@ -19,7 +19,7 @@ class BaseDebugController extends Controller
 	 * The class to use to write the debug information
 	 * 
 	 */
-	protected $modelClass = 'DebugInfoModel';
+
 	
 	public function init() {
 		if ($this->allowOtherOrigin) {
