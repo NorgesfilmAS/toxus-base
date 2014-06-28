@@ -17,15 +17,18 @@ class JsonGenerate extends CComponent
 		if (is_object($data)) {
 			$useIndex = false;
 			$data = array($data);
+		} elseif (empty($data)) {	
+			return false;
 		} else {	
 			$useIndex = true;
 		}
+
 		foreach ($data as $index => $record) {			
 			if ($useIndex) {
 				$result[$index] = array();
 			}
 			foreach ($format as $key => $field) {
-				
+
 				if (is_numeric($key)) {			// 3 => 'name' or 3 => array(...)
 					if (is_string($field)) {		// 3 => fieldnam
 						$keyName = $field; 
@@ -51,7 +54,9 @@ class JsonGenerate extends CComponent
 					} elseif (is_array($field)) { // user => array('id', 'username')
 						if (isset($record->$key)) {
 							$keyName = $key;
-							$value = $this->run($record->$key, $field);
+							if (($value = $this->run($record->$key, $field)) === false) {
+								continue; // skip the processing of this one
+							};
 						} else {
 							Yii::log('Unknown relation: '.$field, CLogger::LEVEL_ERROR, 'toxus.json.generate');
 						} 
