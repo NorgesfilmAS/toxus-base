@@ -34,8 +34,20 @@ class Util {
     }
     return $string;
 	}
-	
-	
+	/**
+	 * generates a: 
+	 *	cabc5c45-3e63-896d-cfdb-d60041b1fc3 
+	 * string
+	 */
+	static function generateGuid()
+	{
+		$s = Util::generateRandomString(8).
+						'-'.Util::generateRandomString(4).
+						'-'.Util::generateRandomString(4).
+						'-'.Util::generateRandomString(4).
+						'-'.Util::generateRandomString(8);
+		return strtolower($s);
+	}
 	
 	static function unique()
 	{
