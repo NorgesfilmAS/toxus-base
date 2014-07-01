@@ -273,6 +273,9 @@
  .chosen-single > span {
 	 margin-top: -2px;
  }
+ .chosen-choices input {
+	 height: 20px;
+ }
  /*end chosen fix */
 
  /**
