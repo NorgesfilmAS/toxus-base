@@ -46,6 +46,13 @@ class UserProfileModel extends BaseUserProfile
 	 */
 	public $autoLoginUrl = 'site/l';
 	
+	/**
+	 * the class to log the mail messages. If false message not logged
+	 * 
+	 * @var string|bool name of the model class
+	 */
+	protected $mailLogModel = 'MailModel';
+	
 	public function getPasswordRepeat()
 	{
 		return $this->_passwordRepeat;
@@ -137,7 +144,9 @@ class UserProfileModel extends BaseUserProfile
 	 */
 	public function sendConfirmation()
 	{
-		$mm = new MailMessage;
+		$mm = new MailMessage();
+		$mm->mailLogModel = $this->mailLogModel;
+		
 		if (! $mm->render($this->confirmMail, array(
 			'model' => $this,
 			'action' => $this->confirmationUrl,		
@@ -185,6 +194,8 @@ class UserProfileModel extends BaseUserProfile
 		$field = $this->activationKeyField;
 		$this->generateInvitation();
 		$mail = new MailMessage();
+		$mail->mailLogModel = $this->mailLogModel;
+		
 		$subject = $this->mailSubject ? $this->mailSubject : Yii::app()->mail['invite_subject'];
 		$message = $this->mailMessage ? $this->mailMessage : Yii::app()->mail['invite_message'];
 		return $mail->send($this->email, $subject, $message, array(

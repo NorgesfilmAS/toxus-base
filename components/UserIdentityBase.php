@@ -11,6 +11,8 @@ class UserIdentityBase extends CUserIdentity
 	const ERROR_NOT_ACTIVATED = 4;
 	const ERROR_RANGE_BLOCK = 5;			// out of range
 	
+	protected $userProfileClassname = 'UserProfileModel';
+	
 	protected $_id = null;
 	/**
 	 * Authenticates a user.
@@ -60,10 +62,12 @@ class UserIdentityBase extends CUserIdentity
 	protected function findProfile()
 	{
 		$s = md5($this->password);
-		return UserProfile::model()->find(		
-			'(username = :username OR email = :username) AND password_md5 = :md5',
-			array(':username' => $this->username, ':md5' => $s
-		));
+		$profile = $this->userProfileClassname;
+		return $profile::model()->find(		
+			'(username = :username OR email = :username) AND password_md5 = :md5',	array(
+					':username' => $this->username, 
+					':md5' => $s)
+		);
 		
 	}
 	

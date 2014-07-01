@@ -1658,4 +1658,14 @@ class BaseController extends CController
 		return $ret->findFooterArticles();
 	}
 	
+	
+	/**
+	 * to place a button on the toolbar
+	 * @param boolean $isStart true if it before the other buttons
+	 * @return string
+	 */
+	public function getToolButtons($isStart)
+	{
+		return '';
+	}	
 }

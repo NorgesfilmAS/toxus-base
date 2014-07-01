@@ -34,8 +34,20 @@ class Util {
     }
     return $string;
 	}
-	
-	
+	/**
+	 * generates a: 
+	 *	cabc5c45-3e63-896d-cfdb-d60041b1fc3 
+	 * string
+	 */
+	static function generateGuid()
+	{
+		$s = Util::generateRandomString(8).
+						'-'.Util::generateRandomString(4).
+						'-'.Util::generateRandomString(4).
+						'-'.Util::generateRandomString(4).
+						'-'.Util::generateRandomString(8);
+		return strtolower($s);
+	}
 	
 	static function unique()
 	{
@@ -602,12 +614,14 @@ class Util {
 	 * @param bool $anal If set to *true*, will remove all non-alphanumeric characters.
  	 * @return string
 	 */
-	static function sanitize($string, $force_lowercase = true, $anal = false) {
+	static function sanitize($string, $force_lowercase = true, $anal = false, $noSpace=true) {
     $strip = array("~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "=", "+", "[", "{", "]",
                    "}", "\\", "|", ";", ":", "\"", "'", "&#8216;", "&#8217;", "&#8220;", "&#8221;", "&#8211;", "&#8212;",
                    "â€”", "â€“", ",", "<", ".", ">", "/", "?");
     $clean = trim(str_replace($strip, "", strip_tags($string)));
-    $clean = preg_replace('/\s+/', "-", $clean);		//tx: add the +
+		if ($noSpace) {
+			$clean = preg_replace('/\s+/', "-", $clean);		//tx: add the +
+		}	
     $clean = ($anal) ? preg_replace("/[^a-zA-Z0-9]/", "", $clean) : $clean ;
     return ($force_lowercase) ?
         (function_exists('mb_strtolower')) ?
@@ -682,6 +696,23 @@ class Util {
 	static function fileChangeExtension($filename, $newExtension) {
     $info = pathinfo($filename);
     return $info['dirname'].'/'. $info['filename'] . '.' . $newExtension;
+	}
+	
+	static function rows2models($rows, $className, $order = false)
+	{
+		$result = array();
+		foreach ($rows as $row) {
+			$a = $className::model()->findByPk($row['id']);
+			if ($order) {
+				$result[$a->$order] = $a;
+			} else {
+				$result[$row['id']] = $a;
+			}
+		}
+		if ($order) {
+			ksort($result);
+		}
+		return $result;
 	}
 }
 

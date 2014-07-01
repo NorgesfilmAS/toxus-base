@@ -8,6 +8,13 @@
 class MailMessage extends BaseController
 {
 	
+	/**
+	 * the classname to log mailmessage to
+	 * @var string|bool if false message are not logged
+	 */
+	public $mailLogModel = 'MailModel';
+
+
 	public function __construct()
 	{
 		parent::__construct(__CLASS__);
@@ -170,16 +177,19 @@ class MailMessage extends BaseController
 	
 	protected function logMessage($msg, $params=array())
 	{
-		$params['server'] = $_SERVER;
-		$params['request'] = $_REQUEST;
-		if (session_id() != '') {
-			$params['session'] = $_SESSION;
+		if ($this->mailLogModel) {  
+			$params['server'] = $_SERVER;
+			$params['request'] = $_REQUEST;
+			if (session_id() != '') {
+				$params['session'] = $_SESSION;
+			}	
+			$params['message'] = $msg;
+			$mailClass = $this->mailLogModel;
+			$mail = new $mailClass();
+			$mail->log = var_export($params, true);
+			$mail->message = isset($msg['body']) ? $msg['body'] : '(no body)';
+			$mail->save();
 		}	
-		$params['message'] = $msg;
-		$mail = new Mail();
-		$mail->log = var_export($params, true);
-		$mail->message = isset($msg['body']) ? $msg['body'] : '(no body)';
-		$mail->save();
 	}
 	
 }
