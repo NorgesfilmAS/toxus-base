@@ -78,18 +78,28 @@
 				{% endblock %}
 			</div>
 		</div>
-		{% set colVis = pageLayout | default('content') %}
-{# there are two basic ways to show the page, with of without the nav #}
+		{% set colVis = layout | default('content') %} {# layout was pageLayout 2014-07 #}
+{# 
+	there are multiple ways to show the page: 
+	* full : 12 column
+	* sub : 3col menu, 3col infoLeft, 6col content
+  * info: 3col menu, 6col content, 3col infoRight 
+  * content: 3col menu, 9col content
+  * infoRight: 9col content, 3col infoRight  
+autoescapetwo basic ways to show the page, with of without the nav 
+#}
 		<div class="container bs-container {% block appClass %}{% endblock %}">
 			<div class="row">			
 	{% if colVis == 'full' %}
 				<div class="col-sm-12" role="main">
-	{% else %}	
+	{% else %}
+		{% if colVis != 'infoRight' %}			
 				<div class="col-sm-3  hidden-xs" >
 					<div class="bs-sidebar affix-top hidden-print" role="complementary"  >
 						{{ itemMenu | raw }}
 					</div>
 				</div>
+		{% endif %}			
 		{% if colVis == 'sub' %}
 				<div class="col-sm-3">
 					{% block infoLeft %} {%endblock %}
@@ -103,7 +113,7 @@
 	{%endif %}		
 				{% block content %}{% endblock %}										
 				</div>	
-	{% if colVis == 'info' %}	
+	{% if colVis == 'info' or colVis == 'infoRight' %}	
 				<div class="col-sm-3">
 					{% block infoRight %}{%endblock %}
 				</div>					
