@@ -491,6 +491,7 @@ class BaseController extends CController
 					'tinymce.init({
 						selector: ".tinymce",
 						menubar: "edit format insert table tools view",
+						relative_urls: false,
 						plugins: [
 							"autolink lists link charmap ",
 							"searchreplace visualblocks code fullscreen",

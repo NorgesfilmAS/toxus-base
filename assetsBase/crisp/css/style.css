@@ -211,7 +211,7 @@ pre {
     padding: 3%;
     display: block;
     clear: both;
-    background: url(../images/5p.png) repeat;
+    background: url(../images/5-5p.png) repeat;
     border: 0px;
 }
 pre code,
@@ -730,7 +730,7 @@ input[type="text"], input[type="password"], input[type="search"], input[type="em
 }
 
 /******  ie support  ******/
-.lt-ie9 .widget {background:url(../images/5p.png);padding:15px;}
+.lt-ie9 .widget {background:url(../images/5-6p.png);padding:15px;}
 .lt-ie9 .contemp-three-cols, .lt-ie9 .contemp-three-cols, .lt-ie9 .sidebar-right, .lt-ie9 .sidebar-left {background-image:none;}
 
 .lt-ie8 .sidebar-right .span9, .lt-ie8 .contemp-three-cols .span6 {margin-left:0!important;}
@@ -1558,7 +1558,7 @@ hr {
 ================================================== */
 .widget {
     margin: 0 0 1.5% 0!important;
-    background: url(../images/5p.png);
+    background: url(../images/5-7p.png);
     padding: 15px!important;
 }
 .row-fluid.holy-grail .primary-column {
