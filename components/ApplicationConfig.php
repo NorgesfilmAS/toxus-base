@@ -178,7 +178,7 @@ class ApplicationConfig extends CComponent
 			$funcName = 'get'.$name;
 			if (method_exists($this, $funcName))
 				return $this->$funcName();
-			throw new CException(Yii::t('config', 'Configuration section {section} does not exists', array('{section}' => $name)));
+			throw new CException(Yii::t('config', 'Configuration section "{section}" does not exists', array('{section}' => $name)));
 		}
 	}
 	/**
