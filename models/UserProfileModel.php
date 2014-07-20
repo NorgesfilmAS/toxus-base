@@ -44,7 +44,7 @@ class UserProfileModel extends BaseUserProfile
 	 * the url used to login and request a new password or active the accoutn
 	 * @var string
 	 */
-	public $autoLoginUrl = 'site/l';
+	public $autoLoginUrl = 'site/invitation';
 	
 	/**
 	 * the class to log the mail messages. If false message not logged
@@ -53,6 +53,20 @@ class UserProfileModel extends BaseUserProfile
 	 */
 	protected $mailLogModel = 'MailModel';
 	
+  /**
+   * the class used to login the user
+   * 
+   * @var string
+   */
+  public $userIdentityClass = 'UserIdentityBase';
+  
+  /** the invitation */
+	public $_mailMessage = false;
+	public $_mailSubject = false;
+	public $_passwordText = false;
+	public $_passwordTextRepeat = false;
+  
+  
 	public function getPasswordRepeat()
 	{
 		return $this->_passwordRepeat;
@@ -82,6 +96,12 @@ class UserProfileModel extends BaseUserProfile
 				array('email,password,username,is_confirmed', 'safe', 'on'=>'createAdmin'),	
 				
 				array('email,password,username,is_confirmed,is_suspended,rights_id,has_newsletter,newsletter_key', 'safe', 'on'=>'update'),	
+        
+        // the invitations	
+        array('passwordText,passwordTextRepeat, accepted_terms', 'required', 'on' => 'invitation'),
+        array('passwordText', 'compare', 'compareAttribute'=>'passwordTextRepeat', 'on' => 'invitation'),									
+        array('accepted_terms', 'compare', 'compareValue'=>1, 'on' => 'invitation', 'message' => Yii::t('app', 'You must accept the terms.')),													
+        array('passwordText', 'length', 'min'=>5, 'max'=>64, 'tooShort'=> Yii::t('app','Password is too short (minimum is 5 characters)'), 'on' => 'invitation'),        													        
 			)
 		);
 	}
@@ -196,8 +216,8 @@ class UserProfileModel extends BaseUserProfile
 		$mail = new MailMessage();
 		$mail->mailLogModel = $this->mailLogModel;
 		
-		$subject = $this->mailSubject ? $this->mailSubject : Yii::app()->mail['invite_subject'];
-		$message = $this->mailMessage ? $this->mailMessage : Yii::app()->mail['invite_message'];
+		$subject = $this->mailSubject ? $this->mailSubject : Yii::app()->config->mail['invite_subject'];
+		$message = $this->mailMessage ? $this->mailMessage : Yii::app()->config->mail['invite_message'];
 		return $mail->send($this->email, $subject, $message, array(
 			'{signin}' => Yii::app()->createAbsoluteUrl($this->autoLoginUrl, array('k' => $this->$field))
 		));
@@ -224,9 +244,28 @@ class UserProfileModel extends BaseUserProfile
 	public function createLogin()
 	{
 		Yii::app()->user->logout();
-		$usr = new UserIdentity($this->username, $this->passwordText);
+    $ui = $this->userIdentityClass;
+    $usr = new $ui($this->username, $this->passwordText);
 		$this->password = $usr->makePassword();
 		$this->login_key = null;
 		return $this->save();			
 	}
+  
+  public function getPasswordText()					
+	{
+		return $this->_passwordText;
+	}
+	public function setPasswordText($value)
+	{
+		$this->_passwordText = $value;
+	}
+	public function getPasswordTextRepeat()
+	{
+		return $this->_passwordTextRepeat;
+	}
+	public function setPasswordTextRepeat($value)
+	{
+		$this->_passwordTextRepeat = $value;
+	}
+	  
 }

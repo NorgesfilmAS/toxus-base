@@ -25,6 +25,7 @@ class InvitationAction extends BaseAction
 	 */
 	public $userProfileModel = 'UserProfile';
 	
+  public $pageLayout = 'full';
 	/**
 	 * the class to use to login the user
 	 * 
@@ -40,7 +41,6 @@ class InvitationAction extends BaseAction
 		$params = array(
 			'scenario' => $this->scenario,	
 			'menuItem' => $this->menuItem,
-			'pageLayout' => 'full',	
 			'form' => $this->controller->loadForm($this->form)	
 		);
 		$modelName = $this->userProfileModel;

@@ -23,9 +23,11 @@
  * @property string $last_login
  * @property integer $has_newsletter
  * @property integer $is_suspended
+ * @property string $newsletter_key
+ * @property integer $accepted_terms
  *
  */
-abstract class BaseUserProfile extends TwigActiveRecord {
+abstract class BaseUserProfile extends GxActiveRecord {
 
 	public static function model($className=__CLASS__) {
 		return parent::model($className);
@@ -45,12 +47,12 @@ abstract class BaseUserProfile extends TwigActiveRecord {
 
 	public function rules() {
 		return array(
-			array('username, password', 'required'),
-			array('is_confirmed, rights_id, has_newsletter, is_suspended', 'numerical', 'integerOnly'=>true),
-			array('username, password, password_md5, login_key, email, email_to_confirm', 'length', 'max'=>255),
+			array('username, password, email', 'required'),
+			array('is_confirmed, rights_id, has_newsletter, is_suspended, accepted_terms', 'numerical', 'integerOnly'=>true),
+			array('username, password, password_md5, login_key, email, email_to_confirm, newsletter_key', 'length', 'max'=>255),
 			array('creation_date, modified_date, last_login', 'safe'),
-			array('password_md5, login_key, email, email_to_confirm, is_confirmed, rights_id, creation_date, modified_date, last_login, has_newsletter, is_suspended', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, username, password, password_md5, login_key, email, email_to_confirm, is_confirmed, rights_id, creation_date, modified_date, last_login, has_newsletter, is_suspended', 'safe', 'on'=>'search'),
+			array('password_md5, login_key, email_to_confirm, is_confirmed, rights_id, creation_date, modified_date, last_login, has_newsletter, is_suspended, newsletter_key, accepted_terms', 'default', 'setOnEmpty' => true, 'value' => null),
+			array('id, username, password, password_md5, login_key, email, email_to_confirm, is_confirmed, rights_id, creation_date, modified_date, last_login, has_newsletter, is_suspended, newsletter_key, accepted_terms', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -80,6 +82,8 @@ abstract class BaseUserProfile extends TwigActiveRecord {
 			'last_login' => Yii::t('app', 'Last Login'),
 			'has_newsletter' => Yii::t('app', 'Has Newsletter'),
 			'is_suspended' => Yii::t('app', 'Is Suspended'),
+			'newsletter_key' => Yii::t('app', 'Newsletter Key'),
+			'accepted_terms' => Yii::t('app', 'Accepted Terms'),
 		);
 	}
 
@@ -100,6 +104,8 @@ abstract class BaseUserProfile extends TwigActiveRecord {
 		$criteria->compare('last_login', $this->last_login, true);
 		$criteria->compare('has_newsletter', $this->has_newsletter);
 		$criteria->compare('is_suspended', $this->is_suspended);
+		$criteria->compare('newsletter_key', $this->newsletter_key, true);
+		$criteria->compare('accepted_terms', $this->accepted_terms);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,

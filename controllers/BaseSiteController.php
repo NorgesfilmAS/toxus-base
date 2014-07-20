@@ -25,7 +25,7 @@ class BaseSiteController extends Controller
 			'removeAssets' => 'toxus.actions.RemoveAssetsAction',
 			'systemInfo' => array(
 					'class'=> 'toxus.actions.SystemInfoAction',
-			//		'onExtraInfo' => array($this, 'systemInfo'),
+					'onExtraInfo' => array($this, 'systemInfo'),
 			),
 			'system' => array(
 					'class' => 'toxus.actions.ViewAction',	
@@ -40,8 +40,11 @@ class BaseSiteController extends Controller
 			'maintenance' => array(
 					'class' => 'toxus.actions.ViewAction',	
 					'view' => 'maintenance',
-			)	
-				
+			),
+      'invitation' => array(
+        'class' => 'toxus.actions.InvitationAction',
+				'loginModel' => 'LoginForm',	        
+      ),
 		);
 	}	
 
@@ -113,4 +116,26 @@ class BaseSiteController extends Controller
 			throw new CException('Could not save trace information: '.CHtml::errorSummary($model));
 		}
 	}	
+  
+  /**
+   * Add extra information to the systemInfo display
+   * The returned format is:
+   *  $properties[$key] = array(
+   *  	'caption' => 'This is the header',
+	 *		'items' => array(
+   *      'label' => $value,
+   *      'label' => array(
+   *        'value' => $value,
+   *        'explain' => 'The help text' 
+   *      ),
+   *    )
+   * );
+   * 
+   * @param type $properties
+   * @returns array
+   */
+  public function systemInfo($properties)
+  {
+    return $properties;
+  }
 }

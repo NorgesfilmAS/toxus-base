@@ -75,5 +75,9 @@ class UserIdentityBase extends CUserIdentity
 	{
 		return $this->_id;
 	}
-	
+
+  public function makePassword()
+	{
+		return md5($this->password);
+	}
 }
