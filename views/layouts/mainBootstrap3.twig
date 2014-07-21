@@ -21,7 +21,12 @@
 	<body>
 		{% set itemMenu %}
 			{% block menuLeft %}
-			{% block itemMenuHeader %}{% endblock %}
+			{% block itemMenuHeader %}
+			<div class="cls-navbar-toolbar navbar bs-nav-toolbar id-navbar-toolbar">
+			{% include this.viewPath('_buttons') %}
+			</div>
+			{% endblock %}
+		
 			{{ this.menuHtml('item', {'class': 'nav bs-sidenav' }) |raw }}
 			{% block itemMenuFooter %}{% endblock %}	
 			{% endblock %}
