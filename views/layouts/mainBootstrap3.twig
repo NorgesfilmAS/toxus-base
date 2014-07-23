@@ -173,10 +173,19 @@ autoescapetwo basic ways to show the page, with of without the nav
 					</div>
 					<div class="col-sm-4">
 						{% block footerRight %}
-						<section>
-							<h4>{{ this.t('latest blog posts') }}</h4>		
-							{% block footerRightList %}{% endblock %}
-						</section>
+            {% for article in this.footerArticles %}
+              {% if loop.first %}
+            <section>
+              <h4>Instruction and Help</h4>
+              <ul class="footerPosts list-unstyled">
+              {% endif %}  
+                <li><a href="{{ this.createUrl('article/index', {(article.key): '' }) }}">{{ article.title}}</a></li>
+              {% if loop.last %}    
+              </ul>
+            </section>	
+              {% endif %}
+           {% endfor %}
+              
 						{% endblock %}	
 					</div>
 				</div>
