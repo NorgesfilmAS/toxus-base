@@ -1600,6 +1600,7 @@ class BaseController extends CController
 			'width' => null,	
 			'visible' => true,
 			'ask' => false,	
+      'id' => false, 
 		);
 		if (is_string($options) || (is_array($options) && isset($options['default']))) {
 			$act = (is_array($options) && isset($options['default'])) ? $options['default'] : $options;

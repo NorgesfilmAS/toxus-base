@@ -27,7 +27,7 @@
  * @property integer $accepted_terms
  *
  */
-abstract class BaseUserProfile extends GxActiveRecord {
+abstract class BaseUserProfile extends TwigActiveRecord {
 
 	public static function model($className=__CLASS__) {
 		return parent::model($className);

@@ -16,13 +16,14 @@ class BaseArticleController extends Controller
 				'form' => 'changeArticle',
 				'modelClass' => 'ArticleModel',				
 				'view' => 'viewForm',	
+        'mode' => 'edit',
 				'successUrl' => 'article/index',	
 			),
 			'v' => array(
 				'class' => 'toxus.actions.ViewAction',
 				'view' => 'view',
 				'onCreateModel' => array($this, 'viewModel'),	
-			)	
+			),	
 		);
 	}
 	public function actionIndex()
@@ -32,7 +33,11 @@ class BaseArticleController extends Controller
 		} elseif (count($_GET) == 1) {
 			$this->model = ArticleModel::model()->findByKey(key($_GET));
 		}	
-		$this->render('index');
+    $params = array(
+      'form' => $this->loadForm('form'),
+      'mode' => 'view'
+    );
+		$this->render('index', $params);
 	}
 	
 	public function viewModel()

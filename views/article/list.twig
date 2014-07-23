@@ -6,7 +6,7 @@
 {% for article in this.model %}
 <div class="row">
 	<div class="col-sm-12">
-		<a href="#" class="a-link" data-url="{{ this.createUrl('article/v', {'key' : article.key }) }}">{{ article.title }}</a>
+		<a href="#" class="a-link" data-id="{{ article.id }}" data-url="{{ this.createUrl('article/v', {'key' : article.key }) }}">{{ article.title }}</a>
 	</div>
 </div>
 {% endfor %}
@@ -14,11 +14,17 @@
 
 <script type="text/javascript">
 	$('.a-link').on('click', function() {
+    var id = $(this).data('id');
 		$.ajax({
 			'url' : $(this).data('url'),
 			'success' : function(data) {
 				$('{{ loadingDiv | default('.article-body') }}').html(data);
+        $('#btn-edit').attr('href', "{{ this.createUrl('article/edit', {'id': ''}) }}" + id);        
+        $('#btn-edit').show();
 			}
 		});		
 	});
+  if ('{{ this.model.id }}' == '') {
+    $('#btn-edit').hide();
+  }  
 </script>

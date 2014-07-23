@@ -18,7 +18,8 @@
 
 class WebUser extends CWebUser
 {
-	
+	public $userProfileClass = 'UserProfileModel';
+  
 	const LAST_INSERT_ID = 'lastInsertId';
 	
 	protected $_profile;
@@ -26,7 +27,8 @@ class WebUser extends CWebUser
 	public function getProfile()
 	{
 		if ($this->_profile == null) {
-			$this->_profile = UserProfile::model()->findByPk(Yii::App()->user->id);
+      $class = $this->userProfileClass;
+			$this->_profile = $class::model()->findByPk(Yii::App()->user->id);
 			if ($this->_profile == null) {
 				$this->_profile = new UserProfile;
 				$this->_profile->username = 'Guest';
@@ -43,20 +45,34 @@ class WebUser extends CWebUser
 	
 	public function getIsAdmin()
 	{
-		return $this->profile->rights_id >= UserProfile::ADMINISTRATOR;
+    $class = $this->userProfileClass;
+		return $this->profile->rights_id >= $class::ADMINISTRATOR;
 	}
 	public function getIsModerator()
 	{
-		return $this->profile->rights_id >= UserProfile::MODERATOR;
+    $class = $this->userProfileClass;
+		return $this->profile->rights_id >= $class::MODERATOR;
 	}
 	public function getIsCustomer()
 	{
-		return $this->profile->rights_id >= UserProfile::PAYING_CUSTOMER;
+    $class = $this->userProfileClass;
+		return $this->profile->rights_id >= $class::PAYING_CUSTOMER;
 	}
 	public function getIsRegisterd()
 	{
-		return $this->profile->rights_id >= UserProfile::REGISTERED_USER;
+    $class = $this->userProfileClass;
+		return $this->profile->rights_id >= $class::REGISTERED_USER;
 	}
+
+  /**
+   * return true if the user can update the help system
+   * 
+   * @return true|false
+   */
+  public function getCanUpdateHelp()
+  {
+    return true;
+  }
 	public function getRights()
 	{
 		return $this->profile->rights_id;

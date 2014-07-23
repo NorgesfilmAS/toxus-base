@@ -7,6 +7,11 @@
   create a list of article on the left
 #}
 {% block menuLeft %}
+  {% if App.user.canUpdateHelp %}
+  <div class="cls-navbar-toolbar navbar bs-nav-toolbar id-navbar-toolbar">
+  {% include this.viewPath('_buttons') %}
+  </div>
+  {% endif %}
 	<div class="article-search">
 		<form method="get" class="article-search-form well form-inline">
 			{{ this.te('search') }}			
@@ -29,20 +34,22 @@
 
 		
 {% block onReady %}
-	$('.article-search-field').on('keyup', function() {
+  function articleSearchFor(value) {
+    if (typeof value == 'undefined') {
+      value = '';
+    }  
 		$.ajax( {
-			'url' : "{{ this.createUrl('article/list', {'q' :''}) }}" + $(this).val(),
+			'url' : "{{ this.createUrl('article/list', {'q' :''}) }}" + value,
 			'success' : function(data) {
-					$('.art-result').html(data);			
+					$('.art-result').html(data);	
 			}		
-		});
+		});  
+  }
+  
+	$('.article-search-field').on('keyup', function() {
+    articleSearchFor($(this).val());
 	});
- 	$.ajax({
-		'url' : "{{ this.createUrl('article/list') }}",
-		'success' : function(data) {
-			 $('.art-result').html(data);			
-		}				
-	});
+  articleSearchFor();
 	
 	{{ parent() }}
 {% endblock %}		

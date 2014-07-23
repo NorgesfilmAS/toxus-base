@@ -16,6 +16,7 @@ class UpdateAction extends BaseAction
 	public $form = null;					// the name of the form ex extension
 	public $menuItem = null;			// the menu item to active. Should be a jQuery selector (#menu-agent, or .agent-item)
 	public $scenario = 'update';	// default scenario to use to update the information
+  public $mode = 'view';        // the default mode of the form (view | edit)
 	
 	public function run($id = null, $mode='view')
 	{
@@ -30,7 +31,7 @@ class UpdateAction extends BaseAction
 			$this->controller->model = $modelClass::model()->findByPk($id);
 		}	
 		$this->controller->model->scenario = $this->scenario;		
-		$mode =  isset($_GET['mode']) ? $_GET['mode'] : 'view';
+		$mode =  isset($_GET['mode']) ? $_GET['mode'] : $this->mode;
 						
 		if (isset($_POST[$modelClass])) {
 			if ($this->controller->executeUpdate()) {
