@@ -19,6 +19,11 @@
 class WebUser extends CWebUser
 {
 	public $userProfileClass = 'UserProfileModel';
+	/**
+	 *
+	 * @var type if set to true the is isGuest alway evaluate to true
+	 */
+	public $allowAll = false;
   
 	const LAST_INSERT_ID = 'lastInsertId';
 	
@@ -37,6 +42,11 @@ class WebUser extends CWebUser
 			}	
 		}
 		return $this->_profile;
+	}
+	public function getIsGuest()
+	{
+		
+		return $this->allowAll || parent::getIsGuest();
 	}
 	
 	public function init() {

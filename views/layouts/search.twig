@@ -1,2 +1,172 @@
-{# empty for overload the search-layout #}
-{% extends this.viewPath('baseSearch') %}
+{% extends this.viewPath('main') %}
+
+{% block itemMenuHeader %}
+<div class="search-spacer"></div>
+{% endblock %}
+
+{% block itemMenuFooter %}
+<form class="id-search" method="get" >
+	<div class="nav-form nav bs-sidenav">	
+		{# layout of the grid #}
+		<input type="hidden" class="id-layout" value="{{ this.model.layout | default('grid')}}" name="{{ this.model.classname }}[layout]"/>
+		<div style="display: inline-block">
+			<ul class="list-layout">
+				<li ><a href="#" class="display-layout" data-layout="grid" title="list"><span class="glyphicon glyphicon-th-list"></span></a></li>
+				<li ><a href="#" class="display-layout" data-layout="large"><span class="glyphicon glyphicon-th-large"></span></a></li>				
+				<li ><a href="#" class="display-layout" data-layout="tiles"><span class="glyphicon glyphicon-th"></span></a></li>
+			</ul>
+		</div>
+		{# basic field to search on #}
+		{% for field in this.model.searchFields %}
+			{% include this.viewPath('searchField') with {'field' : field} %}
+		{% else %}
+			{% include this.viewPath('searchFields') %}
+		{% endfor %}
+		
+		<div class="nav-options extra-search">
+			<div class="nav-option-header cls-toggle"><label><span class="caption">{{ this.t('show extra search') }}</span><span class="pull-right nav-arrow">&#x25BC</span></label></div>
+			<div class="nav-option-body" style="display: none;">		
+			{% for field in this.model.searchExtraFields %}
+				{% include this.viewPath('searchField') with {'field' : field} %}
+			{% else %}				
+				{% include this.viewPath('searchExtraFields') %}
+			{% endfor %}	
+			</div>
+		</div>	
+		
+		{# the ordering of the list #}
+		{% for key,field in this.model.orderFields %}
+			{% if loop.first %}
+			<label for="id-sort">{{ this.t('sort by') }}</label>
+			<select name="{{ this.model.classname }}[searchOrder]" class="id-sort form-control">
+			{% endif %}						
+				<option value="{{ key }}"{% if this.model.searchOrder == key %} selected="1"{% endif %}>{{ this.t(field.label) }}</option>
+			{% if loop.last %}
+			</select>
+			{% endif %}
+		{% endfor %}
+		{# search button #}
+		<div class="bs-nav-searchbar">
+			<input type="submit" class="btn btn-info pull-right" value="{{this.t('search') }}"/>
+		</div>		
+	</div>	
+</form>		
+{% endblock %}
+
+
+
+{% block content %}
+<div id="scroll" class="bs-content">
+	{# depeding on the layout variable we have to load a different way of looking at the data #}
+	{% if this.model.layout =='large' %}		
+		{{ this.widget( 'zii.widgets.CListView', {
+				'id' :  'id-grid',
+				'dataProvider' : this.model.searchOrder(),					
+				'itemView' : style.viewWide,
+				'afterAjaxUpdate' : 'bindEvents',
+				'template' : '{items} {pager}',
+				'pagerCssClass' : 'pagination'
+			}, true) | raw }}	
+	{% elseif this.model.layout == 'tiles' %}
+		{{ this.widget( 'zii.widgets.CListView', {
+				'id' :  'id-grid',
+				'dataProvider' : this.model.searchOrder(),					
+				'itemView' : style.viewTile,
+				'afterAjaxUpdate' : 'bindEvents',
+				'template' : '{items} {pager}',
+				'pagerCssClass' : 'pagination'
+			}, true) | raw }}	
+
+	{% else %} 
+	  {% include this.viewPath(style.viewGrid | default('_viewGrid')) with  {'header':1 } %}
+		{{ this.widget( 'zii.widgets.CListView', {
+				'id' :  'id-grid',
+				'dataProvider' : this.model.searchOrder(),					
+				'itemView' : style.viewGrid | default('_viewGrid'),
+				'afterAjaxUpdate' : 'bindEvents',
+				'template' : '{items} {pager}',
+				'pagerCssClass' : 'pagination'
+			}, true) | raw }}			
+		{{ this.onReady("
+
+	$('.sort-key').on('click', function() {
+		$('.id-sort').val($(this).data('sort'));
+		$('.id-search').submit();
+	})
+") }}	
+		
+	{% endif %}
+		
+<script type="text/javascript">
+  function bindEvents(id, result)
+	{
+		$('.a-url').on('click', function() {
+			window.location = $(this).data('url');
+		});
+		{{ this.getReady('modal-dialog') |raw }}
+	}
+</script>	
+</div>		
+{% endblock %}
+
+{% block onReady %}
+$('.display-layout').on('click', function() {
+	$('.display-layout').parent().removeClass('active');
+	$('.id-layout').val($(this).data('layout'));
+	$('.id-'+$(this).data('layout')).addClass('active');
+	$('.id-search').submit();
+});
+$('.id-'+$('#id-layout').val()).addClass('active');
+$('.id-sort').on('change', function() {
+	$(this).closest('form').submit();
+
+});
+var theForm;
+function formRefreh() {
+	if (document.getElementById('id-grid') !== null) {
+		$.fn.yiiListView.update('id-grid', {
+			data: theForm.serialize()
+		});
+	}	
+}
+$('.cls-select-search').on('change', function() {
+	theForm = 	$(this).closest('form');
+	setTimeout(formRefreh, 150);
+})
+
+$('.cls-search').on('keyup', function(e) {
+	//console.log('changed: '+ e.keyCode);
+	switch  (e.keyCode) {
+       case 40: // down arrow
+        case 38: // up arrow
+        case 16: // shift
+        case 17: // ctrl
+        case 18: // alt
+				case 37: // left
+				case 39: // right
+          break;
+				default: 
+					theForm = 	$(this).closest('form');
+					setTimeout(formRefreh, 150);
+					return;
+	}				
+});
+$('.cls-search').on('change', function() {
+	if (document.getElementById('id-grid') === null) {
+		$(this).closest('form').submit();
+	}
+});
+
+$('.cls-toggle').on('click', function() {
+	if ($('.nav-option-body').is(':visible')) {
+		$('.nav-option-body').hide('blind');	
+		$('.caption').text('{{ this.te('show extra search') }}');
+		$('.nav-arrow').html('&#x25BC');
+	} else {	
+		$('.nav-option-body').show('blind');	
+		$('.caption').text('{{ this.te('hide extra search') }}');
+		$('.nav-arrow').html('&#x25B6');
+	}
+});
+{{ parent() }} 
+{% endblock %}

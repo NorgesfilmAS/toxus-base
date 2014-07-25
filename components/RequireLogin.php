@@ -70,6 +70,7 @@ class RequireLogin extends CBehavior
 		foreach ($a as $path) {
 			if (fnmatch($path, $page)) {
 				Yii::log('No login required', CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
+				Yii::app()->user->allowAll = true;
 				return;
 			}
 		}

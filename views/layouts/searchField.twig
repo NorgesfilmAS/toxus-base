@@ -1,0 +1,19 @@
+{# 
+	add a field to the search box
+#}
+{% set type=field.type | default('text') %}
+{% set fieldname = field.fieldname |default('no-name') %}
+{% if type =='text' %}
+	<label for="id-{{ fieldname | lower }}">{{ this.t(field.label | default(fieldname)) }}</label>
+	<input type="text" id="id-{{ fieldname | lower }}" name="{{ model.classname }}[{{ fieldname }}]" class="form-control cls-search" value="{{ this.model.__get(fieldname) }}"/>				
+{% elseif type=='select' %}
+	<label for="id-{{ fieldname | lower }}">{{ this.t(field.label | default(fieldname)) }}</label>
+	<select name="{{ model.classname }}[{{ fieldname }}]" class="form-control cls-select-search cls-digitization">
+		<option value=""></option>
+		{% for key, caption in field.data  %}
+		<option value="{{ key }}" {% if this.model.__get(fieldname) == key %}selected="1"{% endif %} >{{ this.te(caption) }}	
+		{% endfor %}	
+	</select>
+{% else %}
+	<b>unknown fieldtype: [{{ type }}]</b>
+{% endif %}

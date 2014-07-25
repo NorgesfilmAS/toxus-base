@@ -915,16 +915,20 @@ class BaseController extends CController
 	 */
 	public function t($msg, $params=array(), $return = false)
 	{
-		$m = ucfirst(Yii::t('app', $msg, $params));		
-		if (! is_array($params) || $return )
-		  return $m;	
-		else {
-		  echo $m; 
+		if (is_string($msg)) {
+			$m = ucfirst(Yii::t('app', $msg, $params));		
+			if (! is_array($params) || $return )
+			  return $m;	
+			else {
+			  echo $m; 
+			}
 		}
 	}
 	public function te($msg, $params=array())
 	{
-		return ucfirst(Yii::t('app', $msg, $params));
+		if (is_string($msg)) {
+			return ucfirst(Yii::t('app', $msg, $params));
+		}	
 	}
 	
 	public function flash()

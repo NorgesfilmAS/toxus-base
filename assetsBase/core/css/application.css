@@ -16,8 +16,8 @@
     text-align: left;
     border-bottom: 1px solid #E5E5E5;
     color: #5A5A5A;
-    font-size: 16px;		
-    margin-top:51px;
+    font-size: 16px;
+		padding-bottom: 20px;
 }
 
 .bs-header h1 {
@@ -413,6 +413,7 @@ input.input-date {
 }
 .items {
 	width: 100%;
+	display: inline-block;
 }
 /* for the twitter typeahead */
 
@@ -549,4 +550,41 @@ div.fadeout {
 
 div.fadded {
 	margin-bottom: 200px;
+}
+
+/* layout of search in the grid */
+.grid-tile {
+	min-height: 200px;
+	max-height: 200px;
+	overflow: hidden;
+}
+.grid-tile h4, .grid-wide h4 {
+	color: #444444;
+	font-size: 14px;
+	margin-bottom: 0px;
+}
+.grid-tile .label, .grid-wide .label{
+	width: 20%;
+	color: lightgray;
+	vertical-align: top;
+	display: inline-block;	
+	margin-top: 2px;
+	text-align: right;
+}
+.grid-tile .field, .grid-wide .field {
+	width: 80%;
+	color: #666;
+	display: inline-block;	
+}
+.grid-tile hr, .grid-wide hr {
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+.grid-row .trunc {
+	overflow: hidden;
+}
+.grid-wide {
+	border-bottom: 1px lightgray solid;
+	padding-bottom: 3px;
+	margin-bottom: 3px;
 }

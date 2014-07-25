@@ -1,7 +1,7 @@
 {% set p = prefix | default('id-') %}
 {% set formId = form.id |default(p~'form') %}
 
-<form class="form-horizontal cls-{{ util.formId(form) }}" method="post" action="{% if form.action %}{{form.action}}{% else %}{{ App.request.url }}{% endif %}" {% if this.model.isNewRecord %}{% if sub.onCreateUrl %}action="{{sub.onCreateUrl}}"{% elseif sub.onEditUrl %}action="{{sub.onEditUrl}}"{% endif %}{% endif %}  id="{{ formId }}" accept-charset="UTF-8">
+<form class="{{ form.class | default('form-horizontal') }} cls-{{ util.formId(form) }}" method="{{ form.method | default('post')}}" action="{% if form.action %}{{form.action}}{% else %}{{ App.request.url }}{% endif %}" {% if this.model.isNewRecord %}{% if sub.onCreateUrl %}action="{{sub.onCreateUrl}}"{% elseif sub.onEditUrl %}action="{{sub.onEditUrl}}"{% endif %}{% endif %}  id="{{ formId }}" accept-charset="UTF-8">
 	<fieldset>
 {# bootstrap3 		
 		{% if form.title != '' %}
