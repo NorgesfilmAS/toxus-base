@@ -1,0 +1,7 @@
+update tinymce
+
+Write "npm i -g jake" to install the jake tool globally.
+Write "npm i" to install all package dependencies
+
+copy files from 
+/tinymce2/js/tinymce/*.js to the /tinymce/js directory
