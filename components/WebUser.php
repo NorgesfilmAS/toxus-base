@@ -119,5 +119,9 @@ class WebUser extends CWebUser
 		return $id;
 	}
 	
+	public function hasMenu($key)
+	{
+		return true;
+	}
 }
 ?>

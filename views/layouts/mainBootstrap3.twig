@@ -26,7 +26,9 @@
 			{% include this.viewPath('_buttons') %}
 			</div>
 			{% endblock %}
+			{% block itemMenuContent %}
       {{ this.menuHtml('item', {'class': 'nav bs-sidenav' }) |raw }}
+			{% endblock %}
 			{% block itemMenuFooter %}{% endblock %}	
 			{% endblock %}
 		{% endset %}			
