@@ -10,7 +10,6 @@
 [submodule "assetsBase/videojs"]
 	path = assetsBase/videojs
 	url = https://github.com/videojs/video.js.git
-
 [submodule "assetsBase/jquery-sortable"]
 	path = assetsBase/jquery-sortable
 	url = https://github.com/johnny/jquery-sortable.git
@@ -20,6 +19,7 @@
 [submodule "extensions/postmark/api"]
 	path = extensions/postmark/api
 	url = https://github.com/balaclark/postmark-yii.git
-[submodule "assetsBase/tinymce"]
-	path = assetsBase/tinymce
+
+[submodule "assetsBase/tinymce2"]
+	path = assetsBase/tinymce2
 	url = https://github.com/tinymce/tinymce.git
