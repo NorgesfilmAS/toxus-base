@@ -480,7 +480,7 @@ class BaseController extends CController
 				'ready' => '$(".chosen-select").chosen({ allow_single_deselect:true }); $(".chosen-container").addClass("form-control");',									
 			),
 			'tinymce' => array(
-				'basePath' => 'toxus.assetsBase.tinymce',
+				'basePath' => 'toxus.assetsBase.tinymce2',
 				'js' => array(
 					CClientScript::POS_END => array(
 						'js/tinymce/tinymce.min.js',
