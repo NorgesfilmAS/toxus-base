@@ -20,3 +20,6 @@
 [submodule "extensions/postmark/api"]
 	path = extensions/postmark/api
 	url = https://github.com/balaclark/postmark-yii.git
+[submodule "assetsBase/tinymce"]
+	path = assetsBase/tinymce
+	url = https://github.com/tinymce/tinymce.git

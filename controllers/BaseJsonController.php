@@ -31,7 +31,7 @@ class BaseJsonController extends Controller
 		if ($this->allowOtherOrigin) {
 			header('Access-Control-Allow-Origin: *');
 		}	
-		Yii::app()->json;				
+	// WHY??	Yii::app()->json;				
 		parent::init();
 	}
 	

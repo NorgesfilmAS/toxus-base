@@ -3,6 +3,15 @@
 class JsonGenerate extends CComponent 
 {
 	/**
+	 * To prevent the overload version of run 
+	 * @param type $data
+	 * @param type $format
+	 */
+	protected function run($data, $format)
+	{
+		return $this->runInternal($data, $format);
+	}
+	/**
 	 * convert a record definition into an array
 	 * 
 	 * 
@@ -10,7 +19,7 @@ class JsonGenerate extends CComponent
 	 * @param array $format
 	 * @return array
 	 */
-	public function run($data, $format)
+	public function runInternal($data, $format)
 	{
 		$result = array();
 		// data can be an object CActiveRecord or array of CActiveRecord
@@ -54,7 +63,7 @@ class JsonGenerate extends CComponent
 					} elseif (is_array($field)) { // user => array('id', 'username')
 						if (isset($record->$key)) {
 							$keyName = $key;
-							if (($value = $this->run($record->$key, $field)) === false) {
+							if (($value = $this->runInternal($record->$key, $field)) === false) {
 								continue; // skip the processing of this one
 							};
 						} else {
