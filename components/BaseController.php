@@ -481,7 +481,7 @@ class BaseController extends CController
 			),
 			'tinymce' => array(
 				'basePath' => 'toxus.assetsBase.tinymce',
-				'js' => array(
+				'js' => array(it statu
 					CClientScript::POS_END => array(
 						'tinymce.min.js',
 						'tinymce.jquery.min.js'	
