@@ -72,7 +72,7 @@ class DownloadFileAction extends BaseAction
 		if ($this->forceDownload) {
 			header('Content-disposition: attachment; filename='.$this->userFilename);
 		}	
-		header('Content-type: '.$ff->contentType);
+//		header('Content-type: '.$ff->contentType);
 		set_time_limit(0);
 		$file = @fopen($ff->path, "rb");
 		try {
