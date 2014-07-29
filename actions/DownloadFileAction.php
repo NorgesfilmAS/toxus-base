@@ -32,7 +32,20 @@ class DownloadFileAction extends BaseAction
 	public function run($name='')
 	{
 		$this->checkRights();
-		$filename = $this->path.$name;
+		if ($name == '') {
+			if (count($_GET) == 0) {
+				throw new CHttpException(404, 'File not found');
+			}
+			$name = reset($_GET);
+			if ($name == '') {
+				$name = key($_GET);
+			}
+		}
+		if (substr($this->path,0,1) == '@') {
+			$filename = YiiBase::getPathOfAlias(substr($this->path,1)).'/'.$name;
+		} else {	
+			$filename = $this->path.$name;
+		}	
 		$ff = new FileInformation($filename);
 		if (!$ff->exists()) {
 			throw new CHttpException(404, 'File not found');
@@ -45,12 +58,15 @@ class DownloadFileAction extends BaseAction
 		}	
 		header('Content-type: '.$ff->contentType);
 		set_time_limit(0);
-		$file = @fopen($ff->path,"rb");
-		while(!feof($file))	{
-			print(@fread($file, 1024*8));
-			ob_flush();
-			flush();
-		}		
+		$file = @fopen($ff->path, "rb");
+		try {
+			while(!feof($file))	{
+				print(@fread($file, 1024*8));
+				ob_flush();
+				flush();
+			}		
+		} catch (Exception $e) {
+		}
 		@fclose($file);		
 	}
 }
