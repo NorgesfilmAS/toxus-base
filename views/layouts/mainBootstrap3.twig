@@ -114,13 +114,13 @@ autoescapetwo basic ways to show the page, with of without the nav
 		{% elseif colVis == 'info' %}	
 				<div class="col-sm-6" role="main">					
 		{% else %}	
-				<div class="col-sm-9" role="main">
+				<div class="{{ mainColumnClass | default('col-sm-9') }}" role="main">
 		{%endif %}	
 	{%endif %}		
 				{% block content %}{% endblock %}										
 				</div>	
 	{% if colVis == 'info' or colVis == 'infoRight' %}	
-				<div class="col-sm-3">
+				<div class="{{ rightColumnClass | default('col-sm-3') }}">
 					{% block infoRight %}{%endblock %}
 				</div>					
 	{% endif %}					
