@@ -40,6 +40,8 @@ class DownloadFileAction extends BaseAction
 
 	public function run($name='')
 	{
+		$logKey = 'toxus.download';
+		Yii::log('Downloading: '.$name, CLogger::LEVEL_INFO, $logKey);
 		$this->checkRights();
 		if ($name == '') {
 			if (count($_GET) == 0) {
@@ -53,6 +55,7 @@ class DownloadFileAction extends BaseAction
 				$name = $key;
 			}
 		}		
+		Yii::log('Inbetween: '.$name, CLogger::LEVEL_INFO, $logKey);		
 		if ($this->onGetFilename) {
 			$filename = call_user_func($this->onGetFilename, $name, $this);	
 		} else {
@@ -62,6 +65,7 @@ class DownloadFileAction extends BaseAction
 				$filename = $this->path.$name;
 			}	
 		}	
+		Yii::log('filename: '.$filename, CLogger::LEVEL_INFO, $logKey);		
 		$ff = new FileInformation($filename);
 		if (!$ff->exists()) {
 			throw new CHttpException(404, 'File not found');
@@ -87,6 +91,7 @@ class DownloadFileAction extends BaseAction
 		} else {
 			$partialContent = false;
 		}		
+		Yii::log('opening file', CLogger::LEVEL_INFO, $logKey);		
 		
 		$file = @fopen($ff->path, "rb");
 		fseek($file, $offset);
@@ -109,7 +114,9 @@ class DownloadFileAction extends BaseAction
 				flush();
 			}		
 		} catch (Exception $e) {
+			Yii::log('Error: '.$e->getMessage(), CLogger::LEVEL_ERROR, $logKey);		
 		}
 		@fclose($file);		
+		Yii::log('done', CLogger::LEVEL_INFO, $logKey);		
 	}
 }
