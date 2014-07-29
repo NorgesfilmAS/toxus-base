@@ -73,6 +73,7 @@ class DownloadFileAction extends BaseAction
 			header('Content-disposition: attachment; filename='.$this->userFilename);
 		}	
 		header('Content-type: '.$ff->contentType);
+		header_remove("X-Powered-By");
 		set_time_limit(0);
 		$file = @fopen($ff->path, "rb");
 		try {
