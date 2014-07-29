@@ -23,12 +23,21 @@ class DownloadFileAction extends BaseAction
 	 * @var string / false
 	 */
 	public $userFilename = false;
+	
+	/**
+	 * translate the name to a fysical filename
+	 * 
+	 * @var string
+	 */
+	public $onGetFilename = false;  // function ($name, $action)
+					
 	/** 
 	 * 
 	 * 
 	 * @param string $name the name of the file
 	 * @throws CHttpException
 	 */
+
 	public function run($name='')
 	{
 		$this->checkRights();
@@ -37,14 +46,21 @@ class DownloadFileAction extends BaseAction
 				throw new CHttpException(404, 'File not found');
 			}
 			$name = reset($_GET);
-			if ($name == '') {
-				$name = key($_GET);
+			$key = key($_GET);			
+			if ($name != '') {
+				$name = key($_GET).'/'.$name;
+			} else {
+				$name = $key;
 			}
-		}
-		if (substr($this->path,0,1) == '@') {
-			$filename = YiiBase::getPathOfAlias(substr($this->path,1)).'/'.$name;
-		} else {	
-			$filename = $this->path.$name;
+		}		
+		if ($this->onGetFilename) {
+			$filename = call_user_func($this->onGetFilename, $name, $this);	
+		} else {
+			if (substr($this->path,0,1) == '@') {
+				$filename = YiiBase::getPathOfAlias(substr($this->path,1)).'/'.$name;
+			} else {	
+				$filename = $this->path.$name;
+			}	
 		}	
 		$ff = new FileInformation($filename);
 		if (!$ff->exists()) {
