@@ -114,7 +114,7 @@ class UserProfileModel extends BaseUserProfile
 		if ($this->isNewRecord && $this->is_confirmed == 0) {
 			/** swap the email and email to confirm */
 			$this->email_to_confirm = $this->email;
-			$this->email = null;
+	//		$this->email = null;
 		}
 		$md5 = md5($this->password);
 		if ($this->password_md5 != $md5 || $this->login_key == '') {

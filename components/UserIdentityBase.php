@@ -11,6 +11,14 @@ class UserIdentityBase extends CUserIdentity
 	const ERROR_NOT_ACTIVATED = 4;
 	const ERROR_RANGE_BLOCK = 5;			// out of range
 	
+	static $errorText = array(
+		UserIdentityBase::ERROR_USERNAME_INVALID => 'Username is invalid',
+		UserIdentityBase::ERROR_PASSWORD_INVALID => 'Password is invalid',	
+		UserIdentityBase::ERROR_UNKNOWN_IDENTITY => 'Unknown indentity',
+		UserIdentityBase::ERROR_SUSPENDED => 'Account is suspended',
+		UserIdentityBase::ERROR_NOT_ACTIVATED => 'Account is not activated'				
+	);
+	
 	protected $userProfileClassname = 'UserProfileModel';
 	
 	protected $_id = null;

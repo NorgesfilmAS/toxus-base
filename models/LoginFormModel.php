@@ -17,8 +17,9 @@ class LoginFormModel extends CFormModel
 	private $_email;
 	private $_password;
 	private $_passwordRepeat;
-	private $_rememberMe;
+	private $_rememberMe=1;
 	private $_hasNewsletter;
+	private $_errorCode;				// code in UserIdenityBase
 
 	private $_identity;
 
@@ -123,6 +124,12 @@ class LoginFormModel extends CFormModel
 			$this->addError ($attribute, Yii::t('app', 'The email address is already in use. Please sign in.'));
 	}
 	*/
+	public function attributeLabel($key) 
+	{
+		$l = $this->attributeLabels();
+		return isset($l[$key]) ? $l[$key] : '(not set)';
+	}
+	
 	/**
 	 * Declares attribute labels.
 	 */
@@ -174,7 +181,9 @@ class LoginFormModel extends CFormModel
 			$cls = $this->identityClass;
 			$this->_identity = new $cls($this->username, $this->password);
 			$this->_identity->authenticate();
+			$this->_errorCode = $this->_identity->errorCode;
 		}
+
 		if($this->_identity->errorCode === UserIdentityBase::ERROR_NONE) {
 			$this->id = $this->_identity->id;
 			$duration = $this->rememberMe ? 3600*24*30 : 0; // 30 days
@@ -192,5 +201,22 @@ class LoginFormModel extends CFormModel
 	public function isVisible($fieldname)
 	{
 		return true;
+	}
+	/**
+	 * returns the error after login
+	 * 
+	 * @return integer const in UserIdentityBase
+	 */
+	public function getErrorCode()
+	{
+		return $this->_errorCode;
+	}
+	public function getErrorText()
+	{
+		if ($this->_errorCode > 0) {
+			$cls = $this->identityClass;
+			return $cls::$errorText[$this->_errorCode];
+		}
+		return '';
 	}
 }

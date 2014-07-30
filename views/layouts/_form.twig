@@ -72,7 +72,7 @@
 					{# http://stackoverflow.com/questions/1809494/post-the-checkboxes-that-are-unchecked #}
 					<label class="checkbox {% if element.style %}{{ element.style }}{% endif %}"><input type="hidden" name="{{ form.model }}[{{key}}]" value="0" /><input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="checkbox" {% if this.model.__get(key) or groupElement.default == 1 %}checked="1"{% endif %} value="1" {{ readOnly }}/>{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}</label>
 				{% elseif element.type== 'image' %}
-					{{ this.form.image(this.model, key) | raw }}								
+					{{ form.image(this.model, key) | raw }}								
 				{% elseif element.type== 'finder' %}
 					{{
 						this.widget(
@@ -84,7 +84,7 @@
 								'buttonCaption' : element.buttonCaption | default('Browse')	
 							}, true)					
 						| raw }}		
-					{# this.form.finder(this.model, key) | raw #}
+					{# form.finder(this.model, key) | raw #}
 				{% elseif element.type== 'html2' %}						
 					{{ this.htmlEditor(this.model, key) | raw}}												
 				{% elseif element.type=='html' %}
@@ -113,7 +113,7 @@
 }
 "}) }}
 				{% elseif element.type=='hidden' %}
-					<input type="hidden" id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" value="{{ this.model.__get(key) }}" />	
+					<input type="hidden" id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" value="{{ element.value | default(this.model.__get(key)) }}" />	
 				{% elseif element.type== 'view' %}
 					{{ this.renderPartial(element.view, {'model': this.model.__get(key)}) |raw }}
 				{% elseif element.type== 'password' %}
@@ -226,7 +226,7 @@ $().ready(function() {
 				{% elseif element.type == "panel" %}
 				<div id="{{ p }}{{ key }}" class="form-control" style="height: auto; min-height: 34px;">{{ element.caption | default(this.model.__get(key))}}</div>
 				{% elseif element.type == 'email' %}
-					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="email" class="{{ width }} form-control" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"{{ readOnly }}/> 				
+					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="email" class="{{ width }} form-control" value="{{ this.model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ this.model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength | default(255) }}"{{ readOnly }}/> 				
 				{% elseif element.type == 'raw' %}
 					{{ element.value | raw }}
 				{% else %}
@@ -237,9 +237,15 @@ $().ready(function() {
 				</div>	
 				{% endif %}
 			  {% endfor %}	
-			</div>	
-			
-			
+
+			{% if form.showErrors and this.model.getErrors(groupKey) %}
+				<div class="text-danger">
+					{% for e in this.model.getErrors(groupKey) %}
+					{{ e }} {% if not loop.last %}<br/>{% endif %}
+					{% endfor %}
+				</div>
+			{% endif %}	
+			</div>				
 		</div>
 		
 		{% endif %}

@@ -334,6 +334,11 @@ body .modal-preview {
   -webkit-box-shadow: 0 0 1px gray;
    box-shadow: 0 0 1px gray;
 }
+.border-space {
+	padding: 20px;
+	border-radius: 20px;
+	margin-bottom: 40px;
+}
 
 .no-left-padding {
 	padding-left:0px !important;
