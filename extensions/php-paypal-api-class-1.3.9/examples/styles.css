@@ -1,0 +1,265 @@
+/** Reset **/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+}
+em {
+	font-style:normal;
+}
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+body {
+	line-height: 1;
+	color: black;
+	background: white;
+}
+ol, ul {
+	list-style: none;
+}
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: separate;
+	border-spacing: 0;
+}
+caption, th, td {
+	text-align: left;
+	font-weight: normal;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: "";
+}
+blockquote, q {
+	quotes: "" "";
+}
+/** Reset end **/
+
+html,body {
+	font-family:Verdana,Arial;
+	font-size:10pt;
+	height:100%;
+}
+strong {
+	font-weight:bold;
+}
+#container {
+   min-height:100%;
+   position:relative;
+}
+* html #container {
+   height:100%;
+}
+.width {
+	width:980px;
+	margin:auto;
+	position:relative;
+}
+.half {
+	float:left;
+	width:49%;
+	margin-right:1%;
+}
+.clear {
+	line-height:0;
+	height:0;
+	clear:left;
+}
+
+
+h1,h2,h3 {
+	font-weight:bold;
+}
+h1 {
+	font-size:15pt;
+}
+h2 {
+	font-size:13pt;
+}
+h3 {
+	font-size:11pt;
+}
+/** Lists **/
+table {
+	font-size:10pt;
+	line-height:15pt;
+}
+table th {
+	font-size:11pt;
+	font-family:Tahoma,Arial;
+	border-bottom:1px solid #7f7f7f;
+	padding:8px 12px;
+	white-space:nowrap;
+}
+.list {
+	border-top:1px solid #7f7f7f;
+}
+table .larger {
+	font-size:12pt;
+}
+table td,.list li {
+	padding:10px 12px;
+	color:#818181;
+	border-bottom:1px solid #fff;
+	vertical-align:top;
+}
+table td {
+	background-color:#f6f6f7;
+}
+table tr:nth-child(2n+1) td {
+	background-color:#fafafa;
+}
+table td strong {
+	font-weight:bold;
+	color:#000;
+	font-size:12pt;
+}
+table td em {
+	color:#007bbb;
+	font-weight:bold;
+}
+table td.actions {
+	width:240px;
+}
+table td .text {
+	margin-bottom:0;
+}
+
+/** Form styles **/
+form {
+	display:inline;
+}
+form label,form .label {
+	margin-bottom:5px;
+	color:#464b5e;
+	font-size:10pt;
+	font-weight:bold;
+}
+form .disabled .label {
+	color:#bbb;
+}
+form label {
+	display:block;
+	line-height:1.2em;
+}
+form .text, form select,form .uri,form textarea,input.text,input.file {
+	border:2px solid #dfdfde;
+	padding:3px;
+	font-size:11pt;
+	margin-bottom:12px;
+}
+input.number {
+	width:60px;
+}
+
+/** Form errors **/
+.errors {
+	background-color:#fcf3a4;
+	padding:10px;
+	margin:0 0 18px;
+	list-style-position:inside;
+	line-height:13pt;
+}
+
+/** Direct payment styles **/
+
+.payment .paypal {
+	float:right;
+	width:225px;
+	text-align:center;
+}
+
+.payment fieldset {
+	border:0;
+	float:left;
+	padding:0;
+}
+.payment .details {
+	width:440px;
+	margin-top:15px;
+}
+
+.payment .paypal h3 {
+	display:block;
+}
+.payment fieldset label {
+	width:220px;
+	margin-bottom:10px;
+	*margin-bottom:8px;
+}
+.payment fieldset .city {
+	width:141px;
+}
+.payment fieldset .city .text {
+	width:121px;
+}
+.payment fieldset .zip,.payment fieldset .zip .text {
+	width:50px;
+}
+.payment input.text,.payment select {
+	width:190px;
+	font-size:1em;
+	padding:2px;
+	margin:0;
+}
+
+.payment label input.text {
+	padding:3px;
+}
+.payment .details label {
+	display:block;
+	float:left;
+	clear:none;
+}
+.payment .credit_card {
+	float:left;
+	width:195px;
+	padding:15px;
+}
+.payment .credit_card label {
+	float:none;
+	clear:none;
+	width:190px;
+}
+.payment .credit_card select {
+	width:auto;
+	padding:2px;
+	background-color:#fff;
+}
+.payment .credit_card input.text {
+	background-color:#fff;
+	width:92%;
+}
+.payment .credit_card .cvv-label {
+	width:40px; 
+	float:left; 
+	margin:0;
+}
+.payment .credit_card input.cvv {
+	width:50px;
+	margin-left:9px;
+}
+.payment .credit_card .expiry-label {
+	float:left; 
+	margin:0 10px 0 0; 
+	width:130px;
+}
+.payment .help {
+	float:left;
+	width:250px;
+	padding:15px;
+}
