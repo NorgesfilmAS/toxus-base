@@ -62,9 +62,9 @@ class BasePaymentController extends Controller
 				$this->model->couponCode = $_POST[$this->modelName]['coupon'];	
 			}
 		}
-		$params = array();
-		$params['form'] = $this->loadForm('couponFields');
-		
+		$params = array(				
+			'form' => $this->loadForm('couponFields')
+		);
 		$this->render($this->indexView, $params);
 	}
 	

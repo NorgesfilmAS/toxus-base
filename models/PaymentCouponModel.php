@@ -1,8 +1,8 @@
 <?php
 
-Yii::import('toxus.models._base.BaseCoupon');
+Yii::import('toxus.models._base.BasePaymentCoupon');
 
-class CouponModel extends BaseCoupon
+class PaymentCouponModel extends BasePaymentCoupon
 {
 	const FORMAT_POSTFIX = '_FMT';
 
@@ -56,6 +56,5 @@ class CouponModel extends BaseCoupon
 					($this->start_date < $firstDate || $this->start_date < $now  ) &&
 					($this->end_date < $firstDate || $this->end_date >= $now) &&
 					($this->max_use_count == 0 || $this->usedCount < $this->max_use_count);
-	}
-	
+	}	
 }

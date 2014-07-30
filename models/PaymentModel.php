@@ -58,7 +58,7 @@ class PaymentModel extends BasePayment
 	 * 
 	 * @var string
 	 */
-	protected $couponModel = 'CouponModel';
+	protected $couponModel = 'PaymentCouponModel';
 	
 	public static function model($className=__CLASS__) {
 		return parent::model($className);
@@ -80,11 +80,11 @@ class PaymentModel extends BasePayment
 		if ($this->isNewRecord) {
 			$this->slug = Util::generateRandomString(40);
 			$this->creation_date = new CDbExpression('NOW()');
-			if ($this->profile_id == 0) {
+			if (empty($this->profile_id)) {
 				$this->profile_id = Yii::app()->user->id;
 			}
 			if ($this->vat_percentage == null) {
-				$this->vat_percentage = 21;	// should be done in the config
+				$this->vat_percentage = Yii::app()->config->fixedValues['VAT'];	// should be done in the config
 			}	
 		}
 		$this->recalculate();
@@ -133,7 +133,7 @@ class PaymentModel extends BasePayment
 	 */
 	public function getIsDiscountExVat()
 	{
-		return ($this->coupon->amount_ex_vat > 0 || $this->coupon->percentage_ex_vat);
+		return false; /* $this->coupon->amount_ex_vat > 0 ||	$this->coupon->percentage_ex_vat); */
 	}
 	
 	/**
