@@ -23,9 +23,9 @@ class Lionite_Paypal {
 	 */
 	protected $_settings = array (
 		'live' => array (
-			'username' => '',
-			'password' => '',
-			'signature' => '',
+			'username' => 'jaap_api1.toxus.nl',
+			'password' => 'NURZCDH2DHZK7QYP',
+			'signature' => 'AFcWxV21C7fd0v3bYYYRCpSSRl31AenIf.PSHRFelgpdcEiYaheQmyvr',
 			// Do not change below this line
 			'signature_endpoint' => 'https://api-3t.paypal.com/nvp',
 			'certificate_endpoint' => 'https://api.paypal.com/nvp',
@@ -33,9 +33,9 @@ class Lionite_Paypal {
 		),
 		
 		'sandbox' => array (
-			'username' => '',
-			'password' => '',
-			'signature' => '',
+			'username' => 'chordtricks_api1.toxus.nl',
+			'password' => '1365778557',
+			'signature' => 'AFcWxV21C7fd0v3bYYYRCpSSRl31AVXl343D5JGaUQC.-FT9G1tZM5s',
 			// Do not change below this line
 			'signature_endpoint' => 'https://api-3t.sandbox.paypal.com/nvp',
 			'certificate_endpoint' => 'https://api.sandbox.paypal.com/nvp',
