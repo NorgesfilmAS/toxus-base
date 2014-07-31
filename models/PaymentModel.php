@@ -53,6 +53,8 @@ class PaymentModel extends BasePayment
 	const PAYMENT_PENDING = 5;				// not used (notification happend)
 	const PAYMENT_ERROR = 6;					// error happend: see status_text
 	
+	private $_loggingJson = false;
+	
 	/**
 	 * the name of the class used to store the coupons in.
 	 * 
@@ -90,6 +92,25 @@ class PaymentModel extends BasePayment
 		$this->recalculate();
 		return parent::beforeSave();
 	}
+	
+	/**
+	 * check that the token is valid. If not, log the error to the logging_json
+	 * 
+	 * @param string $token the token returned by the transacion
+	 */
+	public function validateTransaction($token)
+	{
+		if ($this->transaction_id != $token) {
+			$this->logStep(array(
+				'error' => 'Token not valid',
+				'token' => $token,
+				'transacationId' => $this->transaction_id	
+			));
+		}
+		return true;
+	}
+
+	
 	/**
 	 * retrieve the code for the coupon
 	 * 
@@ -192,5 +213,24 @@ class PaymentModel extends BasePayment
 			$this->total_amount_ex_vat = $this->amount_ex_vat;
 			$this->total_amount = $this->total_amount_ex_vat + $this->vat_amount;
 		}		
+	}
+	
+	public function logStep($options)
+	{
+		// we must append even if there are many record open
+		if ($this->isNewRecord) {
+			$rec = $this;
+		} else {
+			$rec = PaymentModel::model()->findByPk($this->id);
+		}	
+		
+		$log = CJSON::decode($rec->logging_json);
+		if ($log == null) {
+			$log = array();
+		}
+		$log[] = $options;
+		$json = CJSON::encode($log);
+		$rec->logging_json = $json;
+		$rec->save();
 	}
 }

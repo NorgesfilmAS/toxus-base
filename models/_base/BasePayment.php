@@ -40,6 +40,8 @@
  * @property string $vat_amount
  * @property string $total_amount
  * @property string $payment_provider
+ * @property string $currency
+ * @property string $logging_json
  *
  */
 abstract class BasePayment extends GxActiveRecord {
@@ -62,12 +64,12 @@ abstract class BasePayment extends GxActiveRecord {
 
 	public function rules() {
 		return array(
-			array('slug', 'required'),
+			array('profile_id, slug', 'required'),
 			array('profile_id, product_id, status_id, coupon_id', 'numerical', 'integerOnly'=>true),
-			array('slug, reference, transaction_id, status_text, url_to_open_on_success, document_id, document_url, invoice_number, invoice_referer, caption, amount, discount_code, amount_ex_vat, discount_amount_ex_vat, discount_amount, total_amount_ex_vat, vat_percentage, vat_amount, total_amount, payment_provider', 'length', 'max'=>255),
-			array('description, creation_date, product_json, confirmation_date, invoice_address, invoice_body', 'safe'),
-			array('profile_id, description, reference, transaction_id, creation_date, product_id, product_json, status_text, status_id, url_to_open_on_success, document_id, document_url, confirmation_date, invoice_number, invoice_address, invoice_referer, invoice_body, caption, amount, coupon_id, discount_code, amount_ex_vat, discount_amount_ex_vat, discount_amount, total_amount_ex_vat, vat_percentage, vat_amount, total_amount, payment_provider', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, profile_id, slug, description, reference, transaction_id, creation_date, product_id, product_json, status_text, status_id, url_to_open_on_success, document_id, document_url, confirmation_date, invoice_number, invoice_address, invoice_referer, invoice_body, caption, amount, coupon_id, discount_code, amount_ex_vat, discount_amount_ex_vat, discount_amount, total_amount_ex_vat, vat_percentage, vat_amount, total_amount, payment_provider', 'safe', 'on'=>'search'),
+			array('slug, reference, transaction_id, status_text, url_to_open_on_success, document_id, document_url, invoice_number, invoice_referer, caption, amount, discount_code, amount_ex_vat, discount_amount_ex_vat, discount_amount, total_amount_ex_vat, vat_percentage, vat_amount, total_amount, payment_provider, currency', 'length', 'max'=>255),
+			array('description, creation_date, product_json, confirmation_date, invoice_address, invoice_body, logging_json', 'safe'),
+			array('description, reference, transaction_id, creation_date, product_id, product_json, status_text, status_id, url_to_open_on_success, document_id, document_url, confirmation_date, invoice_number, invoice_address, invoice_referer, invoice_body, caption, amount, coupon_id, discount_code, amount_ex_vat, discount_amount_ex_vat, discount_amount, total_amount_ex_vat, vat_percentage, vat_amount, total_amount, payment_provider, currency, logging_json', 'default', 'setOnEmpty' => true, 'value' => null),
+			array('id, profile_id, slug, description, reference, transaction_id, creation_date, product_id, product_json, status_text, status_id, url_to_open_on_success, document_id, document_url, confirmation_date, invoice_number, invoice_address, invoice_referer, invoice_body, caption, amount, coupon_id, discount_code, amount_ex_vat, discount_amount_ex_vat, discount_amount, total_amount_ex_vat, vat_percentage, vat_amount, total_amount, payment_provider, currency, logging_json', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -114,6 +116,8 @@ abstract class BasePayment extends GxActiveRecord {
 			'vat_amount' => Yii::t('app', 'Vat Amount'),
 			'total_amount' => Yii::t('app', 'Total Amount'),
 			'payment_provider' => Yii::t('app', 'Payment Provider'),
+			'currency' => Yii::t('app', 'Currency'),
+			'logging_json' => Yii::t('app', 'Logging Json'),
 		);
 	}
 
@@ -151,6 +155,8 @@ abstract class BasePayment extends GxActiveRecord {
 		$criteria->compare('vat_amount', $this->vat_amount, true);
 		$criteria->compare('total_amount', $this->total_amount, true);
 		$criteria->compare('payment_provider', $this->payment_provider, true);
+		$criteria->compare('currency', $this->currency, true);
+		$criteria->compare('logging_json', $this->logging_json, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,

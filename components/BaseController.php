@@ -92,8 +92,9 @@ class BaseController extends CController
 					}	
 				}
 			}
-			if (!empty($menuFilename))
+			if (!empty($menuFilename)) {
 				$menu = require($menuFilename);
+			}	
 
 			$event = new CMenuEvent($this);
 			$event->menu = $menu;

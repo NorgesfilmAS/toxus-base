@@ -10,6 +10,10 @@
  * 
  */
 class Lionite_Paypal {
+	// toxus:
+	public $correlationId = false;
+	public $token = false;
+	
 	/**
 	 * Do not change this parameter -
 	 * Use the sandbox() method to change environment
@@ -128,16 +132,16 @@ class Lionite_Paypal {
 		'invoice' => 'INVNUM', //Your own invoice or tracking number
 		'ipn_url' => 'NOTIFYURL', //IPN notification URL for this transaction
 		
-        // Shipping address fields
-        'shipping_name' => 'SHIPTONAME',
-        'shipping_address' => 'SHIPTOSTREET',
-        'shipping_address_2' => 'SHIPTOSTREET2',
-        'shipping_city' => 'SHIPTOCITY',
-        'shipping_state' => 'SHIPTOSTATE',
-        'shipping_country_code' => 'SHIPTOCOUNTRYCODE',
-        'shipping_country_name' => 'SHIPTOCOUNTRYNAME',
-        'shipping_zipcode' => 'SHIPTOZIP',
-        'shipping_phone' => 'SHIPTOPHONENUM'	
+		// Shipping address fields
+		'shipping_name' => 'SHIPTONAME',
+		'shipping_address' => 'SHIPTOSTREET',
+		'shipping_address_2' => 'SHIPTOSTREET2',
+		'shipping_city' => 'SHIPTOCITY',
+		'shipping_state' => 'SHIPTOSTATE',
+		'shipping_country_code' => 'SHIPTOCOUNTRYCODE',
+		'shipping_country_name' => 'SHIPTOCOUNTRYNAME',
+		'shipping_zipcode' => 'SHIPTOZIP',
+		'shipping_phone' => 'SHIPTOPHONENUM'	
 	);
     
     /**
@@ -146,17 +150,17 @@ class Lionite_Paypal {
      * @var array
      */
     protected $_expressCheckoutOptions = array(
-        'cancel' => 'CANCELURL', //URL to which customer is returned if he does not approve Paypal payment. - Required -
+    'cancel' => 'CANCELURL', //URL to which customer is returned if he does not approve Paypal payment. - Required -
 		'return' => 'RETURNURL', //URL to which customer is returned after approving Paypal payment. - Required -
 		'allowed_method' => 'PAYMENTREQUEST_0_ALLOWEDPAYMENTMETHOD', //Allowed payment method. Use 'InstantPaymentOnly' to force instant payments
 		'payment_action' => 'PAYMENTREQUEST_0_PAYMENTACTION', //Transaction payment action. Default is 'Sale', other values include 'Authorization' and 'Order'
 		'payment_id' => 'PAYMENTREQUEST_0_PAYMENTREQUESTID', //Unique identifier of a payment request - required for parallel payments
 		'no_shipping' => 'NOSHIPPING', // Shipping fields on checkout form: 0 - Show, 1 - Don't show, 2 - get address from Paypal account
-        'locale' => 'LOCALECODE', // Set the locale of the Paypal checkout page (2 or 5 letter code)
+    'locale' => 'LOCALECODE', // Set the locale of the Paypal checkout page (2 or 5 letter code)
 		'confirm_shipping' => 'REQCONFIRMSHIPPING', // Require Paypal confirmed address: 0 - no, 1 - yes
 		'allow_note' => 'ALLOWNOTE', // Allow buyer to leave a note for the merchant: 0 - no, 1 - yes (default)
-        'email' => 'EMAIL', // Buyer Email - will be used to prefill the login field in the Paypal screen
-        'landing_page' => 'LANDINGPAGE', // 'Billing' | 'Login' - type of Paypal page to display
+    'email' => 'EMAIL', // Buyer Email - will be used to prefill the login field in the Paypal screen
+    'landing_page' => 'LANDINGPAGE', // 'Billing' | 'Login' - type of Paypal page to display
 		'solution_type' => 'SOLUTIONTYPE' // 'Sole' | 'Mark' - 'Sole' allows checking out without creating a Paypal account
     );
     
@@ -284,15 +288,15 @@ class Lionite_Paypal {
      * Additional Checkout Details for getCheckoutDetails()
      * @var array
      */
-    protected $_checkoutDetailsParams = array(
-        'status' => 'CHECKOUTSTATUS',
-        'timestamp' => 'TIMESTAMP',
-        'correlation_id' => 'CORRELATIONID',
-        'payer_id' => 'PAYERID',
-        'payer_status' => 'PAYERSTATUS',
-        'address_status' => 'ADDRESSSTATUS',
-        'business' => 'BUSINESS'
-    );
+	protected $_checkoutDetailsParams = array(
+		'status' => 'CHECKOUTSTATUS',
+		'timestamp' => 'TIMESTAMP',
+		'correlation_id' => 'CORRELATIONID',
+		'payer_id' => 'PAYERID',
+		'payer_status' => 'PAYERSTATUS',
+		'address_status' => 'ADDRESSSTATUS',
+		'business' => 'BUSINESS'
+	);
     
 	/**
 	 * Checkout details
@@ -377,8 +381,11 @@ class Lionite_Paypal {
 		$nvp = $this ->_buildExpressCheckoutNVP($options, $items);
 		
 		$nvpstr = implode('&',$nvp);
-	    $result = $this -> apiCall("SetExpressCheckout", $nvpstr);
+    $result = $this -> apiCall("SetExpressCheckout", $nvpstr);
+		// toxus:		
 		if(is_array($result) && strtolower($result['ACK']) == "success") {		
+			$this->correlationId = $result['CORRELATIONID'];
+			$this->token = $result['TOKEN'];
 			return $result["TOKEN"];
 		} else {
 			return false;
@@ -393,70 +400,70 @@ class Lionite_Paypal {
      * @param array $items
      * @return array 
      */
-    protected function _buildExpressCheckoutNVP($options = array(),$items = array()) {
-        $nvp = array();
-        	
-		if(!empty($items)) {
-			if(isset($items['cost']) || isset($items['subscription_description'])) {
-				$items = array($items);			
-			} 
-			$cost = 0;
-			$tax = 0;
-			$subscriptions = 0;
-			foreach($items as $n => $item) {
-				$amount = isset($item['amount']) ? (int) $item['amount'] : 1;
-				foreach($this -> _itemParams as $key => $paypalKey) {
-					if(isset($item[$key])) {
-						$nvp[] = "L_PAYMENTREQUEST_0_" . $paypalKey . $n . "=" . urlencode($item[$key]);
+    protected function _buildExpressCheckoutNVP($options = array(),$items = array()) 
+		{
+			$nvp = array();
+
+			if(!empty($items)) {
+				if(isset($items['cost']) || isset($items['subscription_description'])) {
+					$items = array($items);			
+				} 
+				$cost = 0;
+				$tax = 0;
+				$subscriptions = 0;
+				foreach($items as $n => $item) {
+					$amount = isset($item['amount']) ? (int) $item['amount'] : 1;
+					foreach($this -> _itemParams as $key => $paypalKey) {
+						if(isset($item[$key])) {
+							$nvp[] = "L_PAYMENTREQUEST_0_" . $paypalKey . $n . "=" . urlencode($item[$key]);
+						}
+					}
+					if(!isset($item['amount'])) {
+						$nvp[] = "L_PAYMENTREQUEST_0_QTY" . $n . "=" . $amount;
+					}
+					$cost += isset($item['cost']) ? ($item['cost'] * $amount) : 0;
+					if(isset($item['tax'])) {
+						$tax += $item['tax'] * $amount;
+					}
+					if(isset($item['subscription_description'])) {
+
+						$nvp[] = 'L_BILLINGAGREEMENTDESCRIPTION' . $subscriptions . '=' . urlencode($item['subscription_description']);
+						$nvp[] = 'L_BILLINGTYPE' . $subscriptions .'=RecurringPayments';
+						$subscriptions++;
 					}
 				}
-				if(!isset($item['amount'])) {
-					$nvp[] = "L_PAYMENTREQUEST_0_QTY" . $n . "=" . $amount;
+				$additionalCosts = 0;
+				if(!isset($options['tax']) && $tax > 0) {
+					$options['tax'] = $tax;
 				}
-				$cost += isset($item['cost']) ? ($item['cost'] * $amount) : 0;
-				if(isset($item['tax'])) {
-					$tax += $item['tax'] * $amount;
-				}
-				if(isset($item['subscription_description'])) {
-					
-					$nvp[] = 'L_BILLINGAGREEMENTDESCRIPTION' . $subscriptions . '=' . urlencode($item['subscription_description']);
-					$nvp[] = 'L_BILLINGTYPE' . $subscriptions .'=RecurringPayments';
-					$subscriptions++;
-				}
-			}
-			$additionalCosts = 0;
-			if(!isset($options['tax']) && $tax > 0) {
-				$options['tax'] = $tax;
-			}
-			
-			foreach(array('shipping','tax','insurance','handling') as $key) {
-				if(isset($options[$key])) {
-					$additionalCosts += $options[$key];
-				}
-			}
-			
-			if(!isset($options['cost']) && isset($cost)) {
-				$nvp[] = "PAYMENTREQUEST_0_AMT=" . ($cost + $additionalCosts);
-			}
 
-			//Auto add ITEMAMT if required and available
-			if(!isset($options['item_cost']) && $additionalCosts > 0) {
-				$nvp[] = "PAYMENTREQUEST_0_ITEMAMT=" . $cost;
+				foreach(array('shipping','tax','insurance','handling') as $key) {
+					if(isset($options[$key])) {
+						$additionalCosts += $options[$key];
+					}
+				}
+
+				if(!isset($options['cost']) && isset($cost)) {
+					$nvp[] = "PAYMENTREQUEST_0_AMT=" . ($cost + $additionalCosts);
+				}
+
+				//Auto add ITEMAMT if required and available
+				if(!isset($options['item_cost']) && $additionalCosts > 0) {
+					$nvp[] = "PAYMENTREQUEST_0_ITEMAMT=" . $cost;
+				}
 			}
-			
-		}
-		foreach($this -> _paymentOptions as $key => $paypalKey) {
-			if(isset($options[$key]) && $options[$key] !== '') {
-				$paypalKey = 'PAYMENTREQUEST_0_' . $paypalKey;
-				$nvp[] = $paypalKey . '=' . urlencode($options[$key]);
+			foreach($this -> _paymentOptions as $key => $paypalKey) {
+				if(isset($options[$key]) && $options[$key] !== '') {
+					$paypalKey = 'PAYMENTREQUEST_0_' . $paypalKey;
+					$nvp[] = $paypalKey . '=' . urlencode($options[$key]);
+				}
 			}
-		}
-        foreach($this -> _expressCheckoutOptions as $key => $paypalKey) {
-            if(isset($options[$key]) && $options[$key] !== '') {
-				$nvp[] = $paypalKey . '=' . urlencode($options[$key]);
+			foreach($this -> _expressCheckoutOptions as $key => $paypalKey) {
+				if(isset($options[$key]) && $options[$key] !== '') {
+					$nvp[] = $paypalKey . '=' . urlencode($options[$key]);
+				}
 			}
-        }
-        return $nvp;
+			return $nvp;
     }
 	
 	/**
@@ -491,21 +498,21 @@ class Lionite_Paypal {
 		if(empty($token) && isset($_GET['token'])) {
 			$token = $_GET['token'];
 		}
-	    $nvpstr = "TOKEN=" . $token;
-	    $result = $this -> apiCall("GetExpressCheckoutDetails",$nvpstr);
-	    if(is_array($result)) {
-	    	$data = array();
-	    	foreach(
-                $this -> _paymentOptions + 
-                $this -> _expressCheckoutOptions + 
-                $this -> _directPaymentOptions + 
-                $this -> _checkoutDetailsParams as 
-                    $key => $paypalKey) {
+		$nvpstr = "TOKEN=" . $token;
+		$result = $this -> apiCall("GetExpressCheckoutDetails",$nvpstr);
+		if(is_array($result)) {
+			$data = array();
+			foreach(
+							$this -> _paymentOptions + 
+							$this -> _expressCheckoutOptions + 
+							$this -> _directPaymentOptions + 
+							$this -> _checkoutDetailsParams as 
+									$key => $paypalKey) {
 				if(isset($result[$paypalKey])) {
 					$data[$key] = $result[$paypalKey];
 				} else if(isset($result['PAYMENTREQUEST_0' . $paypalKey])) {
-                    $data[$key] = $result['PAYMENTREQUEST_0' . $paypalKey];
-                }
+					$data[$key] = $result['PAYMENTREQUEST_0' . $paypalKey];
+				}
 			}
 			$i = 0;
 			$items = array();
@@ -520,7 +527,7 @@ class Lionite_Paypal {
 			$data['items'] = $items;
 			$this -> _checkoutDetails = $data;
 			return $data;
-	    }
+		}
 		return $result;
 	}
 	
@@ -540,17 +547,17 @@ class Lionite_Paypal {
 	public function confirmCheckoutPayment($options = array(),$items = array()) {	   
 		$token = isset($options['token']) ? $options['token'] : $_GET['token'];
 		$payerID = isset($options['payer_id']) ? $options['payer_id'] : $_GET['PayerID'];
-        
-        foreach(array('cost','currency','shipping','tax','insurance','handling','item_cost') as $key) {
-            if(!isset($options[$key]) && is_array($this -> _checkoutDetails) && isset($this -> _checkoutDetails[$key])) {
-                $options[$key] = $this -> _checkoutDetails[$key];
-            }
-        }
-        if(empty($items) && is_array($this -> _checkoutDetails) && isset($this -> _checkoutDetails['items'])) {
-            $items = $this -> _checkoutDetails['items'];
-        }
-        
-        if(empty($items) && !isset($options['cost'])) {
+
+		foreach(array('cost','currency','shipping','tax','insurance','handling','item_cost') as $key) {
+			if(!isset($options[$key]) && is_array($this -> _checkoutDetails) && isset($this -> _checkoutDetails[$key])) {
+				$options[$key] = $this -> _checkoutDetails[$key];
+			}
+		}
+		if(empty($items) && is_array($this -> _checkoutDetails) && isset($this -> _checkoutDetails['items'])) {
+			$items = $this -> _checkoutDetails['items'];
+		}
+
+		if(empty($items) && !isset($options['cost'])) {
 			return array('cost' => 'No items or cost provided - cannot determine transaction cost');
 		}
         
@@ -1032,17 +1039,17 @@ class Lionite_Paypal {
 				if(!empty($_GET)) {
 					$log .= '$_GET: ' . print_r($_GET,true) . "\n\n";
 				}
-                $user = array();
+        $user = array();
 				$ip = $this -> getRemoteAddr();
-                if(!empty($ip)) {
-                    $user['IP'] = $ip;
-                }
-                if(isset($_SERVER['HTTP_USER_AGENT']) && !empty($_SERVER['HTTP_USER_AGENT'])) {
-                    $user['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-                }
-                if(!empty($user)) {
-                    $log .= 'User: ' . print_r($user,true) . "\n\n";
-                }
+				if(!empty($ip)) {
+					$user['IP'] = $ip;
+				}
+				if(isset($_SERVER['HTTP_USER_AGENT']) && !empty($_SERVER['HTTP_USER_AGENT'])) {
+					$user['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+				}
+				if(!empty($user)) {
+					$log .= 'User: ' . print_r($user,true) . "\n\n";
+				}
 				if(is_array($this -> _logParams) && !empty($this -> _logParams)) {
 					$log .= 'Additional parameters: ' . print_r($this -> _logParams,true);
 				}

@@ -325,7 +325,7 @@ class Util {
 			return substr($s, 6);
 		} else {
 			foreach ($errors as $error) {
-				$s .= ', '.implode(',', $error);
+				$s .= ', '.(is_array($error) ? implode(',', $error) : $error);
 			}
 			return substr($s, 2);
 		}
