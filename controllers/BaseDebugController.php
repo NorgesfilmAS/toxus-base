@@ -15,6 +15,7 @@ class BaseDebugController extends Controller
 	 */
 	public $allowOtherOrigin = true;
 	
+	public $modelClass = 'DebugInfoModel';
 	/**
 	 * The class to use to write the debug information
 	 * 

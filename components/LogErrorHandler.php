@@ -37,7 +37,8 @@ class LogErrorHandler extends CErrorHandler
 		parent::handle($event);		// must be first because it analyses the stacktrace
 		Yii::import('toxus.extensions.EHttpClient.*' );		
 		if ($this->logUrl) {
-			$client = new EHttpClient($this->absoluteUrl($this->logUrl), array(
+			$url = $this->absoluteUrl($this->logUrl);
+			$client = new EHttpClient($url, array(
 				'maxredirects' => 0,
 				'timeout'	=> 30,
 			));			
@@ -78,10 +79,14 @@ class LogErrorHandler extends CErrorHandler
 			'stackTrace' => $stack,
 			'state' => $state,	
 		);
-		$response = $client->setRawData(CJSON::encode($reply, 'application/json'))->request('POST');
-		if ($response->isSuccessful()) {
-			$stack = $event;
-		}
+		try {
+			$response = $client->setRawData(CJSON::encode($reply, 'application/json'))->request('POST');
+			if ($response->isSuccessful()) {
+				$stack = $event;
+			}			
+		} catch (Exception $e) {
+			
+		}	
 	}
 	
 	/**
