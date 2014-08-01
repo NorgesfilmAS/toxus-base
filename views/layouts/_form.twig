@@ -16,7 +16,7 @@
 			<label for="{{ p }}{{ groupKey }}" class="control-label {{ form.labelClass | default('col-lg-2') }} no-left-padding {% if this.hasTooltip(groupKey) or groupElement.tooltip %} showtip" data-toggle="tooltip" data-placement="right" data-trigger="hover" data-original-title="{{ groupElement.tooltip | default(this.tooltip(groupKey)) }}{% endif %}" >{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ this.model.attributeLabel(groupKey) }}{% endif %}&nbsp;</label> 
 			{% endif %}
 			{# to stop the col-lg-10 from display on a with we add the width to the class so the class is illegal #}
-			<div class="controls{% if groupElement.elements | length == 0 %} {% if groupElement.type == 'checkbox' %}col-lg-offset-2{% endif %} {% if groupElement.hideLabel != true %}col-lg-10{%else%}col-lg-12{%endif%}{{ groupElement.width }}{% else %} col-lg-10{% endif %}">
+			<div class="controls{% if groupElement.elements | length == 0 %} {% if groupElement.type == 'checkbox' %}col-lg-offset-2{% endif %} {% if groupElement.hideLabel != true %}{{ form.controlClass | default('col-lg-10') }}{%else%}col-lg-12{%endif%}{{ groupElement.width }}{% else %} col-lg-10{% endif %}">
 				{% if groupElement.elements | length > 0 %}
 					{% set fields = (groupElement.elements) %}
 				{% else %}

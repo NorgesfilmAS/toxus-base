@@ -6,6 +6,19 @@
         Bootstrap application extension
 */
 
+.waiting {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0.5;
+  margin: auto;
+  z-index: 10;
+}
+
 .bs-container {
 	min-height: 500px;
 	padding-top: 38px;
