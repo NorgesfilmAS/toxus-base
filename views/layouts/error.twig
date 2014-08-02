@@ -39,7 +39,7 @@
 	{% endif %}
   <div class="modal-footer">
 		{% block dialogFooter %}
-    <a id="btn-close" class="btn btn-primary action-close" {% if url %}href="{{ url }}" {% else %}data-dismiss="modal"{% endif %}>{{ closeCaption | default(Yii_t('base','btn-close')) }}</a>
+    <a id="btn-close" class="btn btn-primary action-close" {% if url %}href="{{ url }}" {% else %}data-dismiss="modal"{% endif %}>{{ closeCaption | default(Yii_t('button','btn-close')) }}</a>
 		{% endblock %}
   </div>
 

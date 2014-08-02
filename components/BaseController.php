@@ -286,19 +286,19 @@ class BaseController extends CController
 		if (Yii::app()->user->isGuest) {
 			$menu = array(
 				'sign-up' => array(
-					'label' => Yii::t('base', 'menu-sign-up'),
+					'label' => Yii::t('button', 'menu-sign-up'),
 					'url' => $this->createUrl('login/new'),
 					'icon' => 'icon-user',	
 				),
 				'sign-in' => array (
-					'label' => Yii::t('base', 'menu-sign-in'),
+					'label' => Yii::t('button', 'menu-sign-in'),
 					'url' => $this->createUrl('login/index'),						
 				),	
 			);
 		} else {
 			$menu = array(
 				'sign-out' => array (
-					'label' => Yii::t('base', 'menu-sign-out'),
+					'label' => Yii::t('button', 'menu-sign-out'),
 					'url' => $this->createUrl('login/logout'),						
 				),	
 			);

@@ -10,8 +10,8 @@
 		<h2>{{ this.model.title }}
 		{% if allowEdit %}	
 			<div class="pull-right well well-sm">
-					<a class=" btn-edit btn btn-info" href="{{ this.createUrl('article/edit', {'id' : this.model.id, 'mode' : 'edit'}) }}">{{ Yii_t('base','btn-edit') }}</a>
-					<a class="btn-new btn btn-info" href="{{ this.createUrl('article/create') }}">{{ Yii_t('base','btn-new') }}</a>
+					<a class=" btn-edit btn btn-info" href="{{ this.createUrl('article/edit', {'id' : this.model.id, 'mode' : 'edit'}) }}">{{ Yii_t('button','btn-edit') }}</a>
+					<a class="btn-new btn btn-info" href="{{ this.createUrl('article/create') }}">{{ Yii_t('button','btn-new') }}</a>
 			</div>	
 		{% endif %}
 		</h2>

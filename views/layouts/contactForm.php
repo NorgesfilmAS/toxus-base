@@ -25,7 +25,7 @@ $a = array(
 		'submit' => array(
 			'type' => 'submit',			
 			'style' => 'btn-info btn-large',	
-			'label' => Yii::t('base','btn-submit'),	
+			'label' => Yii::t('button','btn-submit'),	
 		),
 	),				
 );
