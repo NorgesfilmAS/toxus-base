@@ -1604,7 +1604,7 @@ class BaseController extends CController
 	{
 		$btn = array(
 			'default' => false,				// use the default of one the standard button. default is the name of the button	
-			'label' => 'caption',
+			'label' => Yii::t('button','btn-no-caption'),
 			'url' => false,			
 			'position' => 'pull-right',
 			'type' => 'command',	
@@ -1627,7 +1627,7 @@ class BaseController extends CController
 					break;
 				case 'cancel' :	
 					$btn = array_merge($btn, array(
-							'label'  => 'btn-cancel',
+							'label'  => Yii::t('button','btn-cancel'),
 							'position' => 'pull-left',
 							'type' => 'cancel',
 							'style' => 'btn btn-default',
@@ -1635,7 +1635,7 @@ class BaseController extends CController
 					break;					
 				case 'delete' :	
 					$btn = array_merge($btn, array(
-							'label'  => 'btn-delete',
+							'label'  => Yii::t('app', 'btn-delete'),
 							'position' => 'left',
 							'type' => 'delete',
 							'action' => 'delete',

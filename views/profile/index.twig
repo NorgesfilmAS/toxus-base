@@ -1,15 +1,20 @@
-{% extends this.viewPath('main') %}
+{% extends this.viewPath('viewForm') %}
 
 {% set layout='full' %}
-
 	
-{%block content %}
-<div class="col-xs-12 col-sm-8 col-sm-offset-2">
-	<p>
-		<strong>{{ model.username }}</strong> has got email address <strong>{{ model.email }}</strong>.<br />
-		You are a member since {{ model.creation_date |date('j F Y') }}. 
-		You will {%if model.has_newsletter == 0 %}not {% endif %}recieve our newsletter.<br/>
-		Your rights are a {{ model.rightsText }}.	
-	</p>
-</div>
+{%block content %}	
+	<div class="col-xs-12 col-sm-6 col-sm-offset-3">
+		<h2>
+			{{ form.title }} 
+			{% if mode != 'edit' %}<a  href="?mode=edit" class="pull-right btn btn-info">{{ Yii_t('button', 'btn-edit') }}</a> {% endif %}
+		</h2>		
+		{{ parent() }}
+		{% if mode == 'edit' %} 
+			<div class="row">
+			<div class="col-xs-12 col-sm-6 col-sm-offset-6">
+			{% include this.viewPath('_buttons') %}
+			</div>	
+			</div>	
+		{% endif %}
+	</div>
 {%endblock%}

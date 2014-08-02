@@ -2,9 +2,21 @@
 
 class BaseProfileController extends Controller
 {
-	public $modelClass = 'UserProfile';
+	
+	/**
+	 * the name of the form to display
+	 * @var string
+	 */
+	public $profileForm = 'profileForm';
+	
+	private $_modelClass = false;
 	
 	protected $adminActions = array('list','create','delete', 'update');
+	
+	public function init() {
+		$this->_modelClass = get_class(Yii::app()->user->profile);
+		parent::init();
+	}
 	
 	public function actions()
 	{
@@ -12,11 +24,11 @@ class BaseProfileController extends Controller
 				'list' => array(
 					'class' => 'toxus.actions.ListAction',
 					'allowed' => Yii::app()->user->isAdmin,
-					'modelClass' => $this->modelClass,	
+					'modelClass' => $this->_modelClass,	
 				),		
 				'create' => array(
 					'class' => 'toxus.actions.CreateAction',
-					'modelClass' => $this->modelClass,	
+					'modelClass' => $this->_modelClass,	
 				  'allowed' => Yii::app()->user->isAdmin,						
 					'view' => 'formDialog',
 					'scenario' => 'adminCreate',
@@ -24,77 +36,40 @@ class BaseProfileController extends Controller
 				),
 				'delete' => array(
 					'class' => 'toxus.actions.DeleteAction',
-					'modelClass' => $this->modelClass,
+					'modelClass' => $this->_modelClass,
 				  'allowed' => Yii::app()->user->isAdmin,			
 					'successUrl' => $this->createUrl('profile/list'),	
 				),
 				'view' => array(
 					'class' => 'toxus.actions.ViewAction',
-					'modelClass' => $this->modelClass,	
+					'modelClass' => $this->_modelClass,	
 					'form' => 'overviewFields',	
 					'allowed' => Yii::app()->user->isAdmin,
 					'menuItem' => '.menu-overview',	
 				),
 				'update' => array(
 					'class' => 'toxus.actions.UpdateAction',
-					'modelClass' => $this->modelClass,
+					'modelClass' => $this->_modelClass,
 					'form' => 'propertiesFields',		
 				  'allowed' => Yii::app()->user->isAdmin,		
 					'menuItem' => '.menu-properties',	
 				),
+				'index' => array(
+					'class' => 'toxus.actions.UpdateAction',
+					'allowed' => ! Yii::app()->user->isGuest,
+					'form' => $this->profileForm,
+					'modelClass' => $this->_modelClass,
+					'pageLayout' => 'full',	
+					'onCreateModel' => array($this, 'openProfile'),
+					'view' => 'index',	
+				)
 				
 		);				
 	}
 	
-	public function actionIndex()
+	public function openProfile()
 	{
-		if (Yii::app()->user->isGuest) {
-			$this->redirect($this->createUrl('profile/login'));
-		} else {
-			$this->model = Yii::app()->user->profile;
-			$this->render('index', array(
-				'model' => Yii::app()->user->profile
-			));
-		}	
-	}
-	
-	/**
-	 * updates of user profile basics
-	 */
-	/**
-	public function actionUpdate()
-	{
-		Yii::import('application.controllers.ArticleController');
-		
-		$article = new ArticleController('Article');		
 		$this->model = Yii::app()->user->profile;
-		$form = $this->loadForm('updateForm');
-		if (isset($_POST['UserProfile'])) {
-			// check for a changed email address
-			$mustConfirm = $this->model->email !== $_POST['UserProfile']['email'];
-			$this->model->attributes = $_POST['UserProfile'];
-			if ($this->model->validate()) {
-				if ($mustConfirm) {
-					$temp = $this->model->email_to_confirm;
-					$this->model->email_to_confirm = $this->model->email;
-					$this->model->email = $temp;
-					$this->model->login_key = '';
-				}	
-				if ($this->model->save()) {			  
-					if ($mustConfirm) {
-						$mail = new MailMessage();
-						$mail->render('emailAddressChanged', array('model' => $this->model));						
-						$article->actionIndex('email-confirm');
-						return;
-					}	
-				  $this->redirect($this->createUrl('profile/index'));
-				}
-			}	
-		}
-		$this->model->email_to_confirm = $this->model->email;
-		$this->render('update', array('model' => $this->model, 'form' => $form));
 	}
 	
-	 * 
-	 */
 }
