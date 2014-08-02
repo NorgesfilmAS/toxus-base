@@ -51,7 +51,10 @@ class BaseProfileController extends Controller
 		if (Yii::app()->user->isGuest) {
 			$this->redirect($this->createUrl('profile/login'));
 		} else {
-			$this->render('index', array('model' => Yii::app()->user->profile));
+			$this->model = Yii::app()->user->profile;
+			$this->render('index', array(
+				'model' => Yii::app()->user->profile
+			));
 		}	
 	}
 	
