@@ -35,6 +35,8 @@ class LoginAction extends CAction
 				}	
 			}	
 		}
-		$this->controller->render($this->view, array('form' => $form, 'state' => 'edit'));
+		$this->controller->render($this->view, array(
+				'form' => $form, 
+				'state' => 'edit'));
 	}
 }
