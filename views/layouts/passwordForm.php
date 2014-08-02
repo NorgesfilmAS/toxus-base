@@ -1,7 +1,7 @@
 <?php
 
 return array(
-	'title' => $this->te('lost password'),	
+	'title' => Yii::t('base','lost password'),	
 	'model' => 'LoginForm',	
 	'elements' => array(	
 		'email' => array(
@@ -13,7 +13,7 @@ return array(
 			'submit' => array(
 				'type' => 'submit',			
 				'style' => 'btn btn-primary',	
-				'label' => $this->te('request password')	
+				'label' => Yii::t('base','request password')	
 			),
 		),		
 	),		

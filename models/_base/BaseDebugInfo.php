@@ -34,7 +34,7 @@ abstract class BaseDebugInfo extends TwigActiveRecord {
 	}
 
 	public static function label($n = 1) {
-		return Yii::t('app', 'DebugInfo|DebugInfos', $n);
+		return Yii::t('base', 'DebugInfo|DebugInfos', $n);
 	}
 
 	public static function representingColumn() {
@@ -63,18 +63,18 @@ abstract class BaseDebugInfo extends TwigActiveRecord {
 
 	public function attributeLabels() {
 		return array(
-			'id' => Yii::t('app', 'ID'),
-			'creation_date' => Yii::t('app', 'Creation Date'),
-			'app_ident' => Yii::t('app', 'App Ident'),
-			'device_ident' => Yii::t('app', 'Device Ident'),
-			'session_ident' => Yii::t('app', 'Session Ident'),
-			'user_id' => Yii::t('app', 'User'),
-			'type_id' => Yii::t('app', 'Type'),
-			'error_url' => Yii::t('app', 'Error Url'),
-			'error_message' => Yii::t('app', 'Error Message'),
-			'cause' => Yii::t('app', 'Cause'),
-			'stacktrace' => Yii::t('app', 'Stacktrace'),
-			'state' => Yii::t('app', 'State'),
+			'id' => Yii::t('base', 'ID'),
+			'creation_date' => Yii::t('base', 'Creation Date'),
+			'app_ident' => Yii::t('base', 'App Ident'),
+			'device_ident' => Yii::t('base', 'Device Ident'),
+			'session_ident' => Yii::t('base', 'Session Ident'),
+			'user_id' => Yii::t('base', 'User'),
+			'type_id' => Yii::t('base', 'Type'),
+			'error_url' => Yii::t('base', 'Error Url'),
+			'error_message' => Yii::t('base', 'Error Message'),
+			'cause' => Yii::t('base', 'Cause'),
+			'stacktrace' => Yii::t('base', 'Stacktrace'),
+			'state' => Yii::t('base', 'State'),
 		);
 	}
 

@@ -109,7 +109,7 @@ class PullMessageBehavior extends CBehavior
 					foreach ($instances as $filename) {
 						$fo = fopen($filename, 'rw');
 						if (!flock($fo, LOCK_EX)) {
-							throw new CException(Yii::t('app','Can get a lock on file {filename}', array('{filename}' => $filename)));
+							throw new CException(Yii::t('base','Can get a lock on file {filename}', array('{filename}' => $filename)));
 						}
 						try {
 							// should check then timestamp that it has been read the last x minutes

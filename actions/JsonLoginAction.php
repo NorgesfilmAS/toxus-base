@@ -53,10 +53,10 @@ class JsonLoginAction extends JsonAction
 					$this->controller->addError($key, $error);
 				}
 			}
-			$this->controller->message = Yii::t('app', 'Combination of User, Password is wrong.');
+			$this->controller->message = Yii::t('base', 'Combination of User, Password is wrong.');
 		}	 else {
-			$this->controller->message = Yii::t('app', 'No login credentials found');
-			$this->controller->addError('username', Yii::t('app', 'Login credentials are wrong.'));
+			$this->controller->message = Yii::t('base', 'No login credentials found');
+			$this->controller->addError('username', Yii::t('base', 'Login credentials are wrong.'));
 		}
 		$this->controller->success = false;
 		$this->controller->asJson();

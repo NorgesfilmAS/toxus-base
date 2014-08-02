@@ -89,7 +89,7 @@ class UserProfileModel extends BaseUserProfile
 				array('username, email', 'unique'),					
 					
 				array('email', 'email'),	
-				array('password', 'length', 'min'=>5, 'max'=>64, 'tooShort'=> Yii::t('app','Password is too short (minimum is 5 characters)')),        					
+				array('password', 'length', 'min'=>5, 'max'=>64, 'tooShort'=> Yii::t('base','Password is too short (minimum is 5 characters)')),        					
 				array('password', 'compare', 'compareAttribute'=>'passwordRepeat', 'on' => 'create'),									
 				array('username,email,password,passwordRepeat', 'required', 'on' => 'create'),	
 					
@@ -100,8 +100,8 @@ class UserProfileModel extends BaseUserProfile
         // the invitations	
         array('passwordText,passwordTextRepeat, accepted_terms', 'required', 'on' => 'invitation'),
         array('passwordText', 'compare', 'compareAttribute'=>'passwordTextRepeat', 'on' => 'invitation'),									
-        array('accepted_terms', 'compare', 'compareValue'=>1, 'on' => 'invitation', 'message' => Yii::t('app', 'You must accept the terms.')),													
-        array('passwordText', 'length', 'min'=>5, 'max'=>64, 'tooShort'=> Yii::t('app','Password is too short (minimum is 5 characters)'), 'on' => 'invitation'),        													        
+        array('accepted_terms', 'compare', 'compareValue'=>1, 'on' => 'invitation', 'message' => Yii::t('base', 'You must accept the terms.')),													
+        array('passwordText', 'length', 'min'=>5, 'max'=>64, 'tooShort'=> Yii::t('base','Password is too short (minimum is 5 characters)'), 'on' => 'invitation'),        													        
 			)
 		);
 	}
@@ -129,12 +129,12 @@ class UserProfileModel extends BaseUserProfile
 	static public function getRightsOptions()
 	{
 		return array(
-			self::GUEST => Yii::t('app', 'Guest'),
-			self::REGISTERED_USER => Yii::t('app', 'Registered User'),	
-			self::PAYING_CUSTOMER => Yii::t('app', 'Paying Customer'),					
-			self::MODERATOR => Yii::t('app', 'Moderator'),
-			self::ADMINISTRATOR => Yii::t('app', 'Administrator'),					
-			self::GOD => Yii::t('app', 'God'),					
+			self::GUEST => Yii::t('base', 'Guest'),
+			self::REGISTERED_USER => Yii::t('base', 'Registered User'),	
+			self::PAYING_CUSTOMER => Yii::t('base', 'Paying Customer'),					
+			self::MODERATOR => Yii::t('base', 'Moderator'),
+			self::ADMINISTRATOR => Yii::t('base', 'Administrator'),					
+			self::GOD => Yii::t('base', 'God'),					
 		);
 	}
 
@@ -171,7 +171,7 @@ class UserProfileModel extends BaseUserProfile
 			'model' => $this,
 			'action' => $this->confirmationUrl,		
 		))) {
-			$this->addError('email', Yii::t('app', 'Unable to send mail'));
+			$this->addError('email', Yii::t('base', 'Unable to send mail'));
 			return false;
 		}	
 		return true;
@@ -185,8 +185,8 @@ class UserProfileModel extends BaseUserProfile
 	public function isConfirmedOptions()
 	{
 		return array(
-			'0' => Yii::t('app', 'No'),
-			'1' => Yii::t('app', 'Yes'),	
+			'0' => Yii::t('base', 'No'),
+			'1' => Yii::t('base', 'Yes'),	
 		);
 	}
 	

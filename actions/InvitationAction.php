@@ -66,7 +66,7 @@ class InvitationAction extends BaseAction
 			$this->controller->model->password = '';
 	//		$this->render($this->view, $params);
 		} else {
-			$params['error'] = Yii::t('app', 'The invitation could not be found. Please contact us if you think this is an error.');
+			$params['error'] = Yii::t('base', 'The invitation could not be found. Please contact us if you think this is an error.');
 		}		
 		$this->render($this->view, array_merge(	
 			$params,			

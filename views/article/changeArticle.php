@@ -26,7 +26,7 @@ return array(
 			),		
 		),			
 		'showGeneral' => array(
-			'label' => $this->te('visiblitiy'),
+			'label' => Yii::t('base','visiblitiy'),
 			'elements' => array(
 				'showGeneral' => array(
 					'type' => 'checkbox',

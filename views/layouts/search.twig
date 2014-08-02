@@ -28,7 +28,7 @@
 		{% endfor %}
 		
 		<div class="nav-options extra-search">
-			<div class="nav-option-header cls-toggle"><label><span class="caption">{{ this.t('show extra search') }}</span><span class="pull-right nav-arrow">&#x25BC</span></label></div>
+			<div class="nav-option-header cls-toggle"><label><span class="caption">{{ Yii_t('base','Show extra search') }}</span><span class="pull-right nav-arrow">&#x25BC</span></label></div>
 			<div class="nav-option-body" style="display: none;">		
 			{% for field in this.model.searchExtraFields %}
 				{% include this.viewPath('searchField') with {'field' : field} %}
@@ -41,17 +41,17 @@
 		{# the ordering of the list #}
 		{% for key,field in this.model.orderFields %}
 			{% if loop.first %}
-			<label for="id-sort">{{ this.t('sort by') }}</label>
+			<label for="id-sort">{{ Yii_t('base','Sort by') }}</label>
 			<select name="{{ this.model.classname }}[searchOrder]" class="id-sort form-control">
 			{% endif %}						
-				<option value="{{ key }}"{% if this.model.searchOrder == key %} selected="1"{% endif %}>{{ this.t(field.label) }}</option>
+				<option value="{{ key }}"{% if this.model.searchOrder == key %} selected="1"{% endif %}>{{ field.label }}</option>
 			{% if loop.last %}
 			</select>
 			{% endif %}
 		{% endfor %}
 		{# search button #}
 		<div class="bs-nav-searchbar">
-			<input type="submit" class="btn btn-info pull-right" value="{{this.t('search') }}"/>
+			<input type="submit" class="btn btn-info pull-right" value="{{Yii_t('base','Search') }}"/>
 		</div>		
 	</div>	
 </form>		
@@ -164,11 +164,11 @@ $('.cls-search').on('change', function() {
 $('.cls-toggle').on('click', function() {
 	if ($('.nav-option-body').is(':visible')) {
 		$('.nav-option-body').hide('blind');	
-		$('.caption').text('{{ this.te('show extra search') }}');
+		$('.caption').text('{{ Yii_t('base','show extra search') }}');
 		$('.nav-arrow').html('&#x25BC');
 	} else {	
 		$('.nav-option-body').show('blind');	
-		$('.caption').text('{{ this.te('hide extra search') }}');
+		$('.caption').text('{{ Yii_t('base','hide extra search') }}');
 		$('.nav-arrow').html('&#x25B6');
 	}
 });

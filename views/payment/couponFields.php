@@ -12,7 +12,7 @@ return array(
 						'type' => 'button',
 						'width' => 'pull-right',
 						'style' => 'btn-primary',	
-						'caption' => $this->te('redeem'),	
+						'caption' => Yii::t('base','redeem'),	
 						'script' => '$("#id-form").submit();	'
 					)	
 				),		

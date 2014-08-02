@@ -94,7 +94,7 @@ class MailMessage extends BaseController
 		$default = array(
 			'from' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'].'>',
 			'to' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'].'>',
-			'subject' => Yii::t('app', 'Message from {name}', array('name' => Yii::app()->params['company'])),
+			'subject' => Yii::t('base', 'Message from {name}', array('name' => Yii::app()->params['company'])),
 			'body' => '',	
 		);
 
@@ -103,7 +103,7 @@ class MailMessage extends BaseController
 				array(
 					'from' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'],
 					'to' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'],
-					'subject' => Yii::t('app', 'Message from {name}', array('name' => Yii::app()->params['company'])),
+					'subject' => Yii::t('base', 'Message from {name}', array('name' => Yii::app()->params['company'])),
 					'body' => '',	
 				),
 				$message

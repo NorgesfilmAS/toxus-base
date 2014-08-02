@@ -21,7 +21,7 @@ class UpdateAction extends BaseAction
 	public function run($id = null, $mode='view')
 	{
 		if (!$this->allowed) {
-			throw new CHttpException(403, Yii::t('app', 'Access denied'));
+			throw new CHttpException(403, Yii::t('base', 'Access denied'));
 		}
 		$controllerId = ucfirst($this->controller->id);
 		$modelClass = $this->modelName;		

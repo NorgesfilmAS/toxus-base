@@ -33,7 +33,7 @@ abstract class BaseLogging extends GxActiveRecord {
 	}
 
 	public static function label($n = 1) {
-		return Yii::t('app', 'Logging|Loggings', $n);
+		return Yii::t('base', 'Logging|Loggings', $n);
 	}
 
 	public static function representingColumn() {
@@ -62,17 +62,17 @@ abstract class BaseLogging extends GxActiveRecord {
 
 	public function attributeLabels() {
 		return array(
-			'id' => Yii::t('app', 'ID'),
-			'creation_date' => Yii::t('app', 'Creation Date'),
-			'profile_id' => Yii::t('app', 'Profile'),
-			'controller' => Yii::t('app', 'Controller'),
-			'model_id' => Yii::t('app', 'Model'),
-			'processing_time' => Yii::t('app', 'Processing Time'),
-			'message' => Yii::t('app', 'Message'),
-			'url' => Yii::t('app', 'Url'),
-			'referer' => Yii::t('app', 'Referer'),
-			'ip' => Yii::t('app', 'Ip'),
-			'error_state' => Yii::t('app', 'Error State'),
+			'id' => Yii::t('base', 'ID'),
+			'creation_date' => Yii::t('base', 'Creation Date'),
+			'profile_id' => Yii::t('base', 'Profile'),
+			'controller' => Yii::t('base', 'Controller'),
+			'model_id' => Yii::t('base', 'Model'),
+			'processing_time' => Yii::t('base', 'Processing Time'),
+			'message' => Yii::t('base', 'Message'),
+			'url' => Yii::t('base', 'Url'),
+			'referer' => Yii::t('base', 'Referer'),
+			'ip' => Yii::t('base', 'Ip'),
+			'error_state' => Yii::t('base', 'Error State'),
 		);
 	}
 

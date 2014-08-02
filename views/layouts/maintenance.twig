@@ -4,13 +4,13 @@
 {% extends this.viewPath('message') %}
 
 {% block dialogHeader %}
-	<h3 class="panel-title">{{ this.te('Maintenance') }}</h3>
+	<h3 class="panel-title">{{ Yii_t('base','Maintenance') }}</h3>
 {%endblock %}
 
 	
 {% block body %}
-	<h3>We are sorry for any inconvenience.</h3>
-	<p>We are currently working on the system. During this process you can not use the site. Soon we will be back online.</p>
+	<h3>{{ Yii_t('base','We are sorry for any inconvenience.') }}</h3>
+	<p>{{ Yii_t('base','We are currently working on the system. During this process you can not use the site. Soon we will be back online.') }}</p>
 {% endblock %}
 	
 {% block dialogFooter %}

@@ -127,7 +127,7 @@ class ApplicationConfig extends CComponent
 		Yii::log('Using setup configuration '.$systemSetupPath, CLogger::LEVEL_INFO, self::logKey.'.init');
 		// loading all information from the programmers view
 		if (!file_exists($systemSetupPath)) {
-			throw new CException(Yii::t('config', 'The system setup file ({filename}) does not exist.',
+			throw new CException(Yii::t('base', 'The system setup file ({filename}) does not exist.',
 							array('{filename}' => $systemSetupPath)));
 		}
 		return require($systemSetupPath);
@@ -178,7 +178,7 @@ class ApplicationConfig extends CComponent
 			$funcName = 'get'.$name;
 			if (method_exists($this, $funcName))
 				return $this->$funcName();
-			throw new CException(Yii::t('config', 'Configuration section "{section}" does not exists', array('{section}' => $name)));
+			throw new CException(Yii::t('base', 'Configuration section "{section}" does not exists', array('{section}' => $name)));
 		}
 	}
 	/**
@@ -197,10 +197,10 @@ class ApplicationConfig extends CComponent
 				} 
 				$this->_config[$name] = $value;
 			} else {
-				throw new CException(Yii::t('config', 'Section {section} is not load on demand. Could be section is already loaded', array('{section}' => $name)));
+				throw new CException(Yii::t('base', 'Section {section} is not load on demand. Could be section is already loaded', array('{section}' => $name)));
 			}
 		} else {
-			throw new CException(Yii::t('config','The section {section} is not defined. Use the key in the App section.',array('{section}'=>$name)));
+			throw new CException(Yii::t('base','The section {section} is not defined. Use the key in the App section.',array('{section}'=>$name)));
 		}
 	}
 	

@@ -59,7 +59,7 @@ class BaseSiteController extends Controller
 			}	
     }
 		
-		Yii::app()->user->setFlash('success', Yii::t('app', 'Assets cache and the Image cache have been cleared.'));
+		Yii::app()->user->setFlash('success', Yii::t('base', 'Assets cache and the Image cache have been cleared.'));
 		$this->redirect($this->createUrl('site/systemInfo'));
 	}
 

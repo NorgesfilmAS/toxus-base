@@ -36,7 +36,7 @@ class Sisow extends CComponent
 	public function paymentTypeOptions()
 	{
 		return array(
-			'' => Yii::t('app', 'pay-ideal'),
+			'' => Yii::t('base', 'pay-ideal'),
 		//	'overboeking' => Yii::t('app', 'pay-ebanking'),	
 		);
 	}

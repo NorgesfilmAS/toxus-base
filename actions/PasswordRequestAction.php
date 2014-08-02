@@ -51,7 +51,7 @@ class PasswordRequestAction extends BaseAction
 				$m = $this->userProfileModel;
 				$profile = $m::model()->find('email=:email', array(':email' => $this->controller->model->email));
 				if ($profile === null) {
-					$this->controller->model->addError('email', Yii::t('app', 'There is no account with this email address'));
+					$this->controller->model->addError('email', Yii::t('base', 'There is no account with this email address'));
 				} else {
 					if ($this->onAfterUpdate !== false) {
 						$result = call_user_func($this->onAfterUpdate, $profile, $this);
@@ -87,7 +87,7 @@ class PasswordRequestAction extends BaseAction
 	public function sendInvitation($model, $action)
 	{
 		// set the mail message information
-		$model->mailSubject = Yii::t('app', $this->mailSubject);
+		$model->mailSubject = $this->mailSubject;
 		if ($this->mailMessage) { // not translated!!!
 			$model->mailMessage = $this->mailMessage;
 		} else {

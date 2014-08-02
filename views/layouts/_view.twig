@@ -23,7 +23,7 @@
 				{% elseif element.type == 'textarea' %}
 					 {{ html.encode(model.__get(key)) |replace({"\n" : '<br />'}) |raw }}
 				{% elseif element.type == 'checkbox' %}	
-					{% if model.__get(key)==1 %}{{ this.t(element.trueCaption|default('yes'))}}{%else%}{{ this.t(element.falseCaption|default('no'))}}{%endif%}
+					{% if model.__get(key)==1 %}{{ element.trueCaption|default(Yii_t('base','Yes'))}}{%else%}{{ element.falseCaption|default(Yii_t('base','No'))}}{%endif%}
 				{% elseif element.type== 'image' %}
 					{{ this.form.image(model, key) | raw }}								
 				{% elseif element.type== 'finder' %}					

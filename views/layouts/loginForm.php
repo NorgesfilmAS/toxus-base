@@ -1,7 +1,7 @@
 <?php
 
 return array(
-	'title' => $this->te('login to your account'),	
+	'title' => Yii::t('base', 'Login to your account'),	
 	'model' => 'LoginForm',
 	'action' => 'profile/login',	
 	'elements' => array(	
@@ -21,13 +21,13 @@ return array(
 				'default' => 'submit',	
 				'type' => 'submit',			
 				'position' => 'pull-right',	
-				'label' => $this->te('btn-login'),	
+				'label' => Yii::t('base', 'btn-login'),	
 				'style' => 'btn btn-primary',					
 			),
 			'forgot_password' => array(
 				'type' => 'link',
 				'url'	 => $this->createUrl('site/passwordRequest'),
-				'label' => $this->t('forgot password?', 1),
+				'label' => Yii::t('base','forgot password?', 1),
 				'style' => 'btn btn-default btn-xs',
 				'options' => 'style="margin-top:7px"',	
 			),

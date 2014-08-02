@@ -39,7 +39,7 @@ class BaseSetupController extends Controller
 					Yii::app()->user->setState('adminId', 1);
 					$this->redirect($this->createUrl('setup/index'));
 				} else {
-					$params['errorText'] = Yii::t('config', 'Invalid password');
+					$params['errorText'] = Yii::t('base', 'Invalid password');
 				}
 			}
 		}

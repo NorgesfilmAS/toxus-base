@@ -173,7 +173,7 @@ class FileContent
 	
 	public function attributeLabel($key)
 	{
-		return Yii::t('app', $key);
+		return $key;
 	}
 	
 	

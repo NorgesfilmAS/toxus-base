@@ -3,7 +3,7 @@
  * The basic template file for comments from the user.
  */
 $a = array(
-	'title' => $this->te('contact'),
+	'title' => Yii::t('base','contact'),
 	'model' => 'Message',
 	'action' => 'message/index',
 	'controlWidth' => 'span12',	
@@ -25,7 +25,7 @@ $a = array(
 		'submit' => array(
 			'type' => 'submit',			
 			'style' => 'btn-info btn-large',	
-			'label' => $this->te('btn-submit'),	
+			'label' => Yii::t('base','btn-submit'),	
 		),
 	),				
 );

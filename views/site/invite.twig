@@ -9,7 +9,7 @@
 <br/><br/><br/><br/><br/>
 <div class="col-sm-6 col-sm-offset-3 well well-large">
 	{% if error %}
-		{{ this.t( error) }}
+		{{ error }}
 	{% else %}
 		<div class="row">
 			<div class="col-sm-10 col-sm-offset-1">
@@ -19,7 +19,7 @@
 							{{ html.errorSummary(this.model)|raw }}
 						</div>
 				{% endif %}	
-			{{ this.t('in this page you can set your password. You username is ') }}<br/>
+			{{ Yii_t('base','On this page you can set your password. You username is ') }}<br/>
 			<div class="text-center"><strong>{{ this.model.username }}</strong></div>
 			<br /><br />
 			{% include this.viewPath('flash') %}	

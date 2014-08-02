@@ -10,13 +10,13 @@
 {% block invoiceInformation %}{{ invoiceInformation }}{% endblock %}
 
 <div class="row">
-	<div class="col-sm-4 col-sm-offset-2">{{ this.te('amount ex vat') }}</div>
+	<div class="col-sm-4 col-sm-offset-2">{{ Yii_t('base','Amount ex vat') }}</div>
 	<div class="col-lg-4 text-right">{{ format.currencySymbolHtml |raw }} {{ this.model.amount|number_format(format.decimal, format.decimalPoint, formatDef.thousandSeperator ) }}</div>
 </div>
 {% if this.model.hasCouponCode %}
 
 <div class="row">
-	<div class="col-sm-6">{{ this.te('discount') }} {{ this.model.coupon.caption }}</div>
+	<div class="col-sm-6">{{ Yii_t('base','discount') }} {{ this.model.coupon.caption }}</div>
 	<div class="col-lg-4 text-right">{{ format.currencySymbolHtml |raw }} {{ this.model.discount_amount | number_format(format.decimal, format.decimalPoint, formatDef.thousandSeperator )}}</div>
 </div>
 
@@ -25,15 +25,15 @@
 
 
 <div class="row">
-	<div class="col-sm-4 col-sm-offset-2">{{ this.te('ex vat') }}</div>
+	<div class="col-sm-4 col-sm-offset-2">{{ Yii_t('base','ex vat') }}</div>
 	<div class="col-lg-4 text-right">{{ format.currencySymbolHtml |raw }} {{ this.model.total_amount_ex_vat|number_format(format.decimal, format.decimalPoint, formatDef.thousandSeperator ) }}</div>
 </div>
 <div class="row">
-	<div class="col-sm-4 col-sm-offset-2">{{ this.te('vat') }} ({{ this.model.vat_percentage }}%)</div>
+	<div class="col-sm-4 col-sm-offset-2">{{ Yii_t('base','vat') }} ({{ this.model.vat_percentage }}%)</div>
 	<div class="col-lg-4 text-right">{{ format.currencySymbolHtml |raw }} {{ this.model.vat_amount | number_format(format.decimal, format.decimalPoint, formatDef.thousandSeperator ) }}</div>
 </div>
 <div class="row">
-	<div class="col-sm-4 col-sm-offset-2">{{ this.te('total')   }}</div>
+	<div class="col-sm-4 col-sm-offset-2">{{ Yii_t('base','total')   }}</div>
 	<div class="col-lg-4 text-right">{{ format.currencySymbolHtml |raw }} {{ this.model.total_amount |number_format(format.decimal, format.decimalPoint, formatDef.thousandSeperator ) }}</div>
 </div>
 {% endblock %}

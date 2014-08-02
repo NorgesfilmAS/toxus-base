@@ -136,11 +136,11 @@ class LoginFormModel extends CFormModel
 	public function attributeLabels()
 	{
 		return array(
-			'rememberMe'=> Yii::t('app', 'Remember me next time'),
-			'username' => Yii::t('app', 'Username'),
-			'password' => Yii::t('app', 'Password'),	
-			'email' => Yii::t('app', 'Email'),	
-			'hasNewslatter' => Yii::t('app', 'Has newsletter')	
+			'rememberMe'=> Yii::t('base', 'Remember me next time'),
+			'username' => Yii::t('base', 'Username'),
+			'password' => Yii::t('base', 'Password'),	
+			'email' => Yii::t('base', 'Email'),	
+			'hasNewslatter' => Yii::t('base', 'Has newsletter')	
 		);
 	}
 
@@ -156,16 +156,16 @@ class LoginFormModel extends CFormModel
 			if(! $this->_identity->authenticate()) {
 				switch ($this->_identity->errorCode) {
 					case UserIdentityBase::ERROR_NOT_ACTIVATED :
-						$this->addError('username',  Yii::t('app', 'The account is not activated yet. Please confirm your email address by clicking on the link in the email send, or reregister.'));
+						$this->addError('username',  Yii::t('base', 'The account is not activated yet. Please confirm your email address by clicking on the link in the email send, or reregister.'));
 						break;;
 					case UserIdentityBase::ERROR_SUSPENDED :	
-						$this->addError('username',  Yii::t('app', 'Your account has been suspended.'));
+						$this->addError('username',  Yii::t('base', 'Your account has been suspended.'));
 						break;
 					case UserIdentityBase::ERROR_RANGE_BLOCK :	
-						$this->addError('username',  Yii::t('app', 'You can not login from your location.'));
+						$this->addError('username',  Yii::t('base', 'You can not login from your location.'));
 						break;
 					default: 
-						$this->addError('password',  Yii::t('app', 'Incorrect username or password.'));
+						$this->addError('password',  Yii::t('base', 'Incorrect username or password.'));
 				}				
 			}	
 		}

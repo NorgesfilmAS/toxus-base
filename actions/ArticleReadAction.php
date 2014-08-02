@@ -21,7 +21,7 @@ class ArticleReadAction extends BaseAction
 		if ($this->controller->model) {
 			
 		} else {
-			$params['error'] = Yii::t('app', 'Article {key} not found.',array('{key}' => $key));
+			$params['error'] = Yii::t('base', 'Article {key} not found.',array('{key}' => $key));
 		}
 		$this->controller->render('viewHelp', $this->mergeParams($params));
 	}

@@ -250,30 +250,7 @@ $().ready(function() {
 		
 		{% endif %}
 		{% endfor %}	
-		{#	
-		<div class="form-actions form-group">					
-			<div class="col-lg-2"></div>
-			<div class="col-lg-10">
-			{% for key, element in form.buttons %}					
-			{% if element.type == 'submit' %}	
-				<button class="btn {{ element.style }}" type="submit">{% if element.label %}{{element.label}}{%else%}{% if this.model.isNewRecord %}{{ this.t('btn-create') }} {% else %}{{ this.t('btn-save') }} {% endif %}{% endif %}</button>
-			{% elseif element.type == 'cancel' %}	
-				{% if sub.isAjax %}
-				<span href="#" id="btn-cancel" class="btn {{ element.style }}" type="button">{{ this.t('btn-cancel') }}</span>											
-				{% else %}
-				<input class="btn {{ element.style }}" type="button" value="{{ this.t('btn-cancel') }}"  onClick="history.go(-1);return true;">							
-				{% endif %}
-			{% elseif element.type == 'delete' %}	
-				<input class="btn {{ element.style }}" type="button" value="{{ this.t('btn-delete') }}"  onClick="if (confirm('{{ (element.ask) | default('Delete this information?') }}')) { window.location='{{ this.createUrl( element.action|default('delete'), {'id' : this.model.attribute(element.id | default('id'))} ) }}'; };">							
-			{% elseif element.type == 'link' %}
-				<br/><br /><a href="{{element.url}}">{{element.label}}</a>
-			{% else %}	
-				<input class="btn {{ element.style }}" type="button" value="{{ element.label }}"  onClick="{{ element.javascript }}">							
-			{% endif %}
-			{% endfor %}
-			</div>	
-		</div>
-	#}
+		
 	</fieldset>
 </form>
 {{ this.onReady('$(".showtip").tooltip();') }}
@@ -299,44 +276,14 @@ $().ready(function() {
 };
 "}) }}
 
-{#	
-	{% for script in this.packageScripts('ajaxForm') %}
-		$.getScript("{{ script}}", function(data, textState) {
-			var options = {
-				target : '{{ form.refreshDiv | default('#'~sub.slaveFrame) }}',
-				success : processResponse
-			};
-		$('#{{ form.id |default(p~'form')}}').ajaxForm(options);		
-			
-		});
-	{% endfor %}	
-	
-	$().ready(function() {
-		$('#btn-cancel').click(function() {
-			$('{{ form.refreshDiv | default('#'~sub.masterFrame) }}').load('{{ sub.onRefreshUrl }}');
-		});
-	});
-	
-	
-	function processResponse(responseText, statusText, xhr, $form) {
 
-		if (responseText == 'ok') {/* ok: load information in a div */
-			$('{{ form.refreshDiv | default('#'~sub.masterFrame) }}').load('{{ sub.onRefreshUrl }}');
-		} else	if (responseText == 'url') {/* ok, but open an other page */
-			window.location = "{{ sub.refreshUrl }}";
-		}	else {
-			$('{{ form.refreshDiv | default('#'~sub.slaveFrame) }}').html(responseText);
-		}
-	};
-#}	
 {% endif %}
 
 </script>	
 {% endif %}
 
-{% if form.onReady %}
-	{{ this.onReady(form.onReady) }}
-{% endif %}	
+
+{{ this.onReady(form.onReady) }}
 
 {% if form.script %}
 	{{ this.registerScript('main-script', form.script) }}

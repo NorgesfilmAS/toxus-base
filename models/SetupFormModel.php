@@ -24,7 +24,7 @@ class SetupFormModel extends CFormModel
 		$mark = '';
 		
 		$form = array(
-			'title' => Yii::t('config','System setup'),
+			'title' => Yii::t('base','System setup'),
 			'model' => $this->setupClass,	
 		);		
 		$elements = array();

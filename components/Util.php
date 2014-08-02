@@ -164,8 +164,8 @@ class Util {
 	static function dataYesNo()
 	{
 		return array(
-				'0' => ucfirst(Yii::t('general', 'no')),
-				'1' => ucfirst(Yii::t('general', 'yes')),				
+				'0' => ucfirst(Yii::t('base', 'no')),
+				'1' => ucfirst(Yii::t('base', 'yes')),				
 		);
 	}
 	

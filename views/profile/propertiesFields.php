@@ -15,7 +15,7 @@ return array(
 		),
 		'confirmMail' => array(
 			'type' => 'button',
-			'caption' => $this->te('send mail'),
+			'caption' => Yii::t('base','send mail'),
 			'style' => 'btn-primary'	
 		),	
 		'rights_id' => array(

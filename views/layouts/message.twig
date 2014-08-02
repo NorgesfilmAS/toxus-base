@@ -11,7 +11,7 @@
 	<div class="{{ width |default('col-sm-9')}} panel {{ style |default('panel-primary') }} no-padding">
 		<div class="panel-heading">
 			{# <button type="button" class="close action-close" data-dismiss="modal" aria-hidden="true">×</button> #}
-			{% block dialogHeader %}<h3 class="panel-title">{{ title | default(this.te('Message')) }}</h3>{%endblock %}
+			{% block dialogHeader %}<h3 class="panel-title">{{ title | default(Yii_t('base','Message')) }}</h3>{%endblock %}
 		</div>
 
 		<div class="panel-body">

@@ -4,7 +4,7 @@
 <div id="form-base">
 <ul class="nav nav-tabs" id="id-view-tabs">
 	{% block tabCaptions %}
-		<li class="active"><a href="#id-tab-home" data-toggle="tab">{% block tabHomeCaption %}{{ this.t(sub.caption) |raw}}{%endblock%}</a></li>
+		<li class="active"><a href="#id-tab-home" data-toggle="tab">{% block tabHomeCaption %}{{ sub.caption |raw}}{%endblock%}</a></li>
 	{% endblock %}	
 </ul>
 
@@ -40,37 +40,3 @@
 </script>
 </div>
 
-{#
-<div id="form-base">
-	<h5 class="short_headline">
-		<span>{% if this.model.isNewRecord %}{{ this.t('new') }}{% else %}{{this.t('update')}}{% endif %}</span>
-		<div class="short_headline-bar">
-			{{ this.menuHtml('toolbar') | raw }}
-		</div>
-	</h5>
-	{% if this.model.hasErrors() %}
-	<div class="row-fluid">	
-		<div class="alert alert-block">
-			{{ html.errorSummary(this.model)|raw }}
-		</div>	
-	</div>
-	{% endif %}	
-	
-	<div class="row-fluid">
-		{% if App.user.hasFlash('error') or App.user.hasFlash('success') or App.user.hasFlash('info') %}
-		<div class="span6x">
-			{% for key, flash in App.user.getFlashes %}
-			<div class="alert alert-{{ key }}">
-				{{ flash }}
-			</div>	
-			{% endfor %}	
-		</div>
-		{% elseif App.user.hasFlash('success') %}	
-
-		{% endif %}	
-		{% block formStart %}<div class="span6x">{% endblock %}
-			{% include this.viewPath('_form') %}
-		{% block formEnd %}</div>{% endblock %}
-	</div>		
-</div>
-#}

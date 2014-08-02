@@ -10,7 +10,7 @@
 	</div>
 	{% for key, props in properties %}
 	<div class="panel panel-primary">
-		<div class="panel-heading">{{ this.t(props.caption) }}</div>
+		<div class="panel-heading">{{ props.caption }}</div>
 		<div class="panel-body">
 			
 	{% for name, value in props.items %}
@@ -26,12 +26,12 @@
 
 	{% if actions |length > 0 %}
 	<div class="panel panel-primary">
-		<div class="panel-heading">{{ this.t('actions') }}</div>
+		<div class="panel-heading">{{ Yii_t('base','actions') }}</div>
 		<div class="panel-body">
 	{% for key, action in actions %}
 		<div class="col-xs-3"></div>
 		<div class="col-xs-6">
-			<a href="{{ this.createUrl(action.action, action.params | default({}) ) }}" class="btn {{ action.style|default('btn-primary')}}">{{ this.te(action.caption) }}</a>
+			<a href="{{ this.createUrl(action.action, action.params | default({}) ) }}" class="btn {{ action.style|default('btn-primary')}}">{{ action.caption }}</a>
 		</div>
 	{% endfor %}
 		</div>

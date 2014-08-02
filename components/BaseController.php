@@ -286,19 +286,19 @@ class BaseController extends CController
 		if (Yii::app()->user->isGuest) {
 			$menu = array(
 				'sign-up' => array(
-					'label' => Yii::t('app', 'menu-sign-up'),
+					'label' => Yii::t('base', 'menu-sign-up'),
 					'url' => $this->createUrl('login/new'),
 					'icon' => 'icon-user',	
 				),
 				'sign-in' => array (
-					'label' => Yii::t('app', 'menu-sign-in'),
+					'label' => Yii::t('base', 'menu-sign-in'),
 					'url' => $this->createUrl('login/index'),						
 				),	
 			);
 		} else {
 			$menu = array(
 				'sign-out' => array (
-					'label' => Yii::t('app', 'menu-sign-out'),
+					'label' => Yii::t('base', 'menu-sign-out'),
 					'url' => $this->createUrl('login/logout'),						
 				),	
 			);
@@ -912,6 +912,7 @@ class BaseController extends CController
 	
 	/**
 	 * translate a message
+	 * DO NOT USE: User Yii_t(...)
 	 * 
 	 * @param string $msg
 	 * @param array $params
@@ -919,7 +920,7 @@ class BaseController extends CController
 	public function t($msg, $params=array(), $return = false)
 	{
 		if (is_string($msg)) {
-			$m = ucfirst(Yii::t('app', $msg, $params));		
+			$m = ucfirst(Yii::t('base', $msg, $params));		
 			if (! is_array($params) || $return )
 			  return $m;	
 			else {
@@ -927,10 +928,14 @@ class BaseController extends CController
 			}
 		}
 	}
+	/** 
+	 * 
+	 * DO NOT USE: User Yii_t(...)
+	 */
 	public function te($msg, $params=array())
 	{
 		if (is_string($msg)) {
-			return ucfirst(Yii::t('app', $msg, $params));
+			return ucfirst(Yii::t('base', $msg, $params));
 		}	
 	}
 	
@@ -945,8 +950,8 @@ class BaseController extends CController
 	public function formAdjust(&$form, $isNew = true)
 	{
 		if ($isNew) {
-			$form['title'] = $this->t('new',1).' '.$form['title'];
-			$form['buttons']['submit']['label'] = $this->t('create', 1);
+			$form['title'] = Yii::t('base','new',1).' '.$form['title'];
+			$form['buttons']['submit']['label'] = Yii::t('base','create', 1);
 		}
 		return $form;
 	}
@@ -1189,7 +1194,7 @@ class BaseController extends CController
 			$k[$key] = $s;
 			if ($this->model != null && $this->model->isNewRecord && isset($val['wizards'])) {
 				foreach ($val['wizards'] as $wKey => $wVal) {
-					$k[$key.'.'.$wKey] = $s.' - '.Yii::t('app', 'set content to: ').$wKey;
+					$k[$key.'.'.$wKey] = $s.' - '.Yii::t('base', 'set content to: {key}', array('{key}' => $wKey ));
 				}
 			}	
 		}	
@@ -1223,11 +1228,11 @@ class BaseController extends CController
 				// Check if the table has composite PK.
 				$tablePk = $staticModel->getTableSchema()->primaryKey;
 				if (!is_array($tablePk))
-					throw new CHttpException(400, Yii::t('giix', 'Your request is invalid.'));
+					throw new CHttpException(400, Yii::t('base', 'Your request is invalid.'));
 
 				// Check if there are the correct number of keys.
 				if (count($key) !== count($tablePk))
-					throw new CHttpException(400, Yii::t('giix', 'Your request is invalid.'));
+					throw new CHttpException(400, Yii::t('base', 'Your request is invalid.'));
 
 				// Get an array of PK values indexed by the column names.
 				$pk = $staticModel->fillPkColumnNames($key);
@@ -1247,11 +1252,11 @@ class BaseController extends CController
 				// The table has a composite PK.
 				// The key must be a string to have a PK separator.
 				if (!is_string($key))
-					throw new CHttpException(400, Yii::t('giix', 'Your request is invalid.'));
+					throw new CHttpException(400, Yii::t('base', 'Your request is invalid.'));
 
 				// There must be a PK separator in the key.
 				if (stripos($key, GxActiveRecord::$pkSeparator) === false)
-					throw new CHttpException(400, Yii::t('giix', 'Your request is invalid.'));
+					throw new CHttpException(400, Yii::t('base', 'Your request is invalid.'));
 
 				// Generate an array, splitting by the separator.
 				$keyValues = explode(GxActiveRecord::$pkSeparator, $key);
@@ -1267,7 +1272,7 @@ class BaseController extends CController
 
 		// Check if we have a model.
 		if ($model === null)
-			throw new CHttpException(404, Yii::t('giix', 'The requested page does not exist.'));
+			throw new CHttpException(404, Yii::t('base', 'The requested page does not exist.'));
 
 		return $model;
 	}
@@ -1503,9 +1508,9 @@ class BaseController extends CController
 	protected function exceptionToError($model, $e)
 	{
 		if (isset($e->errorInfo[1]) && $e->errorInfo[1] == 1062) {	// duplicate
-			$model->addError('id', Yii::t('app', 'This information already exists'));
+			$model->addError('id', Yii::t('base', 'This information already exists'));
 		} else {
-			$model->addError('id', Yii::t('app', 'There was an error saving the information. Please try again.<br />'.$e->getMessage()));
+			$model->addError('id', Yii::t('base', 'There was an error saving the information. Please try again.<br /> {msg}',array('{msg}' => $e->getMessage())));
 		}	
 	}
 	
@@ -1579,12 +1584,12 @@ class BaseController extends CController
 	
   public function hasTooltip($attributeName)
   {
-    $msg = Yii::t($this->toolTipFilename, $attributeName);
+    $msg = Yii::t('base', $attributeName);
     return $msg != $attributeName;
   }
   public function tooltip($attributeName, $params=array())
   {
-    return Yii::t($this->toolTipFilename,$attributeName,$params);
+    return Yii::t('base', $attributeName,$params);
   }
 	
 	/**

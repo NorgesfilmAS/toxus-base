@@ -5,11 +5,11 @@ return array(
 	'elements' => array(
 		'passwordText' => array(
 			'type' => 'password',
-			'label' => $this->te('password'),
+			'label' => Yii::t('base','password'),
 		),
 		'passwordTextRepeat' => array(
 			'type' => 'password',
-			'label' => $this->te('again')	
+			'label' => Yii::t('base','again')	
 		),	
 		'accepted_terms' => array(
 			'type' => 'checkbox',
@@ -19,7 +19,7 @@ return array(
 	'buttons' => array(
 		'ok' => $this->button( array(
 				'type' => 'submit',
-				'label' => $this->te('set password'),
+				'label' => Yii::t('base','set password'),
 		)),	
 	)	
 );

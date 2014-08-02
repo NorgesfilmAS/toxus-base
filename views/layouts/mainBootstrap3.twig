@@ -151,12 +151,12 @@
 					<div class="col-sm-4">
 						{% block footerLeft %}
 						<section>
-							<h4>{{ this.t('contact us') }}</h4>
+							<h4>{{ Yii_t('base','contact us') }}</h4>
 							<p>{{ App.params.company}}<br>
 								{{ App.params.companyAddress |raw }}<br/>
 							</p>
 							<p>
-								<strong>{{ this.t('email')}}:</strong> <a href="mailto:{{ App.params.companyEmail |default('info@toxus.nl') }}">{{ App.params.companyEmail |default('info@toxus.nl') }}</a> 
+								<strong>{{ Yii_t('base','email')}}:</strong> <a href="mailto:{{ App.params.companyEmail |default('info@toxus.nl') }}">{{ App.params.companyEmail |default('info@toxus.nl') }}</a> 
 							</p>
 							{% block footerLeftExtra %}{% endblock %}							
 						</section>
@@ -165,8 +165,8 @@
 					<div class="col-sm-4">
 						{% block footerMiddle %}
 						<section>
-							<h4>{{ this.t('stay updated') }}</h4>
-							<p>{{ this.t('sign up for our newsletter. We won\'t share your email address.') }}</p>
+							<h4>{{ Yii_t('base','stay updated') }}</h4>
+							<p>{{ Yii_t('base','sign up for our newsletter. We won\'t share your email address.') }}</p>
 							{% include this.viewPath('newsletter') %}
 								<!--close input-append-->
 							</form>
@@ -197,9 +197,9 @@
 				<div class="container">
 					<ul class="footer-links text-center">
 						{% block copyright %}<li><a href="{{ this.createUrl('article/index', {'copyright' :'' }) }}"> &copy; 2013 -2014 Toxus</a> | </li>{% endblock %}
-						{% block sitemap %}<li><a href="{{ this.createUrl('site/sitemap') }}">{{ this.t('site map') }}</a> | </li>{% endblock %}
-						{% block privacy %}<li><a href="{{ this.createUrl('site/privacy') }}">{{ this.t('privacy') }}</a></li>{% endblock %}
-						{% block versionInfo %}<li class="version">{{ this.t('version') }}: {% block version %}{{ this.version }}3{% endblock %}</li>{% endblock %}
+						{% block sitemap %}<li><a href="{{ this.createUrl('site/sitemap') }}">{{ Yii_t('base','site map') }}</a> | </li>{% endblock %}
+						{% block privacy %}<li><a href="{{ this.createUrl('site/privacy') }}">{{ Yii_t('base','privacy') }}</a></li>{% endblock %}
+						{% block versionInfo %}<li class="version">{{ Yii_t('base','version') }}: {% block version %}{{ this.version }}3{% endblock %}</li>{% endblock %}
 					</ul>
 				</div>		
 				{% endblock %}	
@@ -210,7 +210,7 @@
 			<div class="modal-body">
 				<div class="modal-dialog">
 					<div id="id-modal-body" class="modal-content">
-					LOADING INFORMATION ....
+					{{ Yii_t('base', 'LOADING INFORMATION ....') }}
 					</div><!-- /.modal-content -->
 				</div><!-- /.modal-dialog -->				
 			</div>
@@ -223,7 +223,7 @@
 			<div class="modal-body">
 				<div class="modal-dialog">
 					<div class="modal-content">
-					LOADING INFORMATION ....
+					{{ Yii_t('base', 'LOADING INFORMATION ....') }}
 					</div><!-- /.modal-content -->
 				</div><!-- /.modal-dialog -->				
 			</div>
@@ -232,7 +232,7 @@
 		<div id="id-wait-message" class="hide">
 			<div class="row id-wait">
 				<div class="col-offset-1 col-lg-10">
-					<h2 style="text-align: center" class="wait-message">Processing .....</h2>
+					<h2 style="text-align: center" class="wait-message">{{ Yii_t('base', 'Processing .....') }}</h2>
 					<div class="wait-icon"><img class="wait-icon" src="{{ this.getPackageBaseUrl('core') }}/images/progress.gif"/></div>
 				</div>
 			</div>

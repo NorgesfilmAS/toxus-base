@@ -5,12 +5,12 @@
 if (Yii::app()->user->isGuest) {
 	return array(
 		'sign-up' => array(
-			'label' => $this->t('sign up',1),
+			'label' => Yii::t('base','sign up',1),
 			'url' => $this->createUrl('/register'),
 			'icon' => 'icon-user',	
 		),
 		'sign-in' => array (
-			'label' => $this->t('sign in', 1),
+			'label' => Yii::t('base','sign in', 1),
 			'url' => $this->createUrl('/login'),						
 		),	
 	);
@@ -21,7 +21,7 @@ if (Yii::app()->user->isGuest) {
 			'url' => $this->createUrl('profile/index'),	
 		),	
 		'sign-out' => array (
-			'label' => $this->t('sign out', 1),
+			'label' => Yii::t('base','sign out', 1),
 			'url' => $this->createUrl('profile/logout'),						
 		),	
 	);

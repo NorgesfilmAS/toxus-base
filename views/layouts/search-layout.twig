@@ -24,28 +24,28 @@
 		{% endif %}
 		
 		{% block navSearchFields %}
-		<label for="id-agent">{{ this.t('artist') }}</label>
+		<label for="id-agent">{{ Yii_t('base','artist') }}</label>
 		<input type="text" id="id-agent" name="Art[agent]" class="form-control cls-search" value="{{ this.model.agent }}"/>		
-		<label for="id-title">{{ this.t('title') }}</label>
+		<label for="id-title">{{ Yii_t('base','title') }}</label>
 		<input type="text" id="id-title" name="Art[title]" class="form-control cls-search" value="{{ this.model.title }}" />
 		{% endblock %}
 
 		{% if navHasExtraFields %}
 		<div class="nav-options">
-			<div class="nav-option-header cls-toggle"><label><span class="caption">{{ this.t('show extra search') }}</span><span class="pull-right nav-arrow">&#x25BC</span></label></div>
+			<div class="nav-option-header cls-toggle"><label><span class="caption">{{ Yii_t('base','Show extra search') }}</span><span class="pull-right nav-arrow">&#x25BC</span></label></div>
 			<div class="nav-option-body" style="display: none;">
 				{% block navExtraFields %}
-				<label for="id-year">{{ this.t('year') }}</label>
+				<label for="id-year">{{ Yii_t('base','year') }}</label>
 				<input type="year" id="id-title" name="Art[year]" class="form-control cls-search" value="{{ this.model.year }}"/>
 				
-				<label for="id-agent">{{ this.t('ditigization') }}</label>
+				<label for="id-agent">{{ Yii_t('base','digitization') }}</label>
 				<select name="Art[is_digitized]" class="form-control cls-select-search cls-digitization">
 					<option value=""></option>
 			{% for key, caption in this.model.attributeOptions('is_digitized') %}
 					<option value="{{ key }}">{{ caption }}	
 			{% endfor %}	
 				</select>
-				<label for="id-collection">{{ this.t('collection') }}</label>
+				<label for="id-collection">{{ Yii_t('base','collection') }}</label>
 				<select name="Art[collection]" class="form-control cls-select-search cls-collection">
 					<option value=""></option>
 			{% for caption in this.model.attributeOptions('collection') %}
@@ -58,7 +58,7 @@
 		{% endif %}
 		
 		{% if navHasMoreFields %}
-		<label for="id-agent">{{ this.t('Direct search on ID') }}
+		<label for="id-agent">{{ Yii_t('base','Direct search on ID') }}
     {% if App.user.hasFlash('error') %}
       <div class="text-warning">
         {{ App.user.getFlash('error') }}
@@ -68,7 +68,7 @@
 		<input type="text" id="id-agent" name="Art[searchId]" class="form-control" value="{{ this.model.searchId }}"/>		
 		{% endif %}
 		{% if navHasSearchOrder %}
-		<label for="id-sort">{{ this.t('sort by') }}</label>
+		<label for="id-sort">{{ Yii_t('base','Sort by') }}</label>
 		{% block navSearchOrder %}
 		<select name="Art[searchOrder]" class="id-sort form-control">
 			<option value="agent" {% if this.model.searchOrder == 'agent' %}selected="1"{% endif %}>{{ this.t('artist') }}</option>
@@ -80,7 +80,7 @@
 		{% endif %}
 		<div class="bs-nav-searchbar">
 		{% block navButtons %}	
-		<input type="submit" class="btn btn-info pull-right" value="{{this.t('search') }}"/>
+		<input type="submit" class="btn btn-info pull-right" value="{{Yii_t('base','Search') }}"/>
 		{% endblock %}
 		</div>
 	</div>
@@ -137,11 +137,11 @@ $('.cls-search').on('change', function() {
 $('.cls-toggle').on('click', function() {
 	if ($('.nav-option-body').is(':visible')) {
 		$('.nav-option-body').hide('blind');	
-		$('.caption').text('" ~ this.te('show extra search') ~"');
+		$('.caption').text('" ~ Yii_t('base','show extra search') ~"');
 		$('.nav-arrow').html('&#x25BC');
 	} else {	
 		$('.nav-option-body').show('blind');	
-		$('.caption').text('" ~ this.te('hide extra search') ~"');
+		$('.caption').text('" ~ Yii_t('base','hide extra search') ~"');
 		$('.nav-arrow').html('&#x25B6');
 	}
 });
