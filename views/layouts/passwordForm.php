@@ -1,7 +1,7 @@
 <?php
 
 return array(
-	'title' => Yii::t('base','lost password'),	
+	'title' => Yii::t('base','Lost password'),	
 	'model' => 'LoginForm',	
 	'elements' => array(	
 		'email' => array(

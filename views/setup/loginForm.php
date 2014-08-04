@@ -7,7 +7,7 @@ return array(
 		'elements' => array(
 				'password' => array(
 					'type' => 'password',
-					'label' => Yii::t('base', 'password'),
+					'label' => Yii::t('base', 'Password'),
 				),
 		),
 		'buttons' => array(

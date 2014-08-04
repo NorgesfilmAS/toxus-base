@@ -1635,7 +1635,7 @@ class BaseController extends CController
 					break;					
 				case 'delete' :	
 					$btn = array_merge($btn, array(
-							'label'  => Yii::t('app', 'btn-delete'),
+							'label'  => Yii::t('button', 'btn-delete'),
 							'position' => 'left',
 							'type' => 'delete',
 							'action' => 'delete',

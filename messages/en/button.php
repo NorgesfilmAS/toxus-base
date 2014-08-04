@@ -17,6 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'btn-cancel' => 'Cancel',
+  'btn-no-caption' => '(none)',
   'btn-add' => 'Add',
   'btn-close' => 'Close',
   'btn-create' => 'Create',
