@@ -23,3 +23,6 @@
 [submodule "assetsBase/tinymce2"]
 	path = assetsBase/tinymce2
 	url = https://github.com/tinymce/tinymce.git
+[submodule "extensions/mailchimp/api"]
+	path = extensions/mailchimp/api
+	url = https://bitbucket.org/mailchimp/mailchimp-api-php.git
