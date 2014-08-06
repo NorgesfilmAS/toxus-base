@@ -714,6 +714,45 @@ class Util {
 		}
 		return $result;
 	}
+	
+	/**
+	 * the wait lock version of file_get_contents
+	 * 
+	 * @param string $filename
+	 */
+	static function fileGetContents($filename)
+	{
+		if(!file_exists($filename)) {
+      return false;
+    } else {
+			$fo = fopen($filename, 'r');
+			$locked = flock($fo, LOCK_EX, $waitIfLocked);
+			if(!$locked) {
+				return false;
+			}	else {
+				$cts = file_get_contents($filename);
+				flock($fo, LOCK_UN);
+				fclose($fo);
+				return $cts;
+			}
+    } 		
+	}
+	static function filePutContents($filename, $contents)
+	{
+		$fp = fopen($filename, "r+");
+		if (flock($fp, LOCK_EX)) {  // acquire an exclusive lock
+			ftruncate($fp, 0);      // truncate file
+			fwrite($fp, $contents);
+			fflush($fp);            // flush output before releasing the lock
+			flock($fp, LOCK_UN);    // release the lock
+			
+		} else {
+			return false;
+		}
+		fclose($fp);		
+		return true;
+	}
+	
 }
 
 ?>

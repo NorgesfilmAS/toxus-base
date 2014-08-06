@@ -8,9 +8,9 @@
  *    * apiKey
  * 
  */
-require_once('src/Mailchimp.php');
+require_once(dirname(__FILE__).'/api/src/Mailchimp.php');
 
-class ToxusMailChimp extends CComponent
+class ToxusMailchimp extends CComponent
 {
 	private $_apiKey = false;
 	private $_mailchimp = false;
@@ -30,6 +30,8 @@ class ToxusMailChimp extends CComponent
 	 */
 	public function subscribe($email, $fields=array(), $listId=false, $options = array())
 	{
+		
+		
 		$this->errors = array();
 		$defaults = array_merge(
 			array(
@@ -43,16 +45,15 @@ class ToxusMailChimp extends CComponent
 		if ($listId === false) {
 			$listId = Yii::app()->config->mailchimp['list'];
 		}
-		$responseJson = $this->mailhchimp->list->subscribe(
+		$response = $this->mailchimp->lists->subscribe(
 						$listId,
 						array('email' => $email),
 						$fields,
-						$defaults['isHtml'],						
+						$defaults['isHtml'] ? 'html' : 'text',						
 						$defaults['doubleOptIn'],				
 						$defaults['updateExisting'],
 						$defaults['sendWelcome']
 		);
-		$response = CJSON::decode($responseJson);
 		if (isset($response['code'])) { // error condition
 			$this->errors[] = $response;
 			return false;
@@ -62,6 +63,15 @@ class ToxusMailChimp extends CComponent
 			'userId' => isset($response['euid']) ? $response['euid'] : '(no euid set)',
 			'userListId' => isset($response['leid']) ? $response['leid'] : '(no leid set)'	
 		);
+	}
+	
+	public function memberInfo($email, $listId = false)
+	{
+		$this->errors = array();
+		if ($listId === false) {
+			$listId = Yii::app()->config->mailchimp['list'];
+		}				
+		return $this->mailchimp->lists->memberInfo($listId, array(array('email'=>$email)));
 	}
 	
 	/**
@@ -83,6 +93,9 @@ class ToxusMailChimp extends CComponent
 	{
 		if ($this->_mailchimp === false) {
 			$this->_mailchimp = new Mailchimp($this->apiKey);
+			if(empty($this->_mailchimp)) {
+				throw new CException(Yii::t('mailchimp', 'The mailchimp connector was not created for api {apiKey}', array('{apiKey}' => $this->apiKey)));
+			}
 		}
 		return $this->_mailchimp;
 	}

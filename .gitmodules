@@ -26,3 +26,6 @@
 [submodule "extensions/mailchimp/api"]
 	path = extensions/mailchimp/api
 	url = https://bitbucket.org/mailchimp/mailchimp-api-php.git
+[submodule "assetsBase/ajaxForm"]
+	path = assetsBase/ajaxForm
+	url = https://github.com/malsup/form.git
