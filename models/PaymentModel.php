@@ -233,4 +233,13 @@ class PaymentModel extends BasePayment
 		$rec->logging_json = $json;
 		$rec->save();
 	}
+	
+	public function getCurrencySign()
+	{
+		switch (strtolower($this->currency)) {
+			case 'usd' : return array('$', 'html' => '$');
+			default: return array('€', 'html' => '&euro;');	
+				
+		}
+	}
 }
