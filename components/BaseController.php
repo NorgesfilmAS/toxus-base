@@ -1299,7 +1299,7 @@ class BaseController extends CController
 					array(
 					'view' => array(
 						'edit' => $this->button(array(
-							'label' => 'btn-edit',
+							'label' => Yii::t('button', 'btn-edit'),
 							'url' => '?mode=edit',
 							'position' => 'pull-right',						
 						)),	
