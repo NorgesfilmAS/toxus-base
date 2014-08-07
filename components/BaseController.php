@@ -612,7 +612,7 @@ class BaseController extends CController
 				),
 			),				
 			'ajaxform' => array(
-				'basePath' => 'toxus.assetsBase.ajaxform',
+				'basePath' => 'toxus.assetsBase.ajaxForm',
 				'js' => array(
 					CClientScript::POS_END => array(
 						'jquery.form.js',
