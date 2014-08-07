@@ -714,6 +714,27 @@ class Util {
 		}
 		return $result;
 	}
+
+	
+	/**
+	 * Tries to get a lock on the file. If it does not work it return false
+	 * 
+	 * @param integer $fp handle to the file
+	 * @return boolean true: lock | false: no lock possbile
+	 */
+	static function fileGetLock($fp)
+	{
+		$cnt = 0;
+		// try to get a lock on the file
+		while ( !$fp || !flock($fp,LOCK_EX|LOCK_NB,$eWouldBlock) || $eWouldBlock ) {  // acquire an exclusive lock
+			usleep(rand(1,100) * 10);
+			$cnt ++;
+			if ($cnt > 100) {
+				return false;
+			}	
+		}
+		return true;
+	}
 	
 	/**
 	 * the wait lock version of file_get_contents
@@ -725,30 +746,30 @@ class Util {
 		if(!file_exists($filename)) {
       return false;
     } else {
-			$fo = fopen($filename, 'r');
-			$locked = flock($fo, LOCK_EX, $waitIfLocked);
-			if(!$locked) {
+			$fp = fopen($filename, 'r');
+			if (!Util::fileGetLock($fp)) {
 				return false;
-			}	else {
-				$cts = file_get_contents($filename);
-				flock($fo, LOCK_UN);
-				fclose($fo);
-				return $cts;
 			}
+			$cts = file_get_contents($filename);
+			flock($fp, LOCK_UN);
+			fclose($fp);
+			return $cts;
     } 		
 	}
 	static function filePutContents($filename, $contents)
 	{
-		$fp = fopen($filename, "r+");
-		if (flock($fp, LOCK_EX)) {  // acquire an exclusive lock
-			ftruncate($fp, 0);      // truncate file
-			fwrite($fp, $contents);
-			fflush($fp);            // flush output before releasing the lock
-			flock($fp, LOCK_UN);    // release the lock
-			
+		if (!file_exists($filename)) {
+			$fp = fopen($filename, "w+");
 		} else {
+			$fp = fopen($filename, "r+");
+		}	
+		if (!Util::fileGetLock($fp)) {
 			return false;
 		}
+		ftruncate($fp, 0);      // truncate file
+		fwrite($fp, $contents);
+		fflush($fp);            // flush output before releasing the lock
+		flock($fp, LOCK_UN);    // release the lock
 		fclose($fp);		
 		return true;
 	}

@@ -27,11 +27,13 @@ class BaseSiteController extends Controller
 					'class'=> 'toxus.actions.SystemInfoAction',
 					'onExtraInfo' => array($this, 'systemInfo'),
 			),
+/*				
 			'system' => array(
 					'class' => 'toxus.actions.ViewAction',	
 					'view' => 'system',
 					'form' => 'systemSetup',
 			),	
+ */
 			'index' => array(
 					'class' => 'toxus.actions.ViewAction',	
 					'modelClass' => false,
