@@ -56,8 +56,7 @@ class ToxusMailchimp extends CComponent
 		
 		$response = $this->mailchimp->lists->subscribe(
 						$listId,
-						//array('email' => $email),
-						$addr,
+						$addr, 						//array('email' => $email),
 						$fields,
 						$defaults['isHtml'] ? 'html' : 'text',						
 						$defaults['doubleOptIn'],				

@@ -31,9 +31,7 @@ class ProcessState  extends CComponent
 		$this->load();
 		$this->_state['isRunning'] = $value ? 1 :0;
 		$this->_state['time'] = time();
-		if ($value) {		// auto reset startup
-			$this->_state['startup'] = 0;
-		}	
+		$this->_state['startup'] = 0;
 		$this->save();
 	}
 	
