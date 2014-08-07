@@ -76,11 +76,13 @@ class ProcessState  extends CComponent
 			'isRunning' => $this->isRunning,
 			'startup' => $this->startup	
 		);
-		foreach ($this->_state as $key => $value) {
-			if (!in_array($key, array('isRunning', 'startup'))) {
-				$ret[$key] = $value;
+		if (is_array($this->_state)) {
+			foreach ($this->_state as $key => $value) {
+				if (!in_array($key, array('isRunning', 'startup'))) {
+					$ret[$key] = $value;
+				}
 			}
-		}
+		}	
 		return CJSON::encode($ret);
 	}
 	

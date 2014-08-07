@@ -29,8 +29,7 @@ class ToxusMailchimp extends CComponent
 	 *     - userListId : id of the user in the list
 	 */
 	public function subscribe($email, $fields=array(), $listId=false, $options = array())
-	{
-		
+	{		
 		
 		$this->errors = array();
 		$defaults = array_merge(
@@ -45,9 +44,20 @@ class ToxusMailchimp extends CComponent
 		if ($listId === false) {
 			$listId = Yii::app()->config->mailchimp['list'];
 		}
+		if (isset($fields['euid']) && ! empty($fields['euid'])) {
+			$addr = array(
+				'euid' =>	$fields['euid']
+			);
+		} else {
+			$addr = array(
+				'email' => $email	
+			);
+		}
+		
 		$response = $this->mailchimp->lists->subscribe(
 						$listId,
-						array('email' => $email),
+						//array('email' => $email),
+						$addr,
 						$fields,
 						$defaults['isHtml'] ? 'html' : 'text',						
 						$defaults['doubleOptIn'],				
