@@ -67,6 +67,12 @@ class ProcessState  extends CComponent
 		return isset($this->_state[$key]) ? $this->_state[$key] : $default;
 	}
 	
+	public function touch()					
+	{
+		$this->load();
+		$this->_state['touch'] = date("Y-m-d H:i:s");
+		$this->save();
+	}
 	
 	public function asJson()
 	{
