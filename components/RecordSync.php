@@ -47,6 +47,8 @@ class RecordSync extends CComponent
 	 */
 	public $onFieldChanged = false;
 	
+	private $_state = false;
+	
 	public function __construct() {
 		$this->init();
 	}
@@ -145,41 +147,19 @@ class RecordSync extends CComponent
 		);
 	}
 	
-	
-	public function getStateFilename()
-	{
-		return YiiBase::getPathOfAlias('application.runtime.sync').'.json';
-	}
-		
-	
-	
 	/**
-	 * return the current state of the system
-	 * @return array
+	 * return the state record of this process
+	 * 
+	 * @return ProcessState
 	 */
-	public function runState()
+	public function getState() 
 	{
-		$path = $this->stateFilename;
-		if (file_exists($path)) {			
-			$state = CJSON::decode(Util::fileGetContents($path));
-			return $state;
+		if ($this->_state == false) {
+			$this->_state = new ProcessState();
 		}
-		return array('isRunning' => 0);
+		return $this->_state;
 	}
 	
-	public function setRunState($part, $value)
-	{
-		$state = $this->runState();
-		$state[$part] = $value;		
-		switch($part) {
-			case 'isRunning' : 
-				$state['start'] = time(); 
-				$state['startRun'] = 0; 
-				break;			
-		}
-		Util::filePutContents($this->stateFilename, CJSON::encode($state));
-		@chmod($path, 0777);
-	}
 	
 }
 

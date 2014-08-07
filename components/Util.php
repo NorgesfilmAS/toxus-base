@@ -744,7 +744,7 @@ class Util {
 	static function fileGetContents($filename)
 	{
 		if(!file_exists($filename)) {
-      return false;
+      return '';
     } else {
 			$fp = fopen($filename, 'r');
 			if (!Util::fileGetLock($fp)) {
@@ -756,12 +756,16 @@ class Util {
 			return $cts;
     } 		
 	}
-	static function filePutContents($filename, $contents)
+	static function filePutContents($filename, $contents, $mode = 0777)
 	{
 		if (!file_exists($filename)) {
 			$fp = fopen($filename, "w+");
+			if ($mode) {
+				$setRights = true;
+			}
 		} else {
 			$fp = fopen($filename, "r+");
+			$setRights = false;
 		}	
 		if (!Util::fileGetLock($fp)) {
 			return false;
@@ -771,6 +775,9 @@ class Util {
 		fflush($fp);            // flush output before releasing the lock
 		flock($fp, LOCK_UN);    // release the lock
 		fclose($fp);		
+		if ($setRights) {
+			chmod($filename, $mode);
+		}
 		return true;
 	}
 	
