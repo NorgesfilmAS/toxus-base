@@ -31,7 +31,7 @@
 		{% endif %}	
 		{% block formStart %}<div class="span6x">{% endblock %}
 		{% if sub.onEditUrl %}
-			<span class="btn btn-small float-right btn-info btn-tooltip" id="btn-edit" data-placement="bottom" data-toggle="tooltip" title="{{ this.t('btn-edit-tooltip') |raw }}" >{{ this.t('btn-edit') |raw}}</span>
+			<span class="btn btn-small float-right btn-info btn-tooltip" id="btn-edit" data-placement="bottom" data-toggle="tooltip" title="{{ Yii_t('button','btn-edit-tooltip') |raw }}" >{{ Yii_t('button','btn-edit') |raw}}</span>
 		{% endif %}	
 		{% include this.viewPath('_view') %}
 		{% block formEnd %}</div>{% endblock %}

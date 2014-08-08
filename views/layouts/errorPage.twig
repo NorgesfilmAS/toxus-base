@@ -9,7 +9,7 @@
  # - url      (next url to open)
 
 #}
-{% set pageLayout = 'info' %}
+{% set layout = 'full' %}
 {% extends this.viewPath('main') %}
 
 {% block content %}
@@ -17,9 +17,18 @@
     <div class="modal-content">
       <div class="modal-header">
         <a href="{{ url | default(this.createUrl('site/index'))}}" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
-        <h4 class="modal-title">{{ title | default(Yii_t('base','oeps, there was an error')) }}</h4>
+        <h4 class="modal-title">{{ title | default(Yii_t('base','Oeps, there was an error')) }}</h4>
       </div>
-      <div class="modal-body">
+			<div class="modal-body">
+			{% if code==403 %}
+				<div class='alert alert-warning text-center'><h3>{{Yii_t('app', 'Access denied')}}</h3></div>
+				<p>
+					{{ Yii_t('app', '
+					You have reached a page for which you need special rights. Your account does not have these rights.<br/>
+					If you think this is an error place contact the webmaster.<br/><br/>
+					The web team') |raw }}
+				</p>
+			{% else %}
 				{{ message |nl2br |raw}}  
 				{% if App.params.debug %}
 				<hr />
@@ -29,6 +38,7 @@
 						line: {{ line }}<br /><br />
 						trace: {{ trace|nl2br }} <br />
 				{% endif %}
+			{% endif %}			
       </div>
       <div class=" text-center modal-footer">
         <a href="{{ url | default(this.createUrl('site/index'))}}" type="button" class="btn btn-default" data-dismiss="modal">{{ Yii_t('button','btn-close') }}</a>        

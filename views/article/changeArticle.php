@@ -11,17 +11,17 @@ return array(
 			'elements' => array(
 				'key' => array(
 					'type' => 'string',
-					'width' => 'col-sm-4'	
+					'width' => 'col-xs-3'	
 				),
 				'id' => array(
 					'type' => 'panel',
 					'readOnly' => false,	
-					'width' => 'col-sm-4'							
+					'width' => 'col-xs-3'							
 				),	
 				'footerOrder' => array(
 					'type' => 'dropdown',
 					'items' => $this->model->footerOrderOptions(),	
-					'width' => 'col-sm-3'							
+					'width' => 'col-xs-3'							
 				)	
 			),		
 		),			

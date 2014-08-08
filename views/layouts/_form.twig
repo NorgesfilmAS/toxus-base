@@ -11,12 +11,12 @@
 		{% if form.controlWidth %}{% set width=form.controlWidth %}{% else %}{% set width= element.width | default('input-xlarge') %}{% endif %}
 		{% for groupKey, groupElement in form.elements %}			
 		{% if groupElement.hidden != true and groupElement.formHidden != true %}
-		<div id="{{ p }}group-{{ groupKey}}" class="control-group form-group{% if model.getErrors(groupKey) %} error has-error{% endif %}">
+		<div id="{{ p }}group-{{ groupKey}}" class="form-group{% if model.getErrors(groupKey) %} error has-error{% endif %}">
 			{% if groupElement.type != 'checkbox' and groupElement.type != 'hidden' and groupElement.hideLabel != true %}
-			<label for="{{ p }}{{ groupKey }}" class="control-label {{ form.labelClass | default('col-lg-2') }} no-left-padding {% if this.hasTooltip(groupKey) or groupElement.tooltip %} showtip" data-toggle="tooltip" data-placement="right" data-trigger="hover" data-original-title="{{ groupElement.tooltip | default(this.tooltip(groupKey)) }}{% endif %}" >{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}&nbsp;</label> 
+			<label for="{{ p }}{{ groupKey }}" class="control-label {{ form.labelClass | default('col-lg-2') }} no-left-padding no-right-padding {% if this.hasTooltip(groupKey) or groupElement.tooltip %} showtip" data-toggle="tooltip" data-placement="right" data-trigger="hover" data-original-title="{{ groupElement.tooltip | default(this.tooltip(groupKey)) }}{% endif %}" >{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}&nbsp;</label> 
 			{% endif %}
 			{# to stop the col-lg-10 from display on a with we add the width to the class so the class is illegal #}
-			<div class="controls{% if groupElement.elements | length == 0 %} {% if groupElement.type == 'checkbox' %}col-lg-offset-2{% endif %} {% if groupElement.hideLabel != true %}{{ form.controlClass | default('col-lg-10') }}{%else%}col-lg-12{%endif%}{{ groupElement.width }}{% else %} col-lg-10{% endif %}">
+			<div class="controls{% if groupElement.elements | length == 0 %} {% if groupElement.type == 'checkbox' %}col-lg-offset-2{% endif %} {% if groupElement.hideLabel != true %}{{ form.controlClass | default('col-lg-10') }}{%else%}col-lg-12{%endif%}{{ groupElement.width }}{% endif %}">
 				{% if groupElement.elements | length > 0 %}
 					{% set fields = (groupElement.elements) %}
 				{% else %}

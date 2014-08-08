@@ -84,7 +84,8 @@ class DialogFormAction extends BaseAction
 		$p = array_merge(
 			$this->params, 
 			array(
-				'form' => $form,				
+				'form' => $form,
+				'model' => $this->controller->model,	
 		));
 		$this->controller->render($this->view, $p);
 	}

@@ -23,8 +23,8 @@ class SystemInfoAction extends CAction
 	public $actions = array(
 		'clearCache' => array(
 				'action' => 'site/clearCache',
-				//'params' => array(),
-				'caption' => 'Clear Assets',
+				'caption' => 'Refresh Assets Cache',
+				'info' => 'This will instruct the server to load the newest stylesheets and javasscripts. The browser cache must also be refreshed (F5).'
 		)	
 	);
 	
@@ -78,7 +78,7 @@ class SystemInfoAction extends CAction
 			$this->view = 'systemInfoDialog';
 		}
 		if ($this->onExtraInfo != null) {
-			$prop = call_user_func_array($this->onExtraInfo, array($prop));
+			$prop = call_user_func($this->onExtraInfo, $prop, $this);
 		}
 		$this->controller->render($this->view, array('properties' => $prop, 'actions' => $this->actions));
 	}

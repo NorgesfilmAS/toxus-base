@@ -136,7 +136,7 @@ class BaseSiteController extends Controller
    * @param type $properties
    * @returns array
    */
-  public function systemInfo($properties)
+  public function systemInfo($properties, $action)
   {
     return $properties;
   }
