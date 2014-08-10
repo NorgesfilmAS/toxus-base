@@ -29,3 +29,6 @@
 [submodule "assetsBase/ajaxForm"]
 	path = assetsBase/ajaxForm
 	url = https://github.com/malsup/form.git
+[submodule "assetsBase/angularJs"]
+	path = assetsBase/angularJs
+	url = https://github.com/angular/angular.js.git

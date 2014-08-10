@@ -1,0 +1,28 @@
+{# 
+	Basis of an AngularJS app
+
+	overload the [scriptFiles] to load the scripts with this.registerScript({..})
+	place the angularJs code in a {% raw %} {% endraw %} or if newer {% vertatim %} {% endverbatim %}
+
+
+	*** Don't forget the parent() for the content
+
+	version 0.01 jvk Aug 2014
+#}
+{% extends this.viewPath('main') %}
+
+
+{% block bodyTag %}
+ng-app="App" 
+{{ parent () }}
+{% endblock %}
+
+{% block content %}	
+	{{ this.registerPackage('angularJs.min') }} 
+	{% block scriptFiles %}{% endblock %}
+	{{ parent() }}
+<script type="text/javascript">
+	var serverUrl = "{{ this.createUrl('xx') }}".slice(0,-2);	
+</script>
+
+{% endblock %}

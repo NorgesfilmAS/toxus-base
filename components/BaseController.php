@@ -318,7 +318,7 @@ class BaseController extends CController
 	
 	/**
 	 * interfaces between the twig and yii 
-	 *bootstrap.css
+	 * bootstrap.css
 	 */	
 	public function findPackage($name)
 	{
@@ -619,7 +619,27 @@ class BaseController extends CController
 					),	
 				),
 			),				
-				
+			'angularJs' => array(
+				'basePath' => 'toxus.assetsBase.angularJs',
+				'js' => array(
+					CClientScript::POS_END => array(
+						'src/minErr.js',								
+						'src/AngularPublic.js',	
+						'src/Angular.js',
+						
+						'src/ngSanitize/sanitize.js',
+						'src/ngResource/resource.js',
+						'src/ngMessages/messages.js',	
+					),	
+				),
+			),				 	
+			'angularJs.min' => array(	
+				'js' => array(
+					CClientScript::POS_END => array(
+						'cdn' => '//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js'
+					),
+				)		
+			),
 			'new' => array(
 				'basePath' => 'alias',
 				'css' => array(),
@@ -664,22 +684,24 @@ class BaseController extends CController
 		
 		if (!isset($this->_packages[$name])) {// test if it already registered
 			$package = $this->findPackage($name);
+			$assetUrl = '';			
 			if ($opt['isAjax'] == false && isset($package)) { // do not load in the ajax version
-				if (isset($package['basePath'])) {
-					$assetUrl = Yii::app()->assetManager->publish(YiiBase::getPathOfAlias($package['basePath']));
 					if (!$opt['isAjax'] && isset($package['css']))
 						foreach ($package['css'] as $tx => $css) {
+							if ($assetUrl == '' && $tx !== 'cdn') {
+								$assetUrl = Yii::app()->assetManager->publish(YiiBase::getPathOfAlias($package['basePath']));
+							} 
 							Yii::app()->clientScript->registerCSSFile((($tx === 'cdn') ? '' : ($assetUrl.'/')).$css);					
 						}
 					if (!$opt['isAjax'] &&  isset($package['js'])){	
 						foreach ($package['js'] as $position => $scripts) {
 							foreach ($scripts as $type => $script) {
+								if ($assetUrl == '' && $type !== 'cdn') {
+									$assetUrl = Yii::app()->assetManager->publish(YiiBase::getPathOfAlias($package['basePath']));
+								} 
 								Yii::app()->clientScript->registerScriptFile( ($type === 'cdn' ? '' : ($assetUrl.'/')).$script, $position);
 							}
 						}
-					}	
-				} else {
-					$assetUrl = '';
 				}		
 				if (isset($package['ready'])) {
 					Yii::log("Registering package $name, with onReady", CLogger::LEVEL_TRACE, 'toxus.compontents.BaseController');
@@ -757,9 +779,28 @@ class BaseController extends CController
 			Yii::app()->getClientScript()->registerCssFile(yii::app()->request->baseUrl.'/css/'.$filename, $media);
 		}	
 	}
+	/**
+	 * Registers a script file or an array of script files in the SAME directory.
+	 * 
+	 * First try to find the file in the search path. If not found the static directory '/js' is assumed
+	 * 
+	 * @param string|array $filename
+	 * @param type $atEnd
+	 */
 	public function registerScriptFile($filename, $atEnd = true)
 	{
-		Yii::app()->getClientScript()->registerScriptFile(yii::app()->request->baseUrl.'/js/'.$filename, $atEnd ? CClientScript::POS_END : CClientScript::POS_HEAD);
+		if (! is_array($filename)) {
+			$filename = array($filename);
+		}	
+		foreach ($filename as $name) {
+			$path = $this->viewPath($name, array('extension' => '', 'return' => true));
+			if ($path) {
+				$baseUrl = Yii::app()->assetManager->publish(YiiBase::getPathOfAlias('application').'/'.$path, false, -1, Yii::app()->config->debug['isDevelop'] == 1);
+				Yii::app()->getClientScript()->registerScriptFile($baseUrl, $atEnd ? CClientScript::POS_END : CClientScript::POS_HEAD);
+			} else {
+				Yii::app()->getClientScript()->registerScriptFile(yii::app()->request->baseUrl.'/js/'.$name, $atEnd ? CClientScript::POS_END : CClientScript::POS_HEAD);
+			}	
+		}	
 	}
 	
 	public function registerScript($name, $script, $atEnd = CClientScript::POS_END)

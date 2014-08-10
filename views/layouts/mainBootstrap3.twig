@@ -18,7 +18,11 @@
 		{% include this.viewPath('header') |raw %}
 		<meta name="description" content="{{ App.params.description | default('site description') }}" />	
 	</head>
-	<body>
+	<body {% block bodyTag %}{% endblock %}>
+		{# 
+			This construction create a raw string that is used in the LEFT menu and
+			in the top menu
+		#}	
 		{% set itemMenu %}
 			{% block menuLeft %}
 			{% block itemMenuHeader %}
@@ -32,6 +36,7 @@
 			{% block itemMenuFooter %}{% endblock %}	
 			{% endblock %}
 		{% endset %}			
+		
 		{% block menuTop %}
 		<div class="navbar navbar-inverse navbar-fixed-top bs-docs-nav">
 			<div class="container">
