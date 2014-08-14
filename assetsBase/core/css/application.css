@@ -612,3 +612,11 @@ div.fadded {
 	padding-bottom: 3px;
 	padding-top: 3px;
 }
+
+.article-content td:nth-child(2) {
+	width: 70px;
+	color: gray;
+	text-align: right;
+	font-size: 70%;	
+	padding-top: 6px;
+}

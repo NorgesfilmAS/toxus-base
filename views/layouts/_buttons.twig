@@ -17,26 +17,28 @@
 {% endif %}
 
 {% for key, button in buttons %}
-  {% if button.type == 'submit' %}	
-    <button class="{{ button.style | default('btn') }} {{ button.position }} id-{{ util.formId(form) }}" {{ button.options |raw }} type="submit">{% if button.label %}{{ button.label }}{%else%}{% if this.model.isNewRecord %}{{ Yii_t('button','btn-create') }} {% else %}{{ Yii_t('button','btn-save') }} {% endif %}{% endif %}</button>
-    {{ this.onReady("\n\t"~'$(".id-'~util.formId(form)~'").on("click", function() { $(".cls-'~util.formId(form)~'").submit(); }); ') }}
-  {% elseif button.type == 'cancel' %}	
-    {% if isAjax %}
-    <button  href="#" id="btn-cancel" class="{{ button.style |default('btn') }} {{ button.position }} action-close" data-dismiss="modal" {{ button.options |raw }} type="button">{{ button.label }}</button>											
-    {% else %}
-    <button class="{{ button.style|default('btn') }} {{ button.position }}" {{ button.options |raw }} onClick="history.go(-1);return true;">{{ button.label }}</button>							
-    {% endif %}		
-  {% elseif button.type == 'delete' %}	
-    <button class="{{ button.style |default('btn') }} {{ button.position }}" {{ button.options |raw }} onClick="if (confirm('{{ (button.ask) | default(Yii_t('base','Delete this information?')) }}')) { window.location='{{ button.url }}'; }">{{ button.label }}</button>							
-{#		
-  {% elseif element.type == 'link' %}
-    <br/><br /><a href="{{element.url}}">{{element.label}}</a>
-#}
-  {% elseif button.type == 'dialog' %}
-    <button type="button" class="{{ button.style | default('btn') }} {{ button.position }} btn-action menu-modal" data-url="{{ button.url }}" {{ button.options |raw }}>{{ button.label |raw }}</button>		
-  {% else %}
-    <a {% if button.id %}id="{{button.id}}"{% endif %} href="{{ button.url }}" class="{{ button.style | default('btn') }} {{ button.position }} menu-button" {{ button.options |raw }}>{{ button.label }}</a>	
-  {% endif %}
+	{% if button.visible != false %}
+		{% if button.type == 'submit' %}	
+			<button class="{{ button.style | default('btn') }} {{ button.position }} id-{{ util.formId(form) }}" {{ button.options |raw }} type="submit">{% if button.label %}{{ button.label }}{%else%}{% if this.model.isNewRecord %}{{ Yii_t('button','btn-create') }} {% else %}{{ Yii_t('button','btn-save') }} {% endif %}{% endif %}</button>
+			{{ this.onReady("\n\t"~'$(".id-'~util.formId(form)~'").on("click", function() { $(".cls-'~util.formId(form)~'").submit(); }); ') }}
+		{% elseif button.type == 'cancel' %}	
+			{% if isAjax %}
+			<button  href="#" id="btn-cancel" class="{{ button.style |default('btn') }} {{ button.position }} action-close" data-dismiss="modal" {{ button.options |raw }} type="button">{{ button.label }}</button>											
+			{% else %}
+			<button class="{{ button.style|default('btn') }} {{ button.position }}" {{ button.options |raw }} onClick="history.go(-1);return true;">{{ button.label }}</button>							
+			{% endif %}		
+		{% elseif button.type == 'delete' %}	
+			<button class="{{ button.style |default('btn') }} {{ button.position }}" {{ button.options |raw }} onClick="if (confirm('{{ (button.ask) | default(Yii_t('base','Delete this information?')) }}')) { window.location='{{ button.url }}'; }">{{ button.label }}</button>							
+	{#		
+		{% elseif element.type == 'link' %}
+			<br/><br /><a href="{{element.url}}">{{element.label}}</a>
+	#}
+		{% elseif button.type == 'dialog' %}
+			<button type="button" class="{{ button.style | default('btn') }} {{ button.position }} btn-action menu-modal" data-url="{{ button.url }}" {{ button.options |raw }}>{{ button.label |raw }}</button>		
+		{% else %}
+			<a {% if button.id %}id="{{button.id}}"{% endif %} href="{{ button.url }}" class="{{ button.style | default('btn') }} {{ button.position }} menu-button" {{ button.options |raw }}>{{ button.label }}</a>	
+		{% endif %}
+	{% endif %}		
 {% endfor %}
 		
 {# untested: should create buttons on-the-fly #}
