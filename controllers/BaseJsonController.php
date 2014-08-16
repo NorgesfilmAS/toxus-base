@@ -88,6 +88,12 @@ class BaseJsonController extends Controller
 	{
 		$this->result['status']['message'] = $message;
  	}
+	public function setError($message) 
+	{
+		$this->result['status']['message'] = $message;
+		$this->result['status']['success'] = false;
+	}
+	
 	/**
 	 * Set an error to return to the user. Set success to false
 	 * @param string $key
