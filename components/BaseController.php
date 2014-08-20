@@ -636,10 +636,17 @@ class BaseController extends CController
 			'angularJs.min' => array(	
 				'js' => array(
 					CClientScript::POS_END => array(
-						'cdn' => '//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js'
+						'cdn' => '//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js',
 					),
-				)		
+				)	
 			),
+			'angularJs.sanitize.min' => array(	
+				'js' => array(
+					CClientScript::POS_END => array(
+						'cdn' => '//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-sanitize.min.js',	
+					),
+				)	
+			),				
 			'new' => array(
 				'basePath' => 'alias',
 				'css' => array(),
