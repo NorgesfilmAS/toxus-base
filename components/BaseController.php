@@ -542,7 +542,11 @@ class BaseController extends CController
 							} else {
 								$("#id-modal-body").html($("#id-wait-message").html());
 								$("#id-modal").modal("show"); 							
-								$("#id-modal-body").load($(this).data("url"));							
+								$("#id-modal-body").load($(this).data("url"), function(response, status) {
+									if (status == "error") {
+										$("#id-modal-body").html("<div class=\'alert alert-warning\'><h2>"+response+"</h2></div><div class=\'modal-footer\'><button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\'>Close</button></div>");
+									}
+								});							
 							}
 					})'
 			),
