@@ -1,4 +1,7 @@
 <?php
+/**
+ * default login form to show to the user
+ */
 
 return array(
 	'title' => Yii::t('base', 'Login to your account'),	
@@ -13,6 +16,7 @@ return array(
 		),
 		'rememberMe' => array(
 			'type' => 'checkbox',	
+			//'label' => 'xxxxx',	
 		),	
 	),
 	'buttons' => array(
