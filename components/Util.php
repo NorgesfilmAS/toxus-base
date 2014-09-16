@@ -795,6 +795,18 @@ class Util {
 		}
 		return $bytes.' B';		
 	}
+	
+	static function strposEscape($haystack, $string, $escape='\\')
+	{
+		$l = strpos($haystack, $string);
+		while ($l) {
+			if ($l > 0 && substr($haystack, $l-1, 1) != $escape) {
+				return $l;
+			}
+			$l = strpos($haystack, $string, $l++);
+		}
+		return false;
+	}
 }
 
 ?>
