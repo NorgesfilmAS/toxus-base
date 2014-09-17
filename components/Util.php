@@ -796,6 +796,14 @@ class Util {
 		return $bytes.' B';		
 	}
 	
+	/**
+	 * Finds the occurance of the string in the haystack, checking for escaped strings
+	 * 
+	 * @param type $haystack
+	 * @param type $string
+	 * @param string $escape the letter to use to escape
+	 * @return false|integer the position
+	 */
 	static function strposEscape($haystack, $string, $escape='\\')
 	{
 		$l = strpos($haystack, $string);
@@ -806,6 +814,19 @@ class Util {
 			$l = strpos($haystack, $string, $l++);
 		}
 		return false;
+	}
+	
+	static function array2NameArray($array, $columnNames)
+	{
+		if (count($columnNames) < 2)	{
+			throw new CException(Yii::t('app', 'The array2NameArray excepts atleats 2 column names'));
+		}
+		$result = array();
+		foreach ($array as $key => $element) {
+			$result[] = array($columnNames[0] => $key, $columnNames[1] => $element);			
+		}
+						
+		return $result;
 	}
 }
 
