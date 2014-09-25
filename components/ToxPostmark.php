@@ -1,7 +1,7 @@
 <?php
 
 
-Yii::import('toxus.extensions.postmark-yii.Postmark');
+Yii::import('toxus.extensions.postmarkYii.Postmark');
 class ToxPostmark extends Postmark
 {
 	/**
