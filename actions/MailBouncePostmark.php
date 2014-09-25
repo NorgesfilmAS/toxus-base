@@ -53,7 +53,8 @@ class MailBouncePostmark extends BaseAction
 	
 	public function run($key=false)
 	{
-		if ($key && $key != Yii::app()->config->mail['bounceKey']) {
+		$bounceKey = Yii::app()->config->mail['bounceKey'];
+		if ( ($key==false && !empty($bounceKey)) || $key != $bounceKey) {
 			Yii::log('The key is invalid', CLogger::LEVEL_ERROR, $this->logPath);
 			throw new CHttpException(403, 'Access denied');
 		}
