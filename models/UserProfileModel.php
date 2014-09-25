@@ -164,7 +164,8 @@ class UserProfileModel extends BaseUserProfile
 	 */
 	public function sendConfirmation()
 	{
-		$mm = new MailMessage();
+		$mailClass = Yii::app()->config->mail['mailer'];
+		$mm = new  $mailClass();
 		$mm->mailLogModel = $this->mailLogModel;
 		
 		if (! $mm->render($this->confirmMail, array(
@@ -213,7 +214,8 @@ class UserProfileModel extends BaseUserProfile
 	{
 		$field = $this->activationKeyField;
 		$this->generateInvitation();
-		$mail = new MailMessage();
+		$mailClass = Yii::app()->config->mail['mailer'];
+		$mail = new $mailClass();
 		$mail->mailLogModel = $this->mailLogModel;
 		
 		$subject = $this->mailSubject ? $this->mailSubject : Yii::app()->config->mail['invite_subject'];

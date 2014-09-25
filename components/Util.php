@@ -686,6 +686,18 @@ class Util {
 		return implode('_', $ret);
 	}
 	
+	// http://stackoverflow.com/questions/2791998/convert-dashes-to-camelcase-in-php
+	static function underscoreToCamelCase($string, $capitalizeFirstCharacter = false) 	{
+
+    $str = str_replace(' ', '', ucwords(str_replace('_', ' ', $string)));
+
+    if (!$capitalizeFirstCharacter) {
+        $str[0] = strtolower($str[0]);
+    }
+
+    return $str;
+}
+	
 	/**
 	 * change the file extension
 	 * 
@@ -826,6 +838,18 @@ class Util {
 			$result[] = array($columnNames[0] => $key, $columnNames[1] => $element);			
 		}
 						
+		return $result;
+	}
+	/**
+	 * change the array keys so the first character is lower case and string is camel case
+	 * @param array $arr
+	 */
+	static function properArrayKeys($arr) 
+	{
+		$result = array();
+		foreach ($arr as $key => $value) {
+			$result[Util::underscoreToCamelCase($key)] = $value;
+		}
 		return $result;
 	}
 }

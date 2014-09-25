@@ -15,9 +15,26 @@
  * @property string $creation_date
  * @property string $message
  * @property string $log
+ * @property string $html_message
+ * @property string $from_address
+ * @property string $to_address
+ * @property string $reply_to
+ * @property string $subject
+ * @property string $message_id
+ * @property string $error_code
+ * @property string $error_curl
+ * @property string $bounce_json
+ * @property integer $is_bounced
+ * @property string $open_json
+ * @property integer $is_inbound
+ * @property string $inbound_json
+ * @property string $spam_status
+ * @property string $spam_score
+ * @property string $spam_tests
+ * @property integer $is_reply_text
  *
  */
-abstract class BaseMail extends GxActiveRecord {
+abstract class BaseMail extends TwigActiveRecord {
 
 	public static function model($className=__CLASS__) {
 		return parent::model($className);
@@ -28,7 +45,7 @@ abstract class BaseMail extends GxActiveRecord {
 	}
 
 	public static function label($n = 1) {
-		return Yii::t('base', 'Mail|Mails', $n);
+		return Yii::t('app', 'Mail|Mails', $n);
 	}
 
 	public static function representingColumn() {
@@ -37,11 +54,11 @@ abstract class BaseMail extends GxActiveRecord {
 
 	public function rules() {
 		return array(
-			array('profile_id', 'numerical', 'integerOnly'=>true),
-			array('to', 'length', 'max'=>255),
-			array('creation_date, message, log', 'safe'),
-			array('profile_id, to, creation_date, message, log', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, profile_id, to, creation_date, message, log', 'safe', 'on'=>'search'),
+			array('profile_id, is_bounced, is_inbound, is_reply_text', 'numerical', 'integerOnly'=>true),
+			array('to, from_address, to_address, reply_to, subject, message_id, error_code, error_curl', 'length', 'max'=>255),
+			array('creation_date, message, log, html_message, bounce_json, open_json, inbound_json, spam_status, spam_score, spam_tests', 'safe'),
+			array('profile_id, to, creation_date, message, log, html_message, from_address, to_address, reply_to, subject, message_id, error_code, error_curl, bounce_json, is_bounced, open_json, is_inbound, inbound_json, spam_status, spam_score, spam_tests, is_reply_text', 'default', 'setOnEmpty' => true, 'value' => null),
+			array('id, profile_id, to, creation_date, message, log, html_message, from_address, to_address, reply_to, subject, message_id, error_code, error_curl, bounce_json, is_bounced, open_json, is_inbound, inbound_json, spam_status, spam_score, spam_tests, is_reply_text', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -63,6 +80,23 @@ abstract class BaseMail extends GxActiveRecord {
 			'creation_date' => Yii::t('app', 'Creation Date'),
 			'message' => Yii::t('app', 'Message'),
 			'log' => Yii::t('app', 'Log'),
+			'html_message' => Yii::t('app', 'Html Message'),
+			'from_address' => Yii::t('app', 'From Address'),
+			'to_address' => Yii::t('app', 'To Address'),
+			'reply_to' => Yii::t('app', 'Reply To'),
+			'subject' => Yii::t('app', 'Subject'),
+			'message_id' => Yii::t('app', 'Message'),
+			'error_code' => Yii::t('app', 'Error Code'),
+			'error_curl' => Yii::t('app', 'Error Curl'),
+			'bounce_json' => Yii::t('app', 'Bounce Json'),
+			'is_bounced' => Yii::t('app', 'Is Bounced'),
+			'open_json' => Yii::t('app', 'Open Json'),
+			'is_inbound' => Yii::t('app', 'Is Inbound'),
+			'inbound_json' => Yii::t('app', 'Inbound Json'),
+			'spam_status' => Yii::t('app', 'Spam Status'),
+			'spam_score' => Yii::t('app', 'Spam Score'),
+			'spam_tests' => Yii::t('app', 'Spam Tests'),
+			'is_reply_text' => Yii::t('app', 'Is Reply Text'),
 		);
 	}
 
@@ -75,6 +109,23 @@ abstract class BaseMail extends GxActiveRecord {
 		$criteria->compare('creation_date', $this->creation_date, true);
 		$criteria->compare('message', $this->message, true);
 		$criteria->compare('log', $this->log, true);
+		$criteria->compare('html_message', $this->html_message, true);
+		$criteria->compare('from_address', $this->from_address, true);
+		$criteria->compare('to_address', $this->to_address, true);
+		$criteria->compare('reply_to', $this->reply_to, true);
+		$criteria->compare('subject', $this->subject, true);
+		$criteria->compare('message_id', $this->message_id, true);
+		$criteria->compare('error_code', $this->error_code, true);
+		$criteria->compare('error_curl', $this->error_curl, true);
+		$criteria->compare('bounce_json', $this->bounce_json, true);
+		$criteria->compare('is_bounced', $this->is_bounced);
+		$criteria->compare('open_json', $this->open_json, true);
+		$criteria->compare('is_inbound', $this->is_inbound);
+		$criteria->compare('inbound_json', $this->inbound_json, true);
+		$criteria->compare('spam_status', $this->spam_status, true);
+		$criteria->compare('spam_score', $this->spam_score, true);
+		$criteria->compare('spam_tests', $this->spam_tests, true);
+		$criteria->compare('is_reply_text', $this->is_reply_text);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,

@@ -28,7 +28,6 @@ class MailMessage extends BaseController
 	public function render($viewName, $data = array(), $return = false)
 	{
 		$viewFile = YiiBase::getPathOfAlias('application').'/'. $this->viewPath($viewName, array('directory' => 'mail'));
-//		$viewFile = $this->getViewFile($viewName);
 		if(($renderer = Yii::app()->getViewRenderer()) !== null && $renderer->fileExtension === '.'.CFileHelper::getExtension($viewFile))
       $content = $renderer->renderFile($this, $viewFile, $data, true);
     else
@@ -52,15 +51,25 @@ class MailMessage extends BaseController
 	public function send($to, $subject, $content, $data = array())
 	{
 		$log = array();
-		$body = str_replace(array_keys($data),array_values($data), $content);
-		$log['parsed'] = $body;
+		$msg = 	array(
+					'from' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'],
+					'to' => $to,
+					'cc' => false,
+					'bcc' => false,	
+					'subject' => $subject,
+					'body' => str_replace(array_keys($data),array_values($data), $content),	
+					'html' => false,
+					'attached' => array(),	
+				);
 		
-		if (!mail($to, $subject, $body)) {
+		$log['parsed'] = $msg['body'];
+		
+		if (!$this->deliverMail($msg, $log)) { // mail($to, $subject, $body)) {
 			$log['error'] = 'not send';
-			$this->logMessage($body, $log);
+			$this->logMessage($msg, $log);
 			return false;
 		} else {
-			$this->logMessage($body, $log);
+			$this->logMessage($msg, $log);
 			return true;
 		}	
 	}
@@ -84,39 +93,44 @@ class MailMessage extends BaseController
 		if (is_file($filename))
 			return $filename;
 
-		throw new CException('The message '.$filename.' does not exists');
+		throw new CException(Yii::t('base', 'The mail message {filename} does not exists', array('{filename}' => $filename)));
 	}
 	
+	/**
+	 * process the $content by it #tag to find the field for the mail message
+	 * end sends it used the mailer
+	 * 
+	 * @param string $content
+	 * @param path $viewName
+	 * @return boolean message has been send (or just test send)
+	 */
 	protected function sendEmail($content, $viewName)
 	{
 		$log = array('viewName' => $viewName);
-		
-		$default = array(
-			'from' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'].'>',
-			'to' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'].'>',
-			'subject' => Yii::t('base', 'Message from {name}', array('name' => Yii::app()->params['company'])),
-			'body' => '',	
-		);
 
 		$message = $this->parse($content);
 		$msg = array_merge(
 				array(
 					'from' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'],
 					'to' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'],
+					'cc' => false,
+					'bcc' => false,	
 					'subject' => Yii::t('base', 'Message from {name}', array('name' => Yii::app()->params['company'])),
 					'body' => '',	
+					'html' => false,
+					'attached' => array(),	
 				),
 				$message
 		);		
-		if (isset(Yii::app()->params['mail-blocked']) && Yii::app()->params['mail-blocked'] === true) { // no send just log the message
+		if (Yii::app()->config->mail['isBlocked']) {		
 			$log['info'] = 'Mail not send: mail-blocked = true';
 			$this->logMessage($msg, $log);
-			return true;
+			return true; // just say it all worked
 		}
 
-		if (Yii::app()->params['mail-domains']) {
+		if (Yii::app()->config->mail['mailDomains']) {
 			$to = $msg['to'];
-			$mailDomains = explode(',', Yii::app()->params['mail-domains']);
+			$mailDomains = explode(',', Yii::app()->config->mail['mailDomains']);
 			if (count($mailDomains) > 0) {
 				$toServer = self::serverFromEmail($to);
 				$isAllowed = false;
@@ -127,20 +141,40 @@ class MailMessage extends BaseController
 					}
 				}			
 				if (! $isAllowed) {
-					$msg['to'] = Yii::app()->params['mail-collector'];				
+					$msg['to'] = Yii::app()->config->mail['collector'];				
 					$log['reroute'] =  'Mail rerouted to admin ('.$to.')';
 				} 
 			}
 		}	
-		if (!mail($msg['to'], $msg['subject'], $msg['body'])) {
-			Yii::app()->user->setFlash('error', 'The message could not be send. Please try later again');
-			$log['error'] = 'Message could not be send (server error)';
+		if (!$this->deliverMail($msg, $log)) {
+			Yii::app()->user->setFlash('error', Yii::t('base', 'The message could not be send. Please try later again'));
+			if (!isset($log['error'])) {
+				$log['error'] = 'Message could not be send (server error)';
+			}	
 			$this->logMessage($msg, $log);
 			return false;
 		} else {
 			$this->logMessage($msg, $log);
 		}
-		return true;
+		return true;		
+	}
+	
+	/**
+	 * Send the mail to the user 
+	 * @param array $msg
+	 *		- from
+	 *		- to
+	 *		- cc
+	 *		- bcc
+	 *		- subject
+	 *		- body
+	 *		- html
+	 *		- attached
+	 * @return bool true if send was successfull
+	 */
+	protected function deliverMail(&$msg, &$log)
+	{
+		return $this->mail($msg['to'], $msg['subject'], $msg['body']);
 	}
 	
 	static function serverFromEmail($email)
@@ -183,11 +217,19 @@ class MailMessage extends BaseController
 			if (session_id() != '') {
 				$params['session'] = $_SESSION;
 			}	
-			$params['message'] = $msg;
+			
 			$mailClass = $this->mailLogModel;
 			$mail = new $mailClass();
-			$mail->log = var_export($params, true);
-			$mail->message = isset($msg['body']) ? $msg['body'] : '(no body)';
+			if (isset($msg['to']))				{ $mail->to_address		= $msg['to']; }			
+			if (isset($msg['subject']))		{ $mail->subject			= $msg['subject']; }
+			if (isset($msg['body']))			{ $mail->message			= $msg['body']; }
+			if (isset($msg['html']))			{ $mail->html_message = $msg['html']; }
+			if (isset($msg['from']))			{ $mail->from_address = $msg['from']; }
+			if (isset($msg['messageId'])) { $mail->message_id		= $msg['messageId']; }			
+			if (isset($msg['errorCode'])) { $mail->error_code   = $msg['errorCode']; }
+			if (isset($msg['response']))  { $mail->error_code   .= ' - '.$msg['response']; }
+			if (isset($msg['errorCurl'])) { $mail->error_curl   = $msg['errorCurl']; }
+			$mail->log = CJSON::encode($params);			
 			$mail->save();
 		}	
 	}

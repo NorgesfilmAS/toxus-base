@@ -32,3 +32,6 @@
 [submodule "assetsBase/angularJs"]
 	path = assetsBase/angularJs
 	url = https://github.com/angular/angular.js.git
+[submodule "extensions/postmark-yii"]
+	path = extensions/postmark-yii
+	url = https://github.com/balaclark/postmark-yii.git
