@@ -14,7 +14,15 @@ class MailMessage extends BaseController
 	 */
 	public $mailLogModel = 'MailModel';
 
+	public $errors = array();
 
+	public function hasErrors() {
+		return count($this->errors) > 0;
+	}
+	public function clearErrors() {
+		$this->errors = array();
+	}
+	
 	public function __construct()
 	{
 		parent::__construct(__CLASS__);
@@ -50,6 +58,7 @@ class MailMessage extends BaseController
 	 */
 	public function send($to, $subject, $content, $data = array())
 	{
+		$this->clearErrors();
 		$log = array();
 		$msg = 	array(
 					'from' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'],
@@ -65,7 +74,8 @@ class MailMessage extends BaseController
 		$log['parsed'] = $msg['body'];
 		
 		if (!$this->deliverMail($msg, $log)) { // mail($to, $subject, $body)) {
-			$log['error'] = 'not send';
+			$log['error'] = 'not send';		
+			$this->errors['send'] = $msg['response'];
 			$this->logMessage($msg, $log);
 			return false;
 		} else {
@@ -174,7 +184,7 @@ class MailMessage extends BaseController
 	 */
 	protected function deliverMail(&$msg, &$log)
 	{
-		return $this->mail($msg['to'], $msg['subject'], $msg['body']);
+		return mail($msg['to'], $msg['subject'], $msg['body']);
 	}
 	
 	static function serverFromEmail($email)

@@ -38,11 +38,18 @@ class PasswordRequestAction extends BaseAction
 	public $passwordSendPage = 'passwordSend';
 	// $onAfterUpdate = function xx($this) : boolean
 	// $params['errors'] are the errors display after the onAfterUpdate call
+	/**
+	 * The page to display on error
+	 * 
+	 * @var string
+	 */
+	public $passwordErrorPage = 'passwordError';
 	
 	public function run()
 	{
 		$view = $this->view;
 		$this->controller->model = new LoginForm($this->scenario);		
+		$profile = false;
 		
 		$form = $this->controller->loadForm($this->form);
 		if (isset($_POST[$this->modelClassName])) {
@@ -58,16 +65,15 @@ class PasswordRequestAction extends BaseAction
 					} else {
 						$result = call_user_func(array($this, 'sendInvitation'), $profile, $this); 
 					}	
-					if ($result) {
-						$view = $this->passwordSendPage;
-						$form = false;	// otherwise it is displayed again
-					}
+					$view = $this->passwordSendPage;
+					$form = false;	// otherwise it is displayed again
 				}	
 			}	
 		}
 		$params = array_merge(		
 			array(
 				'model' => $this->controller->model,
+				'profile' => $profile,	
 				'layout' => $this->pageLayout,
 				'form' => $form,
 				'scenario' => $this->scenario,	

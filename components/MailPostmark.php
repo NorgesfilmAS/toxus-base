@@ -44,13 +44,17 @@ class MailPostmark extends MailMessage
 		if ($msg['html']) {
 			$email->addHtml($msg['html']);
 		}
-		if (Yii::app()->config->postmark['debug']) {
-			$email->debug(Postmark::DEBUG_RETURN);
-			$log['postmark'] = $email->send();
-			$result = true;
-		} else {
-			$result = $msg->send();
-		}
+		try {
+			if (Yii::app()->config->postmark['debug']) {
+				$email->debug(Postmark::DEBUG_RETURN);
+				$log['postmark'] = $email->send();
+				$result = true;
+			} else {
+				$result = $msg->send();
+			}
+		} catch (Exception $e) {
+			$result = false;
+		}	
 		$msg['messageId'] = $email->messageId;
 		$msg['errorCode'] = $email->errorCode;
 		$msg['response'] = $email->response;
