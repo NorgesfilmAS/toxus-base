@@ -274,6 +274,7 @@ class ImageCache extends CComponent
 						$sizeOptions);			
 
 		$img = $this->openImage($originalFilename);
+		if (empty($img)) { return false; }
     //create the image, of the required size
     $new = imagecreatetruecolor($size['width'], $size['height']);
     if($new === false) {
