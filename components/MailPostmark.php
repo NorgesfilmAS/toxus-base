@@ -34,6 +34,9 @@ class MailPostmark extends MailMessage
 		}
 		$email->subject($msg['subject']);
 		$email->messagePlain($msg['body']);
+		if ($msg['from']) {
+			$email->from($msg['from'], isset($msg['fromName']) ? $msg['fromName']:  null);
+		}
 		
 		if ($msg['cc']) {
 			$email->addCC($msg['cc']);
@@ -50,7 +53,7 @@ class MailPostmark extends MailMessage
 				$log['postmark'] = $email->send();
 				$result = true;
 			} else {
-				$result = $msg->send();
+				$result = $email->send();
 			}
 		} catch (Exception $e) {
 			$result = false;
