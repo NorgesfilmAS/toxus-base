@@ -13,7 +13,7 @@ class ErrorAction extends BaseAction
 	 * 
 	 * @var string
 	 */
-	public $view = 'errorPage';
+	public $view = 'error';
 	
 	public function run()
 	{
