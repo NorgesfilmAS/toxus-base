@@ -1442,6 +1442,9 @@ class BaseController extends CController
 	public function viewPath($filename, $options = array())
 	{
 		$extension = (isset($options['extension']) ? $options['extension'] : Yii::app()->viewRenderer->fileExtension);
+		if (empty($extension)) {
+			$extension = '.twig';
+		}
 		$classname = isset($options['directory']) ? $options['directory'] : $this->getId();
 		$filename = $filename.$extension;
 		$vendorRoot = YiiBase::getPathOfAlias($this->vendorViewRoot);
