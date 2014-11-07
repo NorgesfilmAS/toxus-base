@@ -17,7 +17,7 @@
 {% endif %}
 
 {% for key, button in buttons %}
-	{% if button.visible  | default(true) != false %}
+	{% if button.visible | default(true) != 0 %}
 		{% if button.type == 'submit' %}	
 			<button class="{{ button.style | default('btn') }} {{ button.position }} id-{{ util.formId(form) }}" {{ button.options |raw }} type="submit">{% if button.label %}{{ button.label }}{%else%}{% if this.model.isNewRecord %}{{ Yii_t('button','btn-create') }} {% else %}{{ Yii_t('button','btn-save') }} {% endif %}{% endif %}</button>
 			{{ this.onReady("\n\t"~'$(".id-'~util.formId(form)~'").on("click", function() { $(".cls-'~util.formId(form)~'").submit(); }); ') }}

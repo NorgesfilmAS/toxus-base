@@ -34,7 +34,7 @@ class MailPostmark extends MailMessage
 		}
 		$email->subject($msg['subject']);
 		$email->messagePlain($msg['body']);
-		if ($msg['from']) {
+		if (isset($msg['from'])) {
 			$email->from($msg['from'], isset($msg['fromName']) ? $msg['fromName']:  null);
 		}
 		

@@ -61,7 +61,7 @@ class MailMessage extends BaseController
 		$this->clearErrors();
 		$log = array();
 		$msg = 	array(
-					'from' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'],
+//					'from' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'],
 					'to' => $to,
 					'cc' => false,
 					'bcc' => false,	
