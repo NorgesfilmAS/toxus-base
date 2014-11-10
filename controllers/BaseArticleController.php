@@ -30,6 +30,8 @@ class BaseArticleController extends Controller
 	{
 		if (isset($_GET['id'])) {
 			$this->model = ArticleModel::model()->findByPk($_GET['id']);
+		} elseif (isset($_GET['key'])) {
+			$this->model = ArticleModel::model()->findByKey($_GET['key']);
 		} elseif (count($_GET) == 1) {
 			$this->model = ArticleModel::model()->findByKey(key($_GET));
 		}	
