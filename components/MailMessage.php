@@ -63,11 +63,11 @@ class MailMessage extends BaseController
 		$msg = 	array(
 //					'from' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'],
 					'to' => $to,
-					'cc' => false,
-					'bcc' => false,	
+					'cc' => isset($data['cc'])? $data['cc'] : false,
+					'bcc' => isset($data['bcc']) ? $data['bcc'] : false,	
 					'subject' => $subject,
 					'body' => str_replace(array_keys($data),array_values($data), $content),	
-					'html' => false,
+					'html' => isset($data['html']) ? $data['html'] : false,
 					'attached' => array(),	
 				);
 		
