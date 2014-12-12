@@ -361,6 +361,7 @@ class BaseController extends CController
 				'css' => array(
 						'css/style.css', 
 						'css/header-1.css', 
+						'css/hero-equal.css',
 						'css/toxus.css'
 				),
 				'js' => array(
