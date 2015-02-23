@@ -121,8 +121,8 @@ class MailMessage extends BaseController
 		$message = $this->parse($content);
 		$msg = array_merge(
 				array(
-					'from' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'],
-					'to' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'],
+// 2015.02.23					'from' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'].'>',
+					'to' => Yii::app()->params['editor'].'<'.Yii::app()->params['editor-email'].'>',
 					'cc' => false,
 					'bcc' => false,	
 					'subject' => Yii::t('base', 'Message from {name}', array('name' => Yii::app()->params['company'])),

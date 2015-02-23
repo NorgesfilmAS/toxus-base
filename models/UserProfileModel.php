@@ -171,7 +171,7 @@ class UserProfileModel extends BaseUserProfile
 		if (! $mm->render($this->confirmMail, array(
 			'model' => $this,
 			'action' => $this->confirmationUrl,		
-		))) {
+		), true)) {
 			$this->addError('email', Yii::t('base', 'Unable to send mail'));
 			return false;
 		}	
