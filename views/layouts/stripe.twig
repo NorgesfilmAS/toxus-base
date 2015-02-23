@@ -1,0 +1,14 @@
+{#
+  the basis of a stripe payment page
+
+#}
+{% extends this.viewPath('main') %}
+
+{% block content %}
+	<div class="row">
+		<h2>Payment through Stripe</h2>
+	</div>				
+
+	{% include this.viewPath('stripeForm') %}
+{% endblock %}
+
