@@ -852,6 +852,17 @@ class Util {
 		}
 		return $result;
 	}
+	
+	static function explodeClean($delimiter, $string) {
+		$result = explode($delimiter, $string);
+		foreach ($result as $k => $r) {
+			if (empty($r)) {
+				unset($result[$k]);
+			}
+		}
+		return $result;
+	}
+	
 }
 
 ?>
