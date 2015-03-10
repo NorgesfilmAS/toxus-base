@@ -32,6 +32,14 @@ class ImageCache extends CComponent
 				'background-color' => array(255,255,255),// array(230,230,235),	
 			),
 
+			'icon' => array(
+				'width' => 48,
+				'height' => 36,	
+				'quality' => 75,					
+				'fill' => true,		// make the image EXACT this size, padding it
+				'background-color' => array(255,255,255),// array(230,230,235),	
+					
+			),
 			'large' => array(
 				'width' => 400,
 				'height' => 300,	
@@ -145,6 +153,36 @@ class ImageCache extends CComponent
 		}	
 		if ($basename) {
 			return Yii::app()->baseUrl.self::ROOTCACHE.$size.'/'.$basename;
+		}
+		return Yii::app()->baseUrl.self::ROOTCACHE.$size.'/'.$name;
+	}
+	
+	/**
+	 * 
+	 * @param string $path the image file to add to the cache. ex: /var/user/data/images/test.png
+	 * @param string $name the name the image will be found, without the size operator. ex: test.png
+	 * @param string $size one of the size operators. ex: small
+	 * @return string|false a full qualified URL to the image in the cache. ex: http://www.example.org/cache/small/test.png
+	 */
+	public function imageAddUrl($path, $name, $size = 'original') {
+		if (!isset($this->sizes[$size])) {
+			throw new CException('The size "'.$size.'" for the images is unknown');
+		}		
+		$cacheFile = 	Yii::getPathOfAlias(self::BASEPATH.'.'.$size).'/'.$name;
+		if (!file_exists($cacheFile)) { // we have to create the cache file
+			if (!file_exists($path)) {
+				Yii::log('The original file "'.$path.'" does not exist.', CLogger::LEVEL_WARNING, 'toxus.image.cache');
+				return false;
+			}
+			if (isset($this->sizes[$size]['fill'])) {
+				if (!$this->imageThumb($path, $cacheFile, $this->sizes[$size])) {
+					return false;					
+				}
+			} else {	
+				if (!$this->imageResize($path, $cacheFile, $this->sizes[$size])) {
+					return false;
+				}
+			}				
 		}
 		return Yii::app()->baseUrl.self::ROOTCACHE.$size.'/'.$name;
 	}
