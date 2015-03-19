@@ -27,18 +27,23 @@ class WebUser extends CWebUser
   
 	const LAST_INSERT_ID = 'lastInsertId';
 	
-	protected $_profile;
+	protected $_profile = null;
 	
 	public function getProfile()
 	{
-		if ($this->_profile == null) {
+		if ($this->_profile === null) {
       $class = $this->userProfileClass;
-			$this->_profile = $class::model()->findByPk(Yii::App()->user->id);
-			if ($this->_profile == null) {
-				$this->_profile = new UserProfile;
-				$this->_profile->username = 'Guest';
-				$this->_profile->id = 1;
-				$this->_profile->rights_id = 1;// UserProfile::GUEST;
+			try {
+				$this->_profile = $class::model()->findByPk(Yii::App()->user->id);
+				if ($this->_profile == null) {
+					$this->_profile = new UserProfile;
+					$this->_profile->username = 'Guest';
+					$this->_profile->id = 1;
+					$this->_profile->rights_id = 1;// UserProfile::GUEST;
+				}	
+			} catch(Exception  $e) {
+				Yii::log('Error opening db: '.$e->getMessage(), CLogger::LEVEL_WARNING, 'toxus.WebUser.getProfile');
+				$this->_profile = false;
 			}	
 		}
 		return $this->_profile;
