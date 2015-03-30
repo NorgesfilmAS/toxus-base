@@ -253,6 +253,7 @@ class BaseController extends CController
 			$params['layout'] = array('class'=>$options['class']);
 		// $this->beforeMenuGenerated(&$menu, $menuDef, $options);
 		$path = $this->viewPath('_'.$menuName.'Menu',array('return' => true));
+		$s = '';
 		if (!$path) {
 			$path = $this->viewPath('_menu',array('return' => true, 'noExtension' => true));
 			if ($path) {
