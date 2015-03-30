@@ -536,22 +536,28 @@ class BaseController extends CController
 			),
 			'modal-dialog' => array(
 				'ready' => '
-						$(".menu-modal").on("click", function() {
-							div = $(this).data("div");
-							if (div) {
-								$(div + " .modal-content").html($("#id-wait-message").html());
-								$(div).modal("show"); 							
-								$(div + " .modal-content").load($(this).data("url"));
-							} else {
-								$("#id-modal-body").html($("#id-wait-message").html());
-								$("#id-modal").modal("show"); 							
-								$("#id-modal-body").load($(this).data("url"), function(response, status) {
-									if (status == "error") {
-										$("#id-modal-body").html("<div class=\'alert alert-warning\'><h2>"+response+"</h2></div><div class=\'modal-footer\'><button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\'>Close</button></div>");
-									}
-								});							
-							}
-					})'
+						console.log("init menuModal");
+						function menuModalActive() {
+							console.log("active menuModal: length", $(".menu-modal").length);
+							$(".menu-modal").on("click", function() {	
+								console.log("menu-model.click");
+								div = $(this).data("div");
+								if (div) {
+									$(div + " .modal-content").html($("#id-wait-message").html());
+									$(div).modal("show"); 							
+									$(div + " .modal-content").load($(this).data("url"));
+								} else {
+									$("#id-modal-body").html($("#id-wait-message").html());
+									$("#id-modal").modal("show"); 							
+									$("#id-modal-body").load($(this).data("url"), function(response, status) {
+										if (status == "error") {
+											$("#id-modal-body").html("<div class=\'alert alert-warning\'><h2>"+response+"</h2></div><div class=\'modal-footer\'><button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\'>Close</button></div>");
+										}
+									});							
+								}
+							})
+						}
+						menuModalActive();'
 			),
 			'elastic' => array(
 				/* auto expand an textarea to the number of lines used */	
