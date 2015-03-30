@@ -234,6 +234,7 @@ class BaseController extends CController
 // pre version it was:	public function menuHtml($menuDef, $controller = null)
 	public function menuHtml($menuDef, $options = array())
 	{	
+		Yii::log('menuHtml', CLogger::LEVEL_INFO, 'toxus.menu');
 		if (is_array($menuDef)) {
 			$menuName = isset($menuDef['name']) ? $menuDef['name'] : 'default';
 			$menu = array($menuName => isset($menuDef['menu']) ? $menuDef['menu'] : array());
