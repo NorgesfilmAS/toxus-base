@@ -342,11 +342,12 @@ class ImageCache extends CComponent
 			$srcX = (int) (($source_image_width - $srcW) / 2);
 			$destW = $size['width'];		// our full width
     } else {
-			// NOT IMPLEMENTED
-			Yii::log('The image cache for portrait images is not supported', CLogger::LEVEL_ERROR, 'toxus.imageCache.imageCutOut');
-			return false;
-			$thumbnail_image_width = $size['width'];
-			$thumbnail_image_height = (int) ($size['width'] / $source_aspect_ratio);
+			$srcW = $source_image_width;
+			$destW = $size['width'];
+			
+			$srcH = (int) ($source_image_height / $source_aspect_ratio);
+			$srcY = (int) (($source_image_height - $srcH) / 2);
+			$destH = $size['height'];
     }
 		
     $thumbnail_gd_image = imagecreatetruecolor( $size['width'],  $size['height']);
