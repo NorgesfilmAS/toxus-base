@@ -51,9 +51,9 @@ class ImageCache extends CComponent
 				'quality' => 90,															
 			),
 			'tv' => array(				// the 4:3 image cutout
-				'width' => 263,
-				'height' => 197,
-				'quality' => 90,
+				'width' => 265,
+				'height' => 181,
+				'quality' => 80,
 				'cutout' => true	
 			)
 	);				
