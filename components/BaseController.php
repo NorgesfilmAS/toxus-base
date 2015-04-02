@@ -541,12 +541,18 @@ class BaseController extends CController
 							console.log("active menuModal: length", $(".menu-modal").length);
 							$(".menu-modal").on("click", function() {	
 								console.log("menu-model.click");
-								div = $(this).data("div");
+								var div = $(this).data("div");
 								if (div) {
 									$(div + " .modal-content").html($("#id-wait-message").html());
 									$(div).modal("show"); 							
 									$(div + " .modal-content").load($(this).data("url"));
 								} else {
+									var compact = $(this).data("compact");
+									if (compact) {										
+										$(".modal-dialog").addClass("dialog-full");
+									} else {
+										$(".modal-dialog").removeClass("dialog-full");
+									}
 									$("#id-modal-body").html($("#id-wait-message").html());
 									$("#id-modal").modal("show"); 							
 									$("#id-modal-body").load($(this).data("url"), function(response, status) {
