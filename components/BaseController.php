@@ -539,8 +539,8 @@ class BaseController extends CController
 						console.log("init menuModal");
 						function menuModalActive() {
 							console.log("active menuModal: length", $(".menu-modal").length);
-							$(".menu-modal").on("click", function() {	
-								console.log("menu-model.click");
+							$(".menu-modal").on("click", function(event) {	
+								console.log("menu-model.click");								
 								var div = $(this).data("div");
 								if (div) {
 									$(div + " .modal-content").html($("#id-wait-message").html());
@@ -561,6 +561,7 @@ class BaseController extends CController
 										}
 									});							
 								}
+								event.stopPropagation();
 							})
 						}
 						menuModalActive();'
