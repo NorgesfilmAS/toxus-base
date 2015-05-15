@@ -338,7 +338,7 @@ class ImageCache extends CComponent
 			$srcH = $source_image_height;
 			$destH = $size['height'];
 			
-			$srcW = (int) ($source_image_width / $source_aspect_ratio);
+			$srcW = (int) ($source_image_width / $thumbnail_aspect_ratio); //$source_aspect_ratio);
 			$srcX = (int) (($source_image_width - $srcW) / 2);
 			$destW = $size['width'];		// our full width
     } else {
