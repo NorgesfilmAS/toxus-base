@@ -95,7 +95,7 @@ class ServerFileInput extends CInputWidget
 				$source = '<div class="input-group">';
         if ($this->hasModel()) {
           $source .= CHtml::activeTextField($this->model, $this->attribute, $inputOptions);
-					CHtml::resolveNameID($model, $this->attribute, $inputOptions);
+					CHtml::resolveNameID($this->model, $this->attribute, $inputOptions);
 				} else {
           $source .= CHtml::textField($name, $this->value, $inputOptions);
 				}
