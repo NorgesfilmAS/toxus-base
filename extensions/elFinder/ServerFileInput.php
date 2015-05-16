@@ -81,7 +81,7 @@ class ServerFileInput extends CInputWidget
         echo CHtml::openTag('div', $contHtmlOptions);
 				// TOXUS: add info for bootstrap
         $inputOptions = array('id' => $id, 'style' => 'float:left;', 'class'=> 'form-control col-lg-4'  );
-				CHtml::resolveNameID($model, $this->attribute, $inputOptions);
+				//CHtml::resolveNameID($model, $this->attribute, $inputOptions);
 				/*
 				 * 
         if ($this->hasModel())
@@ -93,11 +93,13 @@ class ServerFileInput extends CInputWidget
 				 * 
 				 */
 				$source = '<div class="input-group">';
-        if ($this->hasModel())
+        if ($this->hasModel()) {
           $source .= CHtml::activeTextField($this->model, $this->attribute, $inputOptions);
-        else
+					CHtml::resolveNameID($model, $this->attribute, $inputOptions);
+				} else {
           $source .= CHtml::textField($name, $this->value, $inputOptions);
-				CHtml::resolveNameID($model, $this->attribute, $inputOptions);
+				}
+				
 				$source .=		
 							' <span class="input-group-btn"> '.								
 							' <button id="'.$inputOptions['id'].'browse"  class="btn btn-default" type="button">'.$this->buttonCaption.'</button>'.
