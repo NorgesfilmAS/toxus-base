@@ -265,7 +265,19 @@ class BaseController extends CController
 		return $s;
 	}
 
-
+	public function hasMenu($menuDef)
+	{
+		if (is_array($menuDef)) {
+			$menuName = isset($menuDef['name']) ? $menuDef['name'] : 'default';
+			$menu = array($menuName => isset($menuDef['menu']) ? $menuDef['menu'] : array());
+		} else {
+			$menuName = $menuDef;
+			$menu = $this->getMenu(); //$menu = $this->getMenu($controller);
+		}	
+		
+		return isset($menu[$menuName]) && count($menu[$menuName]) > 0;
+	}
+	
 	public function renderAjax($view, $data = null) {
 		$this->renderPartial($view, $data, false, true);
 	}
