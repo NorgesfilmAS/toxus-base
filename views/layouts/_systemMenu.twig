@@ -5,19 +5,19 @@
 	{% for key, menuItem in menu %}	
 		{% if menuItem.isVisible | default(1) == 1 %}
 		{% if 'page' in menuItem|keys %}
-	<li class="parent">
+	<li class="parent{% if menuItem.isActive %} active{% endif %}">
 		<a href="javascript:void()" >{{ menuItem.label }}<i></i></a>
 		{{ t.form.page(menuItem.page) }}
 	</li>		
 		{% elseif 'items' in menuItem|keys %}	
-	<li class="parent">
+	<li class="parent{% if menuItem.isActive %} active{% endif %}">
 		<a href="javascript:void()" >{{ menuItem.label }}<i></i></a>
 		<ul>
 		{{ _self.menuSystemBuilder(menuItem.items) }}
 		</ul>
 	</li>		
 		{% else %}			
-			<li>
+			<li{% if menuItem.isActive %} class="active"{% endif %}>
 			{% if menuItem.dialog %}					
 				{# <a data-target="#id-modal" class="menu-action" data-toggle="modal" href="{{ menuItem.url }}">{{ menuItem.label }}</a> #}
 				<a href="#" class="menu-modal" data-url="{{ menuItem.url}}">{{ menuItem.label }}</a>
@@ -32,5 +32,6 @@
 {% endmacro %}
 
 <ul class="{{ layout.class | default('accordmobile') }}">
+	
 	{{ _self.menuSystemBuilder(menu, name, this) }}
 </ul>

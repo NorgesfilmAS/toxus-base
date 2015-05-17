@@ -19,6 +19,11 @@ class BaseController extends CController
 	protected $_logPageView = true;
 	public $_menu = null;
 	
+	/**
+	 * The menu that should be higlighted
+	 * @var integer
+	 */
+	public $activeMenuType = 0;
   /**
    * the name of the tooltip file placed in the message directory
    * @var string
