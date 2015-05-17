@@ -74,14 +74,14 @@
 			<div class="container">
 				{% block header %}
 				{# anything in this container is the header of the application. It will scroll out of view #}				
-				<div class="navbar-left col-sm-6 no-padding no-wrap">	
+				<div class="navbar-left col-sm-4 no-padding no-wrap">	
 					{% block headerLeft %}
 					{% include this.viewPath('logo') %}									
 					{{ this.menuHtml('logo', {'class': 'nav navbar-nav' }) |raw }}
 					{% endblock %}
 				</div>
 {#				<div class="header-toolbar col-sm-1">{% block headerButtons %}{% endblock %}</div>					#}
-				<div class="navbar-right no-padding col-sm-6">	
+				<div class="navbar-right no-padding col-sm-8">	
 					<div class="pull-right">
 					{% block headerRight %}
 					{{ this.menuHtml('header', {'class': 'nav navbar-nav' }) |raw }}					
