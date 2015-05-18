@@ -16,8 +16,9 @@
 		{{ this.registerPackage('core') }}
 		{% block head %}{% endblock %}		
 		{% include this.viewPath('header') |raw %}
+		
 		<meta name="description" content="{{ App.config.value('meta.description') | default('site description') }}" />	
-		<meat name="keywords" content="{{ App.config.value('meta.keywords') | default('none') }}" />
+		<meta name="keywords" content="{{ App.config.value('meta.keywords') | default('none') }}" />
 		<meta name="language" content="{{ App.config.value('meta.language') | default('english') }}" />
 		<meta http-equiv="language" content="{{App.config.value('meta.languageShort') | default('EN') }}" />
 

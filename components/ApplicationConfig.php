@@ -176,8 +176,8 @@ class ApplicationConfig extends CComponent
 		$sec = $this->$section;
 		if (isset($sec)) {
 			$d = $sec->definition();
-			if (isset($d[$key])) {
-				return $d[$key]['value'];
+			if (isset($d['items'][$key])) {
+				return $d['items'][$key]['value'];
 			}
 		}
 		return false;

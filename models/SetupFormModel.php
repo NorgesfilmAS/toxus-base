@@ -37,7 +37,7 @@ class SetupFormModel extends CFormModel
 					$mark = '';
 				}
 				$elements[$sectionName.'Header'] = array(
-					'value' => $mark.'<h4>'.  CHtml::encode($section['label']).'</h4>',
+					'value' => $mark.'<h4 class="config-header">'.  CHtml::encode($section['label']).'</h4>',
 					'hideLabel' => true,
 					'type' => 'raw'	
 				);
@@ -47,6 +47,9 @@ class SetupFormModel extends CFormModel
 						'label' => isset($properties['label']) ? $properties['label'] : $varName,	
 					);
 					$a['type'] = $type;
+					if (isset($properties['items'])) {		// for dropdowns
+						$a['items'] = $properties['items'];
+					}
 /*					
 					if ($type == 'text') {
 						$a['type'] = 'text';
