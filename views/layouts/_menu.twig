@@ -84,8 +84,7 @@
 {% endfor %}
 
 {% if menu | length > 0 %}
-<ul class="{{ menu.style | default(layout.class)}}">
-	XXXXXXX
+<ul class="{{ menu.style | default(layout.class)}}">	
 	{{ _self.menuItemBuilder(menu, this, 0) }}
 </ul>
 {% endif %}
