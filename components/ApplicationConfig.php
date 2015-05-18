@@ -156,6 +156,32 @@ class ApplicationConfig extends CComponent
 			}
 		}
 	}
+
+	/**
+	 * 
+	 * @param string $section name of the section or $section.$key 
+	 * @param type $key $key of if empty use format section.key in $section
+	 * @return string  | boolean
+	 */
+	
+	public function value($section, $key = null)
+	{
+		if (empty($key)) {
+			$keys = explode('.', $section);
+			if (count($keys) == 2) {
+				$section = $keys[0];
+				$key = $keys[1];
+			}
+		}
+		$sec = $this->$section;
+		if (isset($sec)) {
+			$d = $sec->definition();
+			if (isset($d[$key])) {
+				return $d[$key]['value'];
+			}
+		}
+		return false;
+	}
 	
 	/**
 	 * return the requested section as an array
