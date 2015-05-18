@@ -50,7 +50,9 @@
 					<span class="glyphicon glyphicon-retweet"></span>
 				</button>				
 				{% endif %}
+				{% block homeLeft %}
 				<a href="{{ this.createUrl('/')}}" class="navbar-brand">{{ App.name }}</a>											
+				{% endblock %}
 				
 				<div class="collapse navbar-collapse bs-navbar-collapse" style="overflow-y:hidden;">
 					<div class="navbar-left">
