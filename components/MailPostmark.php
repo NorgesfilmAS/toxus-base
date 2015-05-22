@@ -45,7 +45,7 @@ class MailPostmark extends MailMessage
 			$email->addBcc($msg['bcc']);
 		}
 		if ($msg['html']) {
-			$email->addHtml($msg['html']);
+			$email->messageHtml(trim($msg['html']));
 		}
 		try {
 			if (Yii::app()->config->postmark['debug']) {

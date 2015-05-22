@@ -515,6 +515,8 @@ class BaseController extends CController
 
 						menubar: "edit format insert table tools view",
 						relative_urls: false,
+						convert_urls:false,
+						remove_script_host : false,
 						plugins: [
 							"autolink lists link charmap ",
 							"searchreplace visualblocks code fullscreen",

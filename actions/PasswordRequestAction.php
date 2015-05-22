@@ -93,13 +93,14 @@ class PasswordRequestAction extends BaseAction
 	public function sendInvitation($model, $action)
 	{
 		// set the mail message information
-		$model->mailSubject = $this->mailSubject;
+		$model->mailSubject = $this->mailSubject;  // $model = UserProfileModel
 		if ($this->mailMessage) { // not translated!!!
 			$model->mailMessage = $this->mailMessage;
 		} else {
 			$model->mailMessage = Yii::app()->config->mail['lost_password'];
 		}
 		
-		return $model->sendMailMessage();
+		return $model->sendMailPasswordRequest();
+//		return $model->sendMailMessage('lostPassword');
 	}
 }

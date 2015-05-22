@@ -37,7 +37,11 @@ class MailMessage extends BaseController
 	{
 		$viewFile = YiiBase::getPathOfAlias('application').'/'. $this->viewPath($viewName, array('directory' => 'mail'));
 		if(($renderer = Yii::app()->getViewRenderer()) !== null && $renderer->fileExtension === '.'.CFileHelper::getExtension($viewFile))
-      $content = $renderer->renderFile($this, $viewFile, $data, true);
+			if (isset($data['controller'])) {
+				$content = $renderer->renderFile($data['controller'], $viewFile, $data, true);
+			} else {
+				$content = $renderer->renderFile($this, $viewFile, $data, true);
+			}
     else
       return false; // $content=$this->renderInternal($viewFile,$data,$return);
 		
@@ -45,6 +49,26 @@ class MailMessage extends BaseController
 			return $content;		
 		
 		return $this->sendEmail($content, $viewName);
+	}
+	
+	/**
+	 * Send a mail based on a template string
+	 * 
+	 * @param string $template the template to render
+	 * @param BaseController $controller
+	 * @param array $data
+	 * @param boolean $return
+	 * @return string / boolean
+	 */
+	public function renderString($template, $controller = null, $data = array(), $return = false)
+	{
+		$renderer = Yii::app()->viewRenderer;
+		
+		$content = $renderer->renderString(empty($controller) ? $this : $controller, $template, $data);
+		if ($return) {
+			return $content;			
+		}
+		return $this->sendEmail($content);
 	}
 	
 	/**
@@ -67,7 +91,7 @@ class MailMessage extends BaseController
 					'bcc' => isset($data['bcc']) ? $data['bcc'] : false,	
 					'subject' => $subject,
 					'body' => str_replace(array_keys($data),array_values($data), $content),	
-					'html' => isset($data['html']) ? $data['html'] : false,
+					'html' => isset($data['html']) ? str_replace(array_keys($data),array_values($data),$data['html']) : false,
 					'attached' => array(),	
 				);
 		
@@ -210,7 +234,7 @@ class MailMessage extends BaseController
 		$textElements = explode("\n#", "\n".$text);
 		foreach ($textElements as $textElement ) { // textElement = from: jaap van der Kreeft
 			$a = explode(':', $textElement, 2);
-			if (count($a) > 1) {
+			if (count($a) > 1 && strlen(trim($a[1])) > 0) {
 				$message[$a[0]] = trim($a[1]);				
 			}	
 		}

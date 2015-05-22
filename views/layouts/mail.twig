@@ -1,0 +1,23 @@
+{# 
+	the basic mail message
+ #}
+#to:{%block toUser %}toUser {% endblock %}
+
+#from:{% block fromUser %}{% endblock %}
+
+#subject:{% block subject %}subject {% endblock %}
+
+#body: 
+{% block body %}body{% endblock %}
+
+#html:
+{% block html %}html{% endblock %}
+
+#pdf:
+{% block pdf %}pdf NOT YET (is parsed to a pdf and attached){% endblock %}
+
+#attach:
+{% block attach %}attach NET YET (one file per line){% endblock %}
+
+#config:
+{% block config %}NOT YET debug=1 (one per line_{% endblock %}
