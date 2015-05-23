@@ -13,7 +13,7 @@
 		{% if groupElement.hidden != true and groupElement.formHidden != true %}
 		<div id="{{ p }}group-{{ groupKey}}" class="form-group{% if model.getErrors(groupKey) %} error has-error{% endif %}">
 			{% if groupElement.type != 'checkbox' and groupElement.type != 'hidden' and groupElement.hideLabel != true %}
-			<label for="{{ p }}{{ groupKey }}" class="control-label {{ form.labelClass | default('col-lg-2') }} no-left-padding no-right-padding {% if this.hasTooltip(groupKey) or groupElement.tooltip %} showtip" data-toggle="tooltip" data-placement="right" data-trigger="hover" data-original-title="{{ groupElement.tooltip | default(this.tooltip(groupKey)) }}{% endif %}" >{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}&nbsp;
+			<label for="{{ p }}{{ groupKey }}" class="control-label {{ form.labelClass | default('col-lg-2') }} no-left-paddingXXXX no-right-padding {% if this.hasTooltip(groupKey) or groupElement.tooltip %} showtip" data-toggle="tooltip" data-placement="right" data-trigger="hover" data-original-title="{{ groupElement.tooltip | default(this.tooltip(groupKey)) }}{% endif %}" >{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}&nbsp;
 				{% if groupElement.helpUrl %}
 				<a href="{{groupElement.helpUrl }}" target="_blank"><span class="badge label-help">{{ groupElement.helpText | default('?') }}</span></a>
 				{% endif %}

@@ -5,11 +5,11 @@ return array(
 	'elements' => array(
 		'passwordText' => array(
 			'type' => 'password',
-			'label' => Yii::t('base','password'),
+			'label' => Yii::t('base','Password'),
 		),
 		'passwordTextRepeat' => array(
 			'type' => 'password',
-			'label' => Yii::t('base','again')	
+			'label' => Yii::t('base','Retype your password')	
 		),	
 		'accepted_terms' => array(
 			'type' => 'checkbox',

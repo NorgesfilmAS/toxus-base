@@ -1,7 +1,7 @@
 <?php
 
 return array(
-	'title' => Yii::t('base','Lost password'),	
+	'title' => Yii::t('base','Reset your {productName} password' , array('{productName}' => Yii::app()->config->value('meta.productName'))),	
 	'model' => 'LoginForm',	
 	'elements' => array(	
 		'email' => array(
@@ -12,8 +12,8 @@ return array(
 		'edit' => array(	
 			'submit' => array(
 				'type' => 'submit',			
-				'style' => 'btn btn-primary',	
-				'label' => Yii::t('base','request password')	
+				'style' => 'btn btn-success',	
+				'label' => Yii::t('base','Submit')	
 			),
 		),		
 	),		

@@ -152,6 +152,7 @@ class MailMessage extends BaseController
 					'subject' => Yii::t('base', 'Message from {name}', array('name' => Yii::app()->params['company'])),
 					'body' => '',	
 					'html' => false,
+					'pdf' => false,	
 					'attached' => array(),	
 				),
 				$message
