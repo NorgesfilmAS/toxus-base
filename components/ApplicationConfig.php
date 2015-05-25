@@ -173,16 +173,18 @@ class ApplicationConfig extends CComponent
 				$key = $keys[1];
 			}
 		}
-		$sec = $this->$section;
-		try {
-			if (isset($sec)) {
-				$d = $sec->definition();
-				if (isset($d['items'][$key])) {
-					return $d['items'][$key]['value'];
+		if (isset($this->$section)) {
+			$sec = $this->$section;
+			try {
+				if (isset($sec)) {
+					$d = $sec->definition();
+					if (isset($d['items'][$key])) {
+						return $d['items'][$key]['value'];
+					}
 				}
+			} catch (Exception $e) {
+				Yii::log('The key '.$sec.'.'.$key.' does not exist', CLogger::LEVEL_WARNING, 'ApplicationConfig.value');
 			}
-		} catch (Exception $e) {
-			Yii::log('The key '.$sec.'.'.$key.' does not exist', CLogger::LEVEL_WARNING, 'ApplicationConfig.value');
 		}
 		return false;
 	}

@@ -44,7 +44,8 @@ class TxPdfComponent extends CApplicationComponent {
 	// the path to the image directory
 	// format allowed: application.views.images
 	//                  /images   (relative to views    
-	public $imagePath = 'application.views.images';	  
+	//public $imagePath = 'application.views.images';	  
+	public $imagePath = 'application.views';	  
 	
 	
 	public $headerHtml = null;	
@@ -183,17 +184,17 @@ class TxPdfComponent extends CApplicationComponent {
 	protected function resolveImagePath()
 	{
 		$path = $this->imagePath;
-		if(empty($path))
+		if (empty($path)) {
 			return false;		
-		
+		}
 		$basePath = Yii::app()->getViewPath();
 		
-		if($path[0]==='/') {
+		if($path[0] === '/') {
 			$path = $basePath.$path;
 		}	else if(strpos($path,'.'))
 			$path = Yii::getPathOfAlias($path);
 		else
-			$path=$basePath.DIRECTORY_SEPARATOR.$path;
+			$path = $basePath.DIRECTORY_SEPARATOR.$path;
 
 		if (is_dir($path))
 			return $path;
@@ -326,16 +327,23 @@ class TxPdfComponent extends CApplicationComponent {
 				}	
 			}
 		}	
-		if ($name == '') {
+		if (empty($name)) {
 			if ($filename[0] !== '/' && $filename !== '*') {
-				$filename = $this->resolveImagePath().DIRECTORY_SEPARATOR.$filename;
+				$name = $this->resolveImagePath().DIRECTORY_SEPARATOR.$filename;
+			} else {
+				$name = $filename;
 			}
 		}	
+		
 		//$this->_tcpdf->Image($filename, $params['left'], $params['top'], $params['width'], $params['height'], 
-		$this->tcpdf->Image($name, $params['left'], $params['top'], $params['width'], $params['height'], 
+		try {
+			$this->tcpdf->Image($name, $params['left'], $params['top'], $params['width'], $params['height'], 
 										$params['extension'], $params['link'], $align[$params['align']],
 										$resize[$params['resize']], $params['dpi']	
 									);
+		} catch (Exception $e) {
+			Yii::log('Add image: '.$e->getMessage(), CLogger::LEVEL_ERROR, 'TxPdfComponent.image');
+		}
 	}
 	
 	/**
@@ -355,7 +363,7 @@ class TxPdfComponent extends CApplicationComponent {
 			), $options);
 		
 
-		$this->tcpdf->writeHTMLCell($params['width'], $params['height'], $parmas['left'], $params['top'], $content,
+		$this->tcpdf->writeHTMLCell($params['width'], $params['height'], $params['left'], $params['top'], $content,
 						$params['border']);
 	}
 	
