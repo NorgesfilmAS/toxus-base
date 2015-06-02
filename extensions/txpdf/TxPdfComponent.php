@@ -57,6 +57,7 @@ class TxPdfComponent extends CApplicationComponent {
 	
 	public function init()
 	{
+			
 		parent::init();				
 
 		$tcpdf = $this->tcpdf; // load it
