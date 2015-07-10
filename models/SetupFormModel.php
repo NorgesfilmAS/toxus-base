@@ -42,6 +42,13 @@ class SetupFormModel extends CFormModel
 					'type' => 'raw'	
 				);
 				foreach ($section['items'] as $varName => $properties) {
+					$p = $properties;
+					if (isset($p['info'])) {  // name conflict
+						$p['tooltip'] = $p['info'];
+						unset($p['info']);
+					}
+					$elements[$sectionName.'-'.$varName] = $p;
+/*					
 					$type = isset($properties['type']) ? $properties['type'] : 'text';
 					$a = array(
 						'label' => isset($properties['label']) ? $properties['label'] : $varName,	
@@ -50,16 +57,11 @@ class SetupFormModel extends CFormModel
 					if (isset($properties['items'])) {		// for dropdowns
 						$a['items'] = $properties['items'];
 					}
-/*					
-					if ($type == 'text') {
-						$a['type'] = 'text';
-					} elseif ($type == 'boolean') {
-						$a['type'] = 'checkbox';
-					}
- * 
- */
 					$a['tooltip'] = isset($properties['info']) ?$properties['info'] : false;
 					$elements[$sectionName.'-'.$varName] = $a;
+				
+ * 
+ */
 				}
 			}	
 		}
