@@ -171,7 +171,7 @@ class UserProfileModel extends BaseUserProfile
 		if (! $mm->render($this->confirmMail, array(
 			'model' => $this,
 			'action' => $this->confirmationUrl,		
-		))) {
+		), true)) {
 			$this->addError('email', Yii::t('base', 'Unable to send mail'));
 			return false;
 		}	
@@ -205,12 +205,33 @@ class UserProfileModel extends BaseUserProfile
 	}
 	
 	/**
-	 * UNTESTED YET
+	 * sends the user a new login help key
+	 * 
+	 * @return boolean
+	 */
+	public function sendMailPasswordRequest()
+	{
+		$field = $this->activationKeyField;					// the field that hold the activation definition
+		$this->generateInvitation();								// generate a new key for this user
+		$mailClass = Yii::app()->config->mail['mailer'];
+		$mail = new $mailClass();
+		$mail->mailLogModel = $this->mailLogModel;
+		return $mail->render(
+						'requestPassword', 
+						array(
+							'model' => $this,
+							'keyFieldname' => $field
+						), 
+						false);	
+	}
+	
+	/**
+	 * NOT USED. Is Replace by the SendMailPasswordRequest for more flexibility
 	 * 
 	 * sends the message to the user for a invitation or for lost password
 	 * message and subject can be set thrue the mail[] invite_subject and invite_message config
 	 */
-	public function sendMailMessage()
+	public function sendMailMessage($configKey = false)
 	{
 		$field = $this->activationKeyField;
 		$this->generateInvitation();
@@ -218,10 +239,24 @@ class UserProfileModel extends BaseUserProfile
 		$mail = new $mailClass();
 		$mail->mailLogModel = $this->mailLogModel;
 		
-		$subject = $this->mailSubject ? $this->mailSubject : Yii::app()->config->mail['invite_subject'];
-		$message = $this->mailMessage ? $this->mailMessage : Yii::app()->config->mail['invite_message'];
+		if ($configKey) {	// generate the message from a key in the configuration definition
+			$subject = Yii::app()->config->value($configKey.'.subject');
+			if (!$subject) {
+				$subject = Yii::t('app', 'Request password reset');			
+			}			
+			$message = Yii::app()->config->value($configKey.'.message');
+			if (!$message) {
+				$message = Yii::app()->config->mail['invite_message'];			
+			}
+			$html = Yii::app()->config->value($configKey.'.html');
+		} else {
+			$subject = $this->mailSubject ? $this->mailSubject : Yii::app()->config->mail['invite_subject'];
+			$message = $this->mailMessage ? $this->mailMessage : Yii::app()->config->mail['invite_message'];
+			$html = false;
+		}
 		return $mail->send($this->email, $subject, $message, array(
-			'{signin}' => Yii::app()->createAbsoluteUrl($this->autoLoginUrl, array('k' => $this->$field))
+			'{signin}' => Yii::app()->createAbsoluteUrl($this->autoLoginUrl, array('k' => $this->$field)),
+			'html' => $html
 		));
 	}	
 	

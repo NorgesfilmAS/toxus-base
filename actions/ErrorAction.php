@@ -20,8 +20,12 @@ class ErrorAction extends BaseAction
 		if (($error=Yii::app()->errorHandler->error) == true) {
 			if(Yii::app()->request->isAjaxRequest) // won't work
 				echo $error['message'];
-			else
-				$this->controller->render($this->view, $error);
+			else {
+				$params = $error;
+				$params['layout'] = 'full';
+				$params['page'] = 1;							// it's the full page
+				$this->controller->render($this->view, $params);
+			}
 		}
 	}
 }

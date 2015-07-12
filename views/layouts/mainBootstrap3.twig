@@ -16,7 +16,12 @@
 		{{ this.registerPackage('core') }}
 		{% block head %}{% endblock %}		
 		{% include this.viewPath('header') |raw %}
-		<meta name="description" content="{{ App.params.description | default('site description') }}" />	
+		
+		<meta name="description" content="{{ App.config.value('meta.description') | default('site description') }}" />	
+		<meta name="keywords" content="{{ App.config.value('meta.keywords') | default('none') }}" />
+		<meta name="language" content="{{ App.config.value('meta.language') | default('english') }}" />
+		<meta http-equiv="language" content="{{App.config.value('meta.languageShort') | default('EN') }}" />
+
 	</head>
 	<body {% block bodyTag %}{% endblock %}>
 		{# 
@@ -45,16 +50,20 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
+				{% if this.hasMenu('item') %}
 				<button class="navbar-toggle btn-info" type="button" data-toggle="collapse" data-target=".bs-item-menu" style="margin-right: 10px">
 					<span class="glyphicon glyphicon-retweet"></span>
 				</button>				
+				{% endif %}
+				{% block homeLeft %}
 				<a href="{{ this.createUrl('/')}}" class="navbar-brand">{{ App.name }}</a>											
+				{% endblock %}
 				
 				<div class="collapse navbar-collapse bs-navbar-collapse" style="overflow-y:hidden;">
 					<div class="navbar-left">
 					{{ this.menuHtml('system', {'class': 'nav navbar-nav' }) |raw }}
 					</div>
-					<div class="navbar-right pull-right">	
+					<div {% block navbarUserLocation %}class="navbar-right pull-right" {% endblock %}>	
 					{{ this.menuHtml('user', {'class': 'nav navbar-nav' }) |raw }}
 					</div>
 				</div>
@@ -70,21 +79,23 @@
 		</div>
 		{% endblock %}
 		
-		<div class="bs-header" {% block bsHeaderOptions %}{% endblock %}>
+		<div class="bs-header row" {% block bsHeaderOptions %}{% endblock %}>
 			<div class="container">
 				{% block header %}
 				{# anything in this container is the header of the application. It will scroll out of view #}				
-				<div class="navbar-left">	
+				<div class="navbar-left col-xs-6 no-padding no-wrap ">	
 					{% block headerLeft %}
 					{% include this.viewPath('logo') %}									
 					{{ this.menuHtml('logo', {'class': 'nav navbar-nav' }) |raw }}
 					{% endblock %}
 				</div>
-				<div class="header-toolbar">{% block headerButtons %}{% endblock %}</div>					
-				<div class="navbar-right pull-right">	
+{#				<div class="header-toolbar col-sm-1">{% block headerButtons %}{% endblock %}</div>					#}
+				<div class="navbar-right no-padding col-xs-6">	
+					<div class="pull-right">
 					{% block headerRight %}
-					{{ this.menuHtml('header', {'class': 'nav navbar-nav' }) |raw }}
+					{{ this.menuHtml('header', {'class': 'nav navbar-nav' }) |raw }}					
 					{% endblock %}
+					</div>		
 				</div>
 				{% endblock %}
 			</div>
@@ -100,7 +111,7 @@
  
 #}
 		<div class="container bs-container {% block appClass %}{% endblock %}">
-			<div class="row">			
+			<div id="id-body" class="row">			
 	{% if colVis == 'full' %}
 				<div class="col-sm-12" role="main">
 	{% else %}
@@ -201,7 +212,7 @@
 				{% block footerCredits %}
 				<div class="container">
 					<ul class="footer-links text-center">
-						{% block copyright %}<li><a href="{{ this.createUrl('article/index', {'copyright' :'' }) }}"> &copy; 2013 -2014 Toxus</a> | </li>{% endblock %}
+						{% block copyright %}<li><a href="{{ this.createUrl('article/index', {'copyright' :'' }) }}"> &copy; 2013 - 2015 Toxus</a> | </li>{% endblock %}
 						{% block sitemap %}<li><a href="{{ this.createUrl('site/sitemap') }}">{{ Yii_t('base','site map') }}</a> | </li>{% endblock %}
 						{% block privacy %}<li><a href="{{ this.createUrl('site/privacy') }}">{{ Yii_t('base','privacy') }}</a></li>{% endblock %}
 						{% block versionInfo %}<li class="version">{{ Yii_t('base','version') }}: {% block version %}{{ this.version }}3{% endblock %}</li>{% endblock %}

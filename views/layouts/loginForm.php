@@ -16,7 +16,6 @@ return array(
 		),
 		'rememberMe' => array(
 			'type' => 'checkbox',	
-			//'label' => 'xxxxx',	
 		),	
 	),
 	'buttons' => array(

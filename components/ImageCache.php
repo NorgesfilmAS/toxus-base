@@ -32,6 +32,14 @@ class ImageCache extends CComponent
 				'background-color' => array(255,255,255),// array(230,230,235),	
 			),
 
+			'icon' => array(
+				'width' => 48,
+				'height' => 36,	
+				'quality' => 75,					
+				'fill' => true,		// make the image EXACT this size, padding it
+				'background-color' => array(255,255,255),// array(230,230,235),	
+					
+			),
 			'large' => array(
 				'width' => 400,
 				'height' => 300,	
@@ -41,6 +49,12 @@ class ImageCache extends CComponent
 				'width' => 400,
 				'height' => 200,	
 				'quality' => 90,															
+			),
+			'tv' => array(				// the 4:3 image cutout
+				'width' => 265,
+				'height' => 181,
+				'quality' => 80,
+				'cutout' => true	
 			)
 	);				
 
@@ -149,6 +163,51 @@ class ImageCache extends CComponent
 		return Yii::app()->baseUrl.self::ROOTCACHE.$size.'/'.$name;
 	}
 	
+	/**
+	 * checks that the file exist in the original definition
+	 * 
+	 * @param string $path the path to the original file
+	 * @param string $name the name the file has on disk
+	 * @returns boolean true if file exists or can be created
+	 */
+	public function imageExists($path, $name)
+	{
+		
+	}
+	/**
+	 * 
+	 * @param string $path the image file to add to the cache. ex: /var/user/data/images/test.png
+	 * @param string $name the name the image will be found, without the size operator. ex: test.png
+	 * @param string $size one of the size operators. ex: small
+	 * @return string|false a full qualified URL to the image in the cache. ex: http://www.example.org/cache/small/test.png
+	 */
+	public function imageAddUrl($path, $name, $size = 'original') {
+		if (!isset($this->sizes[$size])) {
+			throw new CException('The size "'.$size.'" for the images is unknown');
+		}		
+		$cacheFile = 	Yii::getPathOfAlias(self::BASEPATH.'.'.$size).'/'.$name;
+		if (!file_exists($cacheFile)) { // we have to create the cache file
+			if (!file_exists($path)) {
+				Yii::log('The original file "'.$path.'" does not exist.', CLogger::LEVEL_WARNING, 'toxus.image.cache');
+				return false;
+			}
+			if (isset($this->sizes[$size]['fill'])) {
+				if (!$this->imageThumb($path, $cacheFile, $this->sizes[$size])) {
+					return false;					
+				}
+			} if (isset($this->sizes[$size]['cutout'])) {
+				if (!$this->imageCutOut($path, $cacheFile, $this->sizes[$size])) {
+					return false;
+				}
+			} else {	
+				if (!$this->imageResize($path, $cacheFile, $this->sizes[$size])) {
+					return false;
+				}
+			}				
+		}
+		return Yii::app()->baseUrl.self::ROOTCACHE.$size.'/'.$name;
+	}
+	
 	/** 
 	 * return the fysical path to the image cache
 	 * 
@@ -249,7 +308,81 @@ class ImageCache extends CComponent
     imagedestroy($thumbnail_gd_image);
     return true;		
 	}
-	
+	/**
+	 * cut an image out of the existing image creating an image of exact size proportions
+	 * 
+	 * @param type $originalFilename		the file on disk
+	 * @param type $newFilename					the name it will be stored
+	 * @param type $size								the width and heigth definition
+	 */
+	public function imageCutOut($originalFilename, $newFilename, $size)
+	{
+    list($source_image_width, $source_image_height, $source_image_type) = getimagesize($originalFilename);
+		$source_gd_image = $this->openImage($originalFilename);
+		
+    $source_aspect_ratio = $source_image_width / $source_image_height;		
+    $thumbnail_aspect_ratio = $size['width'] / $size['height'];
+		$srcX = 0; $srcY = 0;
+		$srcW = 0; $srcH = 0;
+			
+		$destX = 0;
+		$destY = 0;
+		$destW = $size['width'];
+		$destH = $size['height'];
+
+		
+    if ($source_image_width <= $size['width'] && $source_image_height <= $size['height']) {
+			// if it's to small we'll put it centered into the sample image
+			$destX = ($source_image_width - $size['width']) / 2;
+			$destY = ($source_image_height - $size['height']) / 2;
+			$srcW = $source_image_width;
+			$destW = $srcW;
+			$srcH = $source_image_height;
+			$destH = $srcH;
+    } elseif ($thumbnail_aspect_ratio >= $source_aspect_ratio) { 
+			// cut a horizontal piece from the image.
+			// both top are 0
+			$srcX = 0;
+			$srcW = $source_image_width;
+			$srcH = ($size['height'] / $size['width']) * $source_image_width;
+			$srcY = ($source_image_height - $srcH) / 2;
+    } else {
+			// cut a vertical piece from the image
+			$srcY = 0;
+			$srcH = $source_image_height;
+			$srcW = ($size['width'] / $size['height']) * $source_image_height;
+			$srcX = ($source_image_width - $srcW) / 2;
+    }
+		/*
+		elseif ($thumbnail_aspect_ratio <= $source_aspect_ratio) { // we cut out a piece that has less widht and full height
+			// both top are 0
+			$srcH = $source_image_height;
+			$destH = $size['height'];
+			
+			$srcW = (int) ($source_image_width / $thumbnail_aspect_ratio); //$source_aspect_ratio);
+			$srcX = (int) (($source_image_width - $srcW) / 2);
+			$destW = $size['width'];		// our full width
+    } else {
+			$srcW = $source_image_width;
+			$destW = $size['width'];
+			
+			$srcH = (int) ($source_image_height / $source_aspect_ratio);
+			$srcY = (int) (($source_image_height - $srcH) / 2);
+			$destH = $size['height'];
+    }		 
+		 */
+		
+    $thumbnail_gd_image = imagecreatetruecolor( $size['width'],  $size['height']);
+    imagecopyresampled($thumbnail_gd_image, $source_gd_image, 
+						$destX, $destY, $srcX, $srcY, 
+						$destW, $destH, $srcW, $srcH);
+		
+		$this->saveImage($source_image_type, $newFilename, $thumbnail_gd_image, isset($size['quality']) ? $size['quality'] : 90);
+    imagedestroy($source_gd_image);
+    imagedestroy($thumbnail_gd_image);
+    return true;		
+		
+	}
 	
 	/**
 	 * from: http://stackoverflow.com/questions/747101/resize-crop-pad-a-picture-to-a-fixed-size

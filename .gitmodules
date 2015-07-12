@@ -32,3 +32,6 @@
 [submodule "assetsBase/angularJs"]
 	path = assetsBase/angularJs
 	url = https://github.com/angular/angular.js.git
+[submodule "extensions/stripe"]
+	path = extensions/stripe
+	url = https://github.com/toxus/stripe-php.git

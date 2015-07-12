@@ -34,7 +34,7 @@ class MailPostmark extends MailMessage
 		}
 		$email->subject($msg['subject']);
 		$email->messagePlain($msg['body']);
-		if ($msg['from']) {
+		if (isset($msg['from'])) {
 			$email->from($msg['from'], isset($msg['fromName']) ? $msg['fromName']:  null);
 		}
 		
@@ -45,7 +45,7 @@ class MailPostmark extends MailMessage
 			$email->addBcc($msg['bcc']);
 		}
 		if ($msg['html']) {
-			$email->addHtml($msg['html']);
+			$email->messageHtml(trim($msg['html']));
 		}
 		try {
 			if (Yii::app()->config->postmark['debug']) {

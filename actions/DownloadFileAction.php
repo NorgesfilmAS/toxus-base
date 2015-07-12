@@ -45,25 +45,32 @@ class DownloadFileAction extends BaseAction
 		$this->checkRights();
 		if ($name == '') {
 			if (count($_GET) == 0) {
-				throw new CHttpException(404, 'File not found');
-			}
-			$name = reset($_GET);
-			$key = key($_GET);			
-			if ($name != '') {
-				$name = key($_GET).'/'.$name;
+				if (!(file_exists($this->path) && is_file($this->path))) { 
+					throw new CHttpException(404, 'File not found');
+				}
 			} else {
-				$name = $key;
+				$name = reset($_GET);
+				$key = key($_GET);			
+				if ($name != '') {
+					$name = key($_GET).'/'.$name;
+				} else {
+					$name = $key;
+				}
 			}
 		}		
 		Yii::log('Inbetween: '.$name, CLogger::LEVEL_INFO, $logKey);		
 		if ($this->onGetFilename) {
 			$filename = call_user_func($this->onGetFilename, $name, $this);	
 		} else {
-			if (substr($this->path,0,1) == '@') {
-				$filename = YiiBase::getPathOfAlias(substr($this->path,1)).'/'.$name;
-			} else {	
-				$filename = $this->path.$name;
-			}	
+			if (file_exists($this->path) && is_file($this->path)) {
+				$filename = $this->path;
+			} else {
+				if (substr($this->path,0,1) == '@') {
+					$filename = YiiBase::getPathOfAlias(substr($this->path,1)).'/'.$name;
+				} else {	
+					$filename = $this->path.$name;
+				}	
+			}
 		}	
 		Yii::log('filename: '.$filename, CLogger::LEVEL_INFO, $logKey);		
 		$ff = new FileInformation($filename);

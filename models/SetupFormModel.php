@@ -37,26 +37,31 @@ class SetupFormModel extends CFormModel
 					$mark = '';
 				}
 				$elements[$sectionName.'Header'] = array(
-					'value' => $mark.'<h4>'.  CHtml::encode($section['label']).'</h4>',
+					'value' => $mark.'<h4 class="config-header">'.  CHtml::encode($section['label']).'</h4>',
 					'hideLabel' => true,
 					'type' => 'raw'	
 				);
 				foreach ($section['items'] as $varName => $properties) {
+					$p = $properties;
+					if (isset($p['info'])) {  // name conflict
+						$p['tooltip'] = $p['info'];
+						unset($p['info']);
+					}
+					$elements[$sectionName.'-'.$varName] = $p;
+/*					
 					$type = isset($properties['type']) ? $properties['type'] : 'text';
 					$a = array(
 						'label' => isset($properties['label']) ? $properties['label'] : $varName,	
 					);
 					$a['type'] = $type;
-/*					
-					if ($type == 'text') {
-						$a['type'] = 'text';
-					} elseif ($type == 'boolean') {
-						$a['type'] = 'checkbox';
+					if (isset($properties['items'])) {		// for dropdowns
+						$a['items'] = $properties['items'];
 					}
- * 
- */
 					$a['tooltip'] = isset($properties['info']) ?$properties['info'] : false;
 					$elements[$sectionName.'-'.$varName] = $a;
+				
+ * 
+ */
 				}
 			}	
 		}

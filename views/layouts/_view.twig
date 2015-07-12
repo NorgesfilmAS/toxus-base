@@ -29,18 +29,18 @@
 				{% elseif element.type== 'finder' %}					
 				{% elseif element.type== 'html' %}
 					{{ model.__get(key) | raw }}
-				{% elseif element.type=='chosen' %}						
+				{% elseif element.type=='chosen' %}								
 						{% if element.multi and model.__get(key) | length > 0 %}						
 							<ul class="comma-list-summary">
 							{% for itemKey, itemCaption in element.items %}
-							 {% if itemKey in model.__get(key) and itemKey and itemCaption %}<li class="comma-list">{{ itemCaption }}</li>{% endif %}
+							 {% if itemKey in model.__get(key) and itemKey and itemCaption %}<li class="comma-list">{% if element.url %}<a href="{{ element.url}}{{itemKey}}">{% endif %}{{ itemCaption }}{% if element.url %}</a>{% endif %}</li>{% endif %}
 							{% endfor %}					
 							</ul> 
 						{% else %}
 							{% for itemKey, itemCaption in element.items %}
-							 {% if itemKey == model.__get(key) %}{{ itemCaption }}{% endif %}
-							{% endfor %}					
-						{% endif %}
+							 {% if itemKey == model.__get(key) %}{% if element.url %}<a href="{{ element.url}}{{itemKey}}">{% endif %}{{ itemCaption }}{% if element.url %}</a>{% endif %}{% endif %}
+							{% endfor %}									
+						{% endif %}				
 				{% elseif element.type=='datetime' %}						
 					{{ model.__get(key) }}	
 				{% elseif element.type=='hidden' %}

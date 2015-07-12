@@ -3,8 +3,8 @@
  #}
  {% set prefix = "dia-" %}
 	<div class="modal-header">
-    <button type="button" class="close action-close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h4>{% block dialogHeader %}dialogHeader{%endblock %}</h4>
+    <button type="button" class="close action-close" data-dismiss="modal" aria-hidden="true">{% block modalCloseText %}×{% endblock %}</button>
+    {% block dialogHeader %}dialogHeader{%endblock %}&nbsp;
   </div>
   <div class="modal-body" >
 		{% block dialogBody %}This is the body{%endblock%}    
