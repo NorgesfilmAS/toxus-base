@@ -87,7 +87,7 @@ class PaymentModel extends BasePayment
 				$this->profile_id = Yii::app()->user->id;
 			}
 			if ($this->vat_percentage == null) {
-				$this->vat_percentage = Yii::app()->config->fixedValues['VAT'];	// should be done in the config
+				$this->vat_percentage = Yii::app()->config->setup['VAT'];	// should be done in the config
 			}	
 		}
 		$this->recalculate();

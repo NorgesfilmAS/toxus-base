@@ -108,7 +108,7 @@ class SearchableBehavior extends CActiveRecordBehavior
 			$search->sort = $sort;
 		}	
 		if ($this->itemsPerPage == false) {
-			$items = explode(',', Yii::app()->config->fixedValues['itemsPerPage']);
+			$items = explode(',', Yii::app()->config->setup['itemsPerPage']);
 			$p = 10;
 			foreach ($items as $item) {
 				$a = explode(':', $item);
