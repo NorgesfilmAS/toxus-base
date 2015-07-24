@@ -197,7 +197,5 @@ return array(
 		'image-large-filter' => array('fileTypes' => array('png','jpg','gif')),
 		'editor' => 'Jaap van der Kreeft',
 		'editor-email' => 'info@toxus.nl',	
-		'firePHP' => 0,	
-			
 	),
 );

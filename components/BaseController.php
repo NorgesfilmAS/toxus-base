@@ -114,7 +114,7 @@ class BaseController extends CController
 		/**
 		 * if output is buffer, the information is send to firePHP if that is configured in the main.php
 		 */
-		if (isset(Yii::app()->params['firePHP']) && Yii::app()->params['firePHP'] == 1) {
+		if (Yii::app()->config->debug['firePHP']) {
 			ob_start();
 		}	
 	}

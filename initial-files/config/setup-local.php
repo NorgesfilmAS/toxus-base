@@ -42,7 +42,7 @@ return array(
 		'items' => array(
 			'firePHP' => array(
 				'label' => 'Use FireBug',
-				'type' => 'boolean',
+				'type' => 'checkbox',
 				'value' => 0,
 			),
 		),
