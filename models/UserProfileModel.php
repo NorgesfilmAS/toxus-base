@@ -201,7 +201,7 @@ class UserProfileModel extends BaseUserProfile
 	{
 		$field = $this->activationKeyField;
 		$this->$field = Util::generateRandomString(60);
-		$this->save();
+		return $this->save();
 	}
 	
 	/**
