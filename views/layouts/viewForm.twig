@@ -16,11 +16,16 @@
 		</div>
 	</div>
 	{% endif %}	
-		
+	{% include this.viewPath('flash') %}	
+  
 	{# now display the form #}	
 	{% if mode == 'edit' %}
 		{% block formContent %}
-			{% include this.viewPath('_form') %}
+      <div class="row">      
+        <div class="col-xs-12">
+          {% include this.viewPath('_form') %}
+        </div>    
+      </div>      
 		{% endblock %}
 	{% elseif mode == 'view' %}
 		{% block viewContent %}
