@@ -30,7 +30,11 @@ class UpdateAction extends BaseAction
 		} else {
 			$this->controller->model = $modelClass::model()->findByPk($id);
 		}	
-		$this->controller->model->scenario = $this->scenario;		
+		$this->controller->model->scenario = $this->scenario;	
+    if ($this->afterLoadModel) {
+      call_user_func($this->afterLoadModel, $this->controller->model);
+    }
+    
 		$mode =  isset($_GET['mode']) ? $_GET['mode'] : $this->mode;
 						
 		if (isset($_POST[$modelClass])) {
