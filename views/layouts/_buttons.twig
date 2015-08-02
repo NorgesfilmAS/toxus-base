@@ -9,6 +9,7 @@
 
  the definition of the button is defined in BaseController->button
 #}
+
 {% set state = mode | default('edit') %} {# mode was state #}
 {% if form.buttons[state] | length > 0 %}
 	{% set buttons = form.buttons[state] %}

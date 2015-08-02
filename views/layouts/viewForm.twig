@@ -46,10 +46,12 @@
   {% if menuItem %}
 		$('{{ menuItem }}').addClass('active');
 	{% endif %}	
-		
+  
 	$('.btn-edit').on('click', function() {
 		window.location = window.location+"?mode=edit"; 
 	});
+  $('.btn-edit').hide();
+  
 
 	{{ parent() }}
 {% endblock %}

@@ -40,6 +40,9 @@ class DownloadFileAction extends BaseAction
 
 	public function run($name='')
 	{
+    if ($this->afterLoadModel) {
+      call_user_func($this->afterLoadModel, null);
+    }		    
 		$logKey = 'toxus.download';
 		Yii::log('Downloading: '.$name, CLogger::LEVEL_INFO, $logKey);
 		$this->checkRights();
