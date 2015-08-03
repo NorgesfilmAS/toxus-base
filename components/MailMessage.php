@@ -156,7 +156,7 @@ class MailMessage extends BaseController
 					'attached' => array(),	
 				),
 				$message
-		);		
+		);	   
 		if (Yii::app()->config->mail['isBlocked']) {		
 			$log['info'] = 'Mail not send: mail-blocked = true';
 			$this->logMessage($msg, $log);

@@ -44,7 +44,7 @@ class MailPostmark extends MailMessage
 		if ($msg['bcc']) {
 			$email->addBcc($msg['bcc']);
 		}
-		if ($msg['html']) {
+		if ($msg['html'] && $msg['html'] != 'html') {
 			$email->messageHtml(trim($msg['html']));
 		}
 		try {

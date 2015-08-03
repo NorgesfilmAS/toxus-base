@@ -81,7 +81,7 @@
 		</div>
 		{% endblock %}
 		
-		<div class="bs-header row" {% block bsHeaderOptions %}{% endblock %}>
+		<div class="bs-header" {% block bsHeaderOptions %}{% endblock %}>
 			<div class="container">
 				{% block header %}
 				{# anything in this container is the header of the application. It will scroll out of view #}				
@@ -112,6 +112,7 @@
   * infoRight: 9col content, 3col infoRight  
  
 #}
+
 		<div class="container bs-container {% block appClass %}{% endblock %}">
 			<div id="id-body" class="row">			
 	{% if colVis == 'full' %}
@@ -210,7 +211,7 @@
 					</div>
 				</div>
 			</div>
-			<section class="footerCredits">
+			<div class="footerCredits">
 				{% block footerCredits %}
 				<div class="container">
 					<ul class="footer-links text-center">
@@ -221,7 +222,7 @@
 					</ul>
 				</div>		
 				{% endblock %}	
-			</section>	
+			</div>	
 		 {% endblock %}	
 		</div>		
 		<div class="modal fade" id="id-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >

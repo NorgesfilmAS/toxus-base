@@ -2,6 +2,7 @@
  an empty dialog 
  #}
  {% set prefix = "dia-" %}
+{% block content %} 
 	<div class="modal-header">
     <button type="button" class="close action-close" data-dismiss="modal" aria-hidden="true">{% block modalCloseText %}×{% endblock %}</button>
     {% block dialogHeader %}dialogHeader{%endblock %}&nbsp;
@@ -14,6 +15,7 @@
     <button id="btn-close" class="btn action-close">{{ Yii_t('button','btn-close') }}</button>
 		{% endblock %}
   </div>
+{% endblock %}  
 <script type="text/javascript">
 	$().ready(function() {
 		$('.action-close').on('click', function() {

@@ -101,7 +101,7 @@
 					{% endif %}	
 					<textarea id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" class="code-{{ element.sourceType | default('html') }} form-control {% if element.class %}{{ element.class }} {%else%}{{ width }}{%endif%}" rows="{% if element.rows %}{{ element.rows }}{% else %}5{% endif %}"{{ readOnly }}>{{ model.__get(key) }}</textarea>
 				{% elseif element.type=='mask' %}
-					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }} form-control" value="{{ model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"{{ readOnly }}/> 				
+					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }} form-control" value="{{ model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength | default(255)}}"{{ readOnly }}/> 				
 					{{ this.registerPackage('inputmask',{'isAjax' : isAjax , 'executeAfterLoad': 	
 						'$("#'~p~key~'").inputmask({"mask": "'~element.mask~'"})'}) }}
 				{% elseif element.type=='date' %}						
@@ -206,7 +206,7 @@ $().ready(function() {
 					{{ this.registerPackage('currency', {'isAjax' : isAjax}) }}
 					<div class="input-prepend">
 						<span class="add-on">{{ format.currencySymbolHtml() |raw }}</span>
-						<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="input-currency span6" value="{{ model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)" style="text-align: right;" {{ readOnly }}/> 					
+						<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="input-currency span6" value="{{ model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength | default(255)}}" style="text-align: right;" {{ readOnly }}/> 					
 					</div>	
 				{% elseif element.type=='button' %}
 					<span id="{{ p }}{{ key }}" class="btn {{element.style|default('btn-primary')}}"{{element.popover|raw}}{{ readOnly }}>{{element.caption}}</span>
@@ -234,7 +234,7 @@ $().ready(function() {
 				{% elseif element.type == 'raw' %}
 					{{ element.value | raw }}
 				{% else %}
-					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }} form-control"{{ readOnly }} value="{{ model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"/> 
+					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }} form-control"{{ readOnly }} value="{{ model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength | default(255) }}"/> 
 				{% endif %}
 				
 				{% if element.width %}
