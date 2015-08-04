@@ -178,9 +178,10 @@ $().ready(function() {
 		limit: 20,
 		remote: { 
 			url: '"~element.url~"%QUERY',
+      wildcard: '%QUERY',
 			ajax : {
 				beforeSend: function(jqXhr, settings){
-				//	console.log('done');
+          console.log('before.send.done');
 					$('#"~p~key~"').val('');
 				}
 			}
