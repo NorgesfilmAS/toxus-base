@@ -45,9 +45,9 @@ class MailMessage extends BaseController
     else
       return false; // $content=$this->renderInternal($viewFile,$data,$return);
 		
-		if ($return)
+		if ($return) {
 			return $content;		
-		
+    }
 		return $this->sendEmail($content, $viewName);
 	}
 	

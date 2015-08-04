@@ -47,11 +47,7 @@ class DownloadFileAction extends BaseAction
 		Yii::log('Downloading: '.$name, CLogger::LEVEL_INFO, $logKey);
 		$this->checkRights();
 		if ($name == '') {
-			if (count($_GET) == 0) {
-				if (!(file_exists($this->path) && is_file($this->path))) { 
-					throw new CHttpException(404, 'File not found');
-				}
-			} else {
+			if (count($_GET) > 0) {
 				$name = reset($_GET);
 				$key = key($_GET);			
 				if ($name != '') {
@@ -75,6 +71,7 @@ class DownloadFileAction extends BaseAction
 				}	
 			}
 		}	
+    
 		Yii::log('filename: '.$filename, CLogger::LEVEL_INFO, $logKey);		
 		$ff = new FileInformation($filename);
 		if (!$ff->exists()) {
@@ -84,8 +81,17 @@ class DownloadFileAction extends BaseAction
 			$this->userFilename = $ff->filename;
 		}
 		set_time_limit(0);
-		
-		$filesize = filesize($filename);
+		$filesize = filesize($filename);    
+    ///////////////////////////////////
+    /*
+    header("X-Sendfile: ".$filename);
+    header("Content-type: application/octet-stream");
+    header('Content-Disposition: attachment; filename="' . $this->userFilename . '"');    
+    return ;
+     * 
+     */
+		////////////////////////////////////////
+
 
 		$offset = 0;
 		$length = $filesize;
@@ -118,14 +124,16 @@ class DownloadFileAction extends BaseAction
 		header_remove("X-Powered-By");
 		
 		try {
-			while(!feof($file))	{
-				print(@fread($file, 1024*8));
-				ob_flush();
-				flush();
+			while(!@feof($file))	{
+        $b = fread($file, 1024*8);
+				echo $b;
+			  @ob_flush();
+				@flush();
 			}		
 		} catch (Exception $e) {
 			Yii::log('Error: '.$e->getMessage(), CLogger::LEVEL_ERROR, $logKey);		
 		}
+    
 		@fclose($file);		
 		Yii::log('done', CLogger::LEVEL_INFO, $logKey);		
 	}
