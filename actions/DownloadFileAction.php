@@ -103,7 +103,7 @@ class DownloadFileAction extends BaseAction
 			// multiple ranges, which can become pretty complex, so ignore it for now
 			preg_match('/bytes=(\d+)-(\d+)?/', $_SERVER['HTTP_RANGE'], $matches);
 			$offset = intval($matches[1]);
-			$length = intval($matches[2]) - $offset;
+			$length = count($matches) > 2 ? (intval($matches[2]) - $offset) : $filesize;
 		} else {
 			$partialContent = false;
 		}		
@@ -123,12 +123,14 @@ class DownloadFileAction extends BaseAction
 		header('Accept-Ranges: bytes');
 		header_remove("X-Powered-By");
 		
+    $bCount = 0;
 		try {
-			while(!@feof($file))	{
+			while(!@feof($file) && $bCount < $length )	{
         $b = fread($file, 1024*8);
 				echo $b;
 			  @ob_flush();
 				@flush();
+        $bCount += strlen($b);
 			}		
 		} catch (Exception $e) {
 			Yii::log('Error: '.$e->getMessage(), CLogger::LEVEL_ERROR, $logKey);		
