@@ -67,9 +67,7 @@ class PdfDocument extends TxPdfComponent {
 				} else {
 					$html = substr($html, 0, -1);
 					$pos = explode(',', $html);
-					if (count($pos) != 2) {
-						Yii::log('expecting 2 parameters for html: '.$html, CLogger::LEVEL_ERROR, 'PdfFile.parse');				
-					} else {
+					if (count($pos) == 2) {
 						unset($lines[0]);
 						$step = array(
 							'html' => implode("\n", $lines),
@@ -79,6 +77,20 @@ class PdfDocument extends TxPdfComponent {
 							)	
 						);
 						$steps[] = $step;
+					} elseif (count($pos) == 4) {
+						unset($lines[0]);
+						$step = array(
+							'html' => implode("\n", $lines),
+							'position' => array(
+								'left' => $pos[0],
+								'top' => $pos[1],	
+								'bottom' => $pos[2],
+								'right' => $pos[3]	
+							)	
+						);
+						$steps[] = $step;						
+					} else {
+						Yii::log('expecting 2 or 4 parameters for html: '.$html, CLogger::LEVEL_ERROR, 'PdfFile.parse');				
 					}
 				}	
 			}
