@@ -27,7 +27,7 @@ class StreamAction extends BaseAction {
     }		    
 
   if ($this->onGetFilename) {
-			$filename = call_user_func($this->onGetFilename, $name, $this);	
+			$filename = call_user_func($this->onGetFilename, $this->path, $this);	
 		} else {
       if (substr($this->path,0,1) == '@') {
         $filename = YiiBase::getPathOfAlias(substr($this->path,1)).'/'.$name;
