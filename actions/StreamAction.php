@@ -26,7 +26,7 @@ class StreamAction extends BaseAction {
       call_user_func($this->afterLoadModel, null);
     }		    
 
-  if ($this->onGetFilename) {
+    if ($this->onGetFilename) {
 			$filename = call_user_func($this->onGetFilename, $this->path, $this);	
 		} else {
       if (substr($this->path,0,1) == '@') {
@@ -36,15 +36,16 @@ class StreamAction extends BaseAction {
       }	
 		}	
 
-    if (!file_exists($filename))	{
+    $fileInfo = new FileInformation($filename);
+    if ($fileInfo->exists()) { //(!file_exists($filename))	{
       Yii::log('The file '.$filename.' does not exist', CLogger::LEVEL_ERROR, 'toxus.StreamAction');
       throw new CHttpException(404, 'The file does not exist');
       //header ("HTTP/1.1 404 Not Found");
       //return;
     }
 
-    $size	= filesize($filename);
-    $time	= date('r', filemtime($filename));
+    $size	= $fileInfo->size; // filesize($filename);
+    $time	= $fileInfo->date; // date('r', filemtime($filename));
 
     $fm		= @fopen($filename, 'rb');
     if (!$fm) {
@@ -71,7 +72,7 @@ class StreamAction extends BaseAction {
     } else {
       header('HTTP/1.1 200 OK');
     }
-
+    $mimeType = $fileInfo->contentType;
     header("Content-Type: $mimeType"); 
     header('Cache-Control: public, must-revalidate, max-age=0');
     header('Pragma: no-cache');  

@@ -105,6 +105,10 @@ class FileInformation extends CComponent
 	{
 		return $this->exists() == false ? 0 : filectime($this->_path);
 	}
+  
+  public function getDate() {
+    return date('r', filemtime($this->_path));
+  }
 	
 	public function getContentType()
 	{
