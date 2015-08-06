@@ -37,7 +37,7 @@ class StreamAction extends BaseAction {
 		}	
 
     $fileInfo = new FileInformation($filename);
-    if ($fileInfo->exists()) { //(!file_exists($filename))	{
+    if (!$fileInfo->exists()) { //(!file_exists($filename))	{
       Yii::log('The file '.$filename.' does not exist', CLogger::LEVEL_ERROR, 'toxus.StreamAction');
       throw new CHttpException(404, 'The file does not exist');
       //header ("HTTP/1.1 404 Not Found");
