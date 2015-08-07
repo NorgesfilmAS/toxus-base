@@ -19,7 +19,13 @@ class StreamAction extends BaseAction {
 	 * @var string
 	 */
 	public $onGetFilename = false;  // function ($name, $action)
-					
+
+  /**
+   * The name returned by the system
+   * @var string 
+   */
+  public $userFilename = false;
+  
   public function run() {
     
    if ($this->afterLoadModel) {
@@ -81,7 +87,7 @@ class StreamAction extends BaseAction {
     if (isset($_SERVER['HTTP_RANGE'])){
       header("Content-Range: bytes $begin-$end/$size");
     }
-    header("Content-Disposition: inline; filename=$filename");
+    header("Content-Disposition: inline; filename=".($this->userFilename ? $this->userFilename :$filename));
     header("Content-Transfer-Encoding: binary");
     header("Last-Modified: $time");
 
