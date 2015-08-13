@@ -57,10 +57,13 @@ class WordSplitter extends CComponent
 	
 	/**
 	 * stores / update the word ref table
+   * $refField is the fieldname for the 
+   * WordRefClass is the name of the class to use to store the links in. Default 'SearchRef'
+   * 
 	 * 
 	 * @param array $words a id => word array
 	 */
-	public function storeWords($words, $id, $refField, $wordRefClass = false)
+	public function storeWords($words, $id, $refField, $wordRefClass = false, $extraFields = array())
 	{
 		if ($wordRefClass === false) {
 			$wordRefClass = $this->wordRefClass;
@@ -103,5 +106,35 @@ class WordSplitter extends CComponent
 		}
 	}
 	
-	
+  /**
+   * 
+   * @param type $ids             array of SearchWord
+   * @param type $docId           value of the doc
+   * @param type $docFieldname    the name to store the docId in 
+   * @params options            
+   *    extraFields   - extrafield that should be set
+   *    modelClass    - the name of the record class
+   *    docFieldname  - the fieldname of the doc field
+   *    
+   */
+	public function saveNewWords($ids, $docId, $options = array()) {
+    $extraFields = isset($options['extraFields']) ? $options['extraFields'] : array();    
+    $modelClass = isset($options['modelClass']) ? $options['modelClass'] : 'SearchRef';
+    $docFieldname = isset($options['docFieldname']) ? $options['docFieldname'] : 'doc_id';
+    
+    if (is_array($ids)) {
+      foreach ($ids as $searchWord) {
+        $sr = new $modelClass();
+        $sr->$docFieldname = $docId;
+        $sr->word_id = $searchWord->id;
+        foreach ($extraFields as $fieldname => $value) {
+          $sr->$fieldname = $value;
+        }
+        if (!$sr->save()) {
+          throw new CDbException('Can save '.$modelClass.': '.Util::errorToString($sr->errors));
+        }
+      }
+    }
+  }
+  
 }
