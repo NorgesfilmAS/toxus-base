@@ -136,5 +136,55 @@ class WordSplitter extends CComponent
       }
     }
   }
-  
+
+  public function saveWords($ids, $docId, $options = array()) {
+    $extraFields = isset($options['extraFields']) ? $options['extraFields'] : array();    
+    $modelClass = isset($options['modelClass']) ? $options['modelClass'] : 'SearchRef';
+    $docFieldname = isset($options['docFieldname']) ? $options['docFieldname'] : 'doc_id';
+    
+    // select all the records for this document and extra fields
+    $query = '';
+    $params = array();
+    foreach ($extraFields as $fieldname => $value) {
+      $query .= ' AND ('.$fieldname.'=:'.$fieldname.')';
+      $params[':'.$fieldname] = $fieldname;
+    }
+    $query = '('.$docFieldname.'=:id)'.$query;
+    $sr = $modelClass()->find($query, array_merge(
+      array(':id' => $docId),
+      $params
+    ));    
+    
+    if (is_array($ids)) {  // are there any words?    
+      foreach ($ids as $searchWord) {
+        $found = false;
+         // find the word in the existing array
+        foreach ($sr as $key => $rec) {    
+          if ($rec->word_id == $id->id) { // found it, so remove it from the internal list
+            $found = true;
+            unset($sr[$key]);
+            break;
+          }
+        }
+        if (!$found) {  // not found, so add it to the db
+          $sr = new $modelClass();
+          $sr->$docFieldname = $docId;
+          $sr->word_id = $searchWord->id;
+          foreach ($extraFields as $fieldname => $value) {
+            $sr->$fieldname = $value;
+          }
+          if (!$sr->save()) {
+            throw new CDbException('Can save '.$modelClass.': '.Util::errorToString($sr->errors));
+          }
+        }
+      }
+      foreach ($sr as $rec) { // remove the ones that are left over
+        $rec->delete();
+      }
+    } elseif (count($sr) > 0) { // delete any ref because there are no words
+      foreach ($sr as $rec) {
+        $rec->delete();
+      }
+    }
+  }  
 }
