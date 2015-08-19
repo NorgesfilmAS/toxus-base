@@ -29,29 +29,34 @@ class WordSplitter extends CComponent
 		if ($wordModelClass == false) {
 			$wordModelClass = $this->wordModelClass;
 		}
-		$words = $this->split($text);
-		// convert the words to a word_id => text version
-		$result = array();
-		foreach ($words as $word) {
-			if (strlen($word) >= self::MIN_WORD_LENGTH) {
-				if (!in_array($word, $result)) { // only once
-					$searchWord = $wordModelClass::model()->find(array(
-						'condition' => 'word=:word',
-						'params' => array('word' => $word)	
-					));
-					if (!$searchWord && $addIfNotFound) {		// add to the search words
-						$searchWord = new $wordModelClass();
-						$searchWord->word = $word;
-						if (!$searchWord->save()) {
-						  throw new CDbException('Error saving word: '.Util::errorToString($searchWord->errors));
-						}
-					}
-					if ($searchWord) {
-						$wordIds[$searchWord->id] = $searchWord;
-					}	
-				}	
-			}	
-		}
+    if (!is_array($text)) {
+      $text = array($text);
+    }
+    foreach ($text as $t) {
+      $words = $this->split($t);
+      // convert the words to a word_id => text version
+      $result = array();
+      foreach ($words as $word) {
+        if (strlen($word) >= self::MIN_WORD_LENGTH) {
+          if (!in_array($word, $result)) { // only once
+            $searchWord = $wordModelClass::model()->find(array(
+              'condition' => 'word=:word',
+              'params' => array('word' => $word)	
+            ));
+            if (!$searchWord && $addIfNotFound) {		// add to the search words
+              $searchWord = new $wordModelClass();
+              $searchWord->word = $word;
+              if (!$searchWord->save()) {
+                throw new CDbException('Error saving word: '.Util::errorToString($searchWord->errors));
+              }
+            }
+            if ($searchWord) {
+              $wordIds[$searchWord->id] = $searchWord;
+            }	
+          }	
+        }	
+      }
+    }
 		return $wordIds;
 	}	
 	
