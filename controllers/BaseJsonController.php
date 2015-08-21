@@ -191,9 +191,10 @@ class BaseJsonController extends Controller
 	/**
 	 * changes camel case to unscope
 	 * and 'false' false and 'true' to true
-	 * @param type $datac
+	 * @param type $data
+   * @param type array, the default expected data and the value
 	 */
-	protected function fixPost($data)
+	protected function fixPost($data, $defaults = array())
 	{
 		$result = array();
 		foreach ($data as $key => $value) {
@@ -207,6 +208,11 @@ class BaseJsonController extends Controller
 				$result[$fieldname] = $value;
 			}
 		}
+    foreach ($defaults as $default => $value) {
+      if (!isset($result[$default])) {
+        $result[$default] = $value;
+      }
+    }
 		return $result;
 	}
 	
