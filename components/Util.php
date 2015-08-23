@@ -880,7 +880,18 @@ class Util {
         $string .= chr(hexdec($hex[$i].$hex[$i+1]));
     }
     return $string;
-}
+  }
+  
+  /**
+   * a rough none safe version to make debug sql   
+   */
+  static function mergeSqlParams($sql, $params=array()) {
+    foreach ($params as $key => $param) {
+      $sql = str_replace($key, '"'.$param.'"', $sql);
+      
+    }
+    return $sql;
+  }
 	
 }
 
