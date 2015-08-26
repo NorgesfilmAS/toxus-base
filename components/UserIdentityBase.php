@@ -69,7 +69,7 @@ class UserIdentityBase extends CUserIdentity
 	 */
 	protected function findProfile()
 	{
-		$s = md5($this->password);
+		$s = $this->makePassword($this->password); //md5($this->password);
 		$profile = $this->userProfileClassname;
 		$user = $this->username;
 		$rec =  $profile::model()->find(		
