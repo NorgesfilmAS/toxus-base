@@ -40,31 +40,37 @@ class DownloadFileAction extends BaseAction
 
 	public function run($name='')
 	{
+    if ($this->afterLoadModel) {
+      call_user_func($this->afterLoadModel, null);
+    }		    
 		$logKey = 'toxus.download';
 		Yii::log('Downloading: '.$name, CLogger::LEVEL_INFO, $logKey);
 		$this->checkRights();
 		if ($name == '') {
-			if (count($_GET) == 0) {
-				throw new CHttpException(404, 'File not found');
-			}
-			$name = reset($_GET);
-			$key = key($_GET);			
-			if ($name != '') {
-				$name = key($_GET).'/'.$name;
-			} else {
-				$name = $key;
+			if (count($_GET) > 0) {
+				$name = reset($_GET);
+				$key = key($_GET);			
+				if ($name != '') {
+					$name = key($_GET).'/'.$name;
+				} else {
+					$name = $key;
+				}
 			}
 		}		
-		Yii::log('Inbetween: '.$name, CLogger::LEVEL_INFO, $logKey);		
 		if ($this->onGetFilename) {
 			$filename = call_user_func($this->onGetFilename, $name, $this);	
 		} else {
-			if (substr($this->path,0,1) == '@') {
-				$filename = YiiBase::getPathOfAlias(substr($this->path,1)).'/'.$name;
-			} else {	
-				$filename = $this->path.$name;
-			}	
+			if (file_exists($this->path) && is_file($this->path)) {
+				$filename = $this->path;
+			} else {
+				if (substr($this->path,0,1) == '@') {
+					$filename = YiiBase::getPathOfAlias(substr($this->path,1)).'/'.$name;
+				} else {	
+					$filename = $this->path.$name;
+				}	
+			}
 		}	
+    
 		Yii::log('filename: '.$filename, CLogger::LEVEL_INFO, $logKey);		
 		$ff = new FileInformation($filename);
 		if (!$ff->exists()) {
@@ -74,8 +80,17 @@ class DownloadFileAction extends BaseAction
 			$this->userFilename = $ff->filename;
 		}
 		set_time_limit(0);
-		
-		$filesize = filesize($filename);
+		$filesize = $ff->size; // filesize($filename);    
+    ///////////////////////////////////
+    /*
+    header("X-Sendfile: ".$filename);
+    header("Content-type: application/octet-stream");
+    header('Content-Disposition: attachment; filename="' . $this->userFilename . '"');    
+    return ;
+     * 
+     */
+		////////////////////////////////////////
+
 
 		$offset = 0;
 		$length = $filesize;
@@ -87,7 +102,7 @@ class DownloadFileAction extends BaseAction
 			// multiple ranges, which can become pretty complex, so ignore it for now
 			preg_match('/bytes=(\d+)-(\d+)?/', $_SERVER['HTTP_RANGE'], $matches);
 			$offset = intval($matches[1]);
-			$length = intval($matches[2]) - $offset;
+			$length = count($matches) > 2 ? (intval($matches[2]) - $offset) : 0;
 		} else {
 			$partialContent = false;
 		}		
@@ -97,7 +112,8 @@ class DownloadFileAction extends BaseAction
 		fseek($file, $offset);
 		if ( $partialContent ) {
 			header('HTTP/1.1 206 Partial Content');
-			header('Content-Range: bytes ' . $offset . '-' . ($offset + $length) . '/' . $filesize);
+      $s = 'Content-Range: bytes ' . $offset . '-' . ($offset + $length) . '/' . $filesize;
+			header($s);
 		}
 		if ($this->forceDownload) {
 			header('Content-disposition: attachment; filename='.$this->userFilename);
@@ -107,15 +123,25 @@ class DownloadFileAction extends BaseAction
 		header('Accept-Ranges: bytes');
 		header_remove("X-Powered-By");
 		
-		try {
-			while(!feof($file))	{
-				print(@fread($file, 1024*8));
-				ob_flush();
-				flush();
-			}		
-		} catch (Exception $e) {
-			Yii::log('Error: '.$e->getMessage(), CLogger::LEVEL_ERROR, $logKey);		
-		}
+    $bCount = 0;    
+    if ($length > 0) {
+/*      
+      echo file_get_contents($filename);
+*/    
+      $chunkSize = 1024*1024;
+      try {
+        while(!@feof($file) && $bCount < $length )	{
+          $b = fread($file, $chunkSize); //1024*8);
+          echo $b;
+          @ob_flush();
+          @flush();
+          $bCount += strlen($b);
+          Yii::log('Send: '.$bCount.' bytes', CLogger::LEVEL_INFO, 'toxus.download');
+        }		
+      } catch (Exception $e) {
+        Yii::log('Error: '.$e->getMessage(), CLogger::LEVEL_ERROR, $logKey);		
+      }
+    }  
 		@fclose($file);		
 		Yii::log('done', CLogger::LEVEL_INFO, $logKey);		
 	}

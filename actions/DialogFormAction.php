@@ -59,7 +59,10 @@ class DialogFormAction extends BaseAction
 		} else {
 			$this->controller->model = $this->controller->loadModel($id, $this->modelClass);
 		}	
-		
+    
+    if ($this->afterLoadModel) {
+      call_user_func($this->afterLoadModel, $this->controller->model);
+    }		
 		if ($this->form == null) {
 			Yii::log('The form is undefined', CLogger::LEVEL_WARNING, 'toxus.actions.DialogFormAction');
 			return;			

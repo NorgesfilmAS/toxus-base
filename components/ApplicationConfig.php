@@ -156,6 +156,38 @@ class ApplicationConfig extends CComponent
 			}
 		}
 	}
+
+	/**
+	 * 
+	 * @param string $section name of the section or $section.$key 
+	 * @param type $key $key of if empty use format section.key in $section
+	 * @return string  | boolean
+	 */
+	
+	public function value($section, $key = null)
+	{
+		if (empty($key)) {
+			$keys = explode('.', $section);
+			if (count($keys) == 2) {
+				$section = $keys[0];
+				$key = $keys[1];
+			}
+		}
+		if (isset($this->$section)) {
+			$sec = $this->$section;
+			try {
+				if (isset($sec)) {
+					$d = $sec->definition();
+					if (isset($d['items'][$key])) {
+						return $d['items'][$key]['value'];
+					}
+				}
+			} catch (Exception $e) {
+				Yii::log('The key '.$sec.'.'.$key.' does not exist', CLogger::LEVEL_WARNING, 'ApplicationConfig.value');
+			}
+		}
+		return false;
+	}
 	
 	/**
 	 * return the requested section as an array

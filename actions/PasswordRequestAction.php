@@ -19,12 +19,12 @@ class PasswordRequestAction extends BaseAction
 	 * the subject of the mail message. Is translated!
 	 * @var string
 	 */
-	public $mailSubject = 'Request password reset';
+//	public $mailSubject = 'Request password reset';
 	/**
 	 * the body of the message. If false the Yii::app()->config->mail['lost_password'] is used
 	 * @var string
 	 */
-	public $mailMessage = false;
+//	public $mailMessage = false;
 	/**
 	 * The model holding the email field
 	 * @var Model
@@ -38,11 +38,18 @@ class PasswordRequestAction extends BaseAction
 	public $passwordSendPage = 'passwordSend';
 	// $onAfterUpdate = function xx($this) : boolean
 	// $params['errors'] are the errors display after the onAfterUpdate call
+	/**
+	 * The page to display on error
+	 * 
+	 * @var string
+	 */
+	public $passwordErrorPage = 'passwordError';
 	
 	public function run()
 	{
 		$view = $this->view;
 		$this->controller->model = new LoginForm($this->scenario);		
+		$profile = false;
 		
 		$form = $this->controller->loadForm($this->form);
 		if (isset($_POST[$this->modelClassName])) {
@@ -58,16 +65,15 @@ class PasswordRequestAction extends BaseAction
 					} else {
 						$result = call_user_func(array($this, 'sendInvitation'), $profile, $this); 
 					}	
-					if ($result) {
-						$view = $this->passwordSendPage;
-						$form = false;	// otherwise it is displayed again
-					}
+					$view = $this->passwordSendPage;
+					$form = false;	// otherwise it is displayed again
 				}	
 			}	
 		}
 		$params = array_merge(		
 			array(
 				'model' => $this->controller->model,
+				'profile' => $profile,	
 				'layout' => $this->pageLayout,
 				'form' => $form,
 				'scenario' => $this->scenario,	
@@ -87,13 +93,16 @@ class PasswordRequestAction extends BaseAction
 	public function sendInvitation($model, $action)
 	{
 		// set the mail message information
-		$model->mailSubject = $this->mailSubject;
+/*
+ * 		$model->mailSubject = $this->mailSubject;  // $model = UserProfileModel
+ 
 		if ($this->mailMessage) { // not translated!!!
 			$model->mailMessage = $this->mailMessage;
 		} else {
 			$model->mailMessage = Yii::app()->config->mail['lost_password'];
 		}
-		
-		return $model->sendMailMessage();
+*/		
+		return $model->sendMailPasswordRequest();
+//		return $model->sendMailMessage('lostPassword');
 	}
 }

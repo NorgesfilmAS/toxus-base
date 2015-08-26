@@ -13,7 +13,11 @@
 		{% if groupElement.hidden != true and groupElement.formHidden != true %}
 		<div id="{{ p }}group-{{ groupKey}}" class="form-group{% if model.getErrors(groupKey) %} error has-error{% endif %}">
 			{% if groupElement.type != 'checkbox' and groupElement.type != 'hidden' and groupElement.hideLabel != true %}
-			<label for="{{ p }}{{ groupKey }}" class="control-label {{ form.labelClass | default('col-lg-2') }} no-left-padding no-right-padding {% if this.hasTooltip(groupKey) or groupElement.tooltip %} showtip" data-toggle="tooltip" data-placement="right" data-trigger="hover" data-original-title="{{ groupElement.tooltip | default(this.tooltip(groupKey)) }}{% endif %}" >{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}&nbsp;</label> 
+			<label for="{{ p }}{{ groupKey }}" class="control-label {{ form.labelClass | default('col-lg-2') }} no-left-paddingXXXX no-right-padding {% if this.hasTooltip(groupKey) or groupElement.tooltip %} showtip" data-toggle="tooltip" data-placement="right" data-trigger="hover" data-original-title="{{ groupElement.tooltip | default(this.tooltip(groupKey)) }}{% endif %}" >{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}&nbsp;
+				{% if groupElement.helpUrl %}
+				<a href="{{groupElement.helpUrl }}" target="_blank"><span class="badge label-help">{{ groupElement.helpText | default('?') }}</span></a>
+				{% endif %}
+			</label> 
 			{% endif %}
 			{# to stop the col-lg-10 from display on a with we add the width to the class so the class is illegal #}
 			<div class="controls{% if groupElement.elements | length == 0 %} {% if groupElement.type == 'checkbox' %}col-lg-offset-2{% endif %} {% if groupElement.hideLabel != true %}{{ form.controlClass | default('col-lg-10') }}{%else%}col-lg-12{%endif%}{{ groupElement.width }}{% endif %}">
@@ -97,7 +101,7 @@
 					{% endif %}	
 					<textarea id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" class="code-{{ element.sourceType | default('html') }} form-control {% if element.class %}{{ element.class }} {%else%}{{ width }}{%endif%}" rows="{% if element.rows %}{{ element.rows }}{% else %}5{% endif %}"{{ readOnly }}>{{ model.__get(key) }}</textarea>
 				{% elseif element.type=='mask' %}
-					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }} form-control" value="{{ model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"{{ readOnly }}/> 				
+					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }} form-control" value="{{ model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength | default(255)}}"{{ readOnly }}/> 				
 					{{ this.registerPackage('inputmask',{'isAjax' : isAjax , 'executeAfterLoad': 	
 						'$("#'~p~key~'").inputmask({"mask": "'~element.mask~'"})'}) }}
 				{% elseif element.type=='date' %}						
@@ -174,9 +178,10 @@ $().ready(function() {
 		limit: 20,
 		remote: { 
 			url: '"~element.url~"%QUERY',
+      wildcard: '%QUERY',
 			ajax : {
 				beforeSend: function(jqXhr, settings){
-				//	console.log('done');
+          console.log('before.send.done');
 					$('#"~p~key~"').val('');
 				}
 			}
@@ -202,7 +207,7 @@ $().ready(function() {
 					{{ this.registerPackage('currency', {'isAjax' : isAjax}) }}
 					<div class="input-prepend">
 						<span class="add-on">{{ format.currencySymbolHtml() |raw }}</span>
-						<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="input-currency span6" value="{{ model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)" style="text-align: right;" {{ readOnly }}/> 					
+						<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="input-currency span6" value="{{ model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength | default(255)}}" style="text-align: right;" {{ readOnly }}/> 					
 					</div>	
 				{% elseif element.type=='button' %}
 					<span id="{{ p }}{{ key }}" class="btn {{element.style|default('btn-primary')}}"{{element.popover|raw}}{{ readOnly }}>{{element.caption}}</span>
@@ -230,7 +235,7 @@ $().ready(function() {
 				{% elseif element.type == 'raw' %}
 					{{ element.value | raw }}
 				{% else %}
-					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }} form-control"{{ readOnly }} value="{{ model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength}} | default(255)"/> 
+					<input id="{{ p }}{{ key }}" name="{{ form.model }}[{{key}}]" type="text" class="{{ width }} form-control"{{ readOnly }} value="{{ model.__get(key) }}" {% if fields | length > 1 %} placeholder="{% if element.label %}{{ element.label}}{% else %}{{ model.attributeLabel(key) }}{% endif %}"{% endif %} maxlength="{{element.maxLength | default(255) }}"/> 
 				{% endif %}
 				
 				{% if element.width %}

@@ -686,6 +686,18 @@ class Util {
 		return implode('_', $ret);
 	}
 	
+	// http://stackoverflow.com/questions/2791998/convert-dashes-to-camelcase-in-php
+	static function underscoreToCamelCase($string, $capitalizeFirstCharacter = false) 	{
+
+    $str = str_replace(' ', '', ucwords(str_replace('_', ' ', $string)));
+
+    if (!$capitalizeFirstCharacter) {
+        $str[0] = strtolower($str[0]);
+    }
+
+    return $str;
+}
+	
 	/**
 	 * change the file extension
 	 * 
@@ -795,6 +807,92 @@ class Util {
 		}
 		return $bytes.' B';		
 	}
+	
+	/**
+	 * Finds the occurance of the string in the haystack, checking for escaped strings
+	 * 
+	 * @param type $haystack
+	 * @param type $string
+	 * @param string $escape the letter to use to escape
+	 * @return false|integer the position
+	 */
+	static function strposEscape($haystack, $string, $escape='\\')
+	{
+		$l = strpos($haystack, $string);
+		while ($l) {
+			if ($l > 0 && substr($haystack, $l-1, 1) != $escape) {
+				return $l;
+			}
+			$l = strpos($haystack, $string, $l++);
+		}
+		return false;
+	}
+	
+	static function array2NameArray($array, $columnNames)
+	{
+		if (count($columnNames) < 2)	{
+			throw new CException(Yii::t('app', 'The array2NameArray excepts atleats 2 column names'));
+		}
+		$result = array();
+		foreach ($array as $key => $element) {
+			$result[] = array($columnNames[0] => $key, $columnNames[1] => $element);			
+		}
+						
+		return $result;
+	}
+	/**
+	 * change the array keys so the first character is lower case and string is camel case
+	 * @param array $arr
+	 */
+	static function properArrayKeys($arr) 
+	{
+		$result = array();
+		foreach ($arr as $key => $value) {
+			$result[Util::underscoreToCamelCase($key)] = $value;
+		}
+		return $result;
+	}
+	
+	static function explodeClean($delimiter, $string) {
+		$result = explode($delimiter, $string);
+		foreach ($result as $k => $r) {
+			if (empty($r)) {
+				unset($result[$k]);
+			}
+		}
+		return $result;
+	}
+	/*
+	 * http://stackoverflow.com/questions/14674834/php-convert-string-to-hex-and-hex-to-string
+	 */
+	static function strToHex($string){
+    $hex = '';
+    for ($i=0; $i<strlen($string); $i++){
+        $ord = ord($string[$i]);
+        $hexCode = dechex($ord);
+        $hex .= substr('0'.$hexCode, -2);
+    }
+    return strToUpper($hex);
+	}
+	static  function hexToStr($hex){
+    $string='';
+    for ($i=0; $i < strlen($hex)-1; $i+=2){
+        $string .= chr(hexdec($hex[$i].$hex[$i+1]));
+    }
+    return $string;
+  }
+  
+  /**
+   * a rough none safe version to make debug sql   
+   */
+  static function mergeSqlParams($sql, $params=array()) {
+    foreach ($params as $key => $param) {
+      $sql = str_replace($key, '"'.$param.'"', $sql);
+      
+    }
+    return $sql;
+  }
+	
 }
 
 ?>

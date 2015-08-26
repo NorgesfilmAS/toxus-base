@@ -69,13 +69,19 @@ class UserIdentityBase extends CUserIdentity
 	 */
 	protected function findProfile()
 	{
-		$s = md5($this->password);
+		$s = $this->makePassword($this->password); //md5($this->password);
 		$profile = $this->userProfileClassname;
-		return $profile::model()->find(		
-			'(username = :username OR email = :username) AND password_md5 = :md5',	array(
+		$user = $this->username;
+		$rec =  $profile::model()->find(		
+//			'(username = :username OR email = :username) AND password_md5 = :md5',	array( MUST BE TESTED ON PNEK
+			'(username = :username OR email = :username) AND password = :md5',	array(					
 					':username' => $this->username, 
 					':md5' => $s)
 		);
+		if (empty($rec)) {
+			Yii::log('Unable to login for: '.$user.' with '.$s, CLogger::LEVEL_WARNING, 'toxus.UserIdentityBase.findProfile');
+		}
+		return $rec;
 		
 	}
 	

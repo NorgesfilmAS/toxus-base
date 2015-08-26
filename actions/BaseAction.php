@@ -71,6 +71,12 @@ class BaseAction extends CAction
 	 */
 	public $menuItem = null;			
 	
+  /** 
+   * called after the model was create to adjust any setting of it.
+   * @var array|false
+   */
+  public $afterLoadModel = false;
+  
 	protected function getModelName()
 	{
 		if ($this->_modelName === false) {

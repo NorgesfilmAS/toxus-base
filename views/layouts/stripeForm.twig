@@ -1,0 +1,11 @@
+<div {% block stripeForm %}class="text-center" {% endblock %}>
+	<form action="{{ url }}" method="post">
+		<script src="https://checkout.stripe.com/v1/checkout.js" class="stripe-button"
+		data-key="{{ key }}"
+		data-amount="{{ amount }}"
+		data-email="{{ email }}"
+		data-name="{{ name }}"
+		data-description="{{ description }}"
+		data-label="Buy"></script>
+	</form>
+</div>

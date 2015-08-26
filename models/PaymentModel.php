@@ -74,7 +74,8 @@ class PaymentModel extends BasePayment
 	
 	public function relations() {
 		return array(
-			'coupon' => array(self::BELONGS_TO, $this->couponModel, 'coupon_id')	
+			'coupon' => array(self::BELONGS_TO, $this->couponModel, 'coupon_id'),
+			'userProfile' => array(self::BELONGS_TO, 'UserProfile', 'user_id')	
 		);
 	}
 	
@@ -86,7 +87,7 @@ class PaymentModel extends BasePayment
 				$this->profile_id = Yii::app()->user->id;
 			}
 			if ($this->vat_percentage == null) {
-				$this->vat_percentage = Yii::app()->config->fixedValues['VAT'];	// should be done in the config
+				$this->vat_percentage = Yii::app()->config->setup['VAT'];	// should be done in the config
 			}	
 		}
 		$this->recalculate();

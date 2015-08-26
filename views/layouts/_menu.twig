@@ -19,13 +19,12 @@
 #}
 
 {% macro menuItemBuilder(menu, t, level) %}
-
-	{% for key, menuItem in menu %}	
+ 	{% for key, menuItem in menu %}	
 		{% if menuItem is iterable %}
 			{% if menuItem.hidden != true %}
 				{% if menuItem.type %}
 				{% else %}
-					<li class="menu-{{ key | replace({' ' : '-'}) |lower }} menu-item{% if menuItem.items %} menu-submenu {% endif %}">	
+					<li class="menu-{{ key | replace({' ' : '-'}) |lower }} menu-item{% if menuItem.items %} menu-submenu {% endif %}{% if menuItem.isActive %} active{% endif %}">	
 					{% if menuItem.url != 'xxxx' %}	
 					<a href="{{ menuItem.url | default('#') | raw }}" data-placement="bottom" {% if menuItem.tooltip %}title="{{ menuItem.tooltip }}"{% endif %}
 						 {% if menuItem.style %} class="{{ menuItem.style }}" {% endif %}
@@ -85,7 +84,7 @@
 {% endfor %}
 
 {% if menu | length > 0 %}
-<ul class="{{ menu.style | default(layout.class)}}">
+<ul class="{{ menu.style | default(layout.class)}}">	
 	{{ _self.menuItemBuilder(menu, this, 0) }}
 </ul>
 {% endif %}

@@ -5,7 +5,14 @@
 		{# <div class="control-group{% if model.getErrors(groupKey) %} error {% endif %}"> #}
 			{% if  groupElement.type != 'hidden' %}
 			{# <span class="view-label" for="id-{{ groupKey }}">{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}:</span>  #}
-			<dt>{% if groupElement.hideLabel != true %}{% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}{% endif %}</dt> 
+			<dt>
+        {% if groupElement.hideLabel != true %}
+          {% if groupElement.type == 'checkbox' and groupElement.viewLabel %}
+            {{ groupElement.viewLabel.label }}
+          {% else %} 
+            {% if groupElement.label %}{{ groupElement.label}}{% else %}{{ model.attributeLabel(groupKey) }}{% endif %}
+          {% endif %}  
+        {% endif %}</dt> 
 			{% endif %}
 			
 			<dd>
@@ -23,24 +30,28 @@
 				{% elseif element.type == 'textarea' %}
 					 {{ html.encode(model.__get(key)) |replace({"\n" : '<br />'}) |raw }}
 				{% elseif element.type == 'checkbox' %}	
-					{% if model.__get(key)==1 %}{{ element.trueCaption|default(Yii_t('base','Yes'))}}{%else%}{{ element.falseCaption|default(Yii_t('base','No'))}}{%endif%}
+          {% if element.viewLabel %}
+            {% if model.__get(key)==1 %}{{ groupElement.viewLabel.true }}{% else %}{{ groupElement.viewLabel.false }}{%endif%}
+          {% else %}  
+            {% if model.__get(key)==1 %}{{ element.trueCaption|default(Yii_t('base','Yes'))}}{%else%}{{ element.falseCaption|default(Yii_t('base','No'))}}{%endif%} 
+          {% endif %}
 				{% elseif element.type== 'image' %}
 					{{ this.form.image(model, key) | raw }}								
 				{% elseif element.type== 'finder' %}					
 				{% elseif element.type== 'html' %}
 					{{ model.__get(key) | raw }}
-				{% elseif element.type=='chosen' %}						
+				{% elseif element.type=='chosen' %}								
 						{% if element.multi and model.__get(key) | length > 0 %}						
 							<ul class="comma-list-summary">
 							{% for itemKey, itemCaption in element.items %}
-							 {% if itemKey in model.__get(key) and itemKey and itemCaption %}<li class="comma-list">{{ itemCaption }}</li>{% endif %}
+							 {% if itemKey in model.__get(key) and itemKey and itemCaption %}<li class="comma-list">{% if element.url %}<a href="{{ element.url}}{{itemKey}}">{% endif %}{{ itemCaption }}{% if element.url %}</a>{% endif %}</li>{% endif %}
 							{% endfor %}					
 							</ul> 
 						{% else %}
 							{% for itemKey, itemCaption in element.items %}
-							 {% if itemKey == model.__get(key) %}{{ itemCaption }}{% endif %}
-							{% endfor %}					
-						{% endif %}
+							 {% if itemKey == model.__get(key) %}{% if element.url %}<a href="{{ element.url}}{{itemKey}}">{% endif %}{{ itemCaption }}{% if element.url %}</a>{% endif %}{% endif %}
+							{% endfor %}									
+						{% endif %}				
 				{% elseif element.type=='datetime' %}						
 					{{ model.__get(key) }}	
 				{% elseif element.type=='hidden' %}

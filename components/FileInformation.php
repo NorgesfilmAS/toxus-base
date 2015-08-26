@@ -15,6 +15,8 @@
  * - sizeText
  * - time
  * 
+ * - calcMd5()
+ * 
  * modification on the file:
  *  - touch()
  */
@@ -103,6 +105,10 @@ class FileInformation extends CComponent
 	{
 		return $this->exists() == false ? 0 : filectime($this->_path);
 	}
+  
+  public function getDate() {
+    return date('r', filemtime($this->_path));
+  }
 	
 	public function getContentType()
 	{
@@ -120,5 +126,19 @@ class FileInformation extends CComponent
 	public function touch()
 	{
 		return $this->exists() == false ? false : touch($this->_path);
+	}
+	
+	/**
+	 * calculate the md5 of the file
+	 * @return md5 string or false if error occured
+	 */
+	public function calcMd5() 
+	{
+		try {
+			return md5_file($this->_path);			
+		} catch (Exception $ex) {
+			Yii::log('Error calculating md5 on '.$this->_path, CLogger::LEVEL_ERROR, 'toxus.fileInformation');
+			return false;
+		}
 	}
 }

@@ -8,19 +8,18 @@
 {% include this.viewPath('caption') %}
 {% set mode = mode |default('view') %}
 <div class="bs-content">
-	{# must first display any error connected to the main record #}		
-	{% if model.hasErrors() %}
-	<div class="row">
-		<div class="col-lg-10 col-lg-offset-2 alert alert-danger">			
-			{{ html.errorSummary(model)|raw }}
-		</div>
-	</div>
-	{% endif %}	
-		
+	{# must first display any error connected to the main record #}	
+  {% include this.viewPath('_error') %}
+	{% include this.viewPath('flash') %}	
+  
 	{# now display the form #}	
 	{% if mode == 'edit' %}
 		{% block formContent %}
-			{% include this.viewPath('_form') %}
+      <div class="row">      
+        <div class="col-xs-12">
+          {% include this.viewPath('_form') %}
+        </div>    
+      </div>      
 		{% endblock %}
 	{% elseif mode == 'view' %}
 		{% block viewContent %}
@@ -41,10 +40,12 @@
   {% if menuItem %}
 		$('{{ menuItem }}').addClass('active');
 	{% endif %}	
-		
+  
 	$('.btn-edit').on('click', function() {
 		window.location = window.location+"?mode=edit"; 
 	});
+  $('.btn-edit').hide();
+  
 
 	{{ parent() }}
 {% endblock %}

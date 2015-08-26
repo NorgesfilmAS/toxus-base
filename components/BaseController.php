@@ -19,6 +19,11 @@ class BaseController extends CController
 	protected $_logPageView = true;
 	public $_menu = null;
 	
+	/**
+	 * The menu that should be higlighted
+	 * @var integer
+	 */
+	public $activeMenuType = 0;
   /**
    * the name of the tooltip file placed in the message directory
    * @var string
@@ -109,7 +114,7 @@ class BaseController extends CController
 		/**
 		 * if output is buffer, the information is send to firePHP if that is configured in the main.php
 		 */
-		if (isset(Yii::app()->params['firePHP']) && Yii::app()->params['firePHP'] == 1) {
+		if (Yii::app()->config->debug['firePHP']) {
 			ob_start();
 		}	
 	}
@@ -234,6 +239,7 @@ class BaseController extends CController
 // pre version it was:	public function menuHtml($menuDef, $controller = null)
 	public function menuHtml($menuDef, $options = array())
 	{	
+		Yii::log('menuHtml', CLogger::LEVEL_INFO, 'toxus.menu');
 		if (is_array($menuDef)) {
 			$menuName = isset($menuDef['name']) ? $menuDef['name'] : 'default';
 			$menu = array($menuName => isset($menuDef['menu']) ? $menuDef['menu'] : array());
@@ -252,6 +258,7 @@ class BaseController extends CController
 			$params['layout'] = array('class'=>$options['class']);
 		// $this->beforeMenuGenerated(&$menu, $menuDef, $options);
 		$path = $this->viewPath('_'.$menuName.'Menu',array('return' => true));
+		$s = '';
 		if (!$path) {
 			$path = $this->viewPath('_menu',array('return' => true, 'noExtension' => true));
 			if ($path) {
@@ -263,7 +270,19 @@ class BaseController extends CController
 		return $s;
 	}
 
-
+	public function hasMenu($menuDef)
+	{
+		if (is_array($menuDef)) {
+			$menuName = isset($menuDef['name']) ? $menuDef['name'] : 'default';
+			$menu = array($menuName => isset($menuDef['menu']) ? $menuDef['menu'] : array());
+		} else {
+			$menuName = $menuDef;
+			$menu = $this->getMenu(); //$menu = $this->getMenu($controller);
+		}	
+		
+		return isset($menu[$menuName]) && count($menu[$menuName]) > 0;
+	}
+	
 	public function renderAjax($view, $data = null) {
 		$this->renderPartial($view, $data, false, true);
 	}
@@ -361,6 +380,7 @@ class BaseController extends CController
 				'css' => array(
 						'css/style.css', 
 						'css/header-1.css', 
+						'css/hero-equal.css',
 						'css/toxus.css'
 				),
 				'js' => array(
@@ -495,6 +515,8 @@ class BaseController extends CController
 
 						menubar: "edit format insert table tools view",
 						relative_urls: false,
+						convert_urls:false,
+						remove_script_host : false,
 						plugins: [
 							"autolink lists link charmap ",
 							"searchreplace visualblocks code fullscreen",
@@ -533,22 +555,35 @@ class BaseController extends CController
 			),
 			'modal-dialog' => array(
 				'ready' => '
-						$(".menu-modal").on("click", function() {
-							div = $(this).data("div");
-							if (div) {
-								$(div + " .modal-content").html($("#id-wait-message").html());
-								$(div).modal("show"); 							
-								$(div + " .modal-content").load($(this).data("url"));
-							} else {
-								$("#id-modal-body").html($("#id-wait-message").html());
-								$("#id-modal").modal("show"); 							
-								$("#id-modal-body").load($(this).data("url"), function(response, status) {
-									if (status == "error") {
-										$("#id-modal-body").html("<div class=\'alert alert-warning\'><h2>"+response+"</h2></div><div class=\'modal-footer\'><button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\'>Close</button></div>");
+						console.log("init menuModal");
+						function menuModalActive() {
+							console.log("active menuModal: length", $(".menu-modal").length);
+							$(".menu-modal").on("click", function(event) {	
+								console.log("menu-model.click");								
+								var div = $(this).data("div");
+								if (div) {
+									$(div + " .modal-content").html($("#id-wait-message").html());
+									$(div).modal("show"); 							
+									$(div + " .modal-content").load($(this).data("url"));
+								} else {
+									var compact = $(this).data("compact");
+									if (compact) {										
+										$(".modal-dialog").addClass("dialog-full");
+									} else {
+										$(".modal-dialog").removeClass("dialog-full");
 									}
-								});							
-							}
-					})'
+									$("#id-modal-body").html($("#id-wait-message").html());
+									$("#id-modal").modal("show"); 							
+									$("#id-modal-body").load($(this).data("url"), function(response, status) {
+										if (status == "error") {
+											$("#id-modal-body").html("<div class=\'alert alert-warning\'><h2>"+response+"</h2></div><div class=\'modal-footer\'><button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\'>Close</button></div>");
+										}
+									});							
+								}
+								event.stopPropagation();
+							})
+						}
+						menuModalActive();'
 			),
 			'elastic' => array(
 				/* auto expand an textarea to the number of lines used */	
@@ -640,14 +675,14 @@ class BaseController extends CController
 			'angularJs.min' => array(	
 				'js' => array(
 					CClientScript::POS_END => array(
-						'cdn' => '//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js',
+						'cdn' => '//ajax.googleapis.com/ajax/libs/angularjs/1.3.4/angular.min.js',
 					),
 				)	
 			),
 			'angularJs.sanitize.min' => array(	
 				'js' => array(
 					CClientScript::POS_END => array(
-						'cdn' => '//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-sanitize.min.js',	
+						'cdn' => '//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.3/angular-sanitize.min.js',	
 					),
 				)	
 			),				
@@ -1442,6 +1477,9 @@ class BaseController extends CController
 	public function viewPath($filename, $options = array())
 	{
 		$extension = (isset($options['extension']) ? $options['extension'] : Yii::app()->viewRenderer->fileExtension);
+//		if (empty($extension)) {
+//			$extension = '.twig';
+//		}
 		$classname = isset($options['directory']) ? $options['directory'] : $this->getId();
 		$filename = $filename.$extension;
 		$vendorRoot = YiiBase::getPathOfAlias($this->vendorViewRoot);

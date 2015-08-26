@@ -76,6 +76,9 @@ class ViewAction extends BaseAction
 				$this->controller->model = null;				
 			}
 		}
+    if ($this->afterLoadModel) {
+      call_user_func($this->afterLoadModel, $this->controller->model);
+    }
 		
 		$form = false;				
 		if (!empty($this->form)) {

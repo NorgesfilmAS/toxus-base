@@ -44,7 +44,7 @@ class CreateAction extends BaseAction
 				if ($this->successUrl) {
 					$this->controller->redirect($this->controller->createUrl($this->successUrl, array('id' => $this->controller->model->id)));					
 				} else {
-					$this->controller->redirect($this->controller->createUrl($controllerId.'/index'));				
+					$this->controller->redirect($this->controller->createUrl($controllerId.'/index', array('id' => $this->controller->model->id)));				
 				}	
 			}
 		}

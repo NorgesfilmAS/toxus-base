@@ -68,10 +68,10 @@ class BasePaymentController extends Controller
 		$this->render($this->indexView, $params);
 	}
 	
-	public function loadModel($slug)
+	public function loadModel($key, $modelClass)
 	{
 		$modelName = $this->modelName;
-		if ($slug == null) 
+		if ($key == null) 
 			throw new CDbException(Yii::t('base', 'No payment reference is active'));		
 		$this->model = $modelName::model()->find('slug=:slug', array(':slug' => $slug));
 		if ($this->model == null) 

@@ -6,7 +6,7 @@
 	{% for key, menuItem in menu %}	
 		{% if menuItem.isVisible | default(1) == 1 %}
 		{% if 'page' in menuItem|keys %}
-	<li class="parent">
+	<li class="parent{% if menuItem.isActive %} active{% endif %}">
 		<a href="javascript:void()" >{{ menuItem.label }}<i></i></a>
 		{{ t.form.page(menuItem.page) }}
 	</li>		
@@ -19,14 +19,14 @@
 		</ul>
 	</li>		
 #}
-		<li class="dropdown">
+		<li class="dropdown{% if menuItem.isActive %} active{% endif %}">
 			<a href="#" data-toggle="dropdown" role="button" >{{ menuItem.label }}</a>
 			<ul class="dropdown-menu" role="menu">
 			{{ _self.menuSystemBuilder(menuItem.items) }}
 			</ul>
 		</li>		
 		{% else %}			
-			<li>
+			<li{% if menuItem.isActive %} class="active"{% endif %}>
 			{% if menuItem.dialog %}					
 				{# <a data-target="#id-modal" class="menu-action" data-toggle="modal" href="{{ menuItem.url }}">{{ menuItem.label }}</a> #}
 				<a href="#" class="menu-modal" data-url="{{ menuItem.url}}">{{ menuItem.label }}</a>

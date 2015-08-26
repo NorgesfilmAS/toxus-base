@@ -60,6 +60,11 @@ class RequireLogin extends CBehavior
 		} else {
 			Yii::log('Direct url', CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
 		}
+		// remove the extra parameters
+		$params = explode('?', $page);
+		if (count($params) > 1) {
+			$page = $params[0];
+		}		
 		$parts = explode('/', $page);
 		if (count($parts) > 2) {
 			$page = $parts[0].'/'.$parts[1];
@@ -74,7 +79,7 @@ class RequireLogin extends CBehavior
 				return;
 			}
 		}
-		Yii::log('Login required for '.$page, CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
+		Yii::log('Login required for '.$page.' in path: '.implode('|', $a), CLogger::LEVEL_INFO, 'security.toxus.compontents.RequireLogin');
 		if (!Yii::app()->user->isGuest) {
 			return;
 		}
