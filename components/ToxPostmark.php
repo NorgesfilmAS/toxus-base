@@ -31,18 +31,30 @@ class ToxPostmark extends Postmark
 	/**
 	* Initialize
 	*/
-	public function __construct()
+	public function __construct($version = 1)
 	{
-		// return Mail_Postmark::TESTING_API_KEY;
-		$key = Yii::app()->config->postmark['apiKey'];
-		if (empty($key)) {
-			throw new CException('The postmark["apiKey"] should be set');
-		}
-		
-		$this->_apiKey = $key;
+    if ($version == 1) {
+      // return Mail_Postmark::TESTING_API_KEY;
+      $key = Yii::app()->config->postmark['apiKey'];
+      if (empty($key)) {
+        throw new CException('The postmark["apiKey"] should be set');
+      }
 
-		$from = Yii::app()->config->postmark['from'];
-		$fromEmail = Yii::app()->config->postmark['fromEmail'];
+      $this->_apiKey = $key;
+
+      $from = Yii::app()->config->postmark['from'];
+      $fromEmail = Yii::app()->config->postmark['fromEmail'];
+    } else {
+      $key = Yii::app()->config->mail['apiKey'];
+      if (empty($key)) {
+        throw new CException('The mail["apiKey"] should be set');
+      }
+
+      $this->_apiKey = $key;
+
+      $from = Yii::app()->config->mail['from'];
+      $fromEmail = Yii::app()->config->mail['fromEmail'];      
+    }
 		if (!empty($from) || empty($fromEmail)) {
 			$this->from($fromEmail, $from);
 		}	

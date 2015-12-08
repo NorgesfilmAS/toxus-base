@@ -8,6 +8,19 @@
 
 class MailPostmark extends MailMessage 
 {
+  private $_version = 1;
+  public function __construct($version = 1) {
+    $this->_version = $version;
+    parent::__construct();
+  }
+  
+  public function getIsDebug() {
+    if ($this->_version == 1) {
+      return Yii::app()->config->postmark['debug'];
+    } else {
+      return Yii::app()->config->mail['debug'];
+    }
+  }
 	/**
 	 * Send the mail to the user 
 	 * @param array $msg
@@ -20,10 +33,10 @@ class MailPostmark extends MailMessage
 	 *		- html
 	 *		- attached
 	 * @return bool true if send was successfull
-	 */
+	 */  
 	protected function deliverMail(&$msg, &$log)
 	{
-		$email = new ToxPostmark();
+		$email = new ToxPostmark($this->_version);
 		
 		if (is_array($msg['to'])) {
 			foreach($msg['to'] as $to) {
@@ -48,7 +61,8 @@ class MailPostmark extends MailMessage
 			$email->messageHtml(trim($msg['html']));
 		}
 		try {
-			if (Yii::app()->config->postmark['debug']) {
+      if ($this->isDebug) {
+			
 				$email->debug(Postmark::DEBUG_RETURN);
 				$log['postmark'] = $email->send();
 				$result = true;
