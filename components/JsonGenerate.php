@@ -9,6 +9,7 @@ class JsonGenerate extends CComponent
 	 */
 	protected function run($data, $format)
 	{
+    ini_set('max_execution_time', 3000);
 		return $this->runInternal($data, $format);
 	}
 	/**
@@ -39,7 +40,7 @@ class JsonGenerate extends CComponent
 			foreach ($format as $key => $field) {
 
 				if (is_numeric($key)) {			// 3 => 'name' or 3 => array(...)
-					if (is_string($field)) {		// 3 => fieldnam
+					if (is_string($field)) {		// 3 => fieldname
 						$keyName = $field; 
 						if (isset($record->$field)) {
 							$value = $record->$field;														
@@ -57,11 +58,34 @@ class JsonGenerate extends CComponent
 						if (isset($record->$key)) {
 							$value = $record->$key;
 							$keyName = $field;
-						} else {
+            } elseif (strpos($key, '.')) { // it's field using a relation
+              $rel = explode('.', $key);
+              if (isset($record->$rel[0])) {
+                $data = $record->$rel[0];
+                if (!empty($data)) {
+                  if (isset($data->{$rel[1]} )) {
+                    $value = $data->{$rel[1]};
+                    $keyName = $field;
+                  }
+                } else {
+                  Yii::log('Empty relation: '.$rel[0], CLogger::LEVEL_ERROR, 'toxus.json.generate');
+                }
+              } else {
+                Yii::log('Unknown relation: '.$rel[0], CLogger::LEVEL_ERROR, 'toxus.json.generate');
+              }
+						} else  {
 							Yii::log('Unknown field: '.$field, CLogger::LEVEL_ERROR, 'toxus.json.generate');
 						}
-					} elseif (is_array($field)) { // user => array('id', 'username')
-						if (isset($record->$key)) {
+					} elseif (is_array($field) || strpos($key,':' ) > 0) { // user => array('id', 'username')
+            if (strpos($key,':') > 0) { // rename the relation
+              $split = explode(':', $key);
+              if (isset($record->{$split[0]})) {
+                $keyName = $split[1];
+                if (($value = $this->runInternal($record->{$split[0]}, $field)) === false) {
+                  continue; // skip the processing of this one                
+                }
+              }
+            } elseif (isset($record->$key)) {
 							$keyName = $key;
 							if (($value = $this->runInternal($record->$key, $field)) === false) {
 								continue; // skip the processing of this one
@@ -80,7 +104,11 @@ class JsonGenerate extends CComponent
 				}
 //				if (!$value) $value = 0;
 				if ($useIndex) {
-					$result[$index][$keyName] = $value;
+          if ($keyName) {
+            $result[$index][$keyName] = $value;
+          } else {
+            $result[$index] = $value;
+          }
 				} else {
 					$result[$keyName] = $value;
 				}
