@@ -44,6 +44,7 @@ class JsonController2 extends BaseJsonController
 	
 	public function init() {    
 		if ($this->allowOtherOrigin) {
+      Yii::log('Adding other origin', CLogger::LEVEL_INFO, 'toxus.json2.init');
 			header('Access-Control-Allow-Origin: *');
 			header('Access-Control-Allow-Headers: X-Session');
       
@@ -55,7 +56,9 @@ class JsonController2 extends BaseJsonController
           header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
         exit(0);
       }      
-		}	
+		}	 else {
+      Yii::log('Not adding other origin', CLogger::LEVEL_INFO, 'toxus.json2.init');
+    }
     
     $allHeaders = getallheaders();	// X-Session is not in the standard headers
     Yii::log('Header key:'.(isset($_SERVER[self::HTTP_HEADER_KEY]) ? $_SERVER[self::HTTP_HEADER_KEY] : '(none)'), CLogger::LEVEL_INFO, 'toxus.json.loadAccessKey');	
