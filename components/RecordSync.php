@@ -49,6 +49,8 @@ class RecordSync extends CComponent
 	
 	private $_state = false;
 	
+  public $echoMessage = false;
+  
 	public function __construct() {
 		$this->init();
 	}
@@ -56,6 +58,12 @@ class RecordSync extends CComponent
 	{
 		
 	}
+  
+  public function echoText($text) {
+    if ($this->echoMessage) {
+      echo 'msg: '.$text."\n";
+    }
+  }
 	/**
 	 * convert an record to an array in a standard way
 	 * should be overloaded to create a special sync
