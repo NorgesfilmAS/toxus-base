@@ -17,6 +17,7 @@ class JsonController2 extends BaseJsonController
 	 * defines the access potential of the current user
 	 */
 	const HTTP_HEADER_KEY ='X-Session'; //'X-Authorization';
+  const HTTP_HEADER_CUSTOMER = 'X-Customer';
   const ARRAY_PREFIX = 'array:';
 	
 	protected $allowOtherOrigin = true;
@@ -68,7 +69,9 @@ class JsonController2 extends BaseJsonController
     } else {
       $key = '';
     }
-    Yii::app()->user->sessionKey($key);
+    $customer = isset($allHeaders[self::HTTP_HEADER_CUSTOMER]) ? $allHeaders[self::HTTP_HEADER_CUSTOMER] : '';
+    
+    Yii::app()->user->sessionKey($key, $customer);
     
 		parent::init();
 	}
