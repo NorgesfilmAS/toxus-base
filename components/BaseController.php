@@ -1428,9 +1428,14 @@ class BaseController extends CController
 	
 	public function writeTime()
 	{
-		if ($this->logPage) {
-			Yii::app()->pageLog->writeExecutionTime($this->logPageSpeed, $this);
-		}	
+    try {
+      if ($this->logPage) {
+        Yii::app()->pageLog->writeExecutionTime($this->logPageSpeed, $this);
+      }	
+    } catch (Exception $e) {
+      throw  $e;
+      // don't mind the errors
+    }
 	}	
 	
 	public function getLogPage()

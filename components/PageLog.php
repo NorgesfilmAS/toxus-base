@@ -36,28 +36,44 @@ class PageLog extends CComponent
 
 	public function getLog()
 	{
-		if (empty($this->_logging)) {
-			$model = $this->loggingModel;			
-			if ($this->dbName) {
-				$name = $this->dbName;
-				$this->_logging = new $model(Yii::app()->$name);
-			} else {
-				$this->_logging = new $model();
-			}	
-		}	
+    try {
+      if (empty($this->_logging)) {
+        $model = $this->loggingModel;			
+        if ($this->dbName) {
+          $name = $this->dbName;
+          $this->_logging = new $model(Yii::app()->$name);
+        } else {
+          $this->_logging = new $model();
+        }	
+      }	
+    } catch (Exception $e) {
+      return null; 
+    }
 		return $this->_logging;
 	}
 
 	public function addText($msg)
 	{
-		$this->log->message .= $msg."\n";		
-		if ($this->autoSave)$this->log->save();
+    try {
+      $this->log->message .= $msg."\n";		
+      if ($this->autoSave) { 
+        $this->log->save();
+      }
+    } catch (Exception $e) {
+      
+    }
 	}
 	
 	public function add($data)
 	{
-		$this->log->message .= var_export($data, true)."\n";
-		if ($this->autoSave)$this->log->save();		
+    try {
+      $this->log->message .= var_export($data, true)."\n";
+      if ($this->autoSave) {
+        $this->log->save();		
+      }
+    } catch (Exception $e) {
+      
+    }
 	}
 	
 	public function writeExecutionTime($writeTime = true, $controller = null)
@@ -68,8 +84,9 @@ class PageLog extends CComponent
 				$this->log->processing_time = Yii::getLogger()->getExecutionTime();
 			}	
 			$this->_logging->profile_id = Yii::app()->user->id;
-			if ($controller == null)
+			if ($controller == null) {
 				$controller = Yii::app ()->controller;
+      }
 			if ($controller) {			
 				$this->_logging->controller = get_class($controller);
 				if ($controller instanceof Controller) {
@@ -82,8 +99,7 @@ class PageLog extends CComponent
 			} else {
 				$this->addText('There is no controller');
 			}	
-			if (!$this->log->save() && $this->reportErrors)
-				throw new CDbException('Could not write to log');
+			$this->log->save();
 		} catch (Exception $e) {
 			
 		}					
