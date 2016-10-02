@@ -34,7 +34,8 @@ class BaseJsonController extends Controller
 	// WHY??	Yii::app()->json;				
 		parent::init();
 	}
-	
+/*	
+ * THIS MAKES THE INTERFACE CRASH on Mediakunst.net
 	public function filters()
 	{
 		return array(
@@ -54,7 +55,7 @@ class BaseJsonController extends Controller
 				),
 		);
   }	
-	
+	*/
 	public function getSuccess()
 	{
 		return $this->result['status']['success'];
