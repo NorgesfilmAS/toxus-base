@@ -77,8 +77,9 @@ class RecordSync extends CComponent
 	{
 		$result = array();
 		foreach ($record->attributes as $attribute) {
-			if ($this->attributes === false || in_array($attribute, $this->attributes))
-			$result[$attribute] = $record->$attribute;
+			if ($this->attributes === false || in_array($attribute, $this->attributes)) {
+			  $result[$attribute] = $record->$attribute;
+      }
 		}
 		return $result;
 	}
@@ -87,6 +88,9 @@ class RecordSync extends CComponent
 	/**
 	 * runs through the active records marking the records that are
 	 * changed since the last run
+   * 
+   * only calls the mailchimp interface if something has changed in the database
+   * 
 	 * 
 	 * @param array of CActiveRecord $records
 	 */
@@ -102,9 +106,11 @@ class RecordSync extends CComponent
 		$store = $this->storeAttribute;
 		$mark = $this->markAttribute;
 		foreach ($records as $record) {
+      $id = $record->id;
 			$data = $this->record2Array($record);
 			if ($data !== false) {
 				$dataJson = CJSON::encode($data);
+        // check that something has changed
 				if ($record->$store != $dataJson) {
 					if ($this->onFieldChanged) {
 						if (!call_user_func($this->onFieldChanged, $record, $data)) {
@@ -146,12 +152,13 @@ class RecordSync extends CComponent
 	{
 		$this->_errors = array();
 	}
-	public function addError($err, $id, $msg)
+	public function addError($err, $id, $msg, $e)
 	{
 		$this->_errors[] = array(
 			'code' => $err,
 			'id' => $id,
-			'message' => $msg	
+			'message' => $msg,
+      'error' => get_class($e)
 		);
 	}
 	
