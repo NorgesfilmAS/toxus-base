@@ -91,7 +91,7 @@ class JsonGenerate extends CComponent
 								continue; // skip the processing of this one
 							};
 						} else {
-							Yii::log('Unknown relation: '.$field, CLogger::LEVEL_ERROR, 'toxus.json.generate');
+							Yii::log('Unknown relation: '.is_string($field) ? $field : var_export($field), CLogger::LEVEL_ERROR, 'toxus.json.generate');
 						} 
 					} else {
 						Yii::log('Unknown key type: '.$key, CLogger::LEVEL_ERROR, 'toxus.json.generate');
