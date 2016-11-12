@@ -81,11 +81,16 @@ class SetupFormModel extends CFormModel
     $s = $a[0];
 		$p = $c->$s;
 		if (isset($p)) {
-      if (!is_array($p)) {
-      Yii::log('Config: '.$name.' is not an array', CLogger::LEVEL_ERROR, 'toxus.setup');
-      return false;        
+      if (!$p->contains($a[1])) {
+        Yii::log('Config: '.$name.' does not exist in CMap', CLogger::LEVEL_ERROR, 'toxus.setup');
+        return false;        
       }
-			return $p[$a[1]];
+      try {
+        return $p[$a[1]];
+      } catch (Exception $e) {
+        Yii::log('Config: '.$name.' returns an error: '.$e->getMessage(), CLogger::LEVEL_ERROR, 'toxus.setup');
+        return false;                
+      }  
 		}
 	}
 	/**
