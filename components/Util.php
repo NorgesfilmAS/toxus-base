@@ -638,6 +638,8 @@ class Util {
 	 */
 	static function normalizeStr($str)
 	{
+    
+    
 		$invalid = array('Š'=>'S', 'š'=>'s', 'Đ'=>'Dj', 'đ'=>'dj', 'Ž'=>'Z', 'ž'=>'z',
 		'Č'=>'C', 'č'=>'c', 'Ć'=>'C', 'ć'=>'c', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A',
 		'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E',
@@ -652,7 +654,7 @@ class Util {
 		"~" => "", "–" => "-", "’" => "'");
 
 		$str = str_replace(array_keys($invalid), array_values($invalid), $str);
-
+    $str = preg_replace('/[^\x20-\x7E]/', '', $str); // remove all other characters
 		return $str;
 	}
 	

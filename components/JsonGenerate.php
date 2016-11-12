@@ -2,6 +2,8 @@
 
 class JsonGenerate extends CComponent 
 {
+  
+  public $valuesToUtf8 = false;
 	/**
 	 * To prevent the overload version of run 
 	 * @param type $data
@@ -43,7 +45,7 @@ class JsonGenerate extends CComponent
 					if (is_string($field)) {		// 3 => fieldname
 						$keyName = $field; 
 						if (isset($record->$field)) {
-							$value = $record->$field;														
+							$value = $this->convert($record->$field);														
 						} else {
 							Yii::log('Field is unknown of null: '.$field, CLogger::LEVEL_INFO, 'toxus.json.generate');
 							$value = '';
@@ -56,7 +58,7 @@ class JsonGenerate extends CComponent
 				} elseif (is_string($key)) {  
 					if (is_string($field)) { // 'is_temp' => 'isTemp'
 						if (isset($record->$key)) {
-							$value = $record->$key;
+							$value = $this->convert($record->$key);
 							$keyName = $field;
             } elseif (strpos($key, '.')) { // it's field using a relation
               $rel = explode('.', $key);
@@ -64,7 +66,7 @@ class JsonGenerate extends CComponent
                 $data = $record->$rel[0];
                 if (!empty($data)) {
                   if (isset($data->{$rel[1]} )) {
-                    $value = $data->{$rel[1]};
+                    $value = $this->convert($data->{$rel[1]});
                     $keyName = $field;
                   }
                 } else {
@@ -91,7 +93,7 @@ class JsonGenerate extends CComponent
 								continue; // skip the processing of this one
 							};
 						} else {
-							Yii::log('Unknown relation: '.$field, CLogger::LEVEL_ERROR, 'toxus.json.generate');
+							Yii::log('Unknown relation: '.(is_string($field) ? $field : var_export($field, true)), CLogger::LEVEL_ERROR, 'toxus.json.generate');
 						} 
 					} else {
 						Yii::log('Unknown key type: '.$key, CLogger::LEVEL_ERROR, 'toxus.json.generate');
@@ -116,4 +118,23 @@ class JsonGenerate extends CComponent
 		}
 		return $result;
 	}	
+  
+  private function convert($value) {
+    if ($this->valuesToUtf8) {
+      if (is_string($value)) {
+        return utf8_encode($value);
+      } else {
+        if (is_array($value)) {
+          $a = array();
+          foreach ($value as $k => $v) {
+            $a[$k] = $this->convert($v);
+          }
+          return $a;
+        } else {
+          Yii::log('Unexpected value in convert', CLogger::LEVEL_WARNING, 'toxus.jsongenerate.value');
+        }
+      }
+    }
+    return $value;
+  }
 }
