@@ -74,6 +74,14 @@ class SetupFormModel extends CFormModel
 	{
 		$a = explode('-', $name);
 		$c = Yii::app()->config;
+    if (!isset($c->$a)) {
+      Yii::log('Config: '.$name.' is not defined', CLogger::LEVEL_ERROR, 'toxus.setup');
+      return false;
+    }
+    if (!is_array($c->$a)) {
+      Yii::log('Config: '.$name.' is not an array', CLogger::LEVEL_ERROR, 'toxus.setup');
+      return false;
+    }
 		$p = $c->$a[0];
 		if (isset($p)) {
 			return $p[$a[1]];
