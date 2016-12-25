@@ -894,7 +894,72 @@ class Util {
     }
     return $sql;
   }
-	
+
+  /**
+   * deep compares two array if something has changed
+   * 
+   * @param type $arr1
+   * @param type $arr2
+   * @return boolean
+   */
+  static function arrayDiff($arr1, $arr2) {
+    foreach ($arr1 as $key1 => $elm1) {
+      if (!array_key_exists($key2, $arr2)) {
+        return false;
+      } elseif (is_array($arr2)) {
+        return Util::arrayDiff($elm1, $arr2[$key1]);
+      } else {
+        if ($elm2 != $arr2[$key1]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+  
+  /**
+   * compares two arrays and returns an array with the changed root keys
+   * it does compare the arrays deep.
+   * 
+   * @param array $arr1
+   * @param array $arr2
+   * @returns array
+   *    [add]     => array(key arr2, key arr2, ...)
+   *    [remove]  => array(key arr1, key arr1, ...)
+   *    [changed] => array(key arr1, key arr1, ...)
+   *    
+   */
+  static function arrayChanged($arr1, $arr2, $options = array('merge' => false)) {
+    $return = array(
+      'add' => array(),
+      'remove' => array(),
+      'changed' => array()
+    );
+    foreach ($arr1 as $key1 => $elm1) {
+      if (!array_key_exists($key1, $arr2)) {
+        $return['add'][] = $key1;
+      } else {
+        if (!is_array($elm1)) {
+          if ($elm1 != $arr2[$key1]) {
+            $return['changed'][] = $key1;
+          }
+        } else {
+          if (Util::arrayDiff($arr1[$key1], $elm1)) {
+            $return['changed'][] = $key1;
+          }
+        }
+      }
+    }
+    foreach ($arr2 as $key2 => $elm2) {
+      if (!array_key_exists($key2, $arr1)) {
+        $return['removed'][] = $key2;
+      }
+    }
+    if ($options['merge']) {
+      return array_merge($return['add'], $return['remove'], $return['changed']);
+    }
+    return $return;
+  }
 }
 
 ?>
