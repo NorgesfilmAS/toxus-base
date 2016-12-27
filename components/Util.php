@@ -902,21 +902,41 @@ class Util {
    * @param type $arr2
    * @return boolean
    */
+  /*
   static function arrayDiff($arr1, $arr2) {
     foreach ($arr1 as $key1 => $elm1) {
-      if (!array_key_exists($key2, $arr2)) {
-        return false;
-      } elseif (is_array($arr2)) {
-        return Util::arrayDiff($elm1, $arr2[$key1]);
-      } else {
-        if ($elm2 != $arr2[$key1]) {
-          return false;
-        }
+      if (!array_key_exists($key1, $arr2)) {
+        return true;
+      } elseif (is_array($elm1) && array_key_exists ($key1, $arr2) && is_array($arr2[$elm1])) {
+        return Util::arrayDiff($elm1, $arr2[$key1]);        
+      } elseif (is_array($elm1)) {
+        return true;
+      } elseif ($elm1 != $arr2[$key1]) {
+        return true;        
       }
     }
-    return true;
+    return false;
   }
-  
+  */
+  static function arrayDiff($aArray1, $aArray2) {
+  $aReturn = array();
+
+  foreach ($aArray1 as $mKey => $mValue) {
+    if (array_key_exists($mKey, $aArray2)) {
+      if (is_array($mValue)) {
+        $aRecursiveDiff = Util::arrayDiff($mValue, $aArray2[$mKey]);
+        if (count($aRecursiveDiff)) { $aReturn[$mKey] = $aRecursiveDiff; }
+      } else {
+        if ($mValue != $aArray2[$mKey]) {
+          $aReturn[$mKey] = $mValue;
+        }
+      }
+    } else {
+      $aReturn[$mKey] = $mValue;
+    }
+  }
+  return $aReturn;
+} 
   /**
    * compares two arrays and returns an array with the changed root keys
    * it does compare the arrays deep.
@@ -944,7 +964,7 @@ class Util {
             $return['changed'][] = $key1;
           }
         } else {
-          if (Util::arrayDiff($arr1[$key1], $elm1)) {
+          if (count(Util::arrayDiff($arr2[$key1], $elm1)) > 0) {
             $return['changed'][] = $key1;
           }
         }
