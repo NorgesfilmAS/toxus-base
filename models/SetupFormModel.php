@@ -74,9 +74,23 @@ class SetupFormModel extends CFormModel
 	{
 		$a = explode('-', $name);
 		$c = Yii::app()->config;
-		$p = $c->$a[0];
+    if (count($a) == 0) {
+      Yii::log('Config: '.$name.' has no elements', CLogger::LEVEL_ERROR, 'toxus.setup');
+      return false;
+    }
+    $s = $a[0];
+		$p = $c->$s;
 		if (isset($p)) {
-			return $p[$a[1]];
+      if (!$p->contains($a[1])) {
+        Yii::log('Config: '.$name.' does not exist in CMap', CLogger::LEVEL_ERROR, 'toxus.setup');
+        return false;        
+      }
+      try {
+        return $p[$a[1]];
+      } catch (Exception $e) {
+        Yii::log('Config: '.$name.' returns an error: '.$e->getMessage(), CLogger::LEVEL_ERROR, 'toxus.setup');
+        return false;                
+      }  
 		}
 	}
 	/**
