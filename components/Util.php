@@ -242,7 +242,7 @@ class Util {
 		return $return;
 	}
 	
-	function proef11($bankrek){
+	static function proef11($bankrek){
 		$csom = 0;                            // variabele initialiseren
 		$pos = 9;                             // het aantal posities waaruit een bankrekeningnr hoort te bestaan
 		for ($i = 0; $i < strlen($bankrek); $i++){

@@ -40,7 +40,6 @@ class JsonGenerate extends CComponent
 				$result[$index] = array();
 			}
 			foreach ($format as $key => $field) {
-
 				if (is_numeric($key)) {			// 3 => 'name' or 3 => array(...)
 					if (is_string($field)) {		// 3 => fieldname
 						$keyName = $field; 
@@ -52,10 +51,12 @@ class JsonGenerate extends CComponent
 						}
 					} elseif (is_array($field)) {		// what would that mean??
 						Yii::log('Unknown definition: [number] => array(..)', CLogger::LEVEL_ERROR, 'toxus.json.generate');
+            continue;
 					} else {
 						Yii::log('Unknown definition: '.$field, CLogger::LEVEL_ERROR, 'toxus.json.generate');
+            continue;
 					} 
-				} elseif (is_string($key)) {  
+				} elseif (is_string($key)) {                      
 					if (is_string($field)) { // 'is_temp' => 'isTemp'
 						if (isset($record->$key)) {
 							$value = $this->convert($record->$key);
@@ -71,12 +72,15 @@ class JsonGenerate extends CComponent
                   }
                 } else {
                   Yii::log('Empty relation: '.$rel[0], CLogger::LEVEL_ERROR, 'toxus.json.generate');
+                  continue;
                 }
               } else {
                 Yii::log('Unknown relation: '.$rel[0], CLogger::LEVEL_ERROR, 'toxus.json.generate');
+                continue;
               }
 						} else  {
 							Yii::log('Unknown field: '.$field, CLogger::LEVEL_ERROR, 'toxus.json.generate');
+              continue;
 						}
 					} elseif (is_array($field) || strpos($key,':' ) > 0) { // user => array('id', 'username')
             if (strpos($key,':') > 0) { // rename the relation
@@ -94,9 +98,11 @@ class JsonGenerate extends CComponent
 							};
 						} else {
 							Yii::log('Unknown relation: '.(is_string($field) ? $field : var_export($field, true)), CLogger::LEVEL_ERROR, 'toxus.json.generate');
+              continue;
 						} 
 					} else {
 						Yii::log('Unknown key type: '.$key, CLogger::LEVEL_ERROR, 'toxus.json.generate');
+            continue;            
 					}		
 				}
 				if (is_numeric($value)) {
