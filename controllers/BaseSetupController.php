@@ -7,6 +7,7 @@ class BaseSetupController extends Controller
 	public function actionIndex($id=null, $mode='edit')
 	{
 		if (!(Yii::app()->user->getState('adminId', null) != null)) {
+      Yii::log('redirecting to login', CLogger::LEVEL_INFO, 'toxus.login');
 			$this->redirect($this->createUrl('setup/login'));
 		}
 		$class = $this->setupClass;
