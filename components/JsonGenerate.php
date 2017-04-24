@@ -64,7 +64,7 @@ class JsonGenerate extends CComponent
             } elseif (strpos($key, '.')) { // it's field using a relation
               $rel = explode('.', $key);
               if (!is_string($rel[0])) {
-                echo "Error: not a string: ", CJSON::encode($rel[0]);
+                echo "Error: not a string fot this: ", CJSON::encode($rel[0]);
               }
               if (isset($record->$rel[0])) {
                 $data = $record->$rel[0];
