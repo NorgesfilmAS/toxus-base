@@ -43,8 +43,8 @@ class JsonGenerate extends CComponent
 				if (is_numeric($key)) {			// 3 => 'name' or 3 => array(...)
 					if (is_string($field)) {		// 3 => fieldname
 						$keyName = $field; 
-						if (isset($record->$field)) {
-							$value = $this->convert($record->$field);														
+            if (isset($record->{$field})) {
+              $value = $this->convert($record->{$field});														
 						} else {
 							Yii::log('Field is unknown of null: '.$field, CLogger::LEVEL_INFO, 'toxus.json.generate');
 							$value = '';
@@ -58,16 +58,13 @@ class JsonGenerate extends CComponent
 					} 
 				} elseif (is_string($key)) {                      
 					if (is_string($field)) { // 'is_temp' => 'isTemp'
-						if (isset($record->$key)) {
-							$value = $this->convert($record->$key);
+            if (isset($record->{$key})) {
+              $value = $this->convert($record->{$key});
 							$keyName = $field;
             } elseif (strpos($key, '.')) { // it's field using a relation
               $rel = explode('.', $key);
-              if (!is_string($rel[0])) {
-                echo "Error: not a string fot this: ", CJSON::encode($rel[0]);
-              }
-              if (isset($record->$rel[0])) {
-                $data = $record->$rel[0];
+              if (isset($record->{$rel[0]})) {
+                $data = $record->{$rel[0]};
                 if (!empty($data)) {
                   if (isset($data->{$rel[1]} )) {
                     $value = $this->convert($data->{$rel[1]});
@@ -94,9 +91,9 @@ class JsonGenerate extends CComponent
                   continue; // skip the processing of this one                
                 }
               }
-            } elseif (isset($record->$key)) {
+            } elseif (isset($record->{$key})) {
 							$keyName = $key;
-							if (($value = $this->runInternal($record->$key, $field)) === false) {
+              if (($value = $this->runInternal($record->{$key}, $field)) === false) {
 								continue; // skip the processing of this one
 							};
 						} else {
