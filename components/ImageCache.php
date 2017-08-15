@@ -186,25 +186,29 @@ class ImageCache extends CComponent
 			throw new CException('The size "'.$size.'" for the images is unknown');
 		}		
 		$cacheFile = 	Yii::getPathOfAlias(self::BASEPATH.'.'.$size).'/'.$name;
-		if (!file_exists($cacheFile)) { // we have to create the cache file
-			if (!file_exists($path)) {
-				Yii::log('The original file "'.$path.'" does not exist.', CLogger::LEVEL_WARNING, 'toxus.image.cache');
-				return false;
-			}
-			if (isset($this->sizes[$size]['fill'])) {
-				if (!$this->imageThumb($path, $cacheFile, $this->sizes[$size])) {
-					return false;					
-				}
-			} if (isset($this->sizes[$size]['cutout'])) {
-				if (!$this->imageCutOut($path, $cacheFile, $this->sizes[$size])) {
-					return false;
-				}
-			} else {	
-				if (!$this->imageResize($path, $cacheFile, $this->sizes[$size])) {
-					return false;
-				}
-			}				
-		}
+    try {
+      if (!file_exists($cacheFile)) { // we have to create the cache file
+        if (!file_exists($path)) {
+          Yii::log('The original file "'.$path.'" does not exist.', CLogger::LEVEL_WARNING, 'toxus.image.cache');
+          return false;
+        }
+        if (isset($this->sizes[$size]['fill'])) {
+          if (!$this->imageThumb($path, $cacheFile, $this->sizes[$size])) {
+            return false;					
+          }
+        } if (isset($this->sizes[$size]['cutout'])) {        
+          if (!$this->imageCutOut($path, $cacheFile, $this->sizes[$size])) {
+            return false;
+          }
+        } else {	
+          if (!$this->imageResize($path, $cacheFile, $this->sizes[$size])) {
+            return false;
+          }
+        }				
+      }
+    } catch (Exception $e) {
+      return false;
+    }
 		return Yii::app()->baseUrl.self::ROOTCACHE.$size.'/'.$name;
 	}
 	
