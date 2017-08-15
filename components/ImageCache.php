@@ -325,9 +325,10 @@ class ImageCache extends CComponent
       return false;
     };
     try {
-      list($source_image_width, $source_image_height, $source_image_type) = getimagesize($originalFilename);
+      list($source_image_width, $source_image_height, $source_image_type) = @getimagesize($originalFilename);
       $source_gd_image = $this->openImage($originalFilename);
-
+      if (! $source_gd_image) { return false ; }
+      
       $source_aspect_ratio = $source_image_width / $source_image_height;		
       $thumbnail_aspect_ratio = $size['width'] / $size['height'];
       $srcX = 0; $srcY = 0;
