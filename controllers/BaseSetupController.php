@@ -7,6 +7,7 @@ class BaseSetupController extends Controller
 	public function actionIndex($id=null, $mode='edit')
 	{
 		if (!(Yii::app()->user->getState('adminId', null) != null)) {
+      Yii::log('redirecting to login', CLogger::LEVEL_INFO, 'toxus.login');
 			$this->redirect($this->createUrl('setup/login'));
 		}
 		$class = $this->setupClass;
@@ -56,4 +57,27 @@ class BaseSetupController extends Controller
 	{
 		phpinfo();
 	}
+  
+  /**
+   * auto migrate for call after update of git
+   * 
+   * UNTESTED YET
+   */
+  public function actionMigrate() {
+    $this->runMigrationTool();
+  }
+  /**
+   * http://www.yiiframework.com/wiki/226/run-yiic-directly-from-your-app-without-a-shell/
+   */
+  private function runMigrationTool() {
+    $commandPath = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'commands';
+    $runner = new CConsoleCommandRunner();
+    $runner->addCommands($commandPath);
+    $commandPath = Yii::getFrameworkPath() . DIRECTORY_SEPARATOR . 'cli' . DIRECTORY_SEPARATOR . 'commands';
+    $runner->addCommands($commandPath);
+    $args = array('yiic', 'migrate', '--interactive=0');
+    ob_start();
+    $runner->run($args);
+    return htmlentities(ob_get_clean(), null, Yii::app()->charset);
+  }
 }

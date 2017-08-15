@@ -40,30 +40,31 @@ class JsonGenerate extends CComponent
 				$result[$index] = array();
 			}
 			foreach ($format as $key => $field) {
-
 				if (is_numeric($key)) {			// 3 => 'name' or 3 => array(...)
 					if (is_string($field)) {		// 3 => fieldname
 						$keyName = $field; 
-						if (isset($record->$field)) {
-							$value = $this->convert($record->$field);														
+            if (isset($record->{$field})) {
+              $value = $this->convert($record->{$field});														
 						} else {
 							Yii::log('Field is unknown of null: '.$field, CLogger::LEVEL_INFO, 'toxus.json.generate');
 							$value = '';
 						}
 					} elseif (is_array($field)) {		// what would that mean??
 						Yii::log('Unknown definition: [number] => array(..)', CLogger::LEVEL_ERROR, 'toxus.json.generate');
+            continue;
 					} else {
 						Yii::log('Unknown definition: '.$field, CLogger::LEVEL_ERROR, 'toxus.json.generate');
+            continue;
 					} 
-				} elseif (is_string($key)) {  
+				} elseif (is_string($key)) {                      
 					if (is_string($field)) { // 'is_temp' => 'isTemp'
-						if (isset($record->$key)) {
-							$value = $this->convert($record->$key);
+            if (isset($record->{$key})) {
+              $value = $this->convert($record->{$key});
 							$keyName = $field;
             } elseif (strpos($key, '.')) { // it's field using a relation
               $rel = explode('.', $key);
-              if (isset($record->$rel[0])) {
-                $data = $record->$rel[0];
+              if (isset($record->{$rel[0]})) {
+                $data = $record->{$rel[0]};
                 if (!empty($data)) {
                   if (isset($data->{$rel[1]} )) {
                     $value = $this->convert($data->{$rel[1]});
@@ -71,12 +72,15 @@ class JsonGenerate extends CComponent
                   }
                 } else {
                   Yii::log('Empty relation: '.$rel[0], CLogger::LEVEL_ERROR, 'toxus.json.generate');
+                  continue;
                 }
               } else {
                 Yii::log('Unknown relation: '.$rel[0], CLogger::LEVEL_ERROR, 'toxus.json.generate');
+                continue;
               }
 						} else  {
 							Yii::log('Unknown field: '.$field, CLogger::LEVEL_ERROR, 'toxus.json.generate');
+              continue;
 						}
 					} elseif (is_array($field) || strpos($key,':' ) > 0) { // user => array('id', 'username')
             if (strpos($key,':') > 0) { // rename the relation
@@ -87,16 +91,18 @@ class JsonGenerate extends CComponent
                   continue; // skip the processing of this one                
                 }
               }
-            } elseif (isset($record->$key)) {
+            } elseif (isset($record->{$key})) {
 							$keyName = $key;
-							if (($value = $this->runInternal($record->$key, $field)) === false) {
+              if (($value = $this->runInternal($record->{$key}, $field)) === false) {
 								continue; // skip the processing of this one
 							};
 						} else {
 							Yii::log('Unknown relation: '.(is_string($field) ? $field : var_export($field, true)), CLogger::LEVEL_ERROR, 'toxus.json.generate');
+              continue;
 						} 
 					} else {
 						Yii::log('Unknown key type: '.$key, CLogger::LEVEL_ERROR, 'toxus.json.generate');
+            continue;            
 					}		
 				}
 				if (is_numeric($value)) {

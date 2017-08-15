@@ -5,7 +5,7 @@
  * $this->licenseKey['guid'] = customer.license_guid
  * $this->licenseKey['userId'] = user.id
  * 
- * upd: 13/05/2016 JvK
+ * upd: 13/05/2016 JvK so
  */
 
 Yii::import('toxus.controllers.BaseJsonController');
