@@ -321,71 +321,77 @@ class ImageCache extends CComponent
 	 */
 	public function imageCutOut($originalFilename, $newFilename, $size)
 	{
-    list($source_image_width, $source_image_height, $source_image_type) = getimagesize($originalFilename);
-		$source_gd_image = $this->openImage($originalFilename);
-		
-    $source_aspect_ratio = $source_image_width / $source_image_height;		
-    $thumbnail_aspect_ratio = $size['width'] / $size['height'];
-		$srcX = 0; $srcY = 0;
-		$srcW = 0; $srcH = 0;
-			
-		$destX = 0;
-		$destY = 0;
-		$destW = $size['width'];
-		$destH = $size['height'];
+    if (!file_exists($originalFilename)) {
+      return false;
+    };
+    try {
+      list($source_image_width, $source_image_height, $source_image_type) = getimagesize($originalFilename);
+      $source_gd_image = $this->openImage($originalFilename);
 
-		
-    if ($source_image_width <= $size['width'] && $source_image_height <= $size['height']) {
-			// if it's to small we'll put it centered into the sample image
-			$destX = ($source_image_width - $size['width']) / 2;
-			$destY = ($source_image_height - $size['height']) / 2;
-			$srcW = $source_image_width;
-			$destW = $srcW;
-			$srcH = $source_image_height;
-			$destH = $srcH;
-    } elseif ($thumbnail_aspect_ratio >= $source_aspect_ratio) { 
-			// cut a horizontal piece from the image.
-			// both top are 0
-			$srcX = 0;
-			$srcW = $source_image_width;
-			$srcH = ($size['height'] / $size['width']) * $source_image_width;
-			$srcY = ($source_image_height - $srcH) / 2;
-    } else {
-			// cut a vertical piece from the image
-			$srcY = 0;
-			$srcH = $source_image_height;
-			$srcW = ($size['width'] / $size['height']) * $source_image_height;
-			$srcX = ($source_image_width - $srcW) / 2;
-    }
-		/*
-		elseif ($thumbnail_aspect_ratio <= $source_aspect_ratio) { // we cut out a piece that has less widht and full height
-			// both top are 0
-			$srcH = $source_image_height;
-			$destH = $size['height'];
-			
-			$srcW = (int) ($source_image_width / $thumbnail_aspect_ratio); //$source_aspect_ratio);
-			$srcX = (int) (($source_image_width - $srcW) / 2);
-			$destW = $size['width'];		// our full width
-    } else {
-			$srcW = $source_image_width;
-			$destW = $size['width'];
-			
-			$srcH = (int) ($source_image_height / $source_aspect_ratio);
-			$srcY = (int) (($source_image_height - $srcH) / 2);
-			$destH = $size['height'];
-    }		 
-		 */
-		
-    $thumbnail_gd_image = imagecreatetruecolor( $size['width'],  $size['height']);
-    imagecopyresampled($thumbnail_gd_image, $source_gd_image, 
-						$destX, $destY, $srcX, $srcY, 
-						$destW, $destH, $srcW, $srcH);
-		
-		$this->saveImage($source_image_type, $newFilename, $thumbnail_gd_image, isset($size['quality']) ? $size['quality'] : 90);
-    imagedestroy($source_gd_image);
-    imagedestroy($thumbnail_gd_image);
-    return true;		
-		
+      $source_aspect_ratio = $source_image_width / $source_image_height;		
+      $thumbnail_aspect_ratio = $size['width'] / $size['height'];
+      $srcX = 0; $srcY = 0;
+      $srcW = 0; $srcH = 0;
+
+      $destX = 0;
+      $destY = 0;
+      $destW = $size['width'];
+      $destH = $size['height'];
+
+
+      if ($source_image_width <= $size['width'] && $source_image_height <= $size['height']) {
+        // if it's to small we'll put it centered into the sample image
+        $destX = ($source_image_width - $size['width']) / 2;
+        $destY = ($source_image_height - $size['height']) / 2;
+        $srcW = $source_image_width;
+        $destW = $srcW;
+        $srcH = $source_image_height;
+        $destH = $srcH;
+      } elseif ($thumbnail_aspect_ratio >= $source_aspect_ratio) { 
+        // cut a horizontal piece from the image.
+        // both top are 0
+        $srcX = 0;
+        $srcW = $source_image_width;
+        $srcH = ($size['height'] / $size['width']) * $source_image_width;
+        $srcY = ($source_image_height - $srcH) / 2;
+      } else {
+        // cut a vertical piece from the image
+        $srcY = 0;
+        $srcH = $source_image_height;
+        $srcW = ($size['width'] / $size['height']) * $source_image_height;
+        $srcX = ($source_image_width - $srcW) / 2;
+      }
+      /*
+      elseif ($thumbnail_aspect_ratio <= $source_aspect_ratio) { // we cut out a piece that has less widht and full height
+        // both top are 0
+        $srcH = $source_image_height;
+        $destH = $size['height'];
+
+        $srcW = (int) ($source_image_width / $thumbnail_aspect_ratio); //$source_aspect_ratio);
+        $srcX = (int) (($source_image_width - $srcW) / 2);
+        $destW = $size['width'];		// our full width
+      } else {
+        $srcW = $source_image_width;
+        $destW = $size['width'];
+
+        $srcH = (int) ($source_image_height / $source_aspect_ratio);
+        $srcY = (int) (($source_image_height - $srcH) / 2);
+        $destH = $size['height'];
+      }		 
+       */
+
+      $thumbnail_gd_image = imagecreatetruecolor( $size['width'],  $size['height']);
+      imagecopyresampled($thumbnail_gd_image, $source_gd_image, 
+              $destX, $destY, $srcX, $srcY, 
+              $destW, $destH, $srcW, $srcH);
+
+      $this->saveImage($source_image_type, $newFilename, $thumbnail_gd_image, isset($size['quality']) ? $size['quality'] : 90);
+      imagedestroy($source_gd_image);
+      imagedestroy($thumbnail_gd_image);
+      return true;		
+    } catch(Exception $e) {
+      return false;
+    }    
 	}
 	
 	/**
